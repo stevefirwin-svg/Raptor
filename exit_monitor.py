@@ -99,39 +99,60 @@ def _ou_theta(bars, lookback=30):
         return None
 
 
-def _trail_mult(days_held, profit_atr, rcfg, composite=0.0, health=0.0):
-    # Time-based base multiplier
-    if days_held <= rcfg.trail_early_days:
-        t = rcfg.trail_early_atr
-    elif days_held <= rcfg.trail_mid_days:
-        t = rcfg.trail_mid_atr
-    elif days_held <= rcfg.trail_late_days:
-        t = rcfg.trail_late_atr
-    else:
-        t = rcfg.trail_final_atr
+def _trail_mult(days_held, profit_atr, rcfg, composite=0.0, health=0.0, bars=None):
+    """OU-theta-derived trailing stop multiplier (P1-3).
 
-    # Profit-based multiplier
+    Base trail width = 1 / sqrt(theta), where theta is the per-stock
+    Ornstein-Uhlenbeck mean-reversion speed estimated from 30-day price history.
+    Fast-reverting stocks (half-life ~2d) get tight trails (~1.7x ATR).
+    Trending stocks (half-life ~7d+) get wide trails (~3.0x ATR).
+    Clamped to [1.0, 3.0] ATR.
+
+    If bars unavailable, falls back to static step table (unchanged behavior).
+
+    Profit tightener applied on top: once in profit, trail tightens to lock gains.
+    Signal-quality modifier applied last: strong signal widens, weak tightens.
+
+    Reference: Leung & Zhang 2019, arXiv:1701.03960.
+    """
+    # ── BASE: OU theta per stock ──────────────────────────────────────────
+    theta = _ou_theta(bars) if bars is not None else None
+    if theta is not None:
+        # Trail width proportional to mean-reversion timescale
+        t = max(1.0, min(3.0, 1.0 / np.sqrt(theta)))
+    else:
+        # Fallback: static step table (original behavior, no data available)
+        if days_held <= rcfg.trail_early_days:
+            t = rcfg.trail_early_atr
+        elif days_held <= rcfg.trail_mid_days:
+            t = rcfg.trail_mid_atr
+        elif days_held <= rcfg.trail_late_days:
+            t = rcfg.trail_late_atr
+        else:
+            t = rcfg.trail_final_atr
+
+    # ── PROFIT TIGHTENER — lock in gains as position moves in our favor ──
     if profit_atr >= 4.0:
-        p = 1.0
+        p = 1.0   # Deep winner — trail very tight
     elif profit_atr >= 2.0:
         p = 1.5
     elif profit_atr >= 1.0:
         p = 2.0
     else:
-        p = 99.0
+        p = 99.0  # Not yet in profit — don't tighten
 
     base = min(t, p)
 
-    # Signal-quality modifier — math drives trail width.
-    # Strong signal + healthy position = wider trail (let winners run).
-    # Weak signal + decaying health = tighter trail (protect profits faster).
+    # ── SIGNAL-QUALITY MODIFIER — continuous, proportional to conviction ─
+    # Converts bucketed ±0.3 thresholds to a smooth sigmoid-like scale.
+    # Strong signal (strength=+1.0) → ×1.3. Weak (strength=-1.0) → ×0.75.
+    # Neutral (strength=0) → ×1.0. Linear interpolation between.
     signal_strength = (composite + health) / 2.0
-    if signal_strength > 0.3:
-        modifier = 1.3   # Strong — give room
-    elif signal_strength < -0.3:
-        modifier = 0.75  # Weak — tighten
+    signal_strength = max(-1.0, min(1.0, signal_strength))  # clamp
+    if signal_strength >= 0:
+        modifier = 1.0 + 0.3 * signal_strength   # [1.0, 1.3]
     else:
-        modifier = 1.0   # Neutral — no change
+        modifier = 1.0 + 0.25 * signal_strength  # [0.75, 1.0]
 
     return base * modifier
 
@@ -277,11 +298,11 @@ def run_exit_monitor(dry_run=False):
         if reason is None:
             _comp  = scores.get(sym, 0.0)
             _hlth  = _pre_health.get(sym, {}).get("health", 0.0)
-            mult = _trail_mult(days_held, profit_atr, CONFIG.risk, composite=_comp, health=_hlth)
+            mult = _trail_mult(days_held, profit_atr, CONFIG.risk, composite=_comp, health=_hlth, bars=bar_data)
             trail = high_water - mult * atr
             if trail > hard_stop and price <= trail:
                 reason = "trailing_stop"
-                logger.info("EXIT 2 [TRAIL] %s $%.2f <= $%.2f (%.1fx ATR) comp=%.2f health=%.2f",
+                logger.info("EXIT 2 [TRAIL] %s $%.2f <= $%.2f (%.2fx ATR) comp=%.2f health=%.2f",
                            sym, price, trail, mult, _comp, _hlth)
 
         # EXIT 3: THESIS INVALIDATION
@@ -340,7 +361,7 @@ def run_exit_monitor(dry_run=False):
         else:
             _comp  = scores.get(sym, 0.0)
             _hlth  = _pre_health.get(sym, {}).get("health", 0.0)
-            mult = _trail_mult(days_held, profit_atr, CONFIG.risk, composite=_comp, health=_hlth)
+            mult = _trail_mult(days_held, profit_atr, CONFIG.risk, composite=_comp, health=_hlth, bars=bar_data)
             trail = max(hard_stop, high_water - mult * atr)
             holds.append({
                 "symbol": sym, "pnl_pct": round(pnl_pct * 100, 1),
