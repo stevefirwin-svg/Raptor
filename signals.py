@@ -13,6 +13,28 @@ from config import RaptorConfig
 logger = logging.getLogger("raptor.signals")
 MIN_BARS_REQUIRED = 80
 
+
+def _ou_theta_signals(bars, lookback=30):
+    """OU mean-reversion speed (theta) for hold target derivation (P1-5).
+    Inlined copy of exit_monitor._ou_theta — avoids circular import.
+    Returns theta in [log(2)/15, log(2)/2] (half-life 2–15 days), or None.
+    Reference: Leung & Zhang 2019, arXiv:1701.03960.
+    """
+    try:
+        closes = bars["close"].dropna().tail(lookback)
+        if len(closes) < 10:
+            return None
+        log_p = np.log(closes.values.astype(float))
+        mu = log_p.mean()
+        X = log_p[:-1] - mu
+        dX = np.diff(log_p)
+        slope = float(np.polyfit(X, dX, 1)[0])
+        theta = -slope
+        theta = max(np.log(2) / 15, min(np.log(2) / 2, theta))
+        return theta
+    except Exception:
+        return None
+
 @dataclass
 class Signal:
     symbol: str; side: str; composite_score: float; composite_percentile: float
@@ -238,15 +260,11 @@ MICRO_MULT = {
     "MIXED":{"mr":1.0,"trend":1.0,"vol":1.0,"volat":1.0,"rev":1.0},
 }
 REGIME_MULT = {
-    # Canonical (macro_context.py output)
-    "RISK_ON":  {"mr":0.8,"trend":1.3,"vol":1.0,"volat":0.8,"rev":0.7},
-    "NEUTRAL":  {"mr":1.0,"trend":1.0,"vol":1.0,"volat":1.0,"rev":1.0},
-    "RISK_OFF": {"mr":1.3,"trend":0.7,"vol":1.1,"volat":1.2,"rev":1.3},
-    "CRISIS":   {"mr":1.5,"trend":0.5,"vol":1.2,"volat":1.4,"rev":1.5},
-    # Legacy aliases (deprecated, kept for backtest compatibility)
     "EXPANSION":{"mr":0.8,"trend":1.3,"vol":1.0,"volat":0.8,"rev":0.7},
-    "BULLISH":  {"mr":0.9,"trend":1.2,"vol":1.0,"volat":0.9,"rev":0.8},
-    "BEARISH":  {"mr":1.3,"trend":0.7,"vol":1.1,"volat":1.2,"rev":1.3},
+    "BULLISH":{"mr":0.9,"trend":1.2,"vol":1.0,"volat":0.9,"rev":0.8},
+    "NEUTRAL":{"mr":1.0,"trend":1.0,"vol":1.0,"volat":1.0,"rev":1.0},
+    "BEARISH":{"mr":1.3,"trend":0.7,"vol":1.1,"volat":1.2,"rev":1.3},
+    "CRISIS":{"mr":1.5,"trend":0.5,"vol":1.2,"volat":1.4,"rev":1.5},
 }
 
 class QuantSignalEngine:
@@ -411,8 +429,17 @@ class QuantSignalEngine:
             lev=self.f.check_leverage(bars,spy_bars,rsi_raw,bb_z)
             if lev and abs(s["t"])>=2.0: kelly=min(kelly*2.0,0.20)
             pctile=scipy_stats.percentileofscore(comp_arr,s["comp"])/100.0
-            atr_p=raw[sym].get("atr_pctile",0)
-            hold=max(1,min(30,int(16+14*(atr_p if not(isinstance(atr_p,float) and np.isnan(atr_p)) else 0))))
+            # P1-5: OU-theta-derived hold target — replaces 16+14*atr_pctile.
+            # hold = ceil(log(2)/theta) = one full OU half-life.
+            # TRENDING micro gets 2x (let trends run). REVERTING gets 1x (one half-life).
+            # Clamped [3, 30] days. Fallback 15 if theta unavailable.
+            _theta = _ou_theta_signals(bars)
+            if _theta is not None:
+                _base_hold = int(np.ceil(np.log(2) / _theta))
+                _micro_mult = 2.0 if micro == "TRENDING" else 1.0
+                hold = max(3, min(30, int(_base_hold * _micro_mult)))
+            else:
+                hold = 15  # fallback
             rev_m=raw[sym].get("rev_momentum",0)
             conf="reversal" if(isinstance(rev_m,(int,float)) and not np.isnan(rev_m) and rev_m>0.5) else "adaptive"
             signals.append(Signal(
