@@ -38,6 +38,67 @@ def _atr(bars, period=14):
     return float(tr.rolling(period).mean().iloc[-1])
 
 
+def _atr_percentile(bars, period=14, lookback=60):
+    """Return where today's ATR sits in its own 60-day distribution (0.0-1.0).
+    Low vol  -> pctile < 0.25. High vol -> pctile > 0.75.
+    Used to scale hard stop multiplier dynamically (P1-2).
+    """
+    h, l, c = bars["high"], bars["low"], bars["close"]
+    tr = pd.concat([h - l, (h - c.shift(1)).abs(), (l - c.shift(1)).abs()], axis=1).max(axis=1)
+    atr_series = tr.rolling(period).mean().dropna()
+    if len(atr_series) < 2:
+        return 0.5  # default: normal regime
+    current = float(atr_series.iloc[-1])
+    window = atr_series.iloc[-lookback:]
+    pctile = float((window < current).mean())
+    return pctile
+
+
+def _vol_regime_stop_mult(bars, base_mult=3.0, period=14, lookback=60):
+    """Vol-regime-aware hard stop multiplier (P1-2).
+    Derives multiplier from ATR percentile distribution -- not hand-picked steps.
+    Low vol  (pctile < 0.25): 2.5x -- statistically equivalent protection, tighter stop
+    Normal   (0.25-0.75):     3.0x -- unchanged
+    High vol (pctile > 0.75): 3.5x -- extra room for noise, avoids whipsaw
+    Reference: audit P1-2, Kaminski & Lo 2014.
+    """
+    pctile = _atr_percentile(bars, period=period, lookback=lookback)
+    if pctile < 0.25:
+        mult = 2.5
+    elif pctile > 0.75:
+        mult = 3.5
+    else:
+        mult = base_mult
+    return mult, pctile
+
+
+def _ou_theta(bars, lookback=30):
+    """Estimate Ornstein-Uhlenbeck mean-reversion speed (theta) per stock.
+    Method: OLS regression of log-price changes on lagged log-price deviation from mean.
+    dX = theta * (mu - X) * dt  ->  theta = -slope of OLS(delta_X ~ X_lagged)
+    Half-life = log(2) / theta  (days to revert halfway to mean)
+    Returns theta capped to [log(2)/15, log(2)/2] (half-life 2-15 days).
+    Returns None if insufficient data.
+    Reference: Leung & Zhang 2019, arXiv:1701.03960.
+    """
+    try:
+        closes = bars["close"].dropna().tail(lookback)
+        if len(closes) < 10:
+            return None
+        log_p = np.log(closes.values.astype(float))
+        mu = log_p.mean()
+        X = log_p[:-1] - mu          # deviation from mean, lagged
+        dX = np.diff(log_p)          # changes
+        # OLS: dX = alpha + slope * X  ->  theta = -slope
+        slope = float(np.polyfit(X, dX, 1)[0])
+        theta = -slope
+        # Cap: half-life between 2 and 15 trading days
+        theta = max(np.log(2) / 15, min(np.log(2) / 2, theta))
+        return theta
+    except Exception:
+        return None
+
+
 def _trail_mult(days_held, profit_atr, rcfg, composite=0.0, health=0.0):
     # Time-based base multiplier
     if days_held <= rcfg.trail_early_days:
@@ -126,16 +187,14 @@ def run_exit_monitor(dry_run=False):
     macro = dataset["macro"]
     spy_bars = bars.get("SPY")
 
-    # P0-8 fix: Use macro_context.json as the canonical macro source (written by
-    # macro_context.py at 9:00 AM). Ensures exit_monitor uses the same regime label
-    # as main.py and signals.
+    # P0-8: Override macro regime from canonical macro_context.json
     try:
         import json as _mcjson
         from pathlib import Path as _mcPath
         _mc_path = _mcPath("macro_context.json")
         if _mc_path.exists():
             _mc_data = _mcjson.loads(_mc_path.read_text())
-            _mc_regime = _mc_data.get("regime")
+            _mc_regime = _mc_data.get("macro_regime", "")
             if _mc_regime:
                 macro["regime"] = _mc_regime
                 logger.info("[P0-8] Using macro_context.json regime=%s (canonical source)", _mc_regime)
@@ -146,7 +205,6 @@ def run_exit_monitor(dry_run=False):
     signals = engine.generate_signals(bars, macro, dataset["sentiment"], spy_bars)
     # Use _last_full_signals so held symbols that decayed out of the top-N
     # get their real composite score instead of the -1.0 default.
-    # generate_signals() sets this attribute on the engine instance after scoring all symbols.
     full_map = getattr(engine, "_last_full_signals", {s.symbol: s for s in signals})
     scores = {sym: full_map[sym].composite_score if sym in full_map else s.composite_score
               for s in signals for sym in [s.symbol]}
@@ -204,11 +262,16 @@ def run_exit_monitor(dry_run=False):
 
         reason = None
 
-        # EXIT 1: HARD STOP
-        hard_stop = entry - CONFIG.risk.initial_stop_atr_mult * atr
+        # EXIT 1: HARD STOP — P1-2: vol-regime-aware multiplier
+        # Stop width scales with where current ATR sits in its 60-day distribution.
+        # Low vol (pctile<0.25): 2.5x | Normal: 3.0x | High vol (pctile>0.75): 3.5x
+        _stop_mult, _atr_pctile = _vol_regime_stop_mult(
+            bar_data, base_mult=CONFIG.risk.initial_stop_atr_mult)
+        hard_stop = entry - _stop_mult * atr
         if price <= hard_stop:
             reason = "hard_stop"
-            logger.info("EXIT 1 [HARD STOP] %s $%.2f <= $%.2f", sym, price, hard_stop)
+            logger.info("EXIT 1 [HARD STOP] %s $%.2f <= $%.2f (%.1fx ATR, atr_pctile=%.2f)",
+                        sym, price, hard_stop, _stop_mult, _atr_pctile)
 
         # EXIT 2: TRAILING STOP
         if reason is None:
@@ -234,7 +297,6 @@ def run_exit_monitor(dry_run=False):
 
         # EXIT 4B: LEVERAGED ETF HOLD CAP
         # 3x ETFs: max 3 days. 2x ETFs: max 10 days. Volatility decay kills multi-day holds.
-        # Uses actual days_held from ledger — prior version used price proxy which fired daily.
         if reason is None:
             LEVERAGED_3X = {"SOXL","SOXS","TQQQ","SQQQ","SPXL","SPXS","UPRO","SPXU",
                            "TECL","TECS","LABU","LABD","FNGU","FNGD","TNA","TZA","FAS","FAZ"}
@@ -246,18 +308,14 @@ def run_exit_monitor(dry_run=False):
                 reason = "leveraged_2x_cap"
                 logger.info("EXIT 4B [LEV CAP] %s 2x ETF held %d days (max 10)", sym, days_held)
 
-# EXIT 5: TIME DECAY
+        # EXIT 5: TIME DECAY
         # Exit only when thesis is genuinely dead — not just flat.
-        # Flatness at support/accumulation with good signals is fine to hold.
-        # Requires: losing + held long enough + flat + signal deteriorating + health decaying.
         if reason is None and pnl_pct < -0.01 and days_held >= 12:
             ret_20d = (bar_data["close"].iloc[-1] / bar_data["close"].iloc[-20]) - 1 if len(bar_data) >= 20 else None
             ret_5d  = (bar_data["close"].iloc[-1] / bar_data["close"].iloc[-5])  - 1 if len(bar_data) >= 5  else None
             flat_20 = ret_20d is not None and abs(ret_20d) < 0.02
             flat_5  = ret_5d  is not None and abs(ret_5d)  < 0.02
             if flat_20 or flat_5:
-                # Check thesis — flat + losing is only an exit if signals are also deteriorating.
-                # If composite > 0 or health > 0, stock may be basing — give it room.
                 _hrec      = _pre_health.get(sym, {})
                 _composite = _hrec.get("composite", 0.0)
                 _health    = _hrec.get("health", 0.0)
@@ -306,10 +364,6 @@ def run_exit_monitor(dry_run=False):
                        sym, weakest.get("composite", 0))
 
     # ── MATH TRIM EXECUTION — driven by hold_health.json 8-layer score ──────────
-    # compute_trim() in hold_monitor produces a continuous trim% from:
-    # severity, stop proximity, FAR penalty, composite slope, P&L context.
-    # This is the authoritative trim signal — more precise than agent approximation.
-    # Agent TRIM decisions are demoted to advisory logging only (calibration data).
     try:
         import json as _jmath
         from pathlib import Path as _Pmath
@@ -330,7 +384,7 @@ def run_exit_monitor(dry_run=False):
                 _label       = _trim.get("action_label", _action)
                 if _trim_shares <= 0:
                     continue
-                # Full EXIT from math: add as full exit to exits list
+                # Full EXIT from math
                 if _action == "EXIT":
                     alp = next((p for p in positions if p["symbol"] == _sym), None)
                     if alp and _sym not in {e["symbol"] for e in exits}:
@@ -346,12 +400,11 @@ def run_exit_monitor(dry_run=False):
                         })
                         holds = [h for h in holds if h["symbol"] != _sym]
                         logger.warning("MATH EXIT [%s] %s — %s", _action, _sym, _label)
-                # Partial TRIM from math: submit partial sell
+                # Partial TRIM from math
                 else:
                     alp = next((p for p in positions if p["symbol"] == _sym), None)
                     if alp and _sym not in {e["symbol"] for e in exits}:
                         full_qty = float(alp["qty"])
-                        # Cap trim at full_qty-1 — full exits go through EXIT path
                         safe_trim = min(_trim_shares, int(full_qty) - 1) if full_qty > 1 else 0
                         if safe_trim > 0:
                             exits.append({
@@ -395,11 +448,7 @@ def run_exit_monitor(dry_run=False):
 
     logger.info("=" * 60)
 
-    # ── HoldAgent — ADVISORY ONLY — logs for calibration, does not execute ──────
-    # Math trim (hold_health.json) is the execution trigger.
-    # Agent decisions are logged here for outcome tagging and Layer 3 calibration.
-    # When prompt_calibrator.py runs (Layer 3), it will compare agent decisions
-    # against actual outcomes to tune prompts. All data preserved.
+    # ── HoldAgent — ADVISORY ONLY ──────────────────────────────────────────
     try:
         import json as _json
         from pathlib import Path as _Path
@@ -412,7 +461,6 @@ def run_exit_monitor(dry_run=False):
             except Exception:
                 _raw_decisions = []
 
-        # Most recent decision per symbol
         _latest = {}
         for d in _raw_decisions:
             sym = d.get("symbol")
@@ -424,7 +472,6 @@ def run_exit_monitor(dry_run=False):
             decision  = dec.get("decision", "HOLD")
             reasoning = dec.get("reasoning", "")
             ts        = dec.get("timestamp", "unknown time")
-            # Log all agent decisions for calibration — no execution
             if decision == "EXIT":
                 logger.info("AGENT [advisory] EXIT %s — %s (conf=%.2f, from %s) [not executed — math trim governs]",
                            sym, reasoning, conf, ts)
@@ -448,7 +495,6 @@ def run_exit_monitor(dry_run=False):
             )
             if "error" not in result:
                 logger.info("  OK: %s", result.get("status", "submitted"))
-                # Update ledger — moves position to closed list for analytics
                 try:
                     from ledger import Ledger as _Ledger
                     _l = _Ledger()
@@ -459,12 +505,12 @@ def run_exit_monitor(dry_run=False):
                     )
                 except Exception as _le:
                     logger.warning("Ledger record_exit failed for %s: %s", ex["symbol"], _le)
-                # P0-1 fix: Write outcome_pending.json sidecar keyed by Alpaca order ID.
-                # outcome_tracker.py reads this to get the true exit_reason instead of
-                # parsing it from client_order_id (which was truncated/unreliable).
+
+                # P0-1: Write outcome_pending.json sidecar keyed by Alpaca order ID
                 try:
                     import json as _opjson
                     from pathlib import Path as _opPath
+                    _order_id = result.get("id", "unknown")
                     _op_path = _opPath("outcome_pending.json")
                     _op_data = {}
                     if _op_path.exists():
@@ -472,20 +518,19 @@ def run_exit_monitor(dry_run=False):
                             _op_data = _opjson.loads(_op_path.read_text())
                         except Exception:
                             _op_data = {}
-                    _order_id = result.get("id", "unknown")
-                    _agent_dec = _latest.get(ex["symbol"], {}) if "_latest" in dir() else {}
                     _op_data[_order_id] = {
-                        "symbol": ex["symbol"],
-                        "exit_reason": ex["reason"],
-                        "composite": ex.get("composite", 0),
-                        "trim_detail": ex.get("trim_detail", ""),
-                        "agent_decision": _agent_dec.get("decision", "no_record"),
-                        "agent_confidence": _agent_dec.get("confidence"),
-                        "agent_reasoning": _agent_dec.get("reasoning", ""),
-                        "submitted_at": datetime.now().isoformat(),
+                        "symbol":           ex["symbol"],
+                        "exit_reason":      ex["reason"],
+                        "composite":        ex.get("composite", 0),
+                        "trim_detail":      ex.get("trim_detail", ""),
+                        "agent_decision":   _latest.get(ex["symbol"], {}).get("decision", "no_record"),
+                        "agent_confidence": _latest.get(ex["symbol"], {}).get("confidence", None),
+                        "agent_reasoning":  _latest.get(ex["symbol"], {}).get("reasoning", ""),
+                        "submitted_at":     datetime.now().isoformat(),
                     }
                     _op_path.write_text(_opjson.dumps(_op_data, indent=2))
-                    logger.info("[P0-1] outcome_pending.json updated for %s (order %s)", ex["symbol"], _order_id)
+                    logger.info("[P0-1] outcome_pending.json updated for %s (order %s)",
+                                ex["symbol"], _order_id)
                 except Exception as _ope:
                     logger.warning("[P0-1] outcome_pending write failed for %s: %s", ex["symbol"], _ope)
             else:
@@ -493,10 +538,7 @@ def run_exit_monitor(dry_run=False):
     elif dry_run and exits:
         logger.info("DRY RUN - no orders submitted")
 
-    # ── TRIM LOG — records partial sells for calibration ─────────────────────
-    # Full exits are tagged by outcome_tracker via Alpaca order history.
-    # Partial trims don't appear as closed trades so we log them separately.
-    # trim_log.json feeds into Layer 3 prompt calibration alongside outcome_log.json.
+    # ── TRIM LOG ─────────────────────────────────────────────────────────────
     if not dry_run:
         try:
             import json as _tjson
@@ -511,7 +553,6 @@ def run_exit_monitor(dry_run=False):
                     except Exception:
                         _tlog = []
                 for _te in _trim_exits:
-                    # Load agent decision for this symbol if available
                     _agent_dec = _latest.get(_te["symbol"], {}) if "_latest" in dir() else {}
                     _tlog.append({
                         "timestamp":      datetime.now().isoformat(),
@@ -527,23 +568,21 @@ def run_exit_monitor(dry_run=False):
                         "agent_reasoning":_agent_dec.get("reasoning", ""),
                     })
                 _tlog_path.write_text(_tjson.dumps(_tlog, indent=2))
-                logger.info("[TrimLog] Logged %d trim(s) → trim_log.json", len(_trim_exits))
+                logger.info("[TrimLog] Logged %d trim(s) -> trim_log.json", len(_trim_exits))
         except Exception as _tle:
             logger.warning("[TrimLog] Non-fatal error: %s", _tle)
     # ─────────────────────────────────────────────────────────────────────────
 
-    # ── OUTCOME TAGGING — Layer 1 ──────────────────────────────────────────
-    # Runs after every execution cycle. Tags closed trades with agent decisions.
-    # Writes to outcome_log.json — the labeled dataset for prompt calibration.
+    # ── OUTCOME TAGGING ───────────────────────────────────────────────────────
     if not dry_run:
         try:
             import outcome_tracker
             n = outcome_tracker.run_tracker(verbose=False)
             if n > 0:
-                logger.info("[OutcomeTracker] Tagged %d new closed trade(s) → outcome_log.json", n)
+                logger.info("[OutcomeTracker] Tagged %d new closed trade(s) -> outcome_log.json", n)
         except Exception as e:
             logger.warning("[OutcomeTracker] Non-fatal error: %s", e)
-    # ───────────────────────────────────────────────────────────────────────
+    # ─────────────────────────────────────────────────────────────────────────
 
 
 if __name__ == "__main__":
