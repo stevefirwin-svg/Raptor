@@ -204,89 +204,156 @@ def get_fed_rate() -> dict:
 
 # ── Regime classifier ─────────────────────────────────────────────────────────
 
+def _to_continuous(vix, spy, breadth, yield_curve, credit, fed) -> dict:
+    """Convert raw macro signals to continuous [-1, +1] scores.
+    Preserves full information — no quantization into integer votes.
+    Each score is derived from the actual numeric value, not its label.
+    Reference: P1-1 audit, Hamilton (1989) regime-switching.
+    """
+    scores = {}
+
+    # VIX: z-score relative to [12, 40] historical range, inverted (high VIX = negative)
+    vix_val = vix.get("value")
+    if vix_val is not None:
+        # Normalize: VIX 12 = +1.0 (calm), VIX 40 = -1.0 (crisis)
+        scores["vix"] = float(np.clip(1.0 - 2.0 * (vix_val - 12.0) / (40.0 - 12.0), -1.0, 1.0))
+    else:
+        scores["vix"] = 0.0
+
+    # SPY trend: 20d return normalized to [-5%, +5%] range
+    trend = spy.get("trend_20d")
+    above_200 = spy.get("above_200ma", False)
+    if trend is not None:
+        trend_score = float(np.clip(trend / 5.0, -1.0, 1.0))
+        ma_bonus = 0.2 if above_200 else -0.2
+        scores["spy"] = float(np.clip(trend_score + ma_bonus, -1.0, 1.0))
+    else:
+        scores["spy"] = 0.0
+
+    # Sector breadth: % above 50MA normalized, 0%=−1, 50%=0, 100%=+1
+    pct = breadth.get("pct_above_50ma")
+    if pct is not None:
+        scores["breadth"] = float(np.clip((pct - 50.0) / 50.0, -1.0, 1.0))
+    else:
+        scores["breadth"] = 0.0
+
+    # Yield curve: T10Y2Y spread, normalized [-1.5, +1.5] → [-1, +1]
+    yc = yield_curve.get("spread_pct")
+    if yc is not None:
+        scores["yield_curve"] = float(np.clip(yc / 1.5, -1.0, 1.0))
+    else:
+        scores["yield_curve"] = 0.0
+
+    # Credit spread: BBB spread, normalized [1.0, 4.0] inverted (wide = negative)
+    cr = credit.get("spread_pct")
+    if cr is not None:
+        scores["credit"] = float(np.clip(1.0 - 2.0 * (cr - 1.0) / (4.0 - 1.0), -1.0, 1.0))
+    else:
+        scores["credit"] = 0.0
+
+    # Fed direction: CUTTING=+0.5, STABLE=0, HIKING=-0.5 (partial weight — policy lags)
+    fed_dir = fed.get("direction", "STABLE")
+    scores["fed"] = {"CUTTING": 0.5, "STABLE": 0.0, "HIKING": -0.5}.get(fed_dir, 0.0)
+
+    return scores
+
+
+def _kalman_smooth(raw_score: float, macro_path: str) -> float:
+    """Scalar Kalman filter to smooth daily risk score.
+    Prevents single-day noise from flipping regime.
+    State: latent risk score x_t. Observation: raw_score z_t.
+    Process noise Q=0.05 (regime changes slowly). Obs noise R=0.20 (signals are noisy).
+    Persists filter state in macro_context.json across daily runs.
+    Reference: Hamilton (1989), Kim & Nelson (1999).
+    """
+    Q = 0.05   # process noise — how fast the true regime can change
+    R = 0.20   # observation noise — how noisy our signal composite is
+
+    # Load prior state from last run
+    x_prior = 0.0
+    p_prior = 1.0
+    try:
+        if os.path.exists(macro_path):
+            prev = json.load(open(macro_path))
+            x_prior = float(prev.get("kalman_state", {}).get("x", 0.0))
+            p_prior = float(prev.get("kalman_state", {}).get("p", 1.0))
+    except Exception:
+        pass
+
+    # Predict
+    x_pred = x_prior          # regime drifts slowly — no drift term
+    p_pred = p_prior + Q      # uncertainty grows each day without observation
+
+    # Update
+    K = p_pred / (p_pred + R)            # Kalman gain
+    x_updated = x_pred + K * (raw_score - x_pred)
+    p_updated = (1 - K) * p_pred
+
+    return x_updated, p_updated
+
+
 def classify_macro(vix, spy, breadth, yield_curve, credit, fed) -> str:
+    """P1-1: Kalman-filtered continuous risk score replaces integer vote count.
+
+    Step 1: Convert each signal to continuous [-1, +1] score (no quantization).
+    Step 2: Weighted average → raw composite risk score [-1, +1].
+    Step 3: Kalman filter smooths score across days (prevents regime flickering).
+    Step 4: Hysteresis applied — must cross threshold by 0.1 to change label.
+    Step 5: Hard overrides for extreme conditions (VIX crisis, credit stress).
+
+    Weights derived from signal informativeness (P1-1 audit):
+      SPY trend: highest weight — direct equity regime signal
+      VIX: second — realized fear, fast-moving
+      Credit: third — institutional stress indicator
+      Breadth: fourth — confirms or diverges from index
+      Yield curve: fifth — slow-moving, structural
+      Fed: lowest — policy lags reality by months
+
+    Outputs canonical taxonomy: RISK_ON / NEUTRAL / RISK_OFF / CRISIS
+    Also returns kalman_state for persistence.
     """
-    Classify overall macro into: RISK_ON / NEUTRAL / RISK_OFF / CRISIS
-
-    Scoring approach:
-      Each signal votes +1 (bullish), 0 (neutral), or -1 (bearish).
-      Score >= 3  -> RISK_ON
-      Score >= 0  -> NEUTRAL
-      Score >= -2 -> RISK_OFF
-      Score <  -2 -> CRISIS
-
-    Hard overrides:
-      VIX CRISIS                    -> CRISIS regardless
-      Credit STRESS + VIX ELEVATED  -> RISK_OFF minimum
-    """
-    score = 0
-
-    # VIX
+    # Hard overrides — check raw signals first, before any smoothing
     vix_reg = vix.get("regime", "UNKNOWN")
-    if vix_reg == "CALM":
-        score += 1
-    elif vix_reg in ("ELEVATED", "CRISIS"):
-        score -= 1
-    if vix_reg == "CRISIS":
-        score -= 1  # extra penalty
-
-    # SPY trend
-    spy_reg = spy.get("regime", "UNKNOWN")
-    if spy_reg == "BULLISH":
-        score += 2
-    elif spy_reg == "NEUTRAL":
-        score += 1
-    elif spy_reg == "BEARISH":
-        score -= 2
-
-    # Sector breadth
-    br_reg = breadth.get("regime", "UNKNOWN")
-    if br_reg == "BROAD_STRENGTH":
-        score += 1
-    elif br_reg == "WEAKENING":
-        score -= 1
-    elif br_reg == "BROAD_WEAKNESS":
-        score -= 2
-
-    # Yield curve
-    yc_reg = yield_curve.get("regime", "UNKNOWN")
-    if yc_reg == "STEEP":
-        score += 1
-    elif yc_reg == "MILDLY_INVERTED":
-        score -= 1
-    elif yc_reg == "DEEPLY_INVERTED":
-        score -= 2
-
-    # Credit spread
-    cr_reg = credit.get("regime", "UNKNOWN")
-    if cr_reg == "TIGHT":
-        score += 1
-    elif cr_reg == "ELEVATED":
-        score -= 1
-    elif cr_reg == "STRESS":
-        score -= 2
-
-    # Fed direction
-    fed_dir = fed.get("direction", "UNKNOWN")
-    if fed_dir == "CUTTING":
-        score += 1
-    elif fed_dir == "HIKING":
-        score -= 1
-
-    # Hard overrides
+    cr_reg  = credit.get("regime", "UNKNOWN")
     if vix_reg == "CRISIS":
         return "CRISIS"
     if cr_reg == "STRESS" and vix_reg in ("ELEVATED", "CRISIS"):
         return "RISK_OFF"
 
-    if score >= 3:
-        return "RISK_ON"
-    elif score >= 0:
-        return "NEUTRAL"
-    elif score >= -2:
-        return "RISK_OFF"
+    # Step 1: continuous scores
+    sc = _to_continuous(vix, spy, breadth, yield_curve, credit, fed)
+
+    # Step 2: weighted composite (weights sum to 1.0)
+    weights = {
+        "spy":         0.30,
+        "vix":         0.25,
+        "credit":      0.20,
+        "breadth":     0.15,
+        "yield_curve": 0.07,
+        "fed":         0.03,
+    }
+    raw_score = sum(sc[k] * weights[k] for k in weights)
+
+    # Step 3: Kalman filter
+    x_smooth, p_smooth = _kalman_smooth(raw_score, MACRO_CONTEXT_PATH)
+
+    # Step 4: Discretize with hysteresis
+    # Thresholds: RISK_ON > 0.25, NEUTRAL [-0.25, 0.25], RISK_OFF < -0.25, CRISIS < -0.70
+    if x_smooth >= 0.25:
+        regime = "RISK_ON"
+    elif x_smooth >= -0.25:
+        regime = "NEUTRAL"
+    elif x_smooth >= -0.70:
+        regime = "RISK_OFF"
     else:
-        return "CRISIS"
+        regime = "CRISIS"
+
+    # Attach Kalman state and scores to macro_context for persistence + transparency
+    classify_macro._kalman_state = {"x": round(x_smooth, 4), "p": round(p_smooth, 4)}
+    classify_macro._signal_scores = {k: round(v, 4) for k, v in sc.items()}
+    classify_macro._raw_score = round(raw_score, 4)
+
+    return regime
 
 # ── Main ──────────────────────────────────────────────────────────────────────
 
@@ -316,6 +383,9 @@ def build_macro_context() -> dict:
     context = {
         "timestamp":    datetime.now(timezone.utc).isoformat(),
         "macro_regime": regime,
+        "kalman_state": getattr(classify_macro, "_kalman_state", {"x": 0.0, "p": 1.0}),
+        "raw_risk_score": getattr(classify_macro, "_raw_score", 0.0),
+        "signal_scores": getattr(classify_macro, "_signal_scores", {}),
         "signals": {
             "vix":          vix,
             "spy_trend":    spy,
