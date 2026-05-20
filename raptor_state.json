@@ -1,0 +1,128 @@
+{
+  "_schema_version": "1.0",
+  "_description": "Written by Raptor at end of each trading session. Paste into any Claude session for instant context.",
+  "_last_updated": "2026-04-30T16:30:00",
+
+  "account": {
+    "equity": 104000.00,
+    "cash": 28500.00,
+    "cash_pct": 27.4,
+    "total_exposure_pct": 72.6,
+    "leverage_active": false,
+    "drawdown_from_peak_pct": 0.8
+  },
+
+  "regime": {
+    "current": "bull_trend",
+    "spy_vs_ma50": "above",
+    "spy_vs_ma200": "above",
+    "spy_rsi_14": 58.3,
+    "vix": 17.2,
+    "vix_regime": "normal",
+    "leverage_eligible": true,
+    "regime_days": 12
+  },
+
+  "positions": [
+    {
+      "symbol": "CVX",
+      "entry_price": 148.32,
+      "current_price": 151.60,
+      "shares": 42,
+      "days_held": 3,
+      "composite_score": 0.74,
+      "current_stop": 147.90,
+      "unrealized_pnl_pct": 2.21,
+      "atr_14": 2.84,
+      "ou_atr_mult": 2.61
+    },
+    {
+      "symbol": "XOM",
+      "entry_price": 112.50,
+      "current_price": 114.20,
+      "shares": 55,
+      "days_held": 5,
+      "composite_score": 0.68,
+      "current_stop": 111.80,
+      "unrealized_pnl_pct": 1.51,
+      "atr_14": 2.10,
+      "ou_atr_mult": 2.18
+    },
+    {
+      "symbol": "INTC",
+      "entry_price": 21.40,
+      "current_price": 20.85,
+      "shares": 220,
+      "days_held": 2,
+      "composite_score": 0.61,
+      "current_stop": 20.20,
+      "unrealized_pnl_pct": -2.57,
+      "atr_14": 0.68,
+      "ou_atr_mult": 2.89
+    },
+    {
+      "symbol": "C",
+      "entry_price": 68.90,
+      "current_price": 70.15,
+      "shares": 88,
+      "days_held": 4,
+      "composite_score": 0.71,
+      "current_stop": 68.10,
+      "unrealized_pnl_pct": 1.81,
+      "atr_14": 1.42,
+      "ou_atr_mult": 2.35
+    },
+    {
+      "symbol": "DAL",
+      "entry_price": 44.20,
+      "current_price": 45.80,
+      "shares": 135,
+      "days_held": 6,
+      "composite_score": 0.65,
+      "current_stop": 44.60,
+      "unrealized_pnl_pct": 3.62,
+      "atr_14": 1.15,
+      "ou_atr_mult": 1.98
+    },
+    {
+      "symbol": "NKE",
+      "entry_price": 72.30,
+      "current_price": 71.10,
+      "shares": 82,
+      "days_held": 1,
+      "composite_score": 0.58,
+      "current_stop": 69.40,
+      "unrealized_pnl_pct": -1.66,
+      "atr_14": 1.88,
+      "ou_atr_mult": 2.97
+    }
+  ],
+
+  "factor_weights_active": {
+    "cluster_momentum": 0.35,
+    "cluster_mean_reversion": 0.15,
+    "cluster_volume_micro": 0.20,
+    "cluster_trend_regime": 0.20,
+    "cluster_volatility": 0.10
+  },
+
+  "session_stats": {
+    "trades_entered_today": 1,
+    "trades_exited_today": 2,
+    "exits_by_stop": 2,
+    "exits_by_time": 0,
+    "exits_by_target": 0,
+    "stop_exit_pct_rolling_30d": 99.2,
+    "daily_pnl_pct": 0.34,
+    "bot_uptime_hours": 6.5,
+    "errors_today": 0
+  },
+
+  "ou_calibration": {
+    "theta_current": 0.20,
+    "atr_start_current": 3.0,
+    "atr_end_current": 1.5,
+    "floor_mult": 1.0,
+    "note": "ACTIVE CALIBRATION — stop_exit_pct still too high at 99.2%. Next test: theta=0.10, atr_start=4.0"
+  }
+}

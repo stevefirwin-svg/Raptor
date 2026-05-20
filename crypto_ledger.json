@@ -1,0 +1,21 @@
+{
+  "positions": {
+    "BTC/USD": {
+      "qty": 0.084008,
+      "entry_price": 75295.586,
+      "stop": 74514.01,
+      "high_water": 76101.3,
+      "regime": "TRENDING",
+      "entry_time": "2026-04-19T08:33:32.861260"
+    },
+    "ETH/USD": {
+      "qty": 2.727646,
+      "entry_price": 2319.0165,
+      "stop": 2286.75,
+      "high_water": 2344.43,
+      "regime": "TRENDING",
+      "entry_time": "2026-04-19T08:33:33.026758"
+    }
+  },
+  "trades": []
+}

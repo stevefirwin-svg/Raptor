@@ -1,0 +1,19 @@
+Quantitative risk filter. Signal math already approved this entry. VETO only on structural risk.
+
+Macro: {macro}
+
+Candidate: {context}
+
+VETO if ANY of these are true (otherwise PASS):
+1. regime="MIXED" AND composite_score < 1.0
+2. kelly_fraction > 0.10 AND atr_pct > 3.5
+3. days_since_earnings < 5
+4. vix_regime="SPIKE" AND market_momentum_scalar < 0.6
+5. macro_regime="CRISIS"
+6. macro_regime="RISK_OFF" AND kelly_fraction > 0.07
+
+PASS if macro_regime is RISK_ON or NEUTRAL — these are NOT veto conditions.
+Default is PASS. Only VETO when a numbered rule above is explicitly met.
+
+Respond ONLY with this JSON, no other text:
+{{"decision": "PASS or VETO", "confidence": 0.0-1.0, "veto_reason": "rule number and reason or null", "flags": []}}

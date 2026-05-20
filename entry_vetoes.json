@@ -1,0 +1,291 @@
+[
+  {
+    "symbol": "NVDA",
+    "timestamp": "2026-05-09T13:59:20.118382",
+    "agent": "EntryAgent"
+  },
+  {
+    "symbol": "NVDA",
+    "timestamp": "2026-05-09T14:00:31.056374",
+    "agent": "EntryAgent"
+  },
+  {
+    "symbol": "NVDA",
+    "timestamp": "2026-05-09T14:01:13.482611",
+    "agent": "EntryAgent"
+  },
+  {
+    "decision": "PASS",
+    "confidence": 0.5,
+    "veto_reason": null,
+    "reasoning": "Agent unavailable \u2014 passthrough default",
+    "flags": [
+      "agent_timeout"
+    ],
+    "symbol": "NVDA",
+    "timestamp": "2026-05-09T14:04:48.843091",
+    "agent": "EntryAgent"
+  },
+  {
+    "decision": "PASS",
+    "confidence": 0.5,
+    "veto_reason": null,
+    "reasoning": "Agent unavailable \u2014 passthrough default",
+    "flags": [
+      "agent_timeout"
+    ],
+    "symbol": "NVDA",
+    "timestamp": "2026-05-09T16:22:20.873059",
+    "agent": "EntryAgent"
+  },
+  {
+    "decision": "PASS",
+    "confidence": 0.5,
+    "veto_reason": null,
+    "reasoning": "Agent unavailable \u2014 passthrough default",
+    "flags": [
+      "agent_timeout"
+    ],
+    "symbol": "NVDA",
+    "timestamp": "2026-05-09T16:26:33.975436",
+    "agent": "EntryAgent"
+  },
+  {
+    "decision": "PASS",
+    "confidence": 1.0,
+    "veto_reason": null,
+    "flags": [],
+    "symbol": "NVDA",
+    "timestamp": "2026-05-09T16:35:50.234210",
+    "agent": "EntryAgent"
+  },
+  {
+    "decision": "PASS",
+    "confidence": 1.0,
+    "veto_reason": null,
+    "flags": [],
+    "symbol": "DKNG",
+    "timestamp": "2026-05-10T09:36:15.320528",
+    "agent": "EntryAgent"
+  },
+  {
+    "decision": "PASS",
+    "confidence": 1.0,
+    "veto_reason": null,
+    "flags": [],
+    "symbol": "IREN",
+    "timestamp": "2026-05-10T09:36:54.920474",
+    "agent": "EntryAgent"
+  },
+  {
+    "decision": "VETO",
+    "confidence": 1.0,
+    "veto_reason": "kelly_fraction > 0.10 AND atr_pct > 3.5",
+    "symbol": "TSLG",
+    "timestamp": "2026-05-10T09:37:49.097247",
+    "agent": "EntryAgent"
+  },
+  {
+    "decision": "VETO",
+    "confidence": 1.0,
+    "veto_reason": "kelly_fraction > 0.10 AND atr_pct > 3.5",
+    "symbol": "XBI",
+    "timestamp": "2026-05-10T09:38:38.237868",
+    "agent": "EntryAgent"
+  },
+  {
+    "decision": "PASS",
+    "confidence": 1.0,
+    "veto_reason": null,
+    "flags": [],
+    "symbol": "B",
+    "timestamp": "2026-05-11T09:36:14.040931",
+    "agent": "EntryAgent"
+  },
+  {
+    "decision": "PASS",
+    "confidence": 1.0,
+    "veto_reason": null,
+    "flags": [],
+    "symbol": "SLV",
+    "timestamp": "2026-05-11T09:36:57.356629",
+    "agent": "EntryAgent"
+  },
+  {
+    "decision": "VETO",
+    "confidence": 1.0,
+    "veto_reason": "kelly_fraction > 0.10 AND atr_pct > 3.5",
+    "symbol": "TSLG",
+    "timestamp": "2026-05-11T09:37:42.116249",
+    "agent": "EntryAgent"
+  },
+  {
+    "decision": "PASS",
+    "confidence": 1.0,
+    "veto_reason": null,
+    "flags": [],
+    "symbol": "FCX",
+    "timestamp": "2026-05-11T09:38:26.019551",
+    "agent": "EntryAgent"
+  },
+  {
+    "decision": "PASS",
+    "confidence": 1.0,
+    "veto_reason": null,
+    "flags": [],
+    "symbol": "FCX",
+    "timestamp": "2026-05-12T09:36:17.506985",
+    "agent": "EntryAgent"
+  },
+  {
+    "decision": "VETO",
+    "confidence": 1.0,
+    "veto_reason": "kelly_fraction > 0.10 AND atr_pct > 3.5",
+    "symbol": "B",
+    "timestamp": "2026-05-12T09:37:07.671652",
+    "agent": "EntryAgent"
+  },
+  {
+    "decision": "PASS",
+    "confidence": 1.0,
+    "veto_reason": null,
+    "flags": [],
+    "symbol": "SLV",
+    "timestamp": "2026-05-12T09:37:50.389091",
+    "agent": "EntryAgent"
+  },
+  {
+    "decision": "VETO",
+    "confidence": 1.0,
+    "veto_reason": "kelly_fraction > 0.10 AND atr_pct > 3.5",
+    "symbol": "RGTI",
+    "timestamp": "2026-05-12T09:38:30.271743",
+    "agent": "EntryAgent"
+  },
+  {
+    "decision": "PASS",
+    "confidence": 1.0,
+    "veto_reason": null,
+    "flags": [],
+    "symbol": "VALE",
+    "timestamp": "2026-05-12T09:39:13.308350",
+    "agent": "EntryAgent"
+  },
+  {
+    "decision": "PASS",
+    "confidence": 1.0,
+    "veto_reason": null,
+    "flags": [],
+    "symbol": "NVDA",
+    "timestamp": "2026-05-13T16:35:14.733675",
+    "agent": "EntryAgent"
+  },
+  {
+    "decision": "PASS",
+    "confidence": 1.0,
+    "veto_reason": null,
+    "flags": [],
+    "symbol": "GDX",
+    "timestamp": "2026-05-14T09:36:23.436424",
+    "agent": "EntryAgent"
+  },
+  {
+    "decision": "PASS",
+    "confidence": 1.0,
+    "veto_reason": null,
+    "flags": [],
+    "symbol": "POET",
+    "timestamp": "2026-05-14T09:37:00.206826",
+    "agent": "EntryAgent"
+  },
+  {
+    "decision": "PASS",
+    "confidence": 1.0,
+    "veto_reason": null,
+    "flags": [],
+    "symbol": "F",
+    "timestamp": "2026-05-14T09:37:37.611902",
+    "agent": "EntryAgent"
+  },
+  {
+    "decision": "PASS",
+    "confidence": 1.0,
+    "veto_reason": null,
+    "flags": [],
+    "symbol": "FCX",
+    "timestamp": "2026-05-14T09:38:15.979436",
+    "agent": "EntryAgent"
+  },
+  {
+    "decision": "PASS",
+    "confidence": 1.0,
+    "veto_reason": null,
+    "flags": [],
+    "symbol": "SLV",
+    "timestamp": "2026-05-14T09:38:54.326150",
+    "agent": "EntryAgent"
+  },
+  {
+    "decision": "PASS",
+    "confidence": 1.0,
+    "veto_reason": null,
+    "flags": [],
+    "symbol": "POET",
+    "timestamp": "2026-05-15T09:36:36.782547",
+    "agent": "EntryAgent"
+  },
+  {
+    "decision": "PASS",
+    "confidence": 1.0,
+    "veto_reason": null,
+    "flags": [],
+    "symbol": "FCX",
+    "timestamp": "2026-05-15T09:37:16.591266",
+    "agent": "EntryAgent"
+  },
+  {
+    "decision": "PASS",
+    "confidence": 1.0,
+    "veto_reason": null,
+    "flags": [],
+    "symbol": "F",
+    "timestamp": "2026-05-15T09:37:53.609346",
+    "agent": "EntryAgent"
+  },
+  {
+    "decision": "PASS",
+    "confidence": 1.0,
+    "veto_reason": null,
+    "flags": [],
+    "symbol": "XOM",
+    "timestamp": "2026-05-15T09:38:33.316859",
+    "agent": "EntryAgent"
+  },
+  {
+    "decision": "PASS",
+    "confidence": 1.0,
+    "veto_reason": null,
+    "flags": [],
+    "symbol": "IBIT",
+    "timestamp": "2026-05-15T09:39:12.952611",
+    "agent": "EntryAgent"
+  },
+  {
+    "decision": "VETO",
+    "confidence": 0.0,
+    "veto_reason": "macro_regime is RISK_ON",
+    "flags": [],
+    "symbol": "NVDA",
+    "timestamp": "2026-05-15T13:02:20.527966",
+    "agent": "EntryAgent"
+  },
+  {
+    "decision": "PASS",
+    "confidence": 0.95,
+    "veto_reason": null,
+    "flags": [],
+    "symbol": "NVDA",
+    "timestamp": "2026-05-15T13:05:03.798831",
+    "agent": "EntryAgent"
+  }
+]

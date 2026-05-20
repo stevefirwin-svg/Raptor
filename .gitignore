@@ -1,0 +1,10 @@
+﻿.env
+_env
+__pycache__/
+*.pyc
+*.pyo
+cache/
+logs/
+backup_*/
+*.log
+install_updates.py

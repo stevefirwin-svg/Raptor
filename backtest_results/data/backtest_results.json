@@ -1,0 +1,44 @@
+{
+  "total_trades": 185,
+  "total_pnl_net": -653.29,
+  "total_pnl_gross": -231.34,
+  "total_slippage": 410.54,
+  "total_return_pct": -2.61,
+  "annualized_return_pct": -91.22,
+  "win_rate": 0.2432,
+  "avg_win": 10.29,
+  "avg_loss": -7.97,
+  "profit_factor": 0.415,
+  "expectancy": -3.53,
+  "sharpe_ratio": 0,
+  "sortino_ratio": 0,
+  "calmar_ratio": -34.906,
+  "max_drawdown_pct": 2.61,
+  "max_drawdown_dollars": 653.29,
+  "final_equity": 24346.71,
+  "trades_per_day": 67.4,
+  "avg_hold_minutes": 65.9,
+  "exit_reasons": {
+    "STOP": 101,
+    "TIME": 50,
+    "TRAIL": 22,
+    "TARGET": 12
+  },
+  "score_tiers": {
+    "Elite": {
+      "count": 61,
+      "win_rate": 0.262,
+      "avg_pnl": -3.62
+    },
+    "Strong": {
+      "count": 34,
+      "win_rate": 0.147,
+      "avg_pnl": -5.15
+    },
+    "Marginal": {
+      "count": 86,
+      "win_rate": 0.256,
+      "avg_pnl": -2.87
+    }
+  }
+}

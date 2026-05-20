@@ -1,0 +1,31 @@
+{
+  "total_return_pct": 591.47,
+  "cagr_pct": 42.94,
+  "benchmark_return_pct": 112.5,
+  "alpha_pct": 478.97,
+  "sharpe": 0.957,
+  "sortino": 2.205,
+  "calmar": 1.163,
+  "max_drawdown_pct": -36.92,
+  "annual_vol_pct": 39.54,
+  "total_trades": 1175,
+  "winners": 570,
+  "losers": 605,
+  "win_rate_pct": 48.5,
+  "avg_win_pct": 11.8,
+  "avg_loss_pct": -7.65,
+  "expectancy_pct": 1.783,
+  "profit_factor": 1.51,
+  "avg_hold_days": 8.8,
+  "median_hold_days": 8.0,
+  "exit_reasons": {
+    "trail_profit": 400,
+    "profit_target": 128,
+    "momentum_break": 42,
+    "trail_loss": 602,
+    "hard_stop": 3
+  },
+  "net_pnl": 594016.55,
+  "final_equity": 691473.18,
+  "initial_capital": 100000.0
+}

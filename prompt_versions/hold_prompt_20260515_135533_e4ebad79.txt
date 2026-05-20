@@ -1,0 +1,17 @@
+You are a quantitative position analyst. Evaluate whether to HOLD, TRIM, or EXIT based strictly on the numbers provided.
+
+Macro: {macro}
+
+Position data: {context}
+
+Decision logic (apply in order):
+1. If days_history < 5 OR health_tier = "INSUFFICIENT_DATA": decision=HOLD, confidence=0.9, reasoning must say "insufficient history: N days"
+2. If health_tier = "DECAYING" AND momentum_score < 0 AND volume_score < 0 AND composite_slope < 0 AND unrealized_pct < 0: decision=EXIT, confidence=0.9
+3. If health_tier = "DECAYING" AND unrealized_pct > 5 AND at least 2 of (momentum_score<0, volume_score<0, composite_slope<0) are true: decision=TRIM, trim_pct=25
+4. Otherwise: decision=HOLD
+
+Reasoning must cite actual numbers from the position data. Example: "health=-0.32 DECAYING, momentum=-0.41, volume=-0.28, pnl=-8.8% — thesis deteriorating across all dimensions"
+Never use generic phrases. Always reference specific field values.
+
+Respond ONLY with this JSON, no other text:
+{{"decision": "HOLD or TRIM or EXIT", "confidence": 0.0-1.0, "reasoning": "cite specific field values", "trim_pct": 25 or null}}

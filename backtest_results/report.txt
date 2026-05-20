@@ -1,0 +1,40 @@
+=================================================================
+  RAPTOR v5.4 BACKTEST REPORT
+  2020-01-01 to 2025-12-31
+=================================================================
+
+  RETURNS
+    Total Return:        591.47%
+    CAGR:                 42.94%
+    Benchmark (SPY):     112.50%
+    Alpha:               478.97%
+
+  RISK
+    Sharpe Ratio:         0.957
+    Sortino Ratio:        2.205
+    Calmar Ratio:         1.163
+    Max Drawdown:        -36.92%
+    Annual Volatility:    39.54%
+
+  TRADES
+    Total Trades:          1175
+    Win Rate:              48.5%
+    Avg Win:              11.80%
+    Avg Loss:             -7.65%
+    Expectancy:           1.783%
+    Profit Factor:         1.51
+
+  EXECUTION
+    Avg Hold Days:          8.8
+    Median Hold:            8.0
+    Exit [trail_profit]:   400
+    Exit [profit_target]:   128
+    Exit [momentum_break]:    42
+    Exit [trail_loss  ]:   602
+    Exit [hard_stop   ]:     3
+
+  P&L
+    Net P&L:           $  594,016.55
+    Final Equity:      $  691,473.18
+
+=================================================================

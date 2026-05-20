@@ -1,0 +1,4193 @@
+[
+  {
+    "symbol": "NVDA",
+    "timestamp": "2026-05-09T14:00:31.578968",
+    "agent": "HoldAgent"
+  },
+  {
+    "symbol": "NVDA",
+    "timestamp": "2026-05-09T14:01:13.886760",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.5,
+    "veto_reason": null,
+    "reasoning": "Agent unavailable \u2014 passthrough default",
+    "flags": [
+      "agent_timeout"
+    ],
+    "symbol": "NVDA",
+    "timestamp": "2026-05-09T14:04:57.793581",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.5,
+    "veto_reason": null,
+    "reasoning": "Agent unavailable \u2014 passthrough default",
+    "flags": [
+      "agent_timeout"
+    ],
+    "symbol": "NVDA",
+    "timestamp": "2026-05-09T16:23:21.846128",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.5,
+    "veto_reason": null,
+    "reasoning": "Agent unavailable \u2014 passthrough default",
+    "flags": [
+      "agent_timeout"
+    ],
+    "symbol": "NVDA",
+    "timestamp": "2026-05-09T16:27:34.919009",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 1.0,
+    "reasoning": "Health score is below 4.5 and unrealized pct is above 2.0.",
+    "trim_pct": null,
+    "symbol": "NVDA",
+    "timestamp": "2026-05-09T16:37:06.689778",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 1.0,
+    "reasoning": "Health score is less than 4.5 and unrealized_pct is greater than 2.0.",
+    "trim_pct": 50,
+    "symbol": "AMD",
+    "timestamp": "2026-05-10T08:52:00.717038",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.5,
+    "veto_reason": null,
+    "reasoning": "Agent unavailable \u2014 passthrough default",
+    "flags": [
+      "agent_error"
+    ],
+    "symbol": "CVE",
+    "timestamp": "2026-05-10T08:52:05.435972",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.5,
+    "veto_reason": null,
+    "reasoning": "Agent unavailable \u2014 passthrough default",
+    "flags": [
+      "agent_error"
+    ],
+    "symbol": "FXI",
+    "timestamp": "2026-05-10T08:52:05.450840",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.5,
+    "veto_reason": null,
+    "reasoning": "Agent unavailable \u2014 passthrough default",
+    "flags": [
+      "agent_error"
+    ],
+    "symbol": "CSX",
+    "timestamp": "2026-05-10T08:52:05.455572",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.5,
+    "veto_reason": null,
+    "reasoning": "Agent unavailable \u2014 passthrough default",
+    "flags": [
+      "agent_error"
+    ],
+    "symbol": "INTC",
+    "timestamp": "2026-05-10T08:53:32.995556",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.5,
+    "veto_reason": null,
+    "reasoning": "Agent unavailable \u2014 passthrough default",
+    "flags": [
+      "agent_error"
+    ],
+    "symbol": "KDP",
+    "timestamp": "2026-05-10T08:53:37.511367",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.5,
+    "veto_reason": null,
+    "reasoning": "Agent unavailable \u2014 passthrough default",
+    "flags": [
+      "agent_error"
+    ],
+    "symbol": "OWL",
+    "timestamp": "2026-05-10T08:53:37.514897",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.5,
+    "veto_reason": null,
+    "reasoning": "Agent unavailable \u2014 passthrough default",
+    "flags": [
+      "agent_error"
+    ],
+    "symbol": "KRE",
+    "timestamp": "2026-05-10T08:53:37.519269",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.5,
+    "veto_reason": null,
+    "reasoning": "Agent unavailable \u2014 passthrough default",
+    "flags": [
+      "agent_error"
+    ],
+    "symbol": "PLTD",
+    "timestamp": "2026-05-10T08:55:05.176305",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.5,
+    "veto_reason": null,
+    "reasoning": "Agent unavailable \u2014 passthrough default",
+    "flags": [
+      "agent_error"
+    ],
+    "symbol": "STM",
+    "timestamp": "2026-05-10T08:55:09.556303",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.5,
+    "veto_reason": null,
+    "reasoning": "Agent unavailable \u2014 passthrough default",
+    "flags": [
+      "agent_error"
+    ],
+    "symbol": "SMCI",
+    "timestamp": "2026-05-10T08:55:09.560687",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.5,
+    "veto_reason": null,
+    "reasoning": "Agent unavailable \u2014 passthrough default",
+    "flags": [
+      "agent_error"
+    ],
+    "symbol": "TSLA",
+    "timestamp": "2026-05-10T08:55:09.573734",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 1.0,
+    "reasoning": "Health score is above the threshold of 3.0 and factor coherence is above the threshold of 0.3.",
+    "trim_pct": null,
+    "symbol": "TSLL",
+    "timestamp": "2026-05-10T08:56:33.931708",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.5,
+    "veto_reason": null,
+    "reasoning": "Agent unavailable \u2014 passthrough default",
+    "flags": [
+      "agent_error"
+    ],
+    "symbol": "TTD",
+    "timestamp": "2026-05-10T08:56:41.623721",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 1.0,
+    "reasoning": "Health score is less than 4.5 and unrealized_pct is greater than 2.0.",
+    "trim_pct": 50,
+    "symbol": "AMD",
+    "timestamp": "2026-05-10T08:59:52.171314",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.5,
+    "veto_reason": null,
+    "reasoning": "Agent unavailable \u2014 passthrough default",
+    "flags": [
+      "agent_error"
+    ],
+    "symbol": "CSX",
+    "timestamp": "2026-05-10T09:00:57.087700",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 1.0,
+    "reasoning": "Health score is below 4.5 and unrealized_pct is greater than 2.0.",
+    "trim_pct": null,
+    "symbol": "CVE",
+    "timestamp": "2026-05-10T09:02:12.809955",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.5,
+    "veto_reason": null,
+    "reasoning": "Agent unavailable \u2014 passthrough default",
+    "flags": [
+      "agent_error"
+    ],
+    "symbol": "FXI",
+    "timestamp": "2026-05-10T09:03:40.972737",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 1.0,
+    "reasoning": "Health score is less than 4.5 and unrealized_pct is greater than 2.0.",
+    "trim_pct": null,
+    "symbol": "INTC",
+    "timestamp": "2026-05-10T09:04:37.253920",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 1.0,
+    "reasoning": "Health score is below 4.5 and unrealized pct is above 2.0.",
+    "trim_pct": 50,
+    "symbol": "KDP",
+    "timestamp": "2026-05-10T09:05:40.699007",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 1.0,
+    "reasoning": "Health score is below 4.5 and unrealized_pct is greater than 2.0.",
+    "trim_pct": null,
+    "symbol": "KRE",
+    "timestamp": "2026-05-10T09:06:41.633334",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 1.0,
+    "reasoning": "Health score is above the threshold of 3.0 and factor coherence is not evaluated as it's zero.",
+    "trim_pct": null,
+    "symbol": "OWL",
+    "timestamp": "2026-05-10T09:07:46.082067",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 1.0,
+    "reasoning": "Health score is less than 4.5 and unrealized_pct is greater than 2.0.",
+    "trim_pct": null,
+    "symbol": "PLTD",
+    "timestamp": "2026-05-10T09:08:42.808074",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 1.0,
+    "reasoning": "Health score is above the threshold of 3.0 and factor coherence is not evaluated as it's zero.",
+    "trim_pct": null,
+    "symbol": "SMCI",
+    "timestamp": "2026-05-10T09:09:37.483394",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.5,
+    "veto_reason": null,
+    "reasoning": "Agent unavailable \u2014 passthrough default",
+    "flags": [
+      "agent_error"
+    ],
+    "symbol": "STM",
+    "timestamp": "2026-05-10T09:10:43.283432",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.5,
+    "veto_reason": null,
+    "reasoning": "Agent unavailable \u2014 passthrough default",
+    "flags": [
+      "agent_error"
+    ],
+    "symbol": "TSLA",
+    "timestamp": "2026-05-10T09:12:15.503530",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.5,
+    "veto_reason": null,
+    "reasoning": "Agent unavailable \u2014 passthrough default",
+    "flags": [
+      "agent_error"
+    ],
+    "symbol": "TSLL",
+    "timestamp": "2026-05-10T09:13:47.760060",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 1.0,
+    "reasoning": "Health score is less than 4.5 and unrealized_pct is greater than 2.0.",
+    "trim_pct": 50,
+    "symbol": "TTD",
+    "timestamp": "2026-05-10T09:14:42.778557",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 1.0,
+    "reasoning": "Health score is less than 4.5 and unrealized_pct is greater than 2.0.",
+    "trim_pct": 50,
+    "symbol": "AMD",
+    "timestamp": "2026-05-10T09:53:15.178829",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 1.0,
+    "reasoning": "Health score is below 4.5 and unrealized pct is above 2.0",
+    "symbol": "CSX",
+    "timestamp": "2026-05-10T09:53:48.142612",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 1.0,
+    "reasoning": "Health score is below 4.5 and unrealized_pct is above 2.0.",
+    "trim_pct": 50,
+    "symbol": "CVE",
+    "timestamp": "2026-05-10T09:54:29.248454",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.5,
+    "veto_reason": null,
+    "reasoning": "Agent unavailable \u2014 passthrough default",
+    "flags": [
+      "agent_error"
+    ],
+    "symbol": "FXI",
+    "timestamp": "2026-05-10T09:55:23.101290",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 1.0,
+    "reasoning": "Health score is less than 4.5 and unrealized_pct is greater than 2.0.",
+    "trim_pct": null,
+    "symbol": "INTC",
+    "timestamp": "2026-05-10T09:55:59.711644",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.5,
+    "veto_reason": null,
+    "reasoning": "Agent unavailable \u2014 passthrough default",
+    "flags": [
+      "agent_error"
+    ],
+    "symbol": "KDP",
+    "timestamp": "2026-05-10T09:56:41.448717",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 1.0,
+    "reasoning": "Health score is less than 4.5 and unrealized_pct is greater than 2.0.",
+    "trim_pct": null,
+    "symbol": "KRE",
+    "timestamp": "2026-05-10T09:57:21.311439",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 1.0,
+    "reasoning": "Health score is above the threshold of 3.0 and factor coherence is not evaluated as it's zero.",
+    "trim_pct": null,
+    "symbol": "OWL",
+    "timestamp": "2026-05-10T09:58:07.357072",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.5,
+    "veto_reason": null,
+    "reasoning": "Agent unavailable \u2014 passthrough default",
+    "flags": [
+      "agent_error"
+    ],
+    "symbol": "PLTD",
+    "timestamp": "2026-05-10T09:58:58.423691",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 1.0,
+    "reasoning": "Health score is above the threshold of 3.0 and factor coherence is not evaluated as it's zero.",
+    "trim_pct": null,
+    "symbol": "SMCI",
+    "timestamp": "2026-05-10T09:59:41.151354",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 1.0,
+    "reasoning": "Health score is less than 4.5 and unrealized_pct is greater than 2.0.",
+    "trim_pct": null,
+    "symbol": "STM",
+    "timestamp": "2026-05-10T10:00:22.524763",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 1.0,
+    "reasoning": "Health score is below 4.5 and unrealized_pct is above 2.0.",
+    "trim_pct": null,
+    "symbol": "TSLA",
+    "timestamp": "2026-05-10T10:01:08.851131",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 1.0,
+    "reasoning": "Health score is above the threshold of 3.0 and factor coherence is above the threshold of 0.3.",
+    "trim_pct": null,
+    "symbol": "TSLL",
+    "timestamp": "2026-05-10T10:01:57.739412",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.5,
+    "veto_reason": null,
+    "reasoning": "Agent unavailable \u2014 passthrough default",
+    "flags": [
+      "agent_error"
+    ],
+    "symbol": "TTD",
+    "timestamp": "2026-05-10T10:02:39.568029",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 0.7,
+    "reasoning": "The health score is lower (-0.0256), indicating a weaker thesis. Additionally, the factor coherence score is -1.0, suggesting that the underlying factors are not aligned.",
+    "trim_pct": 30,
+    "symbol": "AMD",
+    "timestamp": "2026-05-10T13:19:19.653347",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 0.6,
+    "reasoning": "The health score is lower (-0.2156) indicating a weaker thesis and the factor coherence score is -1.0, suggesting that the underlying factors are not aligned.",
+    "trim_pct": 50,
+    "symbol": "CSX",
+    "timestamp": "2026-05-10T13:20:42.049887",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 0.6,
+    "reasoning": "The health score is lower (-0.2794) indicating a weaker thesis and the factor coherence score is -1.0, suggesting that the underlying factors are not aligned.",
+    "trim_pct": 50,
+    "symbol": "CVE",
+    "timestamp": "2026-05-10T13:22:00.486748",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 0.7,
+    "reasoning": "The health score is low (-0.0478), indicating a weaker thesis. Additionally, the factor coherence score is -1.0, suggesting that the underlying factors are not aligned, which could indicate a fragmenting thesis.",
+    "trim_pct": 50,
+    "symbol": "FXI",
+    "timestamp": "2026-05-10T13:23:22.362224",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 0.7,
+    "reasoning": "The health score is relatively low (0.0639) and factor coherence shows a lack of alignment with the thesis (-1.0).",
+    "trim_pct": 50,
+    "symbol": "INTC",
+    "timestamp": "2026-05-10T13:24:37.405212",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 0.7,
+    "reasoning": "Health score is low (-0.2384), indicating a weaker thesis. Factor coherence also shows a lack of alignment among underlying factors (score -1.0).",
+    "trim_pct": 50,
+    "symbol": "KDP",
+    "timestamp": "2026-05-10T13:25:56.737929",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 0.7,
+    "reasoning": "The health score is low (-0.2781) and factor coherence shows a lack of alignment with only one out of sixteen factors (FAR) supporting the thesis (-1.0).",
+    "trim_pct": 50,
+    "symbol": "KRE",
+    "timestamp": "2026-05-10T13:27:15.380725",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 0.7,
+    "reasoning": "Health score is low (-0.2185), indicating a weaker thesis. Factor coherence is also poor (-1.0), suggesting fragmentation of the underlying factors.",
+    "trim_pct": 50,
+    "symbol": "OWL",
+    "timestamp": "2026-05-10T13:28:24.582337",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 0.7,
+    "reasoning": "The health score (-0.253) indicates a weakening thesis and the factor coherence (-1.0) suggests fragmentation of underlying factors.",
+    "trim_pct": 50,
+    "symbol": "PLTD",
+    "timestamp": "2026-05-10T13:29:47.344659",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 0.6,
+    "reasoning": "The health score is lower (-0.0231) indicating a weaker thesis and the factor coherence score is -1.0, suggesting that the underlying factors are not aligned.",
+    "trim_pct": 50,
+    "symbol": "SMCI",
+    "timestamp": "2026-05-10T13:31:05.791987",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 0.7,
+    "reasoning": "The health score is low (-0.0237), indicating a weaker thesis. Additionally, the factor coherence score is -1.0, suggesting that the underlying factors are not aligned.",
+    "trim_pct": 50,
+    "symbol": "STM",
+    "timestamp": "2026-05-10T13:32:28.106028",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 0.7,
+    "reasoning": "The health score is relatively high (0.0956), but the factor coherence shows a lack of alignment with only one out of 16 factors supporting the trend (+0.000). This suggests that the thesis may be weakening.",
+    "trim_pct": null,
+    "symbol": "TSLA",
+    "timestamp": "2026-05-10T13:33:43.304693",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 0.7,
+    "reasoning": "Health score is relatively low (0.423) and factor coherence is also weak (0.375), indicating a potential weakening of the thesis.",
+    "trim_pct": 50,
+    "symbol": "TSLL",
+    "timestamp": "2026-05-10T13:34:55.111450",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 0.7,
+    "reasoning": "The health score is low (-0.359), indicating a weaker thesis. Additionally, the factor coherence score is -1.0, suggesting that the underlying factors are not aligned.",
+    "trim_pct": 50,
+    "symbol": "TTD",
+    "timestamp": "2026-05-10T13:36:14.337782",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 0.6,
+    "reasoning": "The health score is slightly negative (-0.03), indicating a weaker thesis. Additionally, factor coherence is low (-1.0), suggesting that the underlying factors are not aligned. However, momentum remains positive (0.1157) and volume score is strong (0.8308). Given these mixed signals, it's recommended to trim the position to reduce risk.",
+    "trim_pct": 25,
+    "symbol": "AMD",
+    "timestamp": "2026-05-10T14:26:58.654315",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 0.6,
+    "reasoning": "The health score is slightly lower (-0.22) and factor coherence is also low (-1.0), indicating a weakening thesis. However, the momentum score (-0.394) and volume score (0.5753) are relatively stable.",
+    "trim_pct": 50,
+    "symbol": "CSX",
+    "timestamp": "2026-05-10T14:28:16.404800",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 0.6,
+    "reasoning": "The health score is slightly lower than ideal (-0.28), and factor coherence is also low (-1.0), indicating a weakening thesis.",
+    "trim_pct": null,
+    "symbol": "CVE",
+    "timestamp": "2026-05-10T14:29:33.986356",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 0.7,
+    "reasoning": "The health score is low (-0.05) and factor coherence is also weak (-1.0), indicating a weakening thesis.",
+    "trim_pct": null,
+    "symbol": "FXI",
+    "timestamp": "2026-05-10T14:30:59.361163",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 0.7,
+    "reasoning": "Health score is low (0.06), indicating a weaker thesis. Factor coherence (-1.0) suggests that underlying factors are not aligned, and momentum score (0.7551) has decreased.",
+    "trim_pct": null,
+    "symbol": "INTC",
+    "timestamp": "2026-05-10T14:32:29.595914",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 0.6,
+    "reasoning": "The health score is low (-0.24), indicating a weaker thesis. Additionally, factor coherence is also low (-1.0), suggesting that the underlying factors are not aligned. However, momentum (-0.3628) and stop distance to ATR (2.79) do not indicate an immediate exit.",
+    "trim_pct": 50,
+    "symbol": "KDP",
+    "timestamp": "2026-05-10T14:33:59.776693",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 0.7,
+    "reasoning": "The health score is low (-0.28), indicating a weaker thesis. Additionally, the factor coherence is -1.0, suggesting that the underlying factors are not aligned, and the momentum score is also negative (-0.4961).",
+    "trim_pct": 50,
+    "symbol": "KRE",
+    "timestamp": "2026-05-10T14:35:32.807211",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 0.6,
+    "reasoning": "The health score is low (-0.22), indicating a weaker thesis. Additionally, factor coherence is also low (-1.0), suggesting that the underlying factors are not aligned. However, momentum (-0.0538) and volume scores (-0.3725) are not extremely negative, which prevents this from being an EXIT decision.",
+    "trim_pct": 25,
+    "symbol": "OWL",
+    "timestamp": "2026-05-10T14:37:04.102340",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 0.6,
+    "reasoning": "The health score is low (-0.25), indicating a weaker thesis. Additionally, factor coherence is also low (-1.0), suggesting that the underlying factors are not aligned. However, momentum (-0.1381) and volume scores are not significantly negative.",
+    "trim_pct": 50,
+    "symbol": "PLTD",
+    "timestamp": "2026-05-10T14:38:31.220819",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 0.6,
+    "reasoning": "The health score is low (-0.02), indicating a weaker thesis. Additionally, the factor coherence is -1.0, suggesting that the underlying factors are not aligned.",
+    "trim_pct": 50,
+    "symbol": "SMCI",
+    "timestamp": "2026-05-10T14:39:54.335619",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 0.6,
+    "reasoning": "The health score is low (-0.02), indicating a weaker thesis. Additionally, the factor coherence is -1.0, suggesting that underlying factors are not aligned.",
+    "trim_pct": null,
+    "symbol": "STM",
+    "timestamp": "2026-05-10T14:41:25.639870",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 0.6,
+    "reasoning": "The health score is low (0.1) and factor coherence is negative (-1.0), indicating a weakening thesis. However, the momentum score is still relatively strong (0.8637). To reduce risk, it's recommended to trim the position.",
+    "trim_pct": 50,
+    "symbol": "TSLA",
+    "timestamp": "2026-05-10T14:42:53.803340",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 0.6,
+    "reasoning": "Health score is relatively low (0.42), and factor coherence is also low (0.375) indicating a weakening thesis.",
+    "trim_pct": 50,
+    "symbol": "TSLL",
+    "timestamp": "2026-05-10T14:44:22.821276",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 0.7,
+    "reasoning": "The health score is low (-0.36), indicating a weaker thesis. Additionally, the factor coherence is also low (-1.0), suggesting that underlying factors are fragmenting.",
+    "trim_pct": null,
+    "symbol": "TTD",
+    "timestamp": "2026-05-10T14:45:47.950228",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.6,
+    "reasoning": "Factor coherence is low but health score is still relatively high, and days_history is insufficient for reliable factor scores.",
+    "trim_pct": null,
+    "symbol": "AMD",
+    "timestamp": "2026-05-11T16:32:22.387818",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 0.8,
+    "reasoning": "Multiple dimensions deteriorating and unrealized_pct is greater than 5%.",
+    "trim_pct": null,
+    "symbol": "CSX",
+    "timestamp": "2026-05-11T16:33:52.358208",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 0.8,
+    "reasoning": "Multiple dimensions are deteriorating: health score is -0.156 (DECAYING), momentum score is negative (-1.0), and volume_score is negative (-1.0). Unrealized_pct is also above the threshold of 5%.",
+    "trim_pct": null,
+    "symbol": "CVE",
+    "timestamp": "2026-05-11T16:35:29.098467",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.6,
+    "reasoning": "Health score is near neutral (-0.1464), factor coherence is low but not extreme (-1.0), and position is not losing money (-2.171%).",
+    "symbol": "DKNG",
+    "timestamp": "2026-05-11T16:37:05.110953",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.6,
+    "reasoning": "Health score is near neutral (-0.0224), factor coherence is low but not extreme (-1.0), and position is profitable (0.307 unrealized_pct).",
+    "symbol": "FXI",
+    "timestamp": "2026-05-11T16:38:43.572863",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.6,
+    "reasoning": "Although the factor coherence is low and the health score is slightly below neutral, the position has not been open for a significant period (hold_days: 0), and the unrealized_pct is high at 46.854%. The position is currently profitable, so it's recommended to hold until further evidence of deterioration arises.",
+    "trim_pct": null,
+    "symbol": "INTC",
+    "timestamp": "2026-05-11T16:40:23.139251",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.6,
+    "reasoning": "Although the health score is negative and factor coherence is low, the position has not lost money yet and the data history is insufficient for a definitive decision.",
+    "trim_pct": null,
+    "symbol": "KDP",
+    "timestamp": "2026-05-11T16:41:58.013713",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 0.7,
+    "reasoning": "Multiple dimensions are deteriorating: health score is negative, factor coherence is low, and the position is losing money.",
+    "trim_pct": 5,
+    "symbol": "KRE",
+    "timestamp": "2026-05-11T16:43:36.203816",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 0.8,
+    "reasoning": "Multiple dimensions are deteriorating with a negative health score and low factor coherence.",
+    "trim_pct": 5,
+    "symbol": "OWL",
+    "timestamp": "2026-05-11T16:45:06.256356",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.6,
+    "reasoning": "Health score is near neutral (-0.1121), factor coherence is low but not extreme (-1.0), and position is not losing money (unrealized_pct: 2.067).",
+    "symbol": "PLTD",
+    "timestamp": "2026-05-11T16:46:50.106232",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.6,
+    "reasoning": "Health score is near neutral (-0.1033), factor coherence is low but not extreme (-1.0), and position is not losing money (-1.311%).",
+    "symbol": "SMCI",
+    "timestamp": "2026-05-11T16:48:30.020647",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.6,
+    "reasoning": "Factor coherence is low but health score is not in the decaying tier and unrealized_pct is below the trim threshold.",
+    "symbol": "STM",
+    "timestamp": "2026-05-11T16:50:12.828644",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.6,
+    "reasoning": "Health score is relatively high and factor coherence is low, indicating mixed evidence. However, the position is profitable.",
+    "trim_pct": null,
+    "symbol": "TSLA",
+    "timestamp": "2026-05-11T16:51:54.595446",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.7,
+    "reasoning": "Health score is relatively high (0.1943), and there's no clear confluence of deterioration across factors. However, the position is losing money (unrealized_pct = 17.861).",
+    "trim_pct": null,
+    "symbol": "TSLL",
+    "timestamp": "2026-05-11T16:53:34.548398",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 0.8,
+    "reasoning": "Multiple dimensions are deteriorating and the unrealized_pct is greater than 5%.",
+    "trim_pct": null,
+    "symbol": "TTD",
+    "timestamp": "2026-05-11T16:55:11.958944",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.7,
+    "reasoning": "Although the health score is slightly negative (-0.0091), it's not yet at a level that indicates clear deterioration. The position has no identified decay driver and the factor coherence is low due to thin history (days_history = 0).",
+    "trim_pct": null,
+    "symbol": "AMD",
+    "timestamp": "2026-05-12T16:32:23.949894",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 0.7,
+    "reasoning": "Multiple dimensions are deteriorating: health score is negative, factor coherence is low, and the position is losing money.",
+    "trim_pct": 5,
+    "symbol": "CSX",
+    "timestamp": "2026-05-12T16:33:54.660707",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.6,
+    "reasoning": "Health score is near neutral (-0.1359), factor coherence is low but not extreme (-1.0), and position is profitable (5.035% unrealized_pct). However, the factor_coherence detail suggests a lack of trend and FAR=0/16 which could be a concern for future performance.",
+    "trim_pct": null,
+    "symbol": "CVE",
+    "timestamp": "2026-05-12T16:35:37.978315",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.7,
+    "reasoning": "Although the unrealized_pct is negative and the factor coherence score is low, the health_score is still relatively close to neutral (-0.1819), indicating that there are no clear signs of a deteriorating thesis.",
+    "trim_pct": null,
+    "symbol": "DKNG",
+    "timestamp": "2026-05-12T16:37:18.770116",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.6,
+    "reasoning": "Although the health score is slightly negative (-0.1213), it's not yet at a level that indicates clear deterioration. The factor coherence is also low (-1.0), but given the limited data history (0 days), it's not reliable enough to act upon.",
+    "trim_pct": null,
+    "symbol": "FXI",
+    "timestamp": "2026-05-12T16:38:59.961930",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.7,
+    "reasoning": "Health score is near neutral (-0.0356), factor coherence is low but not extreme (-1.0), and position is profitable (36.722% unrealized_pct). However, the factor driver for decay is identified (FAR=0/16). Monitor closely.",
+    "trim_pct": null,
+    "symbol": "INTC",
+    "timestamp": "2026-05-12T16:40:45.873385",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.6,
+    "reasoning": "Health score is near neutral (-0.0586), factor coherence is low but not extreme (-1.0), and position is not losing money (unrealized_pct: 1.77%).",
+    "symbol": "KDP",
+    "timestamp": "2026-05-12T16:42:28.438643",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 0.8,
+    "reasoning": "Multiple dimensions are deteriorating: health DECAYING, factor coherence low (-1.0), and unrealized_pct is -2.359%.",
+    "trim_pct": null,
+    "symbol": "KRE",
+    "timestamp": "2026-05-12T16:43:59.196819",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 0.8,
+    "reasoning": "Multiple dimensions deteriorating and unrealized_pct is greater than 5%.",
+    "trim_pct": null,
+    "symbol": "OWL",
+    "timestamp": "2026-05-12T16:45:31.714346",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 0.8,
+    "reasoning": "Multiple dimensions are deteriorating: health DECAYING, factor coherence is low (-1.0), and unrealized_pct is above the threshold of 5%.",
+    "trim_pct": null,
+    "symbol": "PLTD",
+    "timestamp": "2026-05-12T16:47:09.566484",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 0.8,
+    "reasoning": "Multiple dimensions are deteriorating: health score is -0.2531 (DECAYING), momentum score is negative (-4.308% unrealized_pct), and factor coherence score is -1.0.",
+    "trim_pct": 5,
+    "symbol": "SMCI",
+    "timestamp": "2026-05-12T16:48:53.404868",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.6,
+    "reasoning": "Health score is near neutral (-0.067), factor coherence is low but not extreme (-1.0), and position is profitable (13.708% unrealized_pct). However, the factor_coherence detail suggests a lack of trend and FAR=0/16 which may warrant closer monitoring.",
+    "trim_pct": null,
+    "symbol": "STM",
+    "timestamp": "2026-05-12T16:50:40.022214",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.8,
+    "reasoning": "Although the health score is low, factor coherence is not sufficient to act due to thin signal history (days_history < 5). The position is still profitable and no other signals indicate deterioration.",
+    "trim_pct": null,
+    "symbol": "TSLA",
+    "timestamp": "2026-05-12T16:52:14.294936",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 0.8,
+    "reasoning": "Multiple dimensions are deteriorating and unrealized_pct is above the threshold of 5%.",
+    "trim_pct": null,
+    "symbol": "TSLL",
+    "timestamp": "2026-05-12T16:53:46.573576",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "EXIT",
+    "confidence": 1.0,
+    "reasoning": "clear confluence of deterioration \u2014 health DECAYING, momentum negative, volume distributing, composite_slope negative, AND position is losing money.",
+    "trim_pct": null,
+    "symbol": "TTD",
+    "timestamp": "2026-05-12T16:55:26.411773",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.5,
+    "veto_reason": null,
+    "reasoning": "Agent unavailable \u2014 passthrough default",
+    "flags": [
+      "agent_error"
+    ],
+    "symbol": "NVDA",
+    "timestamp": "2026-05-13T16:37:16.933285",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 0.7,
+    "reasoning": "Multiple dimensions deteriorating with a high health score of -0.058 and low factor coherence score of -1.0",
+    "trim_pct": 5,
+    "symbol": "AMD",
+    "timestamp": "2026-05-13T16:48:02.784167",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 0.8,
+    "reasoning": "Multiple dimensions are deteriorating: health score is -0.3182 (DECAYING), factor coherence score is -1.0, and unrealized_pct is -2.245%.",
+    "trim_pct": 50,
+    "symbol": "CSX",
+    "timestamp": "2026-05-13T16:49:31.112521",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "Health score is near neutral (-0.0098), factor coherence is low but not extreme (-1.0), and position is profitable (2.694% unrealized_pct).",
+    "symbol": "CVE",
+    "timestamp": "2026-05-13T16:50:49.414996",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 0.7,
+    "reasoning": "Multiple dimensions deteriorating and unrealized_pct is greater than 5%.",
+    "trim_pct": null,
+    "symbol": "DKNG",
+    "timestamp": "2026-05-13T16:52:05.242793",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.8,
+    "reasoning": "Health score is slightly negative but not in the DECAYING tier, and factor coherence is low due to thin history. Momentum, volume, composite slope, and stop distance are all positive.",
+    "trim_pct": null,
+    "symbol": "FXI",
+    "timestamp": "2026-05-13T16:53:23.238560",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 0.7,
+    "reasoning": "Multiple dimensions deteriorating and unrealized_pct is above the threshold of 5%.",
+    "trim_pct": null,
+    "symbol": "INTC",
+    "timestamp": "2026-05-13T16:54:44.687470",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "Health score is low but not in decaying tier, factor coherence is poor but days_history is less than 5, and position is profitable.",
+    "symbol": "KDP",
+    "timestamp": "2026-05-13T16:56:06.376966",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 0.8,
+    "reasoning": "Multiple dimensions are deteriorating (health score -0.3811, factor coherence -1.0) and the position has an unrealized loss of -3.891%.",
+    "symbol": "KRE",
+    "timestamp": "2026-05-13T16:57:28.797307",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "EXIT",
+    "confidence": 1.0,
+    "reasoning": "clear confluence of deterioration \u2014 health DECAYING, momentum negative, volume distributing, composite_slope negative, and position is losing money.",
+    "trim_pct": null,
+    "symbol": "OWL",
+    "timestamp": "2026-05-13T16:59:03.628117",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.8,
+    "reasoning": "Health score is near neutral (-0.1415), factor coherence is low but not extreme (-1.0), and position is profitable (6.848% unrealized_pct).",
+    "symbol": "PLTD",
+    "timestamp": "2026-05-13T17:00:46.112736",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 0.8,
+    "reasoning": "Multiple dimensions deteriorating and unrealized_pct is greater than 5%.",
+    "trim_pct": null,
+    "symbol": "SMCI",
+    "timestamp": "2026-05-13T17:02:07.458922",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.8,
+    "reasoning": "Although the health score is slightly negative (-0.0064), it's not yet in the DECAYING tier and there are no other clear signs of deterioration. The position has a high unrealized_pct (26.519%), but it's still within the TRIM threshold. However, given the thin history (0 days) and the INSUFFICIENT_DATA health_tier, more data is needed before making any decisions.",
+    "symbol": "STM",
+    "timestamp": "2026-05-13T17:03:38.364479",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 0.6,
+    "reasoning": "Multiple dimensions deteriorating and unrealized_pct is above the threshold of 5%",
+    "symbol": "TSLA",
+    "timestamp": "2026-05-13T17:04:53.292062",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 0.8,
+    "reasoning": "Multiple dimensions of deterioration: health DECAYING, factor coherence score is -1.0, and unrealized_pct is 18.211%",
+    "symbol": "TSLL",
+    "timestamp": "2026-05-13T17:06:13.331463",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "EXIT",
+    "confidence": 1.0,
+    "reasoning": "clear confluence of deterioration \u2014 health DECAYING, momentum negative, volume distributing, composite_slope negative, and position is losing money.",
+    "trim_pct": null,
+    "symbol": "TTD",
+    "timestamp": "2026-05-13T17:07:33.587666",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 0.6,
+    "reasoning": "Multiple dimensions deteriorating and unrealized_pct is above the threshold of 5%.",
+    "trim_pct": null,
+    "symbol": "AMD",
+    "timestamp": "2026-05-14T16:32:11.519462",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.8,
+    "reasoning": "Although the health score is slightly negative (-0.1332), it's not yet in the DECAYING tier and factor coherence is low (-1.0). Given the current market conditions (RISK_ON, BULLISH SPY trend, BROAD_STRENGTH sector breadth) and the position's unrealized profit of 0.948%, it's recommended to hold onto the CSX position.",
+    "symbol": "CSX",
+    "timestamp": "2026-05-14T16:33:39.913850",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "Health score is relatively high (0.0619), and there are no clear signs of deterioration across multiple factors. However, the factor coherence score is low (-1.0), indicating a lack of alignment among underlying factors. Given the thin data history (0 days) and the overall market conditions, it's recommended to hold the position but exercise caution.",
+    "symbol": "CVE",
+    "timestamp": "2026-05-14T16:35:05.048017",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 0.6,
+    "reasoning": "Multiple dimensions deteriorating and unrealized_pct is greater than 5%.",
+    "trim_pct": null,
+    "symbol": "DKNG",
+    "timestamp": "2026-05-14T16:36:19.353539",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 0.7,
+    "reasoning": "Multiple dimensions deteriorating and unrealized_pct is greater than 5%.",
+    "trim_pct": null,
+    "symbol": "FXI",
+    "timestamp": "2026-05-14T16:37:33.266395",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 0.8,
+    "reasoning": "Multiple dimensions deteriorating and unrealized_pct is above the threshold of 5%.",
+    "trim_pct": null,
+    "symbol": "INTC",
+    "timestamp": "2026-05-14T16:38:49.454740",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.8,
+    "reasoning": "Health score is near neutral (-0.1072), factor coherence is low but not extreme (-1.0), and position is profitable (1.533% unrealized_pct).",
+    "symbol": "KDP",
+    "timestamp": "2026-05-14T16:40:13.716735",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 0.8,
+    "reasoning": "Multiple dimensions are deteriorating: health score is -0.3389 (DECAYING), factor coherence score is -1.0, and unrealized_pct is -3.061%.",
+    "trim_pct": 5,
+    "symbol": "KRE",
+    "timestamp": "2026-05-14T16:41:36.376120",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 0.8,
+    "reasoning": "Multiple dimensions deteriorating and unrealized_pct is above the threshold of 5%.",
+    "trim_pct": null,
+    "symbol": "OWL",
+    "timestamp": "2026-05-14T16:42:52.659665",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.8,
+    "reasoning": "Although the health score is slightly negative (-0.0718), it's not yet in the DECAYING tier and there are no other clear signs of deterioration. The position has a high unrealized_pct (4.251%) but it's still within the threshold for EXIT (> 5%).",
+    "trim_pct": null,
+    "symbol": "PLTD",
+    "timestamp": "2026-05-14T16:44:21.356065",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 0.8,
+    "reasoning": "Multiple dimensions deteriorating and unrealized_pct is greater than 5%.",
+    "trim_pct": null,
+    "symbol": "SMCI",
+    "timestamp": "2026-05-14T16:45:40.920195",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 0.6,
+    "reasoning": "Multiple dimensions deteriorating and unrealized_pct is above the threshold of 5%.",
+    "trim_pct": null,
+    "symbol": "STM",
+    "timestamp": "2026-05-14T16:46:55.635151",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 0.6,
+    "reasoning": "Multiple dimensions deteriorating and unrealized_pct is above the threshold of 5%.",
+    "trim_pct": null,
+    "symbol": "TSLA",
+    "timestamp": "2026-05-14T16:48:14.312681",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 0.8,
+    "reasoning": "Multiple dimensions of deterioration: health DECAYING, factor coherence score is -1.0, and unrealized_pct is 16.183%",
+    "symbol": "TSLL",
+    "timestamp": "2026-05-14T16:49:44.928184",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "EXIT",
+    "confidence": 1.0,
+    "reasoning": "clear confluence of deterioration \u2014 health DECAYING, momentum negative, volume distributing, composite_slope negative, and position is losing money.",
+    "trim_pct": null,
+    "symbol": "TTD",
+    "timestamp": "2026-05-14T16:51:04.662355",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.8,
+    "reasoning": "High bar \u2014 most should HOLD.",
+    "trim_pct": null,
+    "symbol": "NVDA",
+    "timestamp": "2026-05-15T13:02:54.238481",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 0.6,
+    "reasoning": "3+ deteriorating dimensions and unrealized_pct>5",
+    "trim_pct": 50,
+    "symbol": "NVDA",
+    "timestamp": "2026-05-15T13:05:37.330779",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9999,
+    "reasoning": "High bar \u2014 most should HOLD.",
+    "trim_pct": null,
+    "symbol": "AMD",
+    "timestamp": "2026-05-15T13:07:34.947271",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9999,
+    "reasoning": "High bar \u2014 most should HOLD.",
+    "trim_pct": null,
+    "symbol": "CSX",
+    "timestamp": "2026-05-15T13:07:54.690436",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9999,
+    "reasoning": "High bar \u2014 most should HOLD.",
+    "trim_pct": null,
+    "symbol": "CVE",
+    "timestamp": "2026-05-15T13:08:15.099248",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 0.8,
+    "reasoning": "3+ deteriorating dimensions and unrealized_pct>5",
+    "trim_pct": 75,
+    "symbol": "DKNG",
+    "timestamp": "2026-05-15T13:08:36.414826",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "High bar \u2014 most should HOLD.",
+    "trim_pct": null,
+    "symbol": "FXI",
+    "timestamp": "2026-05-15T13:08:56.631190",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.96,
+    "reasoning": "High bar \u2014 most should HOLD.",
+    "trim_pct": null,
+    "symbol": "INTC",
+    "timestamp": "2026-05-15T13:09:16.817622",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.95,
+    "reasoning": "High bar \u2014 most should HOLD.",
+    "trim_pct": null,
+    "symbol": "KDP",
+    "timestamp": "2026-05-15T13:09:36.963234",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 0.5,
+    "reasoning": "3+ deteriorating dimensions and unrealized_pct>5",
+    "trim_pct": 75,
+    "symbol": "KRE",
+    "timestamp": "2026-05-15T13:09:57.886070",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 0.5,
+    "reasoning": "3+ dimensions deteriorating AND unrealized_pct>5",
+    "trim_pct": 75,
+    "symbol": "OWL",
+    "timestamp": "2026-05-15T13:10:19.339412",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.5,
+    "reasoning": "High bar \u2014 most should HOLD.",
+    "trim_pct": null,
+    "symbol": "PLTD",
+    "timestamp": "2026-05-15T13:10:39.191795",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.8,
+    "reasoning": "High bar \u2014 most should HOLD.",
+    "trim_pct": null,
+    "symbol": "SMCI",
+    "timestamp": "2026-05-15T13:11:00.252141",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "High bar \u2014 most should HOLD.",
+    "trim_pct": null,
+    "symbol": "STM",
+    "timestamp": "2026-05-15T13:11:20.586192",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9999,
+    "reasoning": "High bar \u2014 most should HOLD.",
+    "trim_pct": null,
+    "symbol": "TSLA",
+    "timestamp": "2026-05-15T13:11:41.944589",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "TRIM",
+    "confidence": 0.5,
+    "reasoning": "3+ deteriorating dimensions and unrealized_pct>5",
+    "trim_pct": 50,
+    "symbol": "TSLL",
+    "timestamp": "2026-05-15T13:12:02.959176",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.5,
+    "reasoning": "High bar \u2014 most should HOLD.",
+    "trim_pct": null,
+    "symbol": "TTD",
+    "timestamp": "2026-05-15T13:12:24.129460",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "AMD",
+    "timestamp": "2026-05-15T13:26:36.030548",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "CSX",
+    "timestamp": "2026-05-15T13:27:03.916811",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "CVE",
+    "timestamp": "2026-05-15T13:27:32.989273",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "DKNG",
+    "timestamp": "2026-05-15T13:28:00.844624",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "FXI",
+    "timestamp": "2026-05-15T13:28:28.379299",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "INTC",
+    "timestamp": "2026-05-15T13:28:56.566787",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "KDP",
+    "timestamp": "2026-05-15T13:29:24.983060",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "KRE",
+    "timestamp": "2026-05-15T13:29:53.835478",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "OWL",
+    "timestamp": "2026-05-15T13:30:22.394028",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "PLTD",
+    "timestamp": "2026-05-15T13:30:50.144298",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "SMCI",
+    "timestamp": "2026-05-15T13:31:18.946481",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "STM",
+    "timestamp": "2026-05-15T13:31:46.658383",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "TSLA",
+    "timestamp": "2026-05-15T13:32:15.084416",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "TSLL",
+    "timestamp": "2026-05-15T13:32:42.875560",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "TTD",
+    "timestamp": "2026-05-15T13:33:10.704152",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "AMD",
+    "timestamp": "2026-05-15T13:49:52.098628",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "CSX",
+    "timestamp": "2026-05-15T13:50:21.228238",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "CVE",
+    "timestamp": "2026-05-15T13:50:49.139461",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "DKNG",
+    "timestamp": "2026-05-15T13:51:17.184581",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "FXI",
+    "timestamp": "2026-05-15T13:51:45.280345",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "INTC",
+    "timestamp": "2026-05-15T13:52:13.559223",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "KDP",
+    "timestamp": "2026-05-15T13:52:42.747071",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "KRE",
+    "timestamp": "2026-05-15T13:53:10.572762",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "OWL",
+    "timestamp": "2026-05-15T13:53:40.363868",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "PLTD",
+    "timestamp": "2026-05-15T13:54:08.526403",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "SMCI",
+    "timestamp": "2026-05-15T13:54:37.890679",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "STM",
+    "timestamp": "2026-05-15T13:55:05.677076",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "TSLA",
+    "timestamp": "2026-05-15T13:55:33.294867",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "TSLL",
+    "timestamp": "2026-05-15T13:56:01.899938",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "TTD",
+    "timestamp": "2026-05-15T13:56:30.930064",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.5,
+    "veto_reason": null,
+    "reasoning": "Agent unavailable \u2014 passthrough default",
+    "flags": [
+      "agent_error"
+    ],
+    "symbol": "AMD",
+    "timestamp": "2026-05-15T18:05:28.755466",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: N days",
+    "symbol": "CSX",
+    "timestamp": "2026-05-15T18:06:13.355636",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "CVE",
+    "timestamp": "2026-05-15T18:06:51.220538",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "DKNG",
+    "timestamp": "2026-05-15T18:07:28.592893",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "FXI",
+    "timestamp": "2026-05-15T18:08:06.619163",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "INTC",
+    "timestamp": "2026-05-15T18:08:43.187589",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "KDP",
+    "timestamp": "2026-05-15T18:09:20.706156",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "KRE",
+    "timestamp": "2026-05-15T18:09:57.580870",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "OWL",
+    "timestamp": "2026-05-15T18:10:35.396720",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "PLTD",
+    "timestamp": "2026-05-15T18:11:14.256395",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "SMCI",
+    "timestamp": "2026-05-15T18:11:51.401433",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "STM",
+    "timestamp": "2026-05-15T18:12:28.239359",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "TSLA",
+    "timestamp": "2026-05-15T18:13:07.001076",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.5,
+    "veto_reason": null,
+    "reasoning": "Agent unavailable \u2014 passthrough default",
+    "flags": [
+      "agent_error"
+    ],
+    "symbol": "TSLL",
+    "timestamp": "2026-05-15T18:13:54.028914",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.5,
+    "veto_reason": null,
+    "reasoning": "Agent unavailable \u2014 passthrough default",
+    "flags": [
+      "agent_error"
+    ],
+    "symbol": "TTD",
+    "timestamp": "2026-05-15T18:14:41.088404",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "AMD",
+    "timestamp": "2026-05-15T18:24:13.887771",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "CSX",
+    "timestamp": "2026-05-15T18:24:53.127074",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "CVE",
+    "timestamp": "2026-05-15T18:25:17.106030",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "DKNG",
+    "timestamp": "2026-05-15T18:25:40.426974",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "FXI",
+    "timestamp": "2026-05-15T18:26:21.383612",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "INTC",
+    "timestamp": "2026-05-15T18:27:01.797596",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "KDP",
+    "timestamp": "2026-05-15T18:27:40.292305",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "KRE",
+    "timestamp": "2026-05-15T18:28:18.473927",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "OWL",
+    "timestamp": "2026-05-15T18:28:56.459312",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "PLTD",
+    "timestamp": "2026-05-15T18:29:34.232739",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "SMCI",
+    "timestamp": "2026-05-15T18:30:13.202715",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "STM",
+    "timestamp": "2026-05-15T18:30:51.717116",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "TSLA",
+    "timestamp": "2026-05-15T18:31:30.256194",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "TSLL",
+    "timestamp": "2026-05-15T18:32:08.510758",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "TTD",
+    "timestamp": "2026-05-15T18:32:47.406203",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "AMD",
+    "timestamp": "2026-05-15T18:25:59.657345",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: N days",
+    "symbol": "CSX",
+    "timestamp": "2026-05-15T18:26:42.067041",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "CVE",
+    "timestamp": "2026-05-15T18:27:21.275967",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "DKNG",
+    "timestamp": "2026-05-15T18:27:59.308842",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "FXI",
+    "timestamp": "2026-05-15T18:28:37.361336",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "INTC",
+    "timestamp": "2026-05-15T18:29:15.339292",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "KDP",
+    "timestamp": "2026-05-15T18:29:53.962130",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "KRE",
+    "timestamp": "2026-05-15T18:30:32.553221",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "OWL",
+    "timestamp": "2026-05-15T18:31:10.628680",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "PLTD",
+    "timestamp": "2026-05-15T18:31:49.504687",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "SMCI",
+    "timestamp": "2026-05-15T18:32:27.364878",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "STM",
+    "timestamp": "2026-05-15T18:33:06.616982",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "TSLA",
+    "timestamp": "2026-05-15T18:33:27.832318",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "TSLL",
+    "timestamp": "2026-05-15T18:33:49.102636",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "TTD",
+    "timestamp": "2026-05-15T18:34:10.759337",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "AMD",
+    "timestamp": "2026-05-15T18:57:13.887438",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "CSX",
+    "timestamp": "2026-05-15T18:57:13.887471",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "CVE",
+    "timestamp": "2026-05-15T18:57:13.887479",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "DKNG",
+    "timestamp": "2026-05-15T18:57:13.887484",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "FXI",
+    "timestamp": "2026-05-15T18:57:13.887489",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "INTC",
+    "timestamp": "2026-05-15T18:57:13.887493",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "KDP",
+    "timestamp": "2026-05-15T18:57:13.887497",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "KRE",
+    "timestamp": "2026-05-15T18:57:13.887502",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "OWL",
+    "timestamp": "2026-05-15T18:57:13.887506",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "PLTD",
+    "timestamp": "2026-05-15T18:57:13.887510",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "SMCI",
+    "timestamp": "2026-05-15T18:57:13.887514",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "STM",
+    "timestamp": "2026-05-15T18:57:13.887519",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "TSLA",
+    "timestamp": "2026-05-15T18:57:13.887523",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "TSLL",
+    "timestamp": "2026-05-15T18:57:13.887527",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "TTD",
+    "timestamp": "2026-05-15T18:57:13.887531",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "AMD",
+    "timestamp": "2026-05-16T09:52:21.159091",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "CSX",
+    "timestamp": "2026-05-16T09:52:21.159109",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "CVE",
+    "timestamp": "2026-05-16T09:52:21.159113",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "DKNG",
+    "timestamp": "2026-05-16T09:52:21.159115",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "FXI",
+    "timestamp": "2026-05-16T09:52:21.159118",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "INTC",
+    "timestamp": "2026-05-16T09:52:21.159120",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "KDP",
+    "timestamp": "2026-05-16T09:52:21.159123",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "KRE",
+    "timestamp": "2026-05-16T09:52:21.159125",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "OWL",
+    "timestamp": "2026-05-16T09:52:21.159128",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "PLTD",
+    "timestamp": "2026-05-16T09:52:21.159130",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "SMCI",
+    "timestamp": "2026-05-16T09:52:21.159132",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "STM",
+    "timestamp": "2026-05-16T09:52:21.159135",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "TSLA",
+    "timestamp": "2026-05-16T09:52:21.159137",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "TSLL",
+    "timestamp": "2026-05-16T09:52:21.159139",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "TTD",
+    "timestamp": "2026-05-16T09:52:21.159141",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "AMD",
+    "timestamp": "2026-05-16T15:50:24.888188",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "CSX",
+    "timestamp": "2026-05-16T15:50:24.888211",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "CVE",
+    "timestamp": "2026-05-16T15:50:24.888218",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "DKNG",
+    "timestamp": "2026-05-16T15:50:24.888222",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "FXI",
+    "timestamp": "2026-05-16T15:50:24.888226",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "INTC",
+    "timestamp": "2026-05-16T15:50:24.888230",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "KDP",
+    "timestamp": "2026-05-16T15:50:24.888234",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "KRE",
+    "timestamp": "2026-05-16T15:50:24.888238",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "OWL",
+    "timestamp": "2026-05-16T15:50:24.888241",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "PLTD",
+    "timestamp": "2026-05-16T15:50:24.888245",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "SMCI",
+    "timestamp": "2026-05-16T15:50:24.888248",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "STM",
+    "timestamp": "2026-05-16T15:50:24.888253",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "TSLA",
+    "timestamp": "2026-05-16T15:50:24.888256",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "TSLL",
+    "timestamp": "2026-05-16T15:50:24.888260",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "TTD",
+    "timestamp": "2026-05-16T15:50:24.888263",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "AMD",
+    "timestamp": "2026-05-16T15:50:39.944789",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "CSX",
+    "timestamp": "2026-05-16T15:50:39.944806",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "CVE",
+    "timestamp": "2026-05-16T15:50:39.944809",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "DKNG",
+    "timestamp": "2026-05-16T15:50:39.944811",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "FXI",
+    "timestamp": "2026-05-16T15:50:39.944813",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "INTC",
+    "timestamp": "2026-05-16T15:50:39.944815",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "KDP",
+    "timestamp": "2026-05-16T15:50:39.944817",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "KRE",
+    "timestamp": "2026-05-16T15:50:39.944820",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "OWL",
+    "timestamp": "2026-05-16T15:50:39.944822",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "PLTD",
+    "timestamp": "2026-05-16T15:50:39.944824",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "SMCI",
+    "timestamp": "2026-05-16T15:50:39.944826",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "STM",
+    "timestamp": "2026-05-16T15:50:39.944828",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "TSLA",
+    "timestamp": "2026-05-16T15:50:39.944830",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "TSLL",
+    "timestamp": "2026-05-16T15:50:39.944832",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "TTD",
+    "timestamp": "2026-05-16T15:50:39.944834",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "AMD",
+    "timestamp": "2026-05-16T16:30:17.578129",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "CSX",
+    "timestamp": "2026-05-16T16:30:17.578153",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "CVE",
+    "timestamp": "2026-05-16T16:30:17.578157",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "DKNG",
+    "timestamp": "2026-05-16T16:30:17.578159",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "FXI",
+    "timestamp": "2026-05-16T16:30:17.578162",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "INTC",
+    "timestamp": "2026-05-16T16:30:17.578164",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "KDP",
+    "timestamp": "2026-05-16T16:30:17.578166",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "KRE",
+    "timestamp": "2026-05-16T16:30:17.578168",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "OWL",
+    "timestamp": "2026-05-16T16:30:17.578170",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "PLTD",
+    "timestamp": "2026-05-16T16:30:17.578172",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "SMCI",
+    "timestamp": "2026-05-16T16:30:17.578174",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "STM",
+    "timestamp": "2026-05-16T16:30:17.578178",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "TSLA",
+    "timestamp": "2026-05-16T16:30:17.578180",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "TSLL",
+    "timestamp": "2026-05-16T16:30:17.578182",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "TTD",
+    "timestamp": "2026-05-16T16:30:17.578184",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "AMD",
+    "timestamp": "2026-05-17T09:41:33.409744",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "CSX",
+    "timestamp": "2026-05-17T09:41:33.409762",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "CVE",
+    "timestamp": "2026-05-17T09:41:33.409766",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "DKNG",
+    "timestamp": "2026-05-17T09:41:33.409769",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "FXI",
+    "timestamp": "2026-05-17T09:41:33.409772",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "INTC",
+    "timestamp": "2026-05-17T09:41:33.409775",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "KDP",
+    "timestamp": "2026-05-17T09:41:33.409777",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "KRE",
+    "timestamp": "2026-05-17T09:41:33.409780",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "OWL",
+    "timestamp": "2026-05-17T09:41:33.409783",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "PLTD",
+    "timestamp": "2026-05-17T09:41:33.409786",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "SMCI",
+    "timestamp": "2026-05-17T09:41:33.409788",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "STM",
+    "timestamp": "2026-05-17T09:41:33.409791",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "TSLA",
+    "timestamp": "2026-05-17T09:41:33.409793",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "TSLL",
+    "timestamp": "2026-05-17T09:41:33.409796",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "TTD",
+    "timestamp": "2026-05-17T09:41:33.409798",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "AMD",
+    "timestamp": "2026-05-17T09:52:20.608308",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "CSX",
+    "timestamp": "2026-05-17T09:52:20.608326",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "CVE",
+    "timestamp": "2026-05-17T09:52:20.608330",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "DKNG",
+    "timestamp": "2026-05-17T09:52:20.608332",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "FXI",
+    "timestamp": "2026-05-17T09:52:20.608334",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "INTC",
+    "timestamp": "2026-05-17T09:52:20.608337",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "KDP",
+    "timestamp": "2026-05-17T09:52:20.608339",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "KRE",
+    "timestamp": "2026-05-17T09:52:20.608342",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "OWL",
+    "timestamp": "2026-05-17T09:52:20.608344",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "PLTD",
+    "timestamp": "2026-05-17T09:52:20.608346",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "SMCI",
+    "timestamp": "2026-05-17T09:52:20.608349",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "STM",
+    "timestamp": "2026-05-17T09:52:20.608351",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "TSLA",
+    "timestamp": "2026-05-17T09:52:20.608353",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "TSLL",
+    "timestamp": "2026-05-17T09:52:20.608355",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "TTD",
+    "timestamp": "2026-05-17T09:52:20.608357",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "AMD",
+    "timestamp": "2026-05-17T15:50:23.932402",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "CSX",
+    "timestamp": "2026-05-17T15:50:23.932420",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "CVE",
+    "timestamp": "2026-05-17T15:50:23.932424",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "DKNG",
+    "timestamp": "2026-05-17T15:50:23.932426",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "FXI",
+    "timestamp": "2026-05-17T15:50:23.932428",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "INTC",
+    "timestamp": "2026-05-17T15:50:23.932431",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "KDP",
+    "timestamp": "2026-05-17T15:50:23.932433",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "KRE",
+    "timestamp": "2026-05-17T15:50:23.932435",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "OWL",
+    "timestamp": "2026-05-17T15:50:23.932437",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "PLTD",
+    "timestamp": "2026-05-17T15:50:23.932439",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "SMCI",
+    "timestamp": "2026-05-17T15:50:23.932441",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "STM",
+    "timestamp": "2026-05-17T15:50:23.932443",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "TSLA",
+    "timestamp": "2026-05-17T15:50:23.932445",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "TSLL",
+    "timestamp": "2026-05-17T15:50:23.932447",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "TTD",
+    "timestamp": "2026-05-17T15:50:23.932449",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "AMD",
+    "timestamp": "2026-05-17T15:50:38.416253",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "CSX",
+    "timestamp": "2026-05-17T15:50:38.416275",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "CVE",
+    "timestamp": "2026-05-17T15:50:38.416279",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "DKNG",
+    "timestamp": "2026-05-17T15:50:38.416282",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "FXI",
+    "timestamp": "2026-05-17T15:50:38.416285",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "INTC",
+    "timestamp": "2026-05-17T15:50:38.416288",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "KDP",
+    "timestamp": "2026-05-17T15:50:38.416291",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "KRE",
+    "timestamp": "2026-05-17T15:50:38.416294",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "OWL",
+    "timestamp": "2026-05-17T15:50:38.416296",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "PLTD",
+    "timestamp": "2026-05-17T15:50:38.416299",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "SMCI",
+    "timestamp": "2026-05-17T15:50:38.416302",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "STM",
+    "timestamp": "2026-05-17T15:50:38.416305",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "TSLA",
+    "timestamp": "2026-05-17T15:50:38.416307",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "TSLL",
+    "timestamp": "2026-05-17T15:50:38.416310",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "TTD",
+    "timestamp": "2026-05-17T15:50:38.416312",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "AMD",
+    "timestamp": "2026-05-18T20:58:22.066178",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "CSX",
+    "timestamp": "2026-05-18T20:58:22.066199",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "CVE",
+    "timestamp": "2026-05-18T20:58:22.066203",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "DKNG",
+    "timestamp": "2026-05-18T20:58:22.066206",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "FXI",
+    "timestamp": "2026-05-18T20:58:22.066209",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "INTC",
+    "timestamp": "2026-05-18T20:58:22.066212",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "KDP",
+    "timestamp": "2026-05-18T20:58:22.066214",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "KRE",
+    "timestamp": "2026-05-18T20:58:22.066217",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "PLTD",
+    "timestamp": "2026-05-18T20:58:22.066219",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "SMCI",
+    "timestamp": "2026-05-18T20:58:22.066221",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "STM",
+    "timestamp": "2026-05-18T20:58:22.066223",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "TSLA",
+    "timestamp": "2026-05-18T20:58:22.066225",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "TSLL",
+    "timestamp": "2026-05-18T20:58:22.066227",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "TTD",
+    "timestamp": "2026-05-18T20:58:22.066229",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "AMD",
+    "timestamp": "2026-05-18T21:00:50.566689",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "CSX",
+    "timestamp": "2026-05-18T21:00:50.566714",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "CVE",
+    "timestamp": "2026-05-18T21:00:50.566719",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "DKNG",
+    "timestamp": "2026-05-18T21:00:50.566723",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "FXI",
+    "timestamp": "2026-05-18T21:00:50.566726",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "INTC",
+    "timestamp": "2026-05-18T21:00:50.566730",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "KDP",
+    "timestamp": "2026-05-18T21:00:50.566734",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "KRE",
+    "timestamp": "2026-05-18T21:00:50.566737",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "PLTD",
+    "timestamp": "2026-05-18T21:00:50.566741",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "SMCI",
+    "timestamp": "2026-05-18T21:00:50.566744",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "STM",
+    "timestamp": "2026-05-18T21:00:50.566747",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "TSLA",
+    "timestamp": "2026-05-18T21:00:50.566751",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "TSLL",
+    "timestamp": "2026-05-18T21:00:50.566754",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "TTD",
+    "timestamp": "2026-05-18T21:00:50.566758",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "AMD",
+    "timestamp": "2026-05-19T09:52:24.306727",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "CSX",
+    "timestamp": "2026-05-19T09:52:24.306743",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "CVE",
+    "timestamp": "2026-05-19T09:52:24.306747",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "DKNG",
+    "timestamp": "2026-05-19T09:52:24.306749",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "FXI",
+    "timestamp": "2026-05-19T09:52:24.306752",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "INTC",
+    "timestamp": "2026-05-19T09:52:24.306754",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "KDP",
+    "timestamp": "2026-05-19T09:52:24.306756",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "PLTD",
+    "timestamp": "2026-05-19T09:52:24.306758",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "SMCI",
+    "timestamp": "2026-05-19T09:52:24.306761",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "STM",
+    "timestamp": "2026-05-19T09:52:24.306763",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "TSLA",
+    "timestamp": "2026-05-19T09:52:24.306765",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "TSLL",
+    "timestamp": "2026-05-19T09:52:24.306767",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "TTD",
+    "timestamp": "2026-05-19T09:52:24.306769",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "AMD",
+    "timestamp": "2026-05-19T15:50:27.623472",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "CSX",
+    "timestamp": "2026-05-19T15:50:27.623489",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "CVE",
+    "timestamp": "2026-05-19T15:50:27.623493",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "DKNG",
+    "timestamp": "2026-05-19T15:50:27.623495",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "FXI",
+    "timestamp": "2026-05-19T15:50:27.623497",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "INTC",
+    "timestamp": "2026-05-19T15:50:27.623500",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "KDP",
+    "timestamp": "2026-05-19T15:50:27.623502",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "PLTD",
+    "timestamp": "2026-05-19T15:50:27.623504",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "SMCI",
+    "timestamp": "2026-05-19T15:50:27.623506",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "STM",
+    "timestamp": "2026-05-19T15:50:27.623508",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "TSLA",
+    "timestamp": "2026-05-19T15:50:27.623510",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "TSLL",
+    "timestamp": "2026-05-19T15:50:27.623513",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "TTD",
+    "timestamp": "2026-05-19T15:50:27.623515",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "AMD",
+    "timestamp": "2026-05-19T15:50:47.845233",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "CSX",
+    "timestamp": "2026-05-19T15:50:47.845262",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "CVE",
+    "timestamp": "2026-05-19T15:50:47.845269",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "DKNG",
+    "timestamp": "2026-05-19T15:50:47.845273",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "FXI",
+    "timestamp": "2026-05-19T15:50:47.845278",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "INTC",
+    "timestamp": "2026-05-19T15:50:47.845282",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "KDP",
+    "timestamp": "2026-05-19T15:50:47.845287",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "PLTD",
+    "timestamp": "2026-05-19T15:50:47.845291",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "SMCI",
+    "timestamp": "2026-05-19T15:50:47.845295",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "STM",
+    "timestamp": "2026-05-19T15:50:47.845299",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "TSLA",
+    "timestamp": "2026-05-19T15:50:47.845303",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "TSLL",
+    "timestamp": "2026-05-19T15:50:47.845307",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "TTD",
+    "timestamp": "2026-05-19T15:50:47.845311",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "AMD",
+    "timestamp": "2026-05-19T16:30:28.582331",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "CSX",
+    "timestamp": "2026-05-19T16:30:28.582352",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "CVE",
+    "timestamp": "2026-05-19T16:30:28.582359",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "DKNG",
+    "timestamp": "2026-05-19T16:30:28.582364",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "FXI",
+    "timestamp": "2026-05-19T16:30:28.582368",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "INTC",
+    "timestamp": "2026-05-19T16:30:28.582372",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "KDP",
+    "timestamp": "2026-05-19T16:30:28.582376",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "PLTD",
+    "timestamp": "2026-05-19T16:30:28.582379",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "SMCI",
+    "timestamp": "2026-05-19T16:30:28.582383",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "STM",
+    "timestamp": "2026-05-19T16:30:28.582386",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "TSLA",
+    "timestamp": "2026-05-19T16:30:28.582390",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "TSLL",
+    "timestamp": "2026-05-19T16:30:28.582394",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "TTD",
+    "timestamp": "2026-05-19T16:30:28.582398",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "AMD",
+    "timestamp": "2026-05-19T16:30:29.205111",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "CSX",
+    "timestamp": "2026-05-19T16:30:29.205135",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "CVE",
+    "timestamp": "2026-05-19T16:30:29.205140",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "DKNG",
+    "timestamp": "2026-05-19T16:30:29.205144",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "FXI",
+    "timestamp": "2026-05-19T16:30:29.205147",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "INTC",
+    "timestamp": "2026-05-19T16:30:29.205150",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "KDP",
+    "timestamp": "2026-05-19T16:30:29.205153",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "PLTD",
+    "timestamp": "2026-05-19T16:30:29.205156",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "SMCI",
+    "timestamp": "2026-05-19T16:30:29.205159",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "STM",
+    "timestamp": "2026-05-19T16:30:29.205162",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "TSLA",
+    "timestamp": "2026-05-19T16:30:29.205165",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "TSLL",
+    "timestamp": "2026-05-19T16:30:29.205168",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "TTD",
+    "timestamp": "2026-05-19T16:30:29.205175",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "AMD",
+    "timestamp": "2026-05-20T09:52:26.504975",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "CSX",
+    "timestamp": "2026-05-20T09:52:26.504990",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "CVE",
+    "timestamp": "2026-05-20T09:52:26.504994",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "DKNG",
+    "timestamp": "2026-05-20T09:52:26.504996",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "INTC",
+    "timestamp": "2026-05-20T09:52:26.504998",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "KDP",
+    "timestamp": "2026-05-20T09:52:26.505000",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "PLTD",
+    "timestamp": "2026-05-20T09:52:26.505003",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "SMCI",
+    "timestamp": "2026-05-20T09:52:26.505005",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "STM",
+    "timestamp": "2026-05-20T09:52:26.505007",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "TSLA",
+    "timestamp": "2026-05-20T09:52:26.505009",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "AMD",
+    "timestamp": "2026-05-20T15:50:34.195161",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "CSX",
+    "timestamp": "2026-05-20T15:50:34.195178",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "CVE",
+    "timestamp": "2026-05-20T15:50:34.195182",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "DKNG",
+    "timestamp": "2026-05-20T15:50:34.195184",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "INTC",
+    "timestamp": "2026-05-20T15:50:34.195187",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "KDP",
+    "timestamp": "2026-05-20T15:50:34.195189",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "PLTD",
+    "timestamp": "2026-05-20T15:50:34.195191",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "SMCI",
+    "timestamp": "2026-05-20T15:50:34.195193",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "STM",
+    "timestamp": "2026-05-20T15:50:34.195195",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "TSLA",
+    "timestamp": "2026-05-20T15:50:34.195198",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "AMD",
+    "timestamp": "2026-05-20T15:50:51.947718",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "CSX",
+    "timestamp": "2026-05-20T15:50:51.947736",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "CVE",
+    "timestamp": "2026-05-20T15:50:51.947740",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "DKNG",
+    "timestamp": "2026-05-20T15:50:51.947742",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "INTC",
+    "timestamp": "2026-05-20T15:50:51.947744",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "KDP",
+    "timestamp": "2026-05-20T15:50:51.947747",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "PLTD",
+    "timestamp": "2026-05-20T15:50:51.947749",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "SMCI",
+    "timestamp": "2026-05-20T15:50:51.947752",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "STM",
+    "timestamp": "2026-05-20T15:50:51.947754",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "TSLA",
+    "timestamp": "2026-05-20T15:50:51.947756",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "AMD",
+    "timestamp": "2026-05-20T16:30:36.299173",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "CSX",
+    "timestamp": "2026-05-20T16:30:36.299197",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "CVE",
+    "timestamp": "2026-05-20T16:30:36.299203",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "DKNG",
+    "timestamp": "2026-05-20T16:30:36.299207",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "INTC",
+    "timestamp": "2026-05-20T16:30:36.299211",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "KDP",
+    "timestamp": "2026-05-20T16:30:36.299214",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "PLTD",
+    "timestamp": "2026-05-20T16:30:36.299219",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "SMCI",
+    "timestamp": "2026-05-20T16:30:36.299222",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "STM",
+    "timestamp": "2026-05-20T16:30:36.299226",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "TSLA",
+    "timestamp": "2026-05-20T16:30:36.299230",
+    "agent": "HoldAgent"
+  }
+]

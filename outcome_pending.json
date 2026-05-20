@@ -1,0 +1,82 @@
+{
+  "27fb88a1-8cfb-411a-a99f-af3fbc4db83c": {
+    "symbol": "FXI",
+    "exit_reason": "trailing_stop",
+    "composite": -0.3141,
+    "trim_detail": "",
+    "agent_decision": "HOLD",
+    "agent_confidence": 0.9,
+    "agent_reasoning": "insufficient history: 0 days",
+    "submitted_at": "2026-05-20T09:52:11.343556"
+  },
+  "4509b8a1-6656-4299-8752-e258d3c5aae9": {
+    "symbol": "TTD",
+    "exit_reason": "trailing_stop",
+    "composite": -0.1735,
+    "trim_detail": "",
+    "agent_decision": "HOLD",
+    "agent_confidence": 0.9,
+    "agent_reasoning": "insufficient history: 0 days",
+    "submitted_at": "2026-05-20T09:52:11.374005"
+  },
+  "f6cd266a-42f5-4c1c-a97f-fa621b95a05e": {
+    "symbol": "AMD",
+    "exit_reason": "math_trim_14%",
+    "composite": 0.0533,
+    "trim_detail": "severity=0.057 x stop_mult=0.75 x far_mult=1.00 x pnl_mult=0.60 + slope_adj=0.112 = 0.137 -> 13.7% (4 sh)",
+    "agent_decision": "HOLD",
+    "agent_confidence": 0.9,
+    "agent_reasoning": "insufficient history: 0 days",
+    "submitted_at": "2026-05-20T09:52:11.445990"
+  },
+  "bfc204b8-51a6-49d3-abc2-dd0cb7bf39ea": {
+    "symbol": "INTC",
+    "exit_reason": "math_trim_2%",
+    "composite": 0.1378,
+    "trim_detail": "severity=0.028 x stop_mult=0.75 x far_mult=1.17 x pnl_mult=0.60 + slope_adj=0.004 = 0.018 -> 1.8% (2 sh)",
+    "agent_decision": "HOLD",
+    "agent_confidence": 0.9,
+    "agent_reasoning": "insufficient history: 0 days",
+    "submitted_at": "2026-05-20T09:52:11.548561"
+  },
+  "91abf87c-20f7-494f-a01e-4cbe1f89fd1e": {
+    "symbol": "PLTD",
+    "exit_reason": "math_trim_0%",
+    "composite": -0.0854,
+    "trim_detail": "severity=0.005 x stop_mult=0.75 x far_mult=1.13 x pnl_mult=1.00 + slope_adj=0.000 = 0.005 -> 0.5% (5 sh)",
+    "agent_decision": "HOLD",
+    "agent_confidence": 0.9,
+    "agent_reasoning": "insufficient history: 0 days",
+    "submitted_at": "2026-05-20T09:52:11.650905"
+  },
+  "ae323251-3249-42f2-8957-db51e3d24020": {
+    "symbol": "SMCI",
+    "exit_reason": "math_trim_19%",
+    "composite": -0.0586,
+    "trim_detail": "severity=0.085 x stop_mult=1.50 x far_mult=1.04 x pnl_mult=1.40 + slope_adj=0.009 = 0.194 -> 19.4% (45 sh)",
+    "agent_decision": "HOLD",
+    "agent_confidence": 0.9,
+    "agent_reasoning": "insufficient history: 0 days",
+    "submitted_at": "2026-05-20T09:52:11.683472"
+  },
+  "8c4368e9-0988-44a4-9de4-d68de328bb35": {
+    "symbol": "TSLA",
+    "exit_reason": "math_trim_46%",
+    "composite": -0.2948,
+    "trim_detail": "severity=0.333 x stop_mult=0.75 x far_mult=1.06 x pnl_mult=1.00 + slope_adj=0.200 = 0.464 -> 46.4% (5 sh)",
+    "agent_decision": "HOLD",
+    "agent_confidence": 0.9,
+    "agent_reasoning": "insufficient history: 0 days",
+    "submitted_at": "2026-05-20T09:52:11.713377"
+  },
+  "9f95525a-9fe3-40d0-af8a-1018c9d60f86": {
+    "symbol": "TSLL",
+    "exit_reason": "math_exit",
+    "composite": -0.3369,
+    "trim_detail": "severity=0.461 x stop_mult=1.50 x far_mult=1.06 x pnl_mult=1.20 + slope_adj=0.200 = 1.077 -> 100.0% (107 sh)",
+    "agent_decision": "HOLD",
+    "agent_confidence": 0.9,
+    "agent_reasoning": "insufficient history: 0 days",
+    "submitted_at": "2026-05-20T09:52:11.742647"
+  }
+}
