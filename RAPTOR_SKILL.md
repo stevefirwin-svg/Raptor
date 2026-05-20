@@ -1,5 +1,5 @@
 # Raptor Trading System — Master Development Skill & Architecture Ontology
-*Last updated: 2026-05-20 — P0 blockers all fixed, SKILL-1 through SKILL-7 applied*
+*Last updated: 2026-05-15*
 
 ---
 
@@ -91,7 +91,7 @@
          ├─ EntryAgent.evaluate_batch(candidates)
          │   ├─ _ollama_alive() ping — fast-fail if down
          │   ├─ numbered veto rules 1-6
-         │   ├─ RISK_ON/NEUTRAL → explicit PASS (canonical taxonomy)
+         │   ├─ RISK_ON/NEUTRAL/BULLISH → explicit PASS
          │   └─ writes entry_vetoes.json
          │
          ├─ for each signal that passes:
@@ -204,7 +204,6 @@
 | `hold_decisions.json` | hold_monitor.py (via agent_layer) | exit_monitor.py (advisory log only) | HoldAgent HOLD/TRIM/EXIT decisions | Append-only, grows forever |
 | `entry_vetoes.json` | main.py (via agent_layer) | outcome_tracker.py | EntryAgent PASS/VETO decisions | Append-only, grows forever |
 | `position_ledger.json` | main.py (entries), exit_monitor.py (exits) | exit_monitor.py, hold_monitor.py, daily_recap.py | Open positions + closed trade history | Grows with trades |
-| `outcome_pending.json` | exit_monitor.py (on each sell) | outcome_tracker.py | Exit metadata keyed by Alpaca order ID (P0-1 sidecar) | Grows with sells, can prune |
 | `outcome_log.json` | outcome_tracker.py | prompt_calibrator.py (planned) | Closed trades tagged with agent decisions | Append-only, grows forever |
 | `trim_log.json` | exit_monitor.py | prompt_calibrator.py (planned) | Partial trims + math reasoning + agent cross-ref | Append-only, grows forever |
 | `adaptive_weights.json` | signals.py (AdaptiveWeights) | signals.py | Ridge regression + IC weights from closed trades | Updated on each closed trade |
@@ -315,19 +314,16 @@ Alpaca positions (live, source of truth)
     │   Logs HOLD/TRIM/EXIT for calibration — NEVER executes
     │
     ├─ submit_order(SELL, market, client_order_id=reason_sym_timestamp)
-    ├─ outcome_pending.json ← sidecar write keyed by Alpaca order ID (P0-1)
-    │   Contains: exit_reason, composite, trim_detail, agent_decision + confidence
     ├─ ledger.record_exit(model, symbol, price, date, reason)
     ├─ trim_log.json ← partial trim + math reasoning + agent cross-reference
-    └─ outcome_tracker.run_tracker() → outcome_log.json (reads outcome_pending.json)
+    └─ outcome_tracker.run_tracker() → outcome_log.json
 ```
 
 ### 4.4 — Learning Pipeline
 
 ```
 Every exit:
-    outcome_pending.json ← sidecar with exit_reason + agent decisions (exit_monitor, P0-1)
-    outcome_log.json     ← full exits tagged via sidecar join (outcome_tracker)
+    outcome_log.json  ← full exits tagged with agent decisions (outcome_tracker)
 
 Every trim:
     trim_log.json     ← partial trims + math reasoning + agent cross-ref (exit_monitor)
@@ -412,7 +408,6 @@ VOL cluster:   vol_ratio, obv_r2, accum_dist
 VOLAT cluster: atr_pctile, bb_squeeze, rel_strength
 REV cluster:   rev_momentum
 ```
-**Note:** `sentiment_score` field exists in Signal dataclass and is always 0.0 in production. The sentiment plumbing (data_feeds lexicon, API calls, cache) runs but output is never wired into composite scoring. Either wire in with IC validation or delete the infrastructure (see P1-15).
 
 ---
 
@@ -452,10 +447,6 @@ REV cluster:   rev_momentum
 19. **Use account["buying_power"] not account["cash"]** for capital checks.
 20. **market_agent reads macro.get("regime")** not "macro_regime" — data_feeds returns "regime".
 21. **Do NOT start Layer 3** until 30+ agent-tagged trades in outcome_log.json.
-22. **Single regime taxonomy:** `{RISK_ON, NEUTRAL, RISK_OFF, CRISIS}` is the only allowed set. All code paths read `macro_context.json` for regime label. `data_feeds.compute_regime_score()` is deprecated for regime classification — its numeric score is still used but its label is overridden. Legacy labels `{EXPANSION, BULLISH, BEARISH}` exist in signals.py REGIME_MULT only for backtest compatibility.
-23. **Outcome sidecar pattern:** Never depend on Alpaca echoing `client_order_id` verbatim. Persist trade metadata to `outcome_pending.json` keyed by Alpaca order ID, then join. exit_monitor writes it; outcome_tracker reads it.
-24. **Sharpe/Sortino annualization:** Use `sqrt(252 / avg_hold_days)`, never `sqrt(252)`. Raptor trades are multi-day swings, not daily returns.
-25. **Backfill positions:** When `regime == "BACKFILL"` in ledger metadata, always recompute stops from real ATR — never trust stored stop values from backfill_ledger.py.
 
 ---
 
@@ -475,10 +466,6 @@ REV cluster:   rev_momentum
 - Don't add Ollama calls to exit_monitor
 - Don't use market_value from Alpaca positions — field doesn't exist
 - Don't re-introduce parallel agent calls
-- Don't use regime labels outside `{RISK_ON, NEUTRAL, RISK_OFF, CRISIS}` in new code — legacy labels are backtest-only
-- Don't encode exit reasons into client_order_id — use outcome_pending.json sidecar
-- Don't use `sqrt(252)` to annualize per-trade returns — use `sqrt(252/avg_hold)`
-- Don't trust stored stop prices on BACKFILL positions — always recompute from real ATR
 
 ---
 
@@ -626,19 +613,15 @@ The following gaps exist in the current architecture where mechanical or arbitra
 **Fix:** Afternoon monitor (3:50 PM) runs a lightweight re-score of held positions + top watchlist candidates. Not a full universe scan — just 20–30 symbols. If a held position has been leapfrogged by a stronger signal and its own score has decayed, flag for next-morning exit priority.
 
 ### Summary Priority for Next Sessions
-
-| GAP | Description | Math Derived? | Status |
-|-----|-------------|---------------|--------|
-| GAP 1 | Signal-aware trail | Partially (composite+health modifier, thresholds still round) | DONE 2026-05-17 |
-| GAP 2 | Conviction-scaled Kelly sizing | PENDING — needs outcome_log data | Maps to P1-4, P1-17 |
-| GAP 3 | Vol-regime hard stop | PENDING — needs ATR percentile derivation | Maps to P1-2 |
-| GAP 4 | Regime-scaled thesis invalidation | PENDING — needs cross-sectional percentile | Maps to P1-8 |
-| GAP 5 | Momentum acceleration on entry | PENDING — needs hold_history pre-entry data | Maps to P1-10 |
-| GAP 6 | Re-entry cooldown | PENDING — needs ATR percentile + velocity gate | Maps to P1-11 |
-| GAP 7 | Portfolio heat partial trim | PENDING — needs marginal risk contribution | Maps to P1-12 |
-| GAP 8 | Partial profit harvest | CANCELLED — hold monitor trim is correct tool | N/A |
-| GAP 9 | Afternoon re-score | PENDING — infrastructure addition | Maps to P1-16 |
-| GAP 10 | Regime schema unification | YES — canonical taxonomy defined | DONE 2026-05-20 (P0-3) |
+1. GAP 1 (signal-aware trail) — DONE 2026-05-17. Trail multiplier now f(composite, health). Backtest pending.
+2. GAP 8 (partial profit harvest) — CANCELLED. Wrong philosophy. Hold monitor trim logic is the correct tool. No separate harvest mechanism needed.
+3. GAP 5 (momentum acceleration on entry) — improves entry quality without changing universe
+4. GAP 3 (volatility-regime hard stop) — reduces whipsaw exits in high-vol environments
+5. GAP 6 (re-entry cooldown) — prevents double-loss on same failing thesis
+6. GAP 2 (conviction-scaled sizing) — refines Kelly application
+7. GAP 4 (regime-scaled thesis invalidation) — prevents mass exit during regime drawdowns
+8. GAP 7 (portfolio heat partial trim) — more surgical than current blunt exit
+9. GAP 9 (afternoon re-score) — longer term infrastructure addition
 
 ---
 
@@ -666,62 +649,9 @@ Two scoring functions upgraded from single-day snapshot to rolling trend:
 ### Hold Monitor Layer Weights — NOT CHANGED
 Research finding: static manually-chosen weights are wrong. The correct solution is IC-weighted dynamic weighting derived from `hold_history.json` — measuring actual Spearman IC of each layer score against forward trade returns over rolling 60–90 day window. Same approach as adaptive ridge regression in signals.py. Build this before touching any weight values manually.
 
-### P0 Blockers Fixed (2026-05-20) ✅
-All 8 P0 blockers from RAPTOR_AUDIT_AND_PLAN.md resolved in this session:
-
-| P0 | Fix | File(s) |
-|----|-----|---------|
-| P0-1 | outcome_pending.json sidecar for exit reason tracking | exit_monitor.py, outcome_tracker.py |
-| P0-2 | Backfill positions recompute stop from real ATR | hold_monitor.py |
-| P0-3 | Canonical regime taxonomy {RISK_ON, NEUTRAL, RISK_OFF, CRISIS} | signals.py, agent_layer.py |
-| P0-4 | Already fixed — market_value computed as qty * price | daily_recap.py |
-| P0-5 | Already fixed — dm.alpaca.get_daily_bars | watchdog.py |
-| P0-6 | Not a bug — .env exists, _env is template | N/A |
-| P0-7 | Sharpe/Sortino uses sqrt(252/avg_hold) | daily_recap.py |
-| P0-8 | macro_context.json regime override after dataset fetch | main.py, exit_monitor.py |
-
 ---
 
-## 17. LAYER STATUS TRUTH TABLE
-
-Updated 2026-05-20 after P0 fixes.
-
-| Layer | Name | Implemented | Functional | Data Quality | Blocking Issues |
-|-------|------|-------------|-----------|---------------|-----------------|
-| 4 | Session Gate | Y | Y | OK | None |
-| 3 | Macro Context | Y | Y | DEGRADED | yield_curve null on some days; regime label now canonical (P0-3 ✅) |
-| 2 | Signal Engine | Y | Y | OK | REGIME_MULT has canonical + legacy labels (P0-3 ✅) |
-| 1 | Execution | Y | Y | OK | Stops fixed for backfill (P0-2 ✅), macro unified (P0-8 ✅), sidecar enabled (P0-1 ✅) |
-| 0 | Position Health | Y | Y | OK | Static weights (P1-6 pending, needs N>=60 trades) |
-| L | Learning | Y | READY | PENDING DATA | Sidecar enabled (P0-1 ✅) — needs trades to flow for outcome_log population |
-| 3+ | Prompt Calibrator | N | N | N/A | PLANNED — needs 30+ agent-tagged trades in outcome_log.json |
-
----
-
-## 18. DAILY AUDIT CHECKLIST
-
-Before each development session, Claude runs these checks:
-
-```powershell
-# 1. Outcome tracker health — are exit paths being tagged?
-python -c "import json; d=json.load(open('outcome_log.json')); tagged=[t for t in d if t.get('actual_exit_path','unknown')!='unknown']; print(f'{len(tagged)}/{len(d)} trades have tagged exit paths')"
-
-# 2. Stop distance violations — any positions below their stop?
-python -c "import json; h=json.load(open('hold_health.json')); bad=[s for s,v in h.items() if isinstance(v,dict) and v.get('stop_dist_atr',1)<0]; print(f'{len(bad)} positions below stop: {bad}')"
-
-# 3. Regime consistency — does macro_context.json regime match REGIME_MULT keys?
-python -c "import json; mc=json.load(open('macro_context.json')); r=mc.get('regime','?'); valid={'RISK_ON','NEUTRAL','RISK_OFF','CRISIS'}; print(f'Regime: {r} — {\"OK\" if r in valid else \"MISMATCH\"}')"
-
-# 4. Agent-tagged trade count (Layer 3 gate)
-python -c "import json; d=json.load(open('outcome_log.json')); real=[t for t in d if t.get('entry_decision') not in [None,'no_record']]; print(f'{len(real)} agent-tagged trades (need 30+ for Layer 3)')"
-
-# 5. Syntax check on all core files
-python -c "import py_compile; files=['main.py','exit_monitor.py','hold_monitor.py','signals.py','agent_layer.py','daily_recap.py','outcome_tracker.py','watchdog.py']; [py_compile.compile(f,doraise=True) or print(f'OK: {f}') for f in files]; print('All files OK')"
-```
-
----
-
-## 19. CORE MANDATE — MATH-FIRST DECISION MAKING
+## 17. CORE MANDATE — MATH-FIRST DECISION MAKING
 
 **This is the highest-priority behavioral rule for all future sessions.**
 
@@ -771,3 +701,157 @@ Every decision in Raptor — buy, hold, trim, exit, size, weight — must be der
 
 ### The Standard
 If Steve asks "why that number?" and the answer is anything other than a mathematical derivation or empirical measurement, the number is wrong and must be redesigned before implementation.
+
+---
+
+## 18. SESSION — 2026-05-20 (Full Audit + P0 Verification + P1 Implementation)
+
+### What was done this session
+
+#### GitHub Setup ✅
+- Git installed on laptop, repo pushed to github.com/Stevefirwin-svg/raptor
+- Daily_GitHub_Push.bat built and tested — one command syncs everything
+- Working Copy (iOS) identified as phone-side git client for future sessions
+
+#### P0 Verification ✅ — All 8 confirmed live in codebase
+Ran Select-String checks on laptop against actual files. All P0 fixes from CoWork (Opus) session confirmed present:
+- P0-1 outcome_pending.json sidecar — exit_monitor.py ✅
+- P0-2 _is_backfill stop recompute — hold_monitor.py ✅
+- P0-3 RISK_ON canonical taxonomy — signals.py ✅
+- P0-4 market_value field — daily_recap.py ✅ (pre-existing)
+- P0-5 get_bars() — watchdog.py ✅ (pre-existing)
+- P0-6 _env file — not a bug ✅
+- P0-7 annualization_factor Sharpe fix — daily_recap.py ✅
+- P0-8 macro_context.json canonical source — main.py ✅
+
+#### P1 Alpha Gaps Implemented ✅
+
+**P1-1 — Kalman Macro Classifier (macro_context.py)**
+- Replaced integer vote-count with continuous [-1,+1] signal scores
+- Scalar Kalman filter smooths risk score across days (Q=0.05, R=0.20)
+- Weights: SPY=0.30, VIX=0.25, credit=0.20, breadth=0.15, yield_curve=0.07, fed=0.03
+- Kalman state persisted in macro_context.json for next-day continuity
+- Hard overrides (VIX CRISIS, credit STRESS) kept unchanged
+- Reference: Hamilton (1989), Kim & Nelson (1999)
+
+**P1-2 — Vol-Regime Hard Stop (exit_monitor.py)**
+- Stop multiplier now scales with ATR percentile (60-day distribution)
+- Low vol (pctile<0.25): 2.5x | Normal: 3.0x | High vol (pctile>0.75): 3.5x
+- _atr_percentile() and _vol_regime_stop_mult() added as helpers
+- Reference: Kaminski & Lo 2014, audit P1-2
+
+**P1-3 — OU Trailing Stop (exit_monitor.py)**
+- _ou_theta() estimator added: OLS regression of log-price reversion to local mean
+- Trail base = 1/sqrt(theta), clamped [1.0, 3.0] ATR
+- Fast-reverting stocks (half-life 2d) → 1.7x trail. Trending (half-life 7d+) → 3.0x
+- Static step table (2.5/2.0/1.5/1.0) removed. Signal-quality modifier made continuous
+- Fallback to step table if bars unavailable
+- Reference: Leung & Zhang 2019, arXiv:1701.03960
+
+**P1-5 — OU Hold Target (signals.py)**
+- Replaced 16 + 14*atr_pctile with ceil(log(2)/theta) — one full OU half-life
+- TRENDING micro regime → 2x multiplier (let trends run)
+- REVERTING → 1x (one half-life, then reassess)
+- Clamped [3, 30] days. Fallback 15 if theta unavailable
+- _ou_theta_signals() inlined to avoid circular import with exit_monitor
+- Reference: Leung & Zhang 2019
+
+### What is NOT done yet — P1 remaining
+
+**P1-4 — Bayesian Kelly** — GATED on 10+ closed trades flowing through outcome_pending.json
+- Gate: run `python -c "import json; d=json.load(open('outcome_pending.json')); print(len(d), 'pending outcomes')"` 
+- Once 10+ trades close, build: f* = (mu-r)/sigma^2 from realized returns by composite decile
+- Reference: Thorp 2006, audit P1-4
+
+**P1-6 through P1-17** — see audit plan RAPTOR_AUDIT_AND_PLAN.md, Week 3-5
+
+### P1 Status Summary
+| Item | Status | File |
+|------|--------|------|
+| P1-1 Kalman regime | ✅ LIVE | macro_context.py |
+| P1-2 Vol-regime stop | ✅ LIVE | exit_monitor.py |
+| P1-3 OU trail | ✅ LIVE | exit_monitor.py |
+| P1-4 Bayesian Kelly | ⏳ GATED (need 10+ trades) | signals.py |
+| P1-5 OU hold target | ✅ LIVE | signals.py |
+
+### Session Start Checklist (next session)
+1. Run `.\Daily_GitHub_Push.bat` before starting
+2. Check outcome_pending.json count — if 10+, build P1-4 (Bayesian Kelly)
+3. Next P1 items: P1-8 (regime-relative thesis threshold), P1-9 (watchdog intraday), P1-10 (composite velocity entry)
+4. RAPTOR_AUDIT_AND_PLAN.md is the master plan — keep it uploaded each session
+
+---
+
+## 18. SESSION — 2026-05-20 (Full Audit + P0 Verification + P1 Implementation)
+
+### What was done this session
+
+#### GitHub Setup ✅
+- Git installed on laptop, repo pushed to github.com/Stevefirwin-svg/raptor
+- Daily_GitHub_Push.bat built and tested — one command syncs everything
+- Working Copy (iOS) identified as phone-side git client for future sessions
+
+#### P0 Verification ✅ — All 8 confirmed live in codebase
+Ran Select-String checks on laptop against actual files. All P0 fixes from CoWork (Opus) session confirmed present:
+- P0-1 outcome_pending.json sidecar — exit_monitor.py ✅
+- P0-2 _is_backfill stop recompute — hold_monitor.py ✅
+- P0-3 RISK_ON canonical taxonomy — signals.py ✅
+- P0-4 market_value field — daily_recap.py ✅ (pre-existing)
+- P0-5 get_bars() — watchdog.py ✅ (pre-existing)
+- P0-6 _env file — not a bug ✅
+- P0-7 annualization_factor Sharpe fix — daily_recap.py ✅
+- P0-8 macro_context.json canonical source — main.py ✅
+
+#### P1 Alpha Gaps Implemented ✅
+
+**P1-1 — Kalman Macro Classifier (macro_context.py)**
+- Replaced integer vote-count with continuous [-1,+1] signal scores
+- Scalar Kalman filter smooths risk score across days (Q=0.05, R=0.20)
+- Weights: SPY=0.30, VIX=0.25, credit=0.20, breadth=0.15, yield_curve=0.07, fed=0.03
+- Kalman state persisted in macro_context.json for next-day continuity
+- Hard overrides (VIX CRISIS, credit STRESS) kept unchanged
+- Reference: Hamilton (1989), Kim & Nelson (1999)
+
+**P1-2 — Vol-Regime Hard Stop (exit_monitor.py)**
+- Stop multiplier now scales with ATR percentile (60-day distribution)
+- Low vol (pctile<0.25): 2.5x | Normal: 3.0x | High vol (pctile>0.75): 3.5x
+- _atr_percentile() and _vol_regime_stop_mult() added as helpers
+- Reference: Kaminski & Lo 2014, audit P1-2
+
+**P1-3 — OU Trailing Stop (exit_monitor.py)**
+- _ou_theta() estimator added: OLS regression of log-price reversion to local mean
+- Trail base = 1/sqrt(theta), clamped [1.0, 3.0] ATR
+- Fast-reverting stocks (half-life 2d) → 1.7x trail. Trending (half-life 7d+) → 3.0x
+- Static step table (2.5/2.0/1.5/1.0) removed. Signal-quality modifier made continuous
+- Fallback to step table if bars unavailable
+- Reference: Leung & Zhang 2019, arXiv:1701.03960
+
+**P1-5 — OU Hold Target (signals.py)**
+- Replaced 16 + 14*atr_pctile with ceil(log(2)/theta) — one full OU half-life
+- TRENDING micro regime → 2x multiplier (let trends run)
+- REVERTING → 1x (one half-life, then reassess)
+- Clamped [3, 30] days. Fallback 15 if theta unavailable
+- _ou_theta_signals() inlined to avoid circular import with exit_monitor
+- Reference: Leung & Zhang 2019
+
+### What is NOT done yet — P1 remaining
+
+**P1-4 — Bayesian Kelly** — GATED on 10+ closed trades flowing through outcome_pending.json
+- Gate check: `python -c "import json; d=json.load(open('outcome_pending.json')); print(len(d), 'pending outcomes')"`
+- Once 10+ trades close: build f* = (mu-r)/sigma^2 from realized returns by composite decile
+- Reference: Thorp 2006, audit P1-4
+
+### P1 Status Summary
+| Item | Status | File |
+|------|--------|------|
+| P1-1 Kalman regime | ✅ LIVE | macro_context.py |
+| P1-2 Vol-regime stop | ✅ LIVE | exit_monitor.py |
+| P1-3 OU trail | ✅ LIVE | exit_monitor.py |
+| P1-4 Bayesian Kelly | ⏳ GATED (need 10+ trades) | signals.py |
+| P1-5 OU hold target | ✅ LIVE | signals.py |
+
+### Session Start Checklist (next session)
+1. Run `.\Daily_GitHub_Push.bat` before starting
+2. Upload RAPTOR_AUDIT_AND_PLAN.md — master plan lives there
+3. Check outcome_pending.json count — if 10+, build P1-4 Bayesian Kelly
+4. Next P1 items: P1-8 (regime-relative thesis threshold), P1-9 (watchdog intraday), P1-10 (composite velocity entry)
