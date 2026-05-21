@@ -1,10 +1,10 @@
 {
   "AMD": {
     "symbol": "AMD",
-    "timestamp": "2026-05-20T16:30:34.036511",
+    "timestamp": "2026-05-20T18:38:25.407807",
     "tier": "DECAYING",
     "health": -0.1896,
-    "pnl_pct": 47.276,
+    "pnl_pct": 43.122,
     "days_held": 0,
     "days_history": 12,
     "pre_entry_days": 0,
@@ -33,8 +33,8 @@
         "weight": 0.15
       },
       "volume": {
-        "score": -0.6104,
-        "detail": "OBV_slope=-382700  UD_ratio=0.64  OBVtrend=-0.45",
+        "score": -0.6103,
+        "detail": "OBV_slope=-382647  UD_ratio=0.64  OBVtrend=-0.45",
         "weight": 0.1
       },
       "volatility": {
@@ -49,7 +49,7 @@
       },
       "hold_duration": {
         "score": 0.0,
-        "detail": "hold_ratio=0.00  pnl=+47.3%",
+        "detail": "hold_ratio=0.00  pnl=+43.1%",
         "weight": 0.02
       }
     },
@@ -69,7 +69,7 @@
       }
     },
     "snapshot": {
-      "timestamp": "2026-05-20T16:30:34.031463",
+      "timestamp": "2026-05-20T18:38:25.403733",
       "symbol": "AMD",
       "composite": -0.0756,
       "t_stat": -0.0444,
@@ -85,36 +85,36 @@
         "macd_accel": -1.8731,
         "adx_dir": 0.4825,
         "price_cloud": 0.4626,
-        "vol_ratio": -0.2252,
-        "obv_r2": -0.0781,
-        "accum_dist": 0.1823,
+        "vol_ratio": -0.2251,
+        "obv_r2": -0.078,
+        "accum_dist": 0.1824,
         "atr_pctile": -0.9636,
         "bb_squeeze": -0.4336,
         "rel_strength": 2.0853,
         "rev_momentum": 1.6746
       },
       "factor_contributions": {
-        "rsi_mr": -0.041093,
-        "bollinger_z": -0.036434,
-        "crowd_panic": -0.003356,
-        "ma_distance": -0.083539,
+        "rsi_mr": -0.04109,
+        "bollinger_z": -0.036432,
+        "crowd_panic": -0.003355,
+        "ma_distance": -0.083534,
         "hurst": 0.0,
-        "ma_stack": 0.121873,
-        "macd_accel": -0.181079,
-        "adx_dir": 0.078039,
-        "price_cloud": 0.045492,
-        "vol_ratio": -0.013423,
+        "ma_stack": 0.121865,
+        "macd_accel": -0.181068,
+        "adx_dir": 0.078035,
+        "price_cloud": 0.045489,
+        "vol_ratio": -0.013432,
         "obv_r2": 0.0,
-        "accum_dist": 0.014969,
-        "atr_pctile": -0.065815,
-        "bb_squeeze": -0.023344,
-        "rel_strength": 0.07146,
-        "rev_momentum": 0.040673
+        "accum_dist": 0.014973,
+        "atr_pctile": -0.065811,
+        "bb_squeeze": -0.023343,
+        "rel_strength": 0.071455,
+        "rev_momentum": 0.04067
       },
       "cluster_scores": {
         "MR": -1.0082,
         "TREND": -0.0634,
-        "VOL": -0.0403,
+        "VOL": -0.0402,
         "VOLAT": 0.2294,
         "REV": 1.6746
       },
@@ -124,9 +124,9 @@
       "higher_highs": 0,
       "higher_lows": 0,
       "close_pos_5d": 0.5406,
-      "vol_ratio": 0.8392,
-      "obv_slope": -382699.8,
-      "ud_ratio": 0.6415,
+      "vol_ratio": 0.8395,
+      "obv_slope": -382646.6,
+      "ud_ratio": 0.6416,
       "atr": 29.5893,
       "atr_expansion": 1.0395,
       "bb_width": 0.2645,
@@ -134,7 +134,7 @@
       "current_price": 447.55,
       "qty": 25.0,
       "market_value": 11188.75,
-      "pnl_pct": 47.276,
+      "pnl_pct": 43.122,
       "stop_price": 215.55214285714283,
       "stop_dist_atr": 7.841,
       "days_held": 0,
@@ -144,19 +144,19 @@
   },
   "CSX": {
     "symbol": "CSX",
-    "timestamp": "2026-05-20T16:30:34.043303",
+    "timestamp": "2026-05-20T18:38:25.412473",
     "tier": "STRENGTHENING",
-    "health": 0.2869,
-    "pnl_pct": 0.661,
+    "health": 0.2868,
+    "pnl_pct": 0.705,
     "days_held": 5,
     "days_history": 12,
     "pre_entry_days": 0,
-    "composite": 0.308,
+    "composite": 0.3079,
     "factors_positive": 10,
     "stop_dist_atr": 3.641,
     "layers": {
       "composite_slope": {
-        "score": 0.3711,
+        "score": 0.3709,
         "detail": "slope=+0.0371/day over 5d",
         "weight": 0.25
       },
@@ -171,7 +171,7 @@
         "weight": 0.15
       },
       "cluster_health": {
-        "score": 0.0715,
+        "score": 0.0714,
         "detail": "TREND=+0.44  MR=-0.12  VOL=-0.12  VOLAT=+0.94  REV=-1.33",
         "weight": 0.15
       },
@@ -206,9 +206,9 @@
       "components": {}
     },
     "snapshot": {
-      "timestamp": "2026-05-20T16:30:34.037368",
+      "timestamp": "2026-05-20T18:38:25.408683",
       "symbol": "CSX",
-      "composite": 0.308,
+      "composite": 0.3079,
       "t_stat": 0.2276,
       "factors_positive": 10,
       "factor_agreement": 0.625,
@@ -222,7 +222,7 @@
         "macd_accel": 0.3849,
         "adx_dir": 0.3167,
         "price_cloud": 0.3995,
-        "vol_ratio": 0.4163,
+        "vol_ratio": 0.4146,
         "obv_r2": -1.0991,
         "accum_dist": 0.3138,
         "atr_pctile": 0.6424,
@@ -231,27 +231,27 @@
         "rev_momentum": -1.3344
       },
       "factor_contributions": {
-        "rsi_mr": -0.013512,
-        "bollinger_z": -0.034847,
-        "crowd_panic": -0.019923,
-        "ma_distance": -0.011442,
-        "hurst": 0.049688,
-        "ma_stack": 0.113284,
-        "macd_accel": 0.034591,
-        "adx_dir": 0.047618,
-        "price_cloud": 0.03652,
-        "vol_ratio": 0.023063,
-        "obv_r2": -0.047065,
-        "accum_dist": 0.02395,
-        "atr_pctile": 0.040784,
-        "bb_squeeze": 0.072331,
-        "rel_strength": 0.023038,
-        "rev_momentum": -0.030126
+        "rsi_mr": -0.013511,
+        "bollinger_z": -0.034845,
+        "crowd_panic": -0.019918,
+        "ma_distance": -0.011441,
+        "hurst": 0.049685,
+        "ma_stack": 0.113277,
+        "macd_accel": 0.034589,
+        "adx_dir": 0.047615,
+        "price_cloud": 0.036518,
+        "vol_ratio": 0.022994,
+        "obv_r2": -0.047063,
+        "accum_dist": 0.023948,
+        "atr_pctile": 0.040782,
+        "bb_squeeze": 0.072327,
+        "rel_strength": 0.023037,
+        "rev_momentum": -0.030124
       },
       "cluster_scores": {
         "MR": -0.1178,
         "TREND": 0.4439,
-        "VOL": -0.123,
+        "VOL": -0.1236,
         "VOLAT": 0.937,
         "REV": -1.3344
       },
@@ -271,7 +271,7 @@
       "current_price": 45.92,
       "qty": 416.0,
       "market_value": 19102.72,
-      "pnl_pct": 0.661,
+      "pnl_pct": 0.705,
       "stop_price": 43.07640071428572,
       "stop_dist_atr": 3.641,
       "days_held": 5,
@@ -281,14 +281,14 @@
   },
   "CVE": {
     "symbol": "CVE",
-    "timestamp": "2026-05-20T16:30:34.048960",
+    "timestamp": "2026-05-20T18:38:25.416527",
     "tier": "STRENGTHENING",
     "health": 0.5444,
-    "pnl_pct": 7.033,
+    "pnl_pct": 6.3020000000000005,
     "days_held": 5,
     "days_history": 12,
     "pre_entry_days": 0,
-    "composite": 0.4496,
+    "composite": 0.4495,
     "factors_positive": 11,
     "stop_dist_atr": 4.696,
     "layers": {
@@ -329,7 +329,7 @@
       },
       "hold_duration": {
         "score": 0.0,
-        "detail": "hold_ratio=0.33  pnl=+7.0%",
+        "detail": "hold_ratio=0.33  pnl=+6.3%",
         "weight": 0.02
       }
     },
@@ -343,9 +343,9 @@
       "components": {}
     },
     "snapshot": {
-      "timestamp": "2026-05-20T16:30:34.043775",
+      "timestamp": "2026-05-20T18:38:25.412698",
       "symbol": "CVE",
-      "composite": 0.4496,
+      "composite": 0.4495,
       "t_stat": 0.295,
       "factors_positive": 11,
       "factor_agreement": 0.6875,
@@ -359,7 +359,7 @@
         "macd_accel": 0.3601,
         "adx_dir": 0.4275,
         "price_cloud": 0.2339,
-        "vol_ratio": 1.6797,
+        "vol_ratio": 1.6766,
         "obv_r2": 2.1265,
         "accum_dist": 0.8873,
         "atr_pctile": -0.8993,
@@ -368,27 +368,27 @@
         "rev_momentum": -1.4555
       },
       "factor_contributions": {
-        "rsi_mr": 0.025207,
-        "bollinger_z": -0.026153,
-        "crowd_panic": 0.044544,
-        "ma_distance": -0.02653,
-        "hurst": 0.012886,
-        "ma_stack": 0.113284,
-        "macd_accel": 0.032356,
-        "adx_dir": 0.064268,
-        "price_cloud": 0.021386,
-        "vol_ratio": 0.093049,
-        "obv_r2": 0.091062,
-        "accum_dist": 0.067712,
-        "atr_pctile": -0.057098,
-        "bb_squeeze": -0.02411,
-        "rel_strength": 0.05058,
-        "rev_momentum": -0.032861
+        "rsi_mr": 0.025206,
+        "bollinger_z": -0.026152,
+        "crowd_panic": 0.044531,
+        "ma_distance": -0.026528,
+        "hurst": 0.012885,
+        "ma_stack": 0.113277,
+        "macd_accel": 0.032354,
+        "adx_dir": 0.064264,
+        "price_cloud": 0.021385,
+        "vol_ratio": 0.092979,
+        "obv_r2": 0.091057,
+        "accum_dist": 0.067706,
+        "atr_pctile": -0.057095,
+        "bb_squeeze": -0.024109,
+        "rel_strength": 0.050577,
+        "rev_momentum": -0.032859
       },
       "cluster_scores": {
         "MR": 0.1962,
         "TREND": 0.424,
-        "VOL": 1.5645,
+        "VOL": 1.5635,
         "VOLAT": 0.0689,
         "REV": -1.4555
       },
@@ -408,7 +408,7 @@
       "current_price": 30.53,
       "qty": 323.0,
       "market_value": 9861.19,
-      "pnl_pct": 7.033,
+      "pnl_pct": 6.3020000000000005,
       "stop_price": 25.518571428571427,
       "stop_dist_atr": 4.696,
       "days_held": 5,
@@ -418,19 +418,19 @@
   },
   "DKNG": {
     "symbol": "DKNG",
-    "timestamp": "2026-05-20T16:30:34.055641",
+    "timestamp": "2026-05-20T18:38:25.421581",
     "tier": "DECAYING",
-    "health": -0.282,
-    "pnl_pct": 0.104,
+    "health": -0.2821,
+    "pnl_pct": -0.015,
     "days_held": 0,
     "days_history": 10,
     "pre_entry_days": 0,
-    "composite": 0.0062,
+    "composite": 0.0061,
     "factors_positive": 6,
     "stop_dist_atr": 2.967,
     "layers": {
       "composite_slope": {
-        "score": -0.3871,
+        "score": -0.3873,
         "detail": "slope=-0.0387/day over 5d",
         "weight": 0.25
       },
@@ -466,30 +466,30 @@
       },
       "hold_duration": {
         "score": 0.0,
-        "detail": "hold_ratio=0.00  pnl=+0.1%",
+        "detail": "hold_ratio=0.00  pnl=-0.0%",
         "weight": 0.02
       }
     },
     "decay_driver": "composite_slope: slope=-0.0387/day over 5d",
     "trim": {
       "action": "TRIM_MINOR",
-      "action_label": "Minor trim 21% \u2014 early warning, reduce exposure",
-      "trim_pct": 0.2092,
-      "trim_shares": 148,
-      "reasoning": "severity=0.155 x stop_mult=0.75 x far_mult=1.13 x pnl_mult=1.00 + slope_adj=0.077 = 0.209 -> 20.9% (148 sh)",
+      "action_label": "Minor trim 24% \u2014 early warning, reduce exposure",
+      "trim_pct": 0.2357,
+      "trim_shares": 167,
+      "reasoning": "severity=0.155 x stop_mult=0.75 x far_mult=1.13 x pnl_mult=1.20 + slope_adj=0.077 = 0.236 -> 23.6% (167 sh)",
       "components": {
-        "severity": 0.1553,
+        "severity": 0.1554,
         "stop_mult": 0.75,
         "far_mult": 1.1313,
-        "pnl_mult": 1.0,
-        "slope_adj": 0.0774
+        "pnl_mult": 1.2,
+        "slope_adj": 0.0775
       }
     },
     "snapshot": {
-      "timestamp": "2026-05-20T16:30:34.049426",
+      "timestamp": "2026-05-20T18:38:25.416824",
       "symbol": "DKNG",
-      "composite": 0.0062,
-      "t_stat": 0.0057,
+      "composite": 0.0061,
+      "t_stat": 0.0056,
       "factors_positive": 6,
       "factor_agreement": 0.375,
       "factor_scores": {
@@ -502,7 +502,7 @@
         "macd_accel": -0.0804,
         "adx_dir": 0.1623,
         "price_cloud": 0.0894,
-        "vol_ratio": -0.5865,
+        "vol_ratio": -0.587,
         "obv_r2": 0.6268,
         "accum_dist": -0.8434,
         "atr_pctile": -0.7066,
@@ -511,27 +511,27 @@
         "rev_momentum": -1.373
       },
       "factor_contributions": {
-        "rsi_mr": 0.0379,
-        "bollinger_z": -0.029105,
+        "rsi_mr": 0.037897,
+        "bollinger_z": -0.029102,
         "crowd_panic": 0.0,
         "ma_distance": -0.003593,
         "hurst": -0.009726,
-        "ma_stack": 0.143555,
+        "ma_stack": 0.143543,
         "macd_accel": 0.0,
-        "adx_dir": 0.030928,
+        "adx_dir": 0.030925,
         "price_cloud": 0.0,
-        "vol_ratio": -0.041169,
-        "obv_r2": 0.034013,
-        "accum_dist": -0.081564,
-        "atr_pctile": -0.056851,
-        "bb_squeeze": 0.027498,
-        "rel_strength": -0.006413,
-        "rev_momentum": -0.039281
+        "vol_ratio": -0.041255,
+        "obv_r2": 0.03401,
+        "accum_dist": -0.081556,
+        "atr_pctile": -0.056846,
+        "bb_squeeze": 0.027495,
+        "rel_strength": -0.006412,
+        "rev_momentum": -0.039278
       },
       "cluster_scores": {
         "MR": -0.037,
         "TREND": 0.2114,
-        "VOL": -0.2677,
+        "VOL": -0.2679,
         "VOLAT": -0.144,
         "REV": -1.373
       },
@@ -551,7 +551,7 @@
       "current_price": 25.015,
       "qty": 707.0,
       "market_value": 17685.605,
-      "pnl_pct": 0.104,
+      "pnl_pct": -0.015,
       "stop_price": 21.49778357142857,
       "stop_dist_atr": 2.967,
       "days_held": 0,
@@ -561,10 +561,10 @@
   },
   "INTC": {
     "symbol": "INTC",
-    "timestamp": "2026-05-20T16:30:34.063293",
+    "timestamp": "2026-05-20T18:38:25.425956",
     "tier": "STABLE",
     "health": 0.0884,
-    "pnl_pct": 35.936,
+    "pnl_pct": 33.189,
     "days_held": 0,
     "days_history": 12,
     "pre_entry_days": 0,
@@ -593,8 +593,8 @@
         "weight": 0.15
       },
       "volume": {
-        "score": 0.5579,
-        "detail": "OBV_slope=228914  UD_ratio=0.87  OBVtrend=+1.00",
+        "score": 0.558,
+        "detail": "OBV_slope=229033  UD_ratio=0.87  OBVtrend=+1.00",
         "weight": 0.1
       },
       "volatility": {
@@ -609,7 +609,7 @@
       },
       "hold_duration": {
         "score": 0.0,
-        "detail": "hold_ratio=0.00  pnl=+35.9%",
+        "detail": "hold_ratio=0.00  pnl=+33.2%",
         "weight": 0.02
       }
     },
@@ -623,7 +623,7 @@
       "components": {}
     },
     "snapshot": {
-      "timestamp": "2026-05-20T16:30:34.056400",
+      "timestamp": "2026-05-20T18:38:25.422246",
       "symbol": "INTC",
       "composite": -0.0643,
       "t_stat": -0.0384,
@@ -639,9 +639,9 @@
         "macd_accel": -2.0485,
         "adx_dir": 0.7014,
         "price_cloud": 0.4485,
-        "vol_ratio": -0.0516,
-        "obv_r2": -0.3899,
-        "accum_dist": 0.3973,
+        "vol_ratio": -0.0522,
+        "obv_r2": -0.3898,
+        "accum_dist": 0.3974,
         "atr_pctile": -0.9636,
         "bb_squeeze": -0.1445,
         "rel_strength": 1.8531,
@@ -650,17 +650,17 @@
       "factor_contributions": {
         "rsi_mr": -0.043555,
         "bollinger_z": -0.029254,
-        "crowd_panic": -0.020546,
+        "crowd_panic": -0.020542,
         "ma_distance": -0.082206,
         "hurst": -0.004949,
-        "ma_stack": 0.119927,
-        "macd_accel": -0.19487,
-        "adx_dir": 0.111647,
+        "ma_stack": 0.119928,
+        "macd_accel": -0.194872,
+        "adx_dir": 0.111648,
         "price_cloud": 0.043406,
         "vol_ratio": 0.0,
-        "obv_r2": -0.017673,
+        "obv_r2": -0.01767,
         "accum_dist": 0.032101,
-        "atr_pctile": -0.064764,
+        "atr_pctile": -0.064765,
         "bb_squeeze": -0.007657,
         "rel_strength": 0.062489,
         "rev_momentum": 0.031564
@@ -668,7 +668,7 @@
       "cluster_scores": {
         "MR": -1.1366,
         "TREND": -0.056,
-        "VOL": -0.0147,
+        "VOL": -0.0149,
         "VOLAT": 0.2483,
         "REV": 1.3206
       },
@@ -678,9 +678,9 @@
       "higher_highs": 0,
       "higher_lows": 0,
       "close_pos_5d": 0.5581,
-      "vol_ratio": 0.8913,
-      "obv_slope": 228914.5,
-      "ud_ratio": 0.8685,
+      "vol_ratio": 0.8914,
+      "obv_slope": 229033.3,
+      "ud_ratio": 0.8686,
       "atr": 10.0771,
       "atr_expansion": 0.9373,
       "bb_width": 0.3117,
@@ -688,7 +688,7 @@
       "current_price": 118.98,
       "qty": 89.0,
       "market_value": 10589.220000000001,
-      "pnl_pct": 35.936,
+      "pnl_pct": 33.189,
       "stop_price": 57.50857142857142,
       "stop_dist_atr": 6.1,
       "days_held": 0,
@@ -698,19 +698,19 @@
   },
   "KDP": {
     "symbol": "KDP",
-    "timestamp": "2026-05-20T16:30:34.068726",
+    "timestamp": "2026-05-20T18:38:25.430215",
     "tier": "STABLE",
     "health": 0.1959,
-    "pnl_pct": -0.211,
+    "pnl_pct": -0.002,
     "days_held": 5,
     "days_history": 12,
     "pre_entry_days": 0,
-    "composite": 0.2142,
+    "composite": 0.2141,
     "factors_positive": 10,
     "stop_dist_atr": 3.058,
     "layers": {
       "composite_slope": {
-        "score": 0.736,
+        "score": 0.7358,
         "detail": "slope=+0.0736/day over 5d",
         "weight": 0.25
       },
@@ -746,7 +746,7 @@
       },
       "hold_duration": {
         "score": 0.0,
-        "detail": "hold_ratio=0.33  pnl=-0.2%",
+        "detail": "hold_ratio=0.33  pnl=-0.0%",
         "weight": 0.02
       }
     },
@@ -760,10 +760,10 @@
       "components": {}
     },
     "snapshot": {
-      "timestamp": "2026-05-20T16:30:34.063627",
+      "timestamp": "2026-05-20T18:38:25.426431",
       "symbol": "KDP",
-      "composite": 0.2142,
-      "t_stat": 0.1771,
+      "composite": 0.2141,
+      "t_stat": 0.177,
       "factors_positive": 10,
       "factor_agreement": 0.625,
       "factor_scores": {
@@ -776,7 +776,7 @@
         "macd_accel": -0.1229,
         "adx_dir": 0.2466,
         "price_cloud": -0.1347,
-        "vol_ratio": 1.0129,
+        "vol_ratio": 1.0105,
         "obv_r2": 0.0,
         "accum_dist": -1.0999,
         "atr_pctile": 0.0321,
@@ -785,27 +785,27 @@
         "rev_momentum": -1.355
       },
       "factor_contributions": {
-        "rsi_mr": 0.050161,
-        "bollinger_z": 0.028984,
-        "crowd_panic": 0.014188,
+        "rsi_mr": 0.050158,
+        "bollinger_z": 0.028982,
+        "crowd_panic": 0.014184,
         "ma_distance": 0.0,
-        "hurst": -0.003773,
-        "ma_stack": 0.08659,
-        "macd_accel": -0.012723,
-        "adx_dir": 0.042717,
-        "price_cloud": -0.01419,
-        "vol_ratio": 0.06466,
+        "hurst": -0.003772,
+        "ma_stack": 0.086584,
+        "macd_accel": -0.012722,
+        "adx_dir": 0.042714,
+        "price_cloud": -0.014189,
+        "vol_ratio": 0.06458,
         "obv_r2": 0.0,
-        "accum_dist": -0.09672,
+        "accum_dist": -0.096712,
         "atr_pctile": 0.0,
-        "bb_squeeze": 0.083349,
+        "bb_squeeze": 0.083344,
         "rel_strength": 0.006219,
-        "rev_momentum": -0.035252
+        "rev_momentum": -0.03525
       },
       "cluster_scores": {
         "MR": 0.4477,
         "TREND": 0.1091,
-        "VOL": -0.029,
+        "VOL": -0.0298,
         "VOLAT": 0.5489,
         "REV": -1.355
       },
@@ -825,7 +825,7 @@
       "current_price": 28.71,
       "qty": 337.0,
       "market_value": 9675.27,
-      "pnl_pct": -0.211,
+      "pnl_pct": -0.002,
       "stop_price": 26.63702157142857,
       "stop_dist_atr": 3.058,
       "days_held": 5,
@@ -835,19 +835,19 @@
   },
   "PLTD": {
     "symbol": "PLTD",
-    "timestamp": "2026-05-20T16:30:34.075755",
+    "timestamp": "2026-05-20T18:38:25.434692",
     "tier": "DECAYING",
-    "health": -0.2207,
-    "pnl_pct": 1.809,
+    "health": -0.2208,
+    "pnl_pct": 2.067,
     "days_held": 0,
     "days_history": 12,
     "pre_entry_days": 0,
-    "composite": -0.0551,
+    "composite": -0.0552,
     "factors_positive": 7,
     "stop_dist_atr": 3.292,
     "layers": {
       "composite_slope": {
-        "score": 0.0983,
+        "score": 0.0981,
         "detail": "slope=+0.0098/day over 5d",
         "weight": 0.25
       },
@@ -862,7 +862,7 @@
         "weight": 0.15
       },
       "cluster_health": {
-        "score": -0.0815,
+        "score": -0.0816,
         "detail": "TREND=-0.07  MR=+0.14  VOL=-0.57  VOLAT=+0.57  REV=-1.85",
         "weight": 0.15
       },
@@ -883,7 +883,7 @@
       },
       "hold_duration": {
         "score": 0.0,
-        "detail": "hold_ratio=0.00  pnl=+1.8%",
+        "detail": "hold_ratio=0.00  pnl=+2.1%",
         "weight": 0.02
       }
     },
@@ -891,11 +891,11 @@
     "trim": {
       "action": "TRIM_MINOR",
       "action_label": "Minor trim 7% \u2014 early warning, reduce exposure",
-      "trim_pct": 0.0703,
+      "trim_pct": 0.0704,
       "trim_shares": 73,
       "reasoning": "severity=0.083 x stop_mult=0.75 x far_mult=1.13 x pnl_mult=1.00 + slope_adj=0.000 = 0.070 -> 7.0% (73 sh)",
       "components": {
-        "severity": 0.0832,
+        "severity": 0.0833,
         "stop_mult": 0.75,
         "far_mult": 1.1275,
         "pnl_mult": 1.0,
@@ -903,9 +903,9 @@
       }
     },
     "snapshot": {
-      "timestamp": "2026-05-20T16:30:34.069136",
+      "timestamp": "2026-05-20T18:38:25.430433",
       "symbol": "PLTD",
-      "composite": -0.0551,
+      "composite": -0.0552,
       "t_stat": -0.0401,
       "factors_positive": 7,
       "factor_agreement": 0.4375,
@@ -919,7 +919,7 @@
         "macd_accel": -0.3391,
         "adx_dir": 0.0206,
         "price_cloud": -0.3619,
-        "vol_ratio": -0.1738,
+        "vol_ratio": -0.1749,
         "obv_r2": -0.0517,
         "accum_dist": -1.4914,
         "atr_pctile": 0.3212,
@@ -928,27 +928,27 @@
         "rev_momentum": -1.8539
       },
       "factor_contributions": {
-        "rsi_mr": 0.143157,
+        "rsi_mr": 0.143144,
         "bollinger_z": 0.0,
         "crowd_panic": 0.0,
-        "ma_distance": 0.012596,
-        "hurst": -0.077279,
-        "ma_stack": 0.061504,
-        "macd_accel": -0.029005,
+        "ma_distance": 0.012595,
+        "hurst": -0.077272,
+        "ma_stack": 0.061499,
+        "macd_accel": -0.029002,
         "adx_dir": 0.0,
-        "price_cloud": -0.031489,
-        "vol_ratio": -0.013746,
+        "price_cloud": -0.031486,
+        "vol_ratio": -0.013844,
         "obv_r2": 0.0,
-        "accum_dist": -0.162489,
-        "atr_pctile": 0.036392,
-        "bb_squeeze": 0.12478,
+        "accum_dist": -0.162471,
+        "atr_pctile": 0.036389,
+        "bb_squeeze": 0.124768,
         "rel_strength": 0.0,
-        "rev_momentum": -0.119511
+        "rev_momentum": -0.1195
       },
       "cluster_scores": {
         "MR": 0.1355,
         "TREND": -0.0739,
-        "VOL": -0.5723,
+        "VOL": -0.5727,
         "VOLAT": 0.5728,
         "REV": -1.8539
       },
@@ -968,7 +968,7 @@
       "current_price": 7.83,
       "qty": 1036.0,
       "market_value": 8111.88,
-      "pnl_pct": 1.809,
+      "pnl_pct": 2.067,
       "stop_price": 6.816428571428572,
       "stop_dist_atr": 3.292,
       "days_held": 0,
@@ -978,10 +978,10 @@
   },
   "SMCI": {
     "symbol": "SMCI",
-    "timestamp": "2026-05-20T16:30:34.082449",
+    "timestamp": "2026-05-20T18:38:25.439980",
     "tier": "STABLE",
     "health": -0.0489,
-    "pnl_pct": -1.7209999999999999,
+    "pnl_pct": -3.1,
     "days_held": 0,
     "days_history": 12,
     "pre_entry_days": 0,
@@ -1010,8 +1010,8 @@
         "weight": 0.15
       },
       "volume": {
-        "score": -0.6512,
-        "detail": "OBV_slope=-693728  UD_ratio=0.80  OBVtrend=-0.54",
+        "score": -0.6511,
+        "detail": "OBV_slope=-693629  UD_ratio=0.80  OBVtrend=-0.54",
         "weight": 0.1
       },
       "volatility": {
@@ -1026,7 +1026,7 @@
       },
       "hold_duration": {
         "score": 0.0,
-        "detail": "hold_ratio=0.00  pnl=-1.7%",
+        "detail": "hold_ratio=0.00  pnl=-3.1%",
         "weight": 0.02
       }
     },
@@ -1040,7 +1040,7 @@
       "components": {}
     },
     "snapshot": {
-      "timestamp": "2026-05-20T16:30:34.077171",
+      "timestamp": "2026-05-20T18:38:25.435212",
       "symbol": "SMCI",
       "composite": -0.0962,
       "t_stat": -0.0565,
@@ -1056,8 +1056,8 @@
         "macd_accel": -1.1636,
         "adx_dir": 0.1456,
         "price_cloud": 1.0186,
-        "vol_ratio": -0.2599,
-        "obv_r2": -1.9011,
+        "vol_ratio": -0.2596,
+        "obv_r2": -1.9009,
         "accum_dist": 0.0484,
         "atr_pctile": -0.9636,
         "bb_squeeze": -0.0964,
@@ -1065,27 +1065,27 @@
         "rev_momentum": 1.2605
       },
       "factor_contributions": {
-        "rsi_mr": -0.051654,
-        "bollinger_z": -0.038555,
-        "crowd_panic": -0.014782,
-        "ma_distance": -0.056287,
-        "hurst": 0.098546,
-        "ma_stack": 0.106801,
-        "macd_accel": -0.124216,
-        "adx_dir": 0.026005,
-        "price_cloud": 0.110618,
-        "vol_ratio": -0.017103,
-        "obv_r2": -0.096707,
+        "rsi_mr": -0.05165,
+        "bollinger_z": -0.038553,
+        "crowd_panic": -0.014777,
+        "ma_distance": -0.056283,
+        "hurst": 0.098539,
+        "ma_stack": 0.106793,
+        "macd_accel": -0.124207,
+        "adx_dir": 0.026003,
+        "price_cloud": 0.11061,
+        "vol_ratio": -0.017106,
+        "obv_r2": -0.096691,
         "accum_dist": 0.0,
-        "atr_pctile": -0.072675,
+        "atr_pctile": -0.072669,
         "bb_squeeze": 0.0,
         "rel_strength": 0.0,
-        "rev_momentum": 0.033808
+        "rev_momentum": 0.033805
       },
       "cluster_scores": {
         "MR": -0.2597,
         "TREND": 0.134,
-        "VOL": -0.7042,
+        "VOL": -0.704,
         "VOLAT": -0.3802,
         "REV": 1.2605
       },
@@ -1095,9 +1095,9 @@
       "higher_highs": 1,
       "higher_lows": 0,
       "close_pos_5d": 0.6297,
-      "vol_ratio": 0.8336,
-      "obv_slope": -693728.5,
-      "ud_ratio": 0.8024,
+      "vol_ratio": 0.834,
+      "obv_slope": -693628.7,
+      "ud_ratio": 0.8025,
       "atr": 2.4725,
       "atr_expansion": 1.0281,
       "bb_width": 0.1964,
@@ -1105,7 +1105,7 @@
       "current_price": 33.46,
       "qty": 186.0,
       "market_value": 6223.56,
-      "pnl_pct": -1.7209999999999999,
+      "pnl_pct": -3.1,
       "stop_price": 26.679465999999998,
       "stop_dist_atr": 2.742,
       "days_held": 0,
@@ -1115,19 +1115,19 @@
   },
   "STM": {
     "symbol": "STM",
-    "timestamp": "2026-05-20T16:30:34.088289",
+    "timestamp": "2026-05-20T18:38:25.443758",
     "tier": "STABLE",
     "health": 0.1258,
-    "pnl_pct": 28.266000000000002,
+    "pnl_pct": 29.153000000000002,
     "days_held": 5,
     "days_history": 12,
     "pre_entry_days": 0,
-    "composite": 0.2492,
+    "composite": 0.2491,
     "factors_positive": 8,
     "stop_dist_atr": 7.638,
     "layers": {
       "composite_slope": {
-        "score": 0.0691,
+        "score": 0.0689,
         "detail": "slope=+0.0069/day over 5d",
         "weight": 0.25
       },
@@ -1163,7 +1163,7 @@
       },
       "hold_duration": {
         "score": 0.0,
-        "detail": "hold_ratio=0.33  pnl=+28.3%",
+        "detail": "hold_ratio=0.33  pnl=+29.2%",
         "weight": 0.02
       }
     },
@@ -1177,9 +1177,9 @@
       "components": {}
     },
     "snapshot": {
-      "timestamp": "2026-05-20T16:30:34.082867",
+      "timestamp": "2026-05-20T18:38:25.440219",
       "symbol": "STM",
-      "composite": 0.2492,
+      "composite": 0.2491,
       "t_stat": 0.1235,
       "factors_positive": 8,
       "factor_agreement": 0.5,
@@ -1193,7 +1193,7 @@
         "macd_accel": -0.7056,
         "adx_dir": 0.7314,
         "price_cloud": 0.5558,
-        "vol_ratio": -0.6262,
+        "vol_ratio": -0.6267,
         "obv_r2": 2.3384,
         "accum_dist": 0.9669,
         "atr_pctile": -0.9636,
@@ -1202,27 +1202,27 @@
         "rev_momentum": 1.6888
       },
       "factor_contributions": {
-        "rsi_mr": -0.054814,
-        "bollinger_z": -0.053247,
-        "crowd_panic": -0.020555,
-        "ma_distance": -0.077652,
-        "hurst": 0.040285,
-        "ma_stack": 0.113284,
-        "macd_accel": -0.063407,
-        "adx_dir": 0.109959,
-        "price_cloud": 0.050811,
-        "vol_ratio": -0.034686,
-        "obv_r2": 0.100134,
-        "accum_dist": 0.073791,
-        "atr_pctile": -0.061177,
+        "rsi_mr": -0.05481,
+        "bollinger_z": -0.053244,
+        "crowd_panic": -0.020549,
+        "ma_distance": -0.077647,
+        "hurst": 0.040283,
+        "ma_stack": 0.113277,
+        "macd_accel": -0.063403,
+        "adx_dir": 0.109953,
+        "price_cloud": 0.050808,
+        "vol_ratio": -0.034754,
+        "obv_r2": 0.100128,
+        "accum_dist": 0.073785,
+        "atr_pctile": -0.061173,
         "bb_squeeze": -0.007233,
-        "rel_strength": 0.095561,
-        "rev_momentum": 0.038127
+        "rel_strength": 0.095555,
+        "rev_momentum": 0.038124
       },
       "cluster_scores": {
         "MR": -1.0269,
         "TREND": 0.314,
-        "VOL": 0.893,
+        "VOL": 0.8929,
         "VOLAT": 0.6306,
         "REV": 1.6888
       },
@@ -1242,7 +1242,7 @@
       "current_price": 64.94,
       "qty": 177.0,
       "market_value": 11494.38,
-      "pnl_pct": 28.266000000000002,
+      "pnl_pct": 29.153000000000002,
       "stop_price": 40.64994399999999,
       "stop_dist_atr": 7.638,
       "days_held": 5,
@@ -1252,10 +1252,10 @@
   },
   "TSLA": {
     "symbol": "TSLA",
-    "timestamp": "2026-05-20T16:30:34.097246",
+    "timestamp": "2026-05-20T18:38:25.448139",
     "tier": "DECAYING",
     "health": -0.4227,
-    "pnl_pct": 6.39,
+    "pnl_pct": 5.809,
     "days_held": 0,
     "days_history": 12,
     "pre_entry_days": 0,
@@ -1284,8 +1284,8 @@
         "weight": 0.15
       },
       "volume": {
-        "score": -0.6686,
-        "detail": "OBV_slope=-554948  UD_ratio=0.21  OBVtrend=-0.14",
+        "score": -0.6685,
+        "detail": "OBV_slope=-554862  UD_ratio=0.21  OBVtrend=-0.14",
         "weight": 0.1
       },
       "volatility": {
@@ -1300,7 +1300,7 @@
       },
       "hold_duration": {
         "score": 0.0,
-        "detail": "hold_ratio=0.00  pnl=+6.4%",
+        "detail": "hold_ratio=0.00  pnl=+5.8%",
         "weight": 0.02
       }
     },
@@ -1320,10 +1320,10 @@
       }
     },
     "snapshot": {
-      "timestamp": "2026-05-20T16:30:34.088724",
+      "timestamp": "2026-05-20T18:38:25.444033",
       "symbol": "TSLA",
       "composite": -0.4774,
-      "t_stat": -0.4033,
+      "t_stat": -0.4032,
       "factors_positive": 7,
       "factor_agreement": 0.4375,
       "factor_scores": {
@@ -1336,36 +1336,36 @@
         "macd_accel": -1.5343,
         "adx_dir": -1.0867,
         "price_cloud": 0.1587,
-        "vol_ratio": -0.3086,
-        "obv_r2": -0.2396,
-        "accum_dist": -0.2497,
+        "vol_ratio": -0.3076,
+        "obv_r2": -0.2395,
+        "accum_dist": -0.2496,
         "atr_pctile": -0.9314,
         "bb_squeeze": -1.2044,
         "rel_strength": 0.3051,
         "rev_momentum": 0.649
       },
       "factor_contributions": {
-        "rsi_mr": 0.007341,
-        "bollinger_z": -0.016958,
-        "crowd_panic": 0.035161,
-        "ma_distance": -0.007771,
-        "hurst": 0.019417,
+        "rsi_mr": 0.00734,
+        "bollinger_z": -0.016957,
+        "crowd_panic": 0.03515,
+        "ma_distance": -0.00777,
+        "hurst": 0.019415,
         "ma_stack": 0.0,
-        "macd_accel": -0.165701,
-        "adx_dir": -0.196368,
-        "price_cloud": 0.01744,
-        "vol_ratio": -0.020545,
-        "obv_r2": -0.012332,
-        "accum_dist": -0.022898,
-        "atr_pctile": -0.071075,
-        "bb_squeeze": -0.072443,
-        "rel_strength": 0.011679,
-        "rev_momentum": 0.01761
+        "macd_accel": -0.16569,
+        "adx_dir": -0.196355,
+        "price_cloud": 0.017438,
+        "vol_ratio": -0.020499,
+        "obv_r2": -0.012326,
+        "accum_dist": -0.022891,
+        "atr_pctile": -0.07107,
+        "bb_squeeze": -0.072438,
+        "rel_strength": 0.011678,
+        "rev_momentum": 0.017609
       },
       "cluster_scores": {
         "MR": 0.2265,
         "TREND": -0.6051,
-        "VOL": -0.266,
+        "VOL": -0.2656,
         "VOLAT": -0.6102,
         "REV": 0.649
       },
@@ -1375,9 +1375,9 @@
       "higher_highs": 0,
       "higher_lows": 0,
       "close_pos_5d": 0.4736,
-      "vol_ratio": 0.8283,
-      "obv_slope": -554948.4,
-      "ud_ratio": 0.213,
+      "vol_ratio": 0.8288,
+      "obv_slope": -554862.0,
+      "ud_ratio": 0.2132,
       "atr": 18.1314,
       "atr_expansion": 0.9267,
       "bb_width": 0.1249,
@@ -1385,7 +1385,7 @@
       "current_price": 417.185,
       "qty": 3.0,
       "market_value": 1251.555,
-      "pnl_pct": 6.39,
+      "pnl_pct": 5.809,
       "stop_price": 336.7157142857143,
       "stop_dist_atr": 4.438,
       "days_held": 0,
