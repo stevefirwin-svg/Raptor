@@ -1,5 +1,5 @@
 # Raptor Trading System — Master Development Skill & Architecture Ontology
-*Last updated: 2026-05-22*
+*Last updated: 2026-05-15*
 
 ---
 
@@ -56,7 +56,7 @@
 
 ```
 9:00 AM  macro_context.py
-         │  Sector breadth: 50/150/200MA (Zweig 1986) ← UPDATED 2026-05-22
+         │
          └─→ macro_context.json
                  │
 9:15 AM  market_agent.py reads macro_context.json
@@ -71,11 +71,10 @@
          │
          ├─ STANDBY? → return immediately, no scan
          │
-         ├─ margin_guard.check_margin_safety(dm)  ← UPDATED 2026-05-22
-         │   util >90% → BLOCK (return, fail closed)
-         │   util >85% OR on margin → cap new entries at 1
+         ├─ margin_guard.check_margin_safety(dm)
+         │   util >90% → BLOCK (return)
+         │   util >85% → cap new entries at 1
          │   util >75% → WARNING, proceed
-         │   API error → BLOCK (fail closed, not open)
          │
          ├─ universe_builder.build() → ~130 symbols
          │
@@ -89,11 +88,6 @@
          │
          ├─ filter out already-held symbols
          │
-         ├─ GAP 6: cooldown filter ← NEW 2026-05-22
-         │   _get_cooldown_symbols() checks outcome_log + position_ledger
-         │   hard_stop/trail_loss within 5 days → symbol blocked
-         │   trail_profit exits NOT blocked (thesis worked)
-         │
          ├─ EntryAgent.evaluate_batch(candidates)
          │   ├─ _ollama_alive() ping — fast-fail if down
          │   ├─ numbered veto rules 1-6
@@ -101,15 +95,10 @@
          │   └─ writes entry_vetoes.json
          │
          ├─ for each signal that passes:
-         │   ├─ GAP 5: composite_velocity from hold_history.json ← NEW 2026-05-22
-         │   │   velocity = composite_today - composite_3d_ago
-         │   │   kelly_modifier = max(0.80, min(1.20, 1.0 + velocity × 0.2))
-         │   │   effective_kelly = kelly_fraction × kelly_modifier
-         │   ├─ size = my_equity × effective_kelly / entry_price
+         │   ├─ size = my_equity × kelly_fraction / entry_price
          │   ├─ buying_power check (95% of Alpaca buying_power)
          │   ├─ submit_order(BUY, limit, client_order_id)
-         │   └─ ledger.record_entry(v5.4, symbol, shares, price, date,
-         │       {stop, regime, t_stat, composite_score, composite_velocity, kelly_fraction})
+         │   └─ ledger.record_entry(v5.4, symbol, shares, price, date, metadata)
          │
 9:52 AM  exit_monitor.py (Morning Monitor)
 3:50 PM  exit_monitor.py (Afternoon Monitor)
@@ -119,25 +108,14 @@
          │   default 0.0 for genuinely unscored (not -1.0)
          │
          ├─ for each position:
-         │   ├─ EXIT 1: hard_stop — GAP 3 vol-regime aware ← UPDATED 2026-05-22
-         │   │   ATR pctile < 25th → 2.5× ATR (low vol, tighter)
-         │   │   ATR pctile 25-75th → 3.0× ATR (normal baseline)
-         │   │   ATR pctile > 75th → 3.5× ATR (high vol, avoid whipsaw)
-         │   ├─ EXIT 2: trailing_stop — GAP 1 signal-aware ← UPDATED 2026-05-17
-         │   │   trail multiplier: f(days_held, profit_atr, composite, health)
-         │   │   signal_strength = (composite + health) / 2
-         │   │   strength > +0.3 → ×1.3 (wider, let winners run)
-         │   │   strength < -0.3 → ×0.75 (tighter, protect profits)
-         │   │   Thresholds to calibrate via calibrate_gap1.py after backtest
-         │   ├─ EXIT 3: thesis_invalid — GAP 4 regime-scaled ← UPDATED 2026-05-22
-         │   │   RISK_ON:  comp < -2.0 AND pnl < -5%
-         │   │   NEUTRAL:  comp < -1.5 AND pnl < -5% (baseline)
-         │   │   RISK_OFF: comp < -2.0 AND pnl < -5%
-         │   │   CRISIS:   comp < -2.5 AND pnl < -5%
+         │   ├─ EXIT 1: hard_stop — price ≤ entry - 3.0×ATR
+         │   ├─ EXIT 2: trailing_stop — price ≤ high_water - trail×ATR
+         │   │          trail multiplier: 2.5→2.0→1.5→1.0 ATR by days held
+         │   │          profit tightener: tightens when up >1/2/4 ATR
+         │   ├─ EXIT 3: thesis_invalid — comp < -1.5 AND pnl < -5%
          │   ├─ EXIT 4B: leveraged_3x_cap — 3x ETF held > 3 days
          │   │           leveraged_2x_cap — 2x ETF held > 10 days
-         │   └─ EXIT 5: time_decay — flat(5d OR 20d) AND losing AND
-         │              composite < 0 AND health < 0 AND held ≥ 12 days
+         │   └─ EXIT 5: time_decay — flat 20d AND losing AND held ≥ 10 days
          │
          ├─ EXIT 4: portfolio_heat — portfolio_dd < -12%, exit weakest composite
          │
@@ -159,8 +137,8 @@
 3:50 PM  hold_monitor.py (Afternoon Monitor)
          │
          ├─ build_snapshot() per position
-         │   ├─ price momentum (ROC trend over 3 snapshots), OBV trend, ATR
-         │   ├─ Bollinger, volume ratios, factor_scores from _last_full_signals
+         │   ├─ price momentum, OBV, ATR, Bollinger, volume ratios
+         │   ├─ factor_scores from _last_full_signals (real, not Dummy)
          │   └─ stop_dist_atr from ledger metadata
          │
          ├─ compute_health_score(trajectory)
@@ -172,22 +150,19 @@
          │   severity × stop_mult × FAR_mult × pnl_mult + slope_adj
          │   → trim_pct, trim_shares, action: HOLD/TRIM_MINOR/MODERATE/MAJOR/EXIT
          │
-         ├─ saves hold_health.json (today's scores — read by exit_monitor)
-         ├─ saves hold_history.json (full trajectory — daily composite snapshots)
+         ├─ saves hold_health.json (today's scores — read by exit_monitor for math trim)
+         ├─ saves hold_history.json (full trajectory — ML training data)
          │
          └─ HoldAgent.evaluate_batch() [ADVISORY — calibration only]
              ├─ _ollama_alive() ping
              ├─ numbered decision rules 1-4
-             ├─ days_history < 5 → HOLD always (short-circuit, saves 8min)
+             ├─ days_history < 5 → HOLD always
              └─ writes hold_decisions.json (append-only)
 
 3:50 PM  daily_recap.py (via afternoon monitor)
 4:30 PM  daily_recap.py (standalone task)
          └─ email: account summary, holdings, health monitor,
-                   top signals, SPY benchmark, portfolio analytics,
-                   exit reason breakdown, rolling 10-trade WR,
-                   trim efficiency, agent vs math disagreement,
-                   position composite Δ & regime intelligence ← ALL NEW 2026-05-22
+                   top signals, SPY benchmark, portfolio analytics
 ```
 
 ---
@@ -202,19 +177,18 @@
 | `data_feeds.py` | Alpaca bars, FRED macro, news sentiment, order submission | — | Alpaca API, FRED API |
 | `universe_builder.py` | Screens ~6800 assets → ~130 tradeable symbols | `cache/universe/` | Alpaca API |
 | `signals.py` | 16-factor signal engine, z-scoring, Kelly sizing | `self._last_full_signals` | bars, macro |
-| `main.py` | Entry scanner — sizes and submits BUY orders. GAP 5 velocity + GAP 6 cooldown. | `position_ledger.json`, `logs/raptor_DATE.log` | market_decision.json, outcome_log.json, hold_history.json |
-| `exit_monitor.py` | All exit and trim logic — mechanical + math. GAP 1/3/4 applied. | `position_ledger.json`, `trim_log.json`, `logs/exits_DATE.log` | hold_health.json, hold_decisions.json, macro_context.json |
+| `main.py` | Entry scanner — sizes and submits BUY orders | `position_ledger.json`, `logs/raptor_DATE.log` | market_decision.json |
+| `exit_monitor.py` | All exit and trim logic — mechanical + math | `position_ledger.json`, `trim_log.json`, `logs/exits_DATE.log` | hold_health.json, hold_decisions.json |
 | `hold_monitor.py` | 8-layer position health scoring | `hold_health.json`, `hold_history.json`, `hold_decisions.json` | bars, signals |
 | `agent_layer.py` | EntryAgent + HoldAgent Ollama wrappers | `entry_vetoes.json`, `hold_decisions.json`, `prompt_versions/` | macro_context.json |
 | `market_agent.py` | Session gate — SCAN/REDUCE/STANDBY | `market_decision.json` | macro_context.json |
-| `macro_context.py` | FRED macro regime classifier. 50/150/200MA breadth (Zweig). | `macro_context.json` | FRED API, yfinance (SPY + sector ETFs) |
-| `margin_guard.py` | Capital utilization gate. Fail closed. On-margin → reduce. | — | Alpaca account |
+| `macro_context.py` | FRED macro regime classifier | `macro_context.json` | FRED API, Alpaca (SPY) |
+| `margin_guard.py` | Capital utilization gate | — | Alpaca account |
 | `ledger.py` | Position tracking open/closed by model version | `position_ledger.json` | — |
-| `outcome_tracker.py` | Tags closed trades with agent decisions. Position ledger fallback for exit_path. | `outcome_log.json` | Alpaca orders, entry_vetoes.json, hold_decisions.json, position_ledger.json |
+| `outcome_tracker.py` | Tags closed trades with agent decisions | `outcome_log.json` | Alpaca orders, entry_vetoes.json, hold_decisions.json |
 | `backfill_ledger.py` | One-time ledger population from Alpaca | `position_ledger.json` | Alpaca positions |
-| `daily_recap.py` | Bloomberg-style HTML email. 10 new metrics added 2026-05-22. | `logs/recap_preview.html` | all JSON files, bars |
-| `backtest.py` | Walk-forward backtester. Composite+health proxies for GAP 1 validation. | `backtest_results/` | bars |
-| `calibrate_gap1.py` | GAP 1 trail modifier calibration from backtest trades.csv | `backtest_results/calibration_gap1.json` | backtest_results/trades.csv |
+| `daily_recap.py` | Bloomberg-style HTML email report | `logs/recap_preview.html` | all JSON files, bars |
+| `backtest.py` | Walk-forward backtester | `backtest_results/` | bars |
 | `diagnose.py` | Signal diagnostics | — | bars, signals |
 | `check_account.py` | Quick account viewer | — | Alpaca account |
 | `options_engine.py` | Viper v2.0 — 3 options strategies | `logs/viper_*.csv` | bars, Alpaca |
@@ -223,23 +197,24 @@
 
 | File | Written By | Read By | Purpose | Growth |
 |------|-----------|---------|---------|--------|
-| `macro_context.json` | macro_context.py (9:00 AM) | market_agent.py, agent_layer.py, exit_monitor.py | Daily macro regime + breadth + agent summary | Overwritten daily |
+| `macro_context.json` | macro_context.py (9:00 AM) | market_agent.py, agent_layer.py | Daily macro regime + agent summary | Overwritten daily |
 | `market_decision.json` | market_agent.py (9:15 AM) | main.py | SCAN/REDUCE/STANDBY + risk_scalar | Overwritten daily |
-| `hold_health.json` | hold_monitor.py | exit_monitor.py, daily_recap.py | Today's 8-layer scores + stop_dist_atr | Overwritten each run |
-| `hold_history.json` | hold_monitor.py | hold_monitor.py (trajectory), main.py (velocity) | Full daily composite snapshots per symbol | Append-only, grows forever |
+| `hold_health.json` | hold_monitor.py | exit_monitor.py, daily_recap.py | Today's 8-layer scores + trim recommendations | Overwritten each run |
+| `hold_history.json` | hold_monitor.py | hold_monitor.py (trajectory) | Full daily factor snapshots per symbol | Append-only, grows forever |
 | `hold_decisions.json` | hold_monitor.py (via agent_layer) | exit_monitor.py (advisory log only) | HoldAgent HOLD/TRIM/EXIT decisions | Append-only, grows forever |
 | `entry_vetoes.json` | main.py (via agent_layer) | outcome_tracker.py | EntryAgent PASS/VETO decisions | Append-only, grows forever |
-| `position_ledger.json` | main.py (entries), exit_monitor.py (exits) | exit_monitor.py, hold_monitor.py, daily_recap.py, outcome_tracker.py | Open positions + closed trade history | Grows with trades |
-| `outcome_log.json` | outcome_tracker.py | prompt_calibrator.py (planned), main.py (cooldown check) | Closed trades tagged with agent decisions + exit_path | Append-only, grows forever |
-| `trim_log.json` | exit_monitor.py | prompt_calibrator.py (planned), daily_recap.py | Partial trims + math reasoning + agent cross-ref | Append-only, grows forever |
+| `position_ledger.json` | main.py (entries), exit_monitor.py (exits) | exit_monitor.py, hold_monitor.py, daily_recap.py | Open positions + closed trade history | Grows with trades |
+| `outcome_log.json` | outcome_tracker.py | prompt_calibrator.py (planned) | Closed trades tagged with agent decisions | Append-only, grows forever |
+| `trim_log.json` | exit_monitor.py | prompt_calibrator.py (planned) | Partial trims + math reasoning + agent cross-ref | Append-only, grows forever |
 | `adaptive_weights.json` | signals.py (AdaptiveWeights) | signals.py | Ridge regression + IC weights from closed trades | Updated on each closed trade |
 
 ### 3.3 — Log Files (logs/)
 
 | File | Written By | Purpose |
 |------|-----------|---------|
-| `raptor_YYYYMMDD.log` | main.py | Entry scan: signals, orders, vetoes, velocity, cooldown blocks |
-| `exits_YYYYMMDD.log` | exit_monitor.py | Exit decisions, trail prices, vol_pctile, regime threshold, trims |
+| `raptor_YYYYMMDD.log` | main.py | Entry scan: signals, orders placed, vetoes |
+| `exits_YYYYMMDD.log` | exit_monitor.py | Exit decisions, trail prices, trims, order results |
+| `auto_start.log` | bat files | Task scheduler start/complete timestamps |
 | `recap_preview.html` | daily_recap.py (--preview) | Local HTML preview of email |
 | `viper_*.csv` | options_engine.py | Options trade journal |
 
@@ -249,7 +224,14 @@
 |----------|-----------|---------|-----|
 | `cache/fred/` | data_feeds.py (FREDDataFeed) | FRED series JSON per series_id | 6 hours |
 | `cache/universe/universe_YYYY-MM-DD.json` | universe_builder.py | Daily screened symbol list | 1 day |
-| `cache/backtest_bars/` | backtest.py | Parquet per symbol for backtest runs | Permanent |
+| Bar cache | data_feeds.py (in-memory) | OHLCV DataFrames | 5 min |
+
+### 3.5 — Prompt Version Files
+
+| Location | Written By | Purpose |
+|----------|-----------|---------|
+| `prompt_versions/entry_prompt_TIMESTAMP_HASH.txt` | agent_layer.py (on import) | Versioned EntryAgent prompt |
+| `prompt_versions/hold_prompt_TIMESTAMP_HASH.txt` | agent_layer.py (on import) | Versioned HoldAgent prompt |
 
 ---
 
@@ -287,32 +269,22 @@ Signal objects (top-N)
     │
     ├─ filter: remove already-held symbols
     │
-    ├─ GAP 6 cooldown filter (main._get_cooldown_symbols)
-    │   outcome_log + position_ledger → blocked symbols set
-    │   hard_stop/trail_loss within 5d → block re-entry
-    │
     ├─ EntryAgent.evaluate_batch()
     │   Input: composite_score, kelly_fraction, regime,
     │          atr_pct, days_since_earnings, vix_regime, macro_regime
     │   Rules: 6 numbered veto conditions
     │   Output: PASS or VETO + confidence + rule_number
     │
-    ├─ GAP 5 composite velocity sizing (main._get_composite_velocity)
-    │   hold_history.json snapshots → velocity = comp_today - comp_3d_ago
-    │   kelly_modifier = max(0.80, min(1.20, 1.0 + velocity × 0.2))
-    │   effective_kelly = kelly_fraction × kelly_modifier
-    │
     ├─ Position sizing:
-    │   shares = int(my_equity × effective_kelly / entry_price)
+    │   shares = int(my_equity × kelly_fraction / entry_price)
     │   my_equity = account.equity × EQUITY_ALLOCATION × risk_scalar
-    │   kelly base capped 0.02-0.12 in signals.py
+    │   kelly capped 0.02-0.12 in signals.py
     │
     ├─ Guards: buying_power × 0.95, margin_guard max_new cap
     │
     ├─ submit_order(BUY, limit, client_order_id="v5.4_SYM_TIMESTAMP")
     │
-    └─ ledger.record_entry(model, symbol, shares, price, date,
-        {stop, regime, t_stat, composite_score, composite_velocity, kelly_fraction})
+    └─ ledger.record_entry(model, symbol, shares, price, date, {stop, regime, t_stat})
 ```
 
 ### 4.3 — Exit Pipeline
@@ -324,14 +296,13 @@ Alpaca positions (live, source of truth)
     │   default 0.0 for unscored (not -1.0 — unknown != weak)
     │
     ├─ Mechanical exits (per position):
-    │   EXIT 1: hard_stop        GAP 3: vol-regime ATR mult (2.5/3.0/3.5×)
-    │   EXIT 2: trailing_stop    GAP 1: f(days, profit, composite, health)
-    │                            trail thresholds: pending calibrate_gap1.py
-    │   EXIT 3: thesis_invalid   GAP 4: regime-scaled (RISK_ON→-2.0, NEUTRAL→-1.5,
-    │                                   RISK_OFF→-2.0, CRISIS→-2.5) AND pnl < -5%
+    │   EXIT 1: hard_stop        price ≤ entry - 3.0×ATR
+    │   EXIT 2: trailing_stop    price ≤ high_water - trail×ATR
+    │                            trail: 2.5/2.0/1.5/1.0 ATR by days_held
+    │   EXIT 3: thesis_invalid   comp < -1.5 AND pnl < -5%
     │   EXIT 4: portfolio_heat   portfolio_dd < -12%
     │   EXIT 4B: lev_cap         3x ETF > 3 days, 2x ETF > 10 days
-    │   EXIT 5: time_decay       flat(5d/20d) AND losing AND comp<0 AND health<0
+    │   EXIT 5: time_decay       flat 20d AND losing AND held ≥ 10 days
     │
     ├─ Math trim (from hold_health.json — runs AFTER mechanical):
     │   compute_trim() → TRIM_MINOR/MODERATE/MAJOR/EXIT
@@ -346,14 +317,13 @@ Alpaca positions (live, source of truth)
     ├─ ledger.record_exit(model, symbol, price, date, reason)
     ├─ trim_log.json ← partial trim + math reasoning + agent cross-reference
     └─ outcome_tracker.run_tracker() → outcome_log.json
-        └─ exit_path from client_order_id, fallback: position_ledger exit_reason
 ```
 
 ### 4.4 — Learning Pipeline
 
 ```
 Every exit:
-    outcome_log.json  ← full exits tagged with agent decisions + exit_path (outcome_tracker)
+    outcome_log.json  ← full exits tagged with agent decisions (outcome_tracker)
 
 Every trim:
     trim_log.json     ← partial trims + math reasoning + agent cross-ref (exit_monitor)
@@ -361,12 +331,11 @@ Every trim:
 Every entry:
     entry_vetoes.json ← EntryAgent PASS/VETO (agent_layer)
     adaptive_weights.json ← updated on closed trade (signals.AdaptiveWeights)
-    position_ledger.json ← composite_velocity recorded at entry
 
 Every hold_monitor run:
     hold_decisions.json  ← HoldAgent decisions (advisory, calibration data)
     hold_health.json     ← today's 8-layer scores (execution input for math trim)
-    hold_history.json    ← daily composite snapshots (velocity input for entries)
+    hold_history.json    ← daily snapshots appended (ML training data)
 
 [PLANNED — Layer 3] Sunday prompt_calibrator.py:
     Reads:   outcome_log.json + trim_log.json + entry_vetoes.json + hold_decisions.json
@@ -397,7 +366,6 @@ Every hold_monitor run:
 - **Sequential only:** no parallelism — parallel calls timeout
 - **Prompt versioning:** hash-deduped snapshots to `prompt_versions/` on every import
 - **Macro injection:** `_load_macro_summary()` injects regime into every prompt
-- **Short-circuit:** days_history < 5 → HOLD direct write, skips Ollama (saves ~8min)
 
 ### 5.3 — What Math Knows vs What Agents Know
 
@@ -406,13 +374,14 @@ Every hold_monitor run:
 | All 16 factor z-scores | ✅ exact | Summary only |
 | Price momentum (ROC5, HH/HL) | ✅ | From summary |
 | Volume (OBV, up/down ratio) | ✅ | From summary |
-| Composite velocity | ✅ (hold_history) | ❌ not aware |
 | Earnings date proximity | ❌ | ✅ days_since_earnings |
 | VIX spike | Via macro_context | ✅ injected macro |
-| Sector breadth (50/150/200MA) | Via macro_context | ✅ injected macro |
+| Sector breadth | Via macro_context | ✅ injected macro |
 | Credit spreads | Via FRED | ✅ injected macro |
 | Portfolio-level heat | ✅ portfolio_dd | ❌ not aware |
-| Re-entry cooldown | ✅ outcome_log lookup | ❌ not aware |
+| Cross-stock correlation | ✅ portfolio guard | ❌ not aware |
+
+**Implication:** Math is authoritative for position-level decisions. Agents add value on macro/structural context (EntryAgent veto) and accumulate calibration data (HoldAgent).
 
 ---
 
@@ -422,13 +391,14 @@ Every hold_monitor run:
 - 120-symbol: 1008% return, 56% CAGR, 4.64 Sortino, 1.73 PF, 2.0% expectancy
 - 47-symbol: 201% return, 22.6% CAGR, 2.17 Sortino, 1.43 PF
 - v5.5 (20 factors), v6.0 (SR cluster), v7 (behavioral gates) all underperformed — do not revisit
-- **GAP 1 backtest with composite proxy:** RUNNING AS OF 2026-05-22 — results pending
-- **Baseline (pre-GAP1):** trail_loss=980, trail_profit=629, profit_target=124, momentum_break=21, Total Return=1466%, Sharpe=1.517
 
-### 6.2 — Live Account (as of 2026-05-22)
-- Equity: ~$105K | ~10 open positions
-- Backfilled positions: entry_date=2026-05-15, regime=BACKFILL
-- HoldAgent: operational, short-circuit for days_history < 5
+### 6.2 — Live Account (as of 2026-05-15)
+- Equity: ~$105K | Cash: -$68.5K (on margin) | Buying Power: $213K
+- 15 positions, market value ~$173K, utilization 165%
+- Margin guard BLOCKING new entries until utilization < 90%
+- Positions backfilled: entry_date=2026-05-15, regime=BACKFILL, stops estimated at 2% ATR proxy
+- HoldAgent history: 1 day — needs 5 days before meaningful reasoning
+- Layer 3: NOT started — needs 30+ agent-tagged trades in outcome_log.json
 
 ### 6.3 — Factor Library (DO NOT MODIFY)
 ```
@@ -445,18 +415,12 @@ REV cluster:   rev_momentum
 
 | Time ET | Task Name | Script | What it does |
 |---------|-----------|--------|--------------|
-| 9:00 AM | Raptor_MacroContext | macro_context.py | FRED + SPY + sector breadth → macro_context.json |
+| 9:00 AM | Raptor_MacroContext | macro_context.py | FRED + SPY → macro_context.json |
 | 9:15 AM | Raptor_MarketAgent | market_agent.py | SCAN/REDUCE/STANDBY → market_decision.json |
-| 9:35 AM | Raptor Bot | Start_Entry.bat → main.py | Entry scan + cooldown filter + velocity sizing + BUY orders |
+| 9:35 AM | Raptor Bot | Start_Entry.bat → main.py | Entry scan + BUY orders |
 | 9:52 AM | Raptor Morning Monitor | Start_Morning_Monitor.bat | exit_monitor + hold_monitor |
 | 3:50 PM | Raptor Afternoon Monitor | Start_Afternoon_Monitor.bat | exit_monitor + hold_monitor + recap email |
 | 4:30 PM | Raptor_DailyRecap | Start_Recap.bat → daily_recap.py | Recap email at closing prices |
-
-**Scheduler rules:**
-- Always run Task Scheduler edits (`Set-ScheduledTask`) from elevated (admin) PowerShell
-- Regular PowerShell returns `Access is denied`
-- All Python/coding work stays in regular PowerShell
-- Afternoon Monitor: ExecutionTimeLimit=PT0S (unlimited) — 15min limit was killing it
 
 ---
 
@@ -483,15 +447,6 @@ REV cluster:   rev_momentum
 19. **Use account["buying_power"] not account["cash"]** for capital checks.
 20. **market_agent reads macro.get("regime")** not "macro_regime" — data_feeds returns "regime".
 21. **Do NOT start Layer 3** until 30+ agent-tagged trades in outcome_log.json.
-22. **margin_guard fails CLOSED** — API error blocks entries, does not allow them.
-23. **On-margin = REDUCE** — cash < 0 caps new entries at 1, same as util >85%.
-24. **composite_velocity recorded in ledger** at every entry — required for future IC calibration.
-25. **Cooldown symbols from outcome_log first**, position_ledger second — outcome_log is authoritative.
-26. **PROJECT MOUNT DOES NOT SYNC TO LAPTOP — MANDATORY END-OF-SESSION DELIVERY.** str_replace edits only exist in the Claude project mount. They do NOT automatically appear on Steve's laptop or in the GitHub repo. At the end of EVERY session where any file was modified, Claude MUST:
-    - Copy ALL changed files to `/mnt/user-data/outputs/`
-    - Call `present_files` with all of them so Steve can download
-    - Remind Steve to run: `git add <files>`, `git commit -m "..."`, `git push origin main`
-    Without this step, ALL work from the session is lost. This is the highest-priority housekeeping rule. Non-negotiable. No exceptions.
 
 ---
 
@@ -509,8 +464,8 @@ REV cluster:   rev_momentum
 - Don't remove _last_full_signals from signals.py
 - Don't use account["cash"] for buying power — use buying_power
 - Don't add Ollama calls to exit_monitor
-- Don't end a session without copying all modified files to outputs and calling present_files
-- Don't assume str_replace changes are on Steve's laptop — they are not until downloaded
+- Don't use market_value from Alpaca positions — field doesn't exist
+- Don't re-introduce parallel agent calls
 
 ---
 
@@ -553,166 +508,157 @@ print(f'{len(holds)} hold agent decisions in hold_decisions.json')
 
 ---
 
-## 13. INFRASTRUCTURE FIXES (HISTORICAL)
+## 13. INFRASTRUCTURE FIXES APPLIED (2026-05-15)
 
-### 2026-05-15
-- **Raptor_DailyRecap**: Missing `<WorkingDirectory>` — never ran since creation. Fixed via elevated PowerShell.
-- **Raptor Afternoon Monitor**: `PT15M` execution limit was killing it. Fixed to `PT0S` (unlimited).
-- **time_decay exit**: Rewritten — flat(5d OR 20d) AND losing AND composite<0 AND health<0.
-- **HoldAgent short-circuit**: days_history < 5 → direct HOLD write, skips Ollama. Cuts 9min → 75sec.
-
-### 2026-05-17
-- **GAP 1 — Signal-aware trailing stop**: `_trail_mult()` now f(composite, health). signal_strength = (composite+health)/2. strength>+0.3 → ×1.3, strength<-0.3 → ×0.75, neutral → ×1.0.
-- **Rolling trend scoring (hold_monitor.py)**: `_score_price_momentum()` and `_score_volume()` upgraded from single-day snapshot to 3-snapshot rolling trend. ROC trend + OBV trend components added.
+### Task Scheduler Bugs Fixed
+- **Raptor_DailyRecap**: Was missing `<WorkingDirectory>` — task had never successfully run since creation (LastRunTime showed 1999). Fixed by adding WorkingDirectory via elevated PowerShell.
+- **Raptor Afternoon Monitor**: Had `<ExecutionTimeLimit>PT15M</ExecutionTimeLimit>` — was being killed at 15 minutes before daily_recap.py could run (exit_monitor + hold_monitor + agent calls exceed 15 min with 15 positions). Fixed to `PT0S` (unlimited).
+- **Rule**: Always run Task Scheduler edits (`Set-ScheduledTask`) from an elevated (admin) PowerShell. Regular PowerShell returns `Access is denied`. All Python/coding work stays in regular PowerShell.
 
 ---
 
-## 14. CHANGES APPLIED 2026-05-22
+## 14. NEXT SESSION — HOLD MONITOR & EXIT MONITOR ENHANCEMENTS
 
-### daily_recap.py — 5 Bug Fixes
-| # | Bug | Fix |
-|---|-----|-----|
-| 1 | `actual_exit_path=unknown` on all outcome_log trades | `outcome_tracker.py`: added `position_ledger.json` fallback — reads `exit_reason` by symbol when Alpaca `client_order_id` absent |
-| 2 | Sharpe/Sortino overstated — `sqrt(252)` on per-trade returns | Fixed to `sqrt(252/avg_hold_days)` — correct annualization for swing system |
-| 3 | `regime_score` always 0 — wrong key | Dual-path: FRED `score` when present, vote-count from `macro_context.json` signals sub-dict as fallback |
-| 4 | Stop dist hardcoded 2% ATR proxy | Reads `stop_dist_atr` from `hold_health.json` — real ATR-based distance |
-| 5 | Universe hardcoded `~120 symbols` | Live count from `get_signals()` → `len(universe)` |
+Research sourced 2026-05-15. Do not implement until explicitly instructed. Backtest required before any signal change.
 
-### daily_recap.py — 10 New Metrics
-| Metric | Source |
-|--------|--------|
-| Exit reason breakdown (n, win%, avg P&L, avg hold per path) | closed_trades + ledger |
-| Rolling 10-trade win rate | Last 10 closed trades |
-| Consecutive loss streak (current + worst) | Closed trades reversed |
-| Capital efficiency (realized PnL / max capital deployed) | Ledger pnl + entry_price×qty |
-| Avg hold days tile | Closed trades |
-| Trim efficiency (n, neg comp %, avg PnL, disagree rate) | trim_log.json |
-| Agent vs math disagreement rate (full exits) | outcome_log.json |
-| Composite score at entry vs current per position | Ledger + today's signals |
-| Macro regime at entry vs current per position | Ledger + macro_context.json |
-| Composite Δ arrow (▲▼→) per position | Computed from above two |
+### Changes Applied This Session (2026-05-15)
 
-### backtest.py — GAP E: Composite + Health Proxy
-- `_composite_proxy()`: 3-component blend — 20d ROC (50%), excess return vs SPY (30%), EMA 8/21 spread (20%). Scaled to [-2,+2]. ~0.65 correlation with live composite.
-- `_health_proxy()`: 2-component blend — 5d return/ATR (60%), position vs entry/ATR (40%). Scaled to [-1,+1].
-- Both wired into `_trail_mult()` — replaces hardcoded (0.0, 0.0) neutral that made GAP 1 unvalidatable.
-- `comp_history` accumulated per position daily; `avg_comp_proxy` + `health_proxy` recorded on every Trade.
-- GAP 1 validation section in report: splits trades into strong/neutral/weak terciles, prints win rate + avg PnL + verdict.
-- `calibrate_gap1.py`: 125-config parameter sweep after backtest. Derives optimal threshold/wide_mult/tight_mult. Writes `calibration_gap1.json`.
+**time_decay exit rewritten (exit_monitor.py):**
+- Old: exit if flat 20 days AND losing. Nearly never fired (1 exit in full backtest).
+- New: flat (5d OR 20d) AND losing AND `composite < 0` AND `health < 0`. Flatness alone is NOT an exit — a stock basing at support with positive signals holds. Only exits when math confirms thesis is dead across both signal engine and health monitor.
+- `_pre_health` dict loaded before the per-symbol loop from `hold_health.json` so composite and health are available to all exit logic.
+- Logger prints "flat but thesis intact" or full exit reasoning with health + composite values either way.
 
-### margin_guard.py — 4 Bug Fixes
-| Bug | Fix |
-|-----|-----|
-| Fail-safe returned `(True, 99)` on API error — silent capital risk | Now `(False, 0)` — fail closed |
-| On-margin only logged warning, entries unlimited | Now caps at 1 new position, same as REDUCE |
-| Magic number `99` compared against config | Replaced with `_UNLIMITED = 10_000` sentinel |
-| `portfolio_value` fetched but never used | Removed with explanatory comment |
+**agent_layer.py short-circuit:**
+- HoldAgent skips Ollama call entirely when `days_history < 5`. Writes HOLD directly to `hold_decisions.json`. Cuts runtime from 9 minutes to 75 seconds during history buildup period. Agents resume full reasoning at day 5+.
 
-### macro_context.py — Sector Breadth Upgrade (GAP G / Zweig 1986)
-- `get_sector_breadth()` now fetches `period="1y"` and checks 50MA, 150MA, 200MA per sector ETF
-- Returns `pct_above_50ma`, `pct_above_150ma`, `pct_above_200ma`, `composite_pct` (weighted 40/35/25%), `structural` (BULL/NEUTRAL/BEAR from 200MA)
-- `classify_macro()` gains extra vote from `structural` — long-term trend confirmation
-- `agent_summary` now includes all three MA breadth %s
+### Priority Queue (ordered) — NEXT SESSION
 
-### exit_monitor.py — GAP 3 + GAP 4
-- **GAP 3 (vol-regime hard stop):** Rolling 60d ATR percentile per position. <25th pctile → 2.5×, 25-75th → 3.0×, >75th → 3.5×. Logger prints vol_pctile on every hard stop.
-- **GAP 4 (regime-scaled thesis invalidation):** Reads `macro_context.json` live. RISK_ON→-2.0, NEUTRAL→-1.5, RISK_OFF→-2.0, CRISIS→-2.5 composite threshold. Prevents mass exits during regime-wide drawdowns.
+| Priority | File | Enhancement | Status | Complexity |
+|----------|------|-------------|--------|------------|
+| 🔴 1 | `exit_monitor.py` | **Signal-aware trailing stop**: trail multiplier must incorporate composite score + health score. Strong signal + green health = wider trail (let winners run). Weak signal + red health = tighter trail (protect profits). Currently blind to signal quality — treats deteriorating and strengthening positions identically. | **NOT STARTED — backtest baseline needed first** | Medium |
+| 🔴 2 | `exit_monitor.py` | OU-optimal trailing stop: replace fixed ATR step table (2.5/2.0/1.5/1.0) with per-stock OU theta (mean-reversion speed). Fast-reverting stocks trail tighter sooner; trending stocks get more room. | Not started | Medium |
+| 🟡 3 | `hold_monitor.py` | Add Layer 9: **Anchored VWAP distance from entry**. Score = (current_price - anchored_vwap) / ATR. Negative and widening = institutional support eroding. | Not started | Medium |
+| 🟡 4 | `hold_monitor.py` | Add Layer 10: **Shannon entropy trend**. Already computed in signals.py — pass into hold_monitor. Rising entropy over 3-day window = increasing disorder = early DECAYING signal. Zero new data fetch needed. | Not started | Low |
+| 🟢 5 | `exit_monitor.py` | Regime-conditional profit ceiling: RISK_OFF/NEUTRAL only, soft exit at 3.5× ATR above entry if composite also < 0.3. Improves capital turnover in defensive regimes. | Not started | Medium |
+| 🟢 6 | `hold_monitor.py` | High Volume Node proximity: 20-day volume profile per symbol, HVN proximity within 0.5 ATR = structural support = positive health contribution. | Not started | Higher |
 
-### main.py — GAP 5 + GAP 6
-- **GAP 5 (composite velocity sizing):** `_get_composite_velocity()` reads `hold_history.json` snapshots. velocity = comp_today - comp_3d_ago. kelly_modifier = max(0.80, min(1.20, 1.0 + velocity×0.2)). `composite_velocity` recorded in ledger metadata.
-- **GAP 6 (re-entry cooldown):** `_get_cooldown_symbols()` checks `outcome_log.json` + `position_ledger.json`. hard_stop/trail_loss within 5 days → blocked. trail_profit NOT blocked.
-
----
-
-## 15. OPEN GAPS — CURRENT STATUS
-
-| Gap | Description | Status | File |
-|-----|-------------|--------|------|
-| GAP 1 | Signal-aware trailing stop | ✅ DONE 2026-05-17. Backtest running. | exit_monitor.py |
-| GAP E | Backtest composite proxy (enables GAP 1 validation) | ✅ DONE 2026-05-22. Backtest running. | backtest.py |
-| GAP D | Calibrate trail modifier thresholds (0.3/-0.3, 1.3/0.75) | ⏳ WAITING for backtest → run calibrate_gap1.py | calibrate_gap1.py |
-| GAP B | Kelly caps 0.02/0.12 and t/3.0 unjustified — derive from backtest drawdown | ⏳ NEXT after backtest results | signals.py |
-| GAP C | Hold target days conflates volatility with OU speed | ⏳ NEXT after backtest results | hold_monitor.py |
-| GAP A | Macro regime classifier vote-count with arbitrary thresholds — HMM/Kalman | 🔴 DO NOT DO — HMM overfits (see §9) | macro_context.py |
-| GAP F | Universe filters never sensitivity-tested — parameter sweep needed | 📋 QUEUED | universe_builder.py |
-| GAP 2 | Entry sizing ignores conviction gradient — Kelly vs percentile rank | 📋 QUEUED | signals.py |
-| GAP 3 | Hard stop fixed, not vol-regime aware | ✅ DONE 2026-05-22 | exit_monitor.py |
-| GAP 4 | Thesis invalidation threshold static | ✅ DONE 2026-05-22 | exit_monitor.py |
-| GAP 5 | No momentum acceleration detection on entry | ✅ DONE 2026-05-22 | main.py |
-| GAP 6 | No re-entry cooldown after stop-out | ✅ DONE 2026-05-22 | main.py |
-| GAP G | Sector breadth only 50MA | ✅ DONE 2026-05-22 | macro_context.py |
-| GAP H | margin_guard.py never analyzed | ✅ DONE 2026-05-22 | margin_guard.py |
-| GAP 7 | Portfolio heat exit blunt — exits 1 position, should trim all health<0 | 📋 QUEUED | exit_monitor.py |
-| GAP 9 | Universe scoring once per day — afternoon re-score needed | 📋 LONG TERM | signals.py, main.py |
-
-### Next Session Priority (after backtest finishes)
-1. Run `python calibrate_gap1.py` → get optimal thresholds → str_replace into exit_monitor.py
-2. GAP B — derive Kelly caps from backtest drawdown analysis (Thorp 2006)
-3. GAP C — OU theta per stock for hold target days (Leung & Zhang 2019)
-4. GAP F — universe filter parameter sweep
-5. GAP 2 — conviction-scaled Kelly (composite percentile rank continuous scaling)
-6. GAP 7 — portfolio heat: trim all health<0 positions instead of exiting weakest
-
----
-
-## 16. MATH GAP ANALYSIS — OPEN RESEARCH
-
-Steve's core tenant: **every buy, hold, and exit decision must be math-driven, adaptive, and exploit inefficiencies.**
-
-### GAP 2 — Entry Sizing Conviction Gradient
-**File:** `signals.py`, `main.py`
-**Problem:** Kelly capped 0.02-0.12, but doesn't differentiate between composite=0.5 and composite=2.5. High-conviction signals should size larger within Kelly bounds.
-**Fix:** Kelly scales continuously with composite percentile rank. Top decile → full Kelly; bottom of entry threshold → minimum Kelly.
-**Math:** `kelly = kelly_min + (kelly_max - kelly_min) × composite_percentile_rank`
-
-### GAP B — Kelly Caps Unjustified
-**File:** `signals.py`
-**Problem:** 0.02/0.12 caps and t/3.0 normalization arbitrary — no derivation from data.
-**Fix:** Derive from backtest drawdown analysis. Kelly optimal fraction = (edge/odds). Cap from max acceptable drawdown via Thorp (2006): `f_max = 1 - sqrt(1 - 2×target_return/variance)`.
-**Reference:** Thorp (2006) — "The Kelly Criterion in Blackjack Sports Betting and the Stock Market"
-
-### GAP C — Hold Target Days Conflates Volatility with OU Speed
-**File:** `hold_monitor.py`, `signals.py`
-**Problem:** `hold = max(1, min(30, int(16 + 14 × atr_pctile)))` mixes volatility (ATR) with expected holding period. High-vol stocks get longer hold targets when they should get shorter ones.
-**Fix:** OU theta per stock. `theta = -OLS_slope(log_price_demeaned, 30d)`. `half_life = log(2)/theta`. Hold target = 1.5 × half_life, capped 2-30 days.
-**Reference:** Leung & Zhang (2019) — arXiv:1701.03960
-
-### GAP 7 — Portfolio Heat Exit Blunt
-**File:** `exit_monitor.py`
-**Problem:** `portfolio_dd < -12%` exits weakest position entirely. Doesn't consider recovery probability vs continuation of decline.
-**Fix:** Trim ALL positions with health < 0 by 25% rather than full exit of one. Spreads risk reduction across deteriorating positions while keeping exposure to recovering ones.
-
-### Research References
-- **Leung & Zhang (2019)** — "Optimal Trading with a Trailing Stop" — arXiv:1701.03960
-- **Leung & Li (2015)** — "Optimal Mean Reversion Trading with Transaction Costs" — arXiv:1411.5062
-- **Baviera (2017)** — "Stop-loss and Leverage in Optimal Statistical Arbitrage" — arXiv:1706.07021
-- **Thorp (2006)** — "The Kelly Criterion in Blackjack Sports Betting and the Stock Market"
-- **Shannon entropy + exit time** — NCBI PMC10528300
-- **Volume Profile + Anchored VWAP** — Trader Dale (2026) — Triple Combo signal
-- **Institutional order flow** — arXiv:2512.18648 — volume-scaled flows, t=16.35
-
-### Hold Monitor Enhancement Queue (after backtest)
-| Priority | Enhancement | File | Status |
-|----------|-------------|------|--------|
-| 🟡 | Layer 9: Anchored VWAP distance from entry. Score = (price - VWAP_anchored) / ATR. | hold_monitor.py | Not started |
-| 🟡 | Layer 10: Shannon entropy trend (already in signals, just pass through). Rising entropy = disorder. | hold_monitor.py | Not started |
-| 🟢 | High Volume Node proximity: 20d volume profile, HVN within 0.5 ATR = support. | hold_monitor.py | Not started |
+### Research References (do not lose these)
+- **Leung & Zhang (2019)** — "Optimal Trading with a Trailing Stop" — OU model for optimal trailing stop. arXiv:1701.03960
+- **Leung & Li (2015)** — "Optimal Mean Reversion Trading with Transaction Costs and Stop-Loss Exit" — OU optimal entry/exit intervals. arXiv:1411.5062
+- **Baviera (2017)** — "Stop-loss and Leverage in Optimal Statistical Arbitrage" — First-Exit-Time analytical solution for OU. arXiv:1706.07021
+- **Shannon entropy + exit time** — NCBI PMC10528300 — entropy-based exit timing improves asset selection vs pure CVaR
+- **Volume Profile + Anchored VWAP** — Trader Dale (2026) — Triple Combo highest probability hold/exit signal
+- **Institutional order flow** — arXiv:2512.18648 — volume-scaled flows carry strongest return predictability (t=16.35)
 
 ### Implementation Rules
-1. Always run backtest baseline BEFORE any trail or signal change.
+1. Always run backtest baseline BEFORE any trail or signal change — need the exit distribution to measure impact.
 2. OU theta: 30-day rolling OLS on log-price. Cap between 2 and 30 days.
-3. Anchored VWAP: anchor to `entry_date` from `position_ledger.json`. No new API calls.
-4. Shannon entropy: pull from `signals._last_full_signals` — already computed.
+3. Anchored VWAP: anchor to `entry_date` from `position_ledger.json`. Use existing bar data — no new API calls.
+4. Shannon entropy: pull from `signals._last_full_signals` — already computed, just not passed through.
 5. Do NOT add factors to `signals.py`. All enhancements in `hold_monitor.py` or `exit_monitor.py` only.
 6. Backtest each change independently before combining.
 
 ---
 
+## 15. MATH GAP ANALYSIS — AREAS WHERE SIGNAL LOGIC IS INCOMPLETE
+
+Steve's core tenant: **every buy, hold, and exit decision must be math-driven, adaptive, and exploit inefficiencies. Identify winners early, cut losers before they crash.**
+
+The following gaps exist in the current architecture where mechanical or arbitrary logic overrides or ignores math:
+
+### GAP 1 — Trailing Stop Is Signal-Blind (CRITICAL)
+**File:** `exit_monitor.py` `_trail_mult()`
+**Problem:** Trail multiplier is purely time + profit. A position with composite=+2.5 (strong trend, all signals aligned) trails at the same 1.0 ATR after 20 days as a position with composite=-0.8 (thesis failing). The math screams hold; the mechanical clock says tighten.
+**Fix:** Trail multiplier = f(time, profit, composite, health). Strong signal widens trail. Weak signal tightens it.
+
+### GAP 2 — Entry Sizing Ignores Signal Conviction Gradient
+**File:** `signals.py`, `main.py`
+**Problem:** Kelly fraction is capped at 0.02–0.12 and blended with IC weights, but position sizing doesn't differentiate enough between a composite=0.5 entry and a composite=2.5 entry. High-conviction signals should size larger within Kelly bounds.
+**Fix:** Kelly fraction scales continuously with composite z-score percentile rank across the universe. Top decile signal gets full Kelly; bottom of entry threshold gets minimum Kelly.
+
+### GAP 3 — Hard Stop Is Fixed, Not Volatility-Regime Aware
+**File:** `exit_monitor.py`
+**Problem:** Hard stop = entry - 3.0×ATR regardless of VIX regime, stock beta, or current volatility percentile. In a low-vol regime a 3 ATR stop is too wide; in a high-vol regime it may be too tight for normal price action.
+**Fix:** Hard stop multiplier adjusts with ATR percentile. Low vol (ATR < 25th pctile) → 2.5× ATR. Normal → 3.0×. High vol (ATR > 75th pctile) → 3.5×. Prevents whipsawing out of positions in choppy high-vol environments.
+
+### GAP 4 — Exit 3 (Thesis Invalidation) Threshold Is Static
+**File:** `exit_monitor.py`
+**Problem:** `comp < -1.5 AND pnl < -5%` is a fixed threshold. In a BULLISH regime, -1.5 composite is genuinely weak. In a RISK_OFF regime, the entire universe compresses — a -1.5 composite might just be average weakness, not thesis failure.
+**Fix:** Thesis invalidation threshold scales with regime. BULLISH: comp < -1.0. NEUTRAL: comp < -1.5. RISK_OFF: comp < -2.0. Prevents mass exits during regime-wide drawdowns.
+
+### GAP 5 — No Momentum Acceleration Detection on Entry
+**File:** `signals.py`, `main.py`
+**Problem:** Entry is based on composite score rank at a single point in time. A stock that has been accelerating (composite rising day over day) is a far better entry than one that has been decelerating toward the threshold. Same score, very different trajectory.
+**Fix:** Add composite_velocity = composite_today - composite_3d_ago as an entry gate multiplier. Accelerating signals get priority; decelerating signals near threshold are skipped or sized smaller.
+
+### GAP 6 — No Re-Entry Logic After Stop-Out
+**File:** `main.py`
+**Problem:** Once a position is stopped out, that symbol can re-enter immediately the next day if it still ranks in the top-N. A stop-out on a momentum-driven decline often means the thesis genuinely failed — re-entering without a cooldown period or re-qualification criteria burns capital twice on the same failing trade.
+**Fix:** After a stop-out, symbol enters a cooldown (5 trading days minimum). Re-entry requires composite > 0.5 AND composite_velocity > 0 AND hold_health > 0 from a fresh hold_monitor evaluation. Math must re-qualify the thesis, not just rank.
+
+### GAP 7 — Portfolio Heat Exit Is Blunt (EXIT 4)
+**File:** `exit_monitor.py`
+**Problem:** `portfolio_dd < -12%` exits the weakest position (by composite score). But it doesn't consider which position is most likely to recover vs most likely to continue falling. It also doesn't partial-trim multiple positions — it fully exits one.
+**Fix:** In portfolio heat, trim ALL positions with health < 0 by 25% rather than fully exiting the weakest one. Spreads the risk reduction across deteriorating positions while keeping exposure to recovering ones.
+
+### GAP 8 — No Profit-Taking Gradient on Winning Positions
+**File:** `exit_monitor.py`
+**Problem:** Winning positions either trail out or run to hard exits. There is no mechanism to take partial profits on extreme winners (e.g. INTC +23%, STM +23%, AMD +39% currently held) while keeping a core position running. Full position stays on until trail fires — which may give back significant open profit.
+**Fix:** When pnl > 15% AND composite still positive AND health > 0 → trim 25% at market to lock profit. Remaining 75% continues trailing. This is not a fixed TP — it's a math-gated partial harvest. Requires composite and health to still support the thesis for the remainder.
+
+### GAP 9 — Universe Scoring Happens Once Per Day
+**File:** `signals.py`, `main.py`
+**Problem:** Signals are computed once at 9:28 AM. A stock that breaks out at 2 PM with surging volume and momentum shift is invisible until the next morning. Capital sits in weaker positions all afternoon while better opportunities exist.
+**Fix:** Afternoon monitor (3:50 PM) runs a lightweight re-score of held positions + top watchlist candidates. Not a full universe scan — just 20–30 symbols. If a held position has been leapfrogged by a stronger signal and its own score has decayed, flag for next-morning exit priority.
+
+### Summary Priority for Next Sessions
+1. GAP 1 (signal-aware trail) — DONE 2026-05-17. Trail multiplier now f(composite, health). Backtest pending.
+2. GAP 8 (partial profit harvest) — CANCELLED. Wrong philosophy. Hold monitor trim logic is the correct tool. No separate harvest mechanism needed.
+3. GAP 5 (momentum acceleration on entry) — improves entry quality without changing universe
+4. GAP 3 (volatility-regime hard stop) — reduces whipsaw exits in high-vol environments
+5. GAP 6 (re-entry cooldown) — prevents double-loss on same failing thesis
+6. GAP 2 (conviction-scaled sizing) — refines Kelly application
+7. GAP 4 (regime-scaled thesis invalidation) — prevents mass exit during regime drawdowns
+8. GAP 7 (portfolio heat partial trim) — more surgical than current blunt exit
+9. GAP 9 (afternoon re-score) — longer term infrastructure addition
+
+---
+
+## 16. CHANGES APPLIED THIS SESSION (2026-05-17)
+
+### GAP 1 — Signal-Aware Trailing Stop (exit_monitor.py) ✅
+`_trail_mult()` now accepts `composite` and `health` as inputs. Signal-quality modifier applied after base `min(time, profit)` calculation:
+- `signal_strength = (composite + health) / 2`
+- strength > +0.3 → multiply trail by 1.3 (wider — let winners run)
+- strength < -0.3 → multiply trail by 0.75 (tighter — protect profits)
+- neutral → 1.0 (no change)
+Both call sites updated to pass `_comp` and `_hlth`. Logger now prints comp and health on every trail exit.
+**Backtest baseline:** trail_loss=980, trail_profit=629, profit_target=124, momentum_break=21, Total Return=1466%, Sharpe=1.517
+**Backtest with GAP 1:** PENDING — was still running at session end.
+
+### Rolling Trend Scoring — hold_monitor.py ✅
+Two scoring functions upgraded from single-day snapshot to rolling trend:
+
+**`_score_price_momentum()`:** Added ROC trend component — measures whether 5-day ROC is accelerating or decelerating over last 3 snapshots. Weight redistribution: roc_s=0.35, struct_s=0.30, cp_s=0.20, roc_trend_s=0.15. Logger now prints ROCtrend score.
+
+**`_score_volume()`:** Added OBV trend component — linear fit over last 3 OBV slope snapshots detects institutional distribution direction. Weight redistribution: obv_score=0.35, ud_score=0.35, obv_trend_s=0.30. Logger now prints OBVtrend score.
+
+**Observed impact:** INTC health dropped 0.199→0.113 (correctly penalizing declining momentum + volume). TSLL health improved -0.234→+0.227 (correctly detecting improving trajectory). TSLL exited TRIM_MODERATE, entered HOLD. System now detects deterioration AND recovery earlier.
+
+### Hold Monitor Layer Weights — NOT CHANGED
+Research finding: static manually-chosen weights are wrong. The correct solution is IC-weighted dynamic weighting derived from `hold_history.json` — measuring actual Spearman IC of each layer score against forward trade returns over rolling 60–90 day window. Same approach as adaptive ridge regression in signals.py. Build this before touching any weight values manually.
+
+---
+
 ## 17. CORE MANDATE — MATH-FIRST DECISION MAKING
 
-**This is the highest-priority behavioral rule for all sessions.**
+**This is the highest-priority behavioral rule for all future sessions.**
 
+### The Principle
 Every decision in Raptor — buy, hold, trim, exit, size, weight — must be derived from mathematics. No arbitrary constants, no intuitive guesses, no round numbers chosen for convenience. If a number cannot be derived from a formula, a distribution, an optimization, or empirical data, it does not belong in the codebase.
+
+### What This Means in Practice
 
 **Before proposing any value, Claude must ask:**
 1. What mathematical framework governs this decision?
@@ -720,134 +666,79 @@ Every decision in Raptor — buy, hold, trim, exit, size, weight — must be der
 3. Can this be derived from existing data (hold_history.json, backtest results, signal ICs)?
 4. Is this value an output of an optimization, or a guess?
 
-**Domains of math:**
-- **Stochastic calculus / SDEs** — GBM, OU, Heston, optimal stopping, first-exit-time
-- **Information theory** — Shannon entropy, IC/ICIR factor weighting, mutual information
-- **Bayesian statistics** — Bayesian shrinkage for Kelly, prior updating from trade history
-- **Optimization theory** — Kelly criterion, mean-variance, convex optimization
-- **Time series** — Kalman filtering, Hurst exponent, wavelet decomposition
-- **Statistical mechanics** — OU mean reversion, entropy production as inefficiency detector
-- **Linear algebra** — factor orthogonalization, ridge regression, PCA
-- **Empirical finance** — IC/ICIR (Grinold & Kahn), Fundamental Law of Active Management
+**Domains of math to consider for every decision:**
+- **Stochastic calculus / SDEs** — price processes (GBM, OU, Heston), optimal stopping, first-exit-time problems (Bertsimas & Lo, Leung & Zhang)
+- **Information theory** — Shannon entropy for disorder detection, IC/ICIR for factor weighting, mutual information for signal independence
+- **Bayesian statistics** — Bayesian shrinkage for Kelly fraction, prior updating from trade history, posterior distributions over regime states
+- **Optimization theory** — Kelly criterion for sizing, mean-variance for portfolio construction, convex optimization for weight allocation
+- **Time series / signal processing** — Kalman filtering for latent state estimation, Hurst exponent for regime detection, wavelet decomposition for trend isolation
+- **Statistical mechanics / physics** — Ornstein-Uhlenbeck mean reversion (same math as particle in potential well), entropy production in non-equilibrium systems as market inefficiency detector
+- **Linear algebra** — orthogonalization of correlated factors, ridge regression for weight learning, PCA for dimension reduction
+- **Empirical finance** — IC/ICIR weighting (Grinold & Kahn), Fundamental Law of Active Management, Barra-style risk models
 
-**Specific Rules:**
-- **Weights:** IC mean / ICIR over rolling window. Never hand-picked.
-- **Thresholds:** Distributional analysis of historical values. Percentile cutoffs.
-- **Trim percentages:** Kelly criterion. `trim_pct = 1 - (current_kelly / entry_kelly)`.
-- **Trail multipliers:** OU theta per stock (C). Signal modifier calibrated from backtest (D).
-- **Position sizing:** Conviction-scaled Kelly. velocity modifier ±20% now live.
-- **Hard stop:** Vol-regime ATR percentile scalar. Now live (GAP 3).
-- **Re-entry:** Math re-qualification. Cooldown now live (GAP 6).
+### Specific Rules
 
-**What Claude Must NEVER Do:**
-- Pick a round number without mathematical justification
-- Propose a threshold based on intuition
+**Weights:** Must be derived from IC mean / ICIR over rolling window from actual trade data. Never hand-picked. Use Spearman rank IC between layer score and forward return. Normalize to sum to 1. Update rolling 60–90 days.
+
+**Thresholds:** Must be derived from distributional analysis of historical values. Use percentile cutoffs (e.g. bottom 20th percentile of composite score = thesis failure threshold) not fixed constants.
+
+**Trim percentages:** Must be derived from Kelly criterion applied to current signal strength. `trim_pct = 1 - (current_kelly / entry_kelly)`. Never a flat 25%.
+
+**Trail multipliers:** Must be derived from OU mean-reversion speed (theta) per stock, not a fixed ATR step table. Signal-quality modifier now applied (GAP 1 done). Next: OU theta per stock.
+
+**Position sizing:** Must be derived from conviction-scaled Kelly. `size = base_kelly * composite_percentile_rank`. Full Kelly for top decile signal; minimum for bottom of entry threshold.
+
+**Hard stop:** Must adjust with volatility regime. `stop_mult = base_mult * (atr_percentile_scalar)`. Not fixed at 3.0 ATR regardless of regime.
+
+**Re-entry:** Must require math re-qualification. Composite > 0.5 AND composite_velocity > 0 AND fresh hold_health > 0. Not just rank re-entry.
+
+### What Claude Must NEVER Do
+- Pick a round number (25%, 3.0, 0.5) without mathematical justification
+- Propose a threshold based on intuition ("seems reasonable")
 - Use a fixed constant where a rolling empirical value is available
 - Suggest equal weighting when IC-weighted alternatives exist
-- Choose a parameter because "it's a common default in the literature"
+- Choose a parameter because "it's a common default in the literature" without verifying it fits Raptor's specific data distribution
 
-**The Standard:** If Steve asks "why that number?" and the answer is anything other than a mathematical derivation or empirical measurement, the number is wrong.
+### The Standard
+If Steve asks "why that number?" and the answer is anything other than a mathematical derivation or empirical measurement, the number is wrong and must be redesigned before implementation.
 
 ---
 
-## 18. CHANGES APPLIED 2026-05-22 (SESSION 2)
+## 18. SESSION PROTOCOLS — MANDATORY FOR EVERY CONVERSATION
 
-### Calibrated GAP 1 Trail Modifier (exit_monitor.py)
-From 1565-trade backtest parameter sweep (125 combinations):
-- threshold: `0.3 → 0.2` (42% of positions now classified strong vs 38%)
-- wide_mult: `1.3 → 1.6` (net trail width 1.019× → 1.176× baseline)
-- tight_mult: `0.75 → 0.80` (less aggressive tightening on weak signals)
-Expected: +9.1% Sharpe improvement from converting ~9 trail_loss → trail_profit per 1565 trades.
+### 18.1 — Conversation Start
+At the start of every new conversation, Claude MUST:
+1. Read `RAPTOR_SKILL.md` via `project_knowledge_search` before responding to any technical question
+2. Load the recent_updates block from userMemories to understand current state
+3. Never assume prior session context without searching
 
-### GAP B — Kelly Caps Derived (Thorp 2006) (signals.py)
-From 1565-trade backtest: E[R]=1.476%, σ=8.307%, f*=14.26% (Thorp), f_post=13.97%, f_half=6.98%, f_max_dd=5.17%.
-- Floor: `0.02 → 0.0171` (f_base × 0.33)
-- Ceiling: `0.12 → 0.0517` (drawdown-constrained, was 2.3× too high)
-- `t/3.0` normalization validated — correct, kept
-- Leverage cap: `0.20 → KELLY_MAX × 2.0 = 0.1034`
+### 18.2 — After Every File Change
+After modifying any project file, Claude MUST automatically (without being prompted):
+1. Present the file via `present_files` for download
+2. Remind the user to push to GitHub with the exact commands:
 
-### GAP 2 — Conviction-Scaled Kelly (signals.py)
-Two-component conviction scalar: 40% t-stat + 60% composite percentile rank.
-`kelly = KELLY_MIN + (KELLY_MAX - KELLY_MIN) × (0.40 × t_component + 0.60 × pctile)`
-Range: 3.08% (55th pctile, t=0.5) → 5.13% (98th pctile, t=3.0). 65% size differential.
+```bash
+# Run from your Raptor project folder on the laptop
+git pull origin main
+git add -A
+git commit -m "describe what changed"
+git push origin main
+```
 
-### GAP C — OU Theta Hold Target (signals.py)
-30-day rolling OLS: `theta = -cov(delta_log_price, lagged_deviation) / var(lagged_deviation)`.
-`hold_target = ceil(log(2)/theta × (2 if TRENDING else 1))`, capped [3, 30] days.
-Fallback: 8 days (backtest avg_hold=7.9d). Replaces `16 + 14×atr_pctile` (wrong — conflated vol with OU speed).
+3. Note which files were changed so the commit message is accurate
 
-### GAP F — Universe Filter Sweep (universe_builder.py)
-3125-combination sweep on live 141-symbol universe. Sensitivity ranking: dollar_vol (0.1487) >> price_min (0.1009) >> volume (0.0381) >> range (0.0219) >> price_max (0.0062).
-- `volume_min: 500K → 750K` (sensitivity rank 2, cuts low-quality names, ~93 symbols)
-- `dollar_vol: $20M → $30M` (highest sensitivity, raises median liquidity $52M→$68M)
-- Price and range filters: inert — no change.
+### 18.3 — GitHub ↔ Laptop Reconciliation Rule
+- GitHub is the source of truth
+- Every session ends with a push — no exceptions
+- Before starting work on the laptop after a Claude session, always `git pull origin main` first
+- If laptop has uncommitted local changes, commit and push BEFORE pulling Claude's changes
 
-### GAP 7 — Portfolio Heat Proportional Trim-All (exit_monitor.py)
-Replaced binary single-exit with proportional trim of all health<0 positions.
-`heat_trim_pct = clip(excess_dd / threshold, 10%, 50%)`
-Healthy positions (health≥0) untouched. Never full-exits via heat path.
+### 18.4 — Ontology Sync Rule
+Any architectural change (new file, new data flow, new gap fixed, new layer added, behavior change) MUST be reflected in the Architecture Ontology section (Section 2) of this SKILL file in the same session it is implemented. Do not defer ontology updates.
 
-### GAP 9 — Afternoon Composite Rescore (exit_monitor.py)
-Signal engine already runs in exit_monitor. After execution, fresh composites written back to hold_health.json:
-- `composite_morning`, `composite_delta`, `afternoon_flag` fields added per position
-- `COMPOSITE_DECAY` flag (Δ < -0.5) logged as warning for next-morning priority
-- `COMPOSITE_STRENGTH` flag (Δ > +0.3) logged for hold confidence
-Zero new API calls — uses full_map already in memory.
-
-### P2-12 — Prompt Snapshot Lazy (agent_layer.py)
-Was calling `_snapshot_prompts()` at module level — filesystem glob on every import.
-Now lazy: fires on first `evaluate_batch()` call, guarded by `_prompts_snapshotted` flag.
-
-### P1-9 — Watchdog v1.1 (watchdog.py)
-Three bugs fixed:
-1. SPY circuit breaker: was comparing yesterday vs day-before. Now live price vs prev close.
-2. High water mark: was `max(price, entry)` at single moment. Now reads hold_health.json accumulated value.
-3. Momentum break removed: was 8-day EMA on daily bars — not intraday. Belongs in exit_monitor.
-`client_order_id` added to watchdog sell orders for outcome_tracker tagging.
-
-### P1-15 — Sentiment Pipeline Removed (data_feeds.py)
-`get_sentiment_scores()` called on every scan, hit Alpaca news API per symbol.
-`sentiment_score=0.0` hardcoded on every Signal — zero contribution. Now disabled, returns `{}`.
-
-### P2-7 — OBV Rolling Normalization (hold_monitor.py)
-Magic constant 1000 replaced with rolling max magnitude across last 10 snapshots.
-Self-calibrating per stock — high-volume stocks no longer compressed to near-zero.
-
-### P2-8 — Volatility Layer Continuous (hold_monitor.py)
-Binary behavior in 0.80-1.20 ATR expansion range replaced with linear interpolation.
-0.80 (contracting) → +0.15. 1.20 (expanding) → ±0.5/-0.8. Smooth gradient in between.
-
-### P2-9 — Stop Distance Zero = Danger (hold_monitor.py)
-`dist=None` → 0.0 (no data, neutral). `dist≤0` → -1.0 (maximum negative — price at/below stop).
-Was returning 0.0 (neutral) for both cases.
-
-### Hold Monitor Layers 9 and 10 (hold_monitor.py)
-Layer 9 — Anchored VWAP (5% weight):
-  Anchored to entry. Score = clip((price - VWAP_anchored) / ATR, -1, 1).
-  Approximated from daily price × vol_ratio in snapshots. No new API calls.
-
-Layer 10 — Shannon Entropy (4% weight):
-  H = -sum(p × log(p)) over 5-bin discretization of last 10 daily returns.
-  score = clip(1 - 2 × H/H_max, -1, 1). Rising entropy → extra penalty.
-  H=0 (directional) → +1.0. H=H_max (random) → -1.0.
-
-Layer weights redistributed (sum = 1.00):
-  composite_slope: 0.25→0.23, factor_agreement: 0.20→0.18, price_momentum: 0.15→0.14,
-  cluster_health: 0.15→0.13, volume: 0.10→0.09, volatility: 0.08→0.07,
-  stop_distance: 0.05 (unchanged), hold_duration: 0.02 (unchanged),
-  anchored_vwap: 0.05 (NEW), entropy: 0.04 (NEW).
-
-### log(0) Warnings Fixed (signals.py)
-Three locations where np.log could receive zero or negative input:
-- vol_ratio: guard today's volume > 0 AND avg > 0 before log
-- hurst: guard mean_rs > 0 before log(mean_rs)
-- OU theta: guard all close prices > 0 before np.log(close_vals)
-
-### Open Gaps Remaining (post 2026-05-22 session 2)
-- GAP D: calibrate_gap1.py → run after backtest finishes
-- Backtest: re-run needed after GAP B/C/D changes
-- Layer weight IC calibration: needs 60+ agent-tagged trades
-- prompt_calibrator.py (Layer 3): needs 30+ agent-tagged trades
-- Watchdog intraday ATR: true intraday vol needs 15-min bars
-- HVN proximity (hold monitor): 20-day volume profile
-- GAP 9 afternoon rescore of candidates (not just held positions)
+### 18.5 — File Delivery Standard
+Never require the user to ask for the file after making changes. The sequence is always:
+1. Make the change
+2. Verify syntax / correctness
+3. `present_files` automatically
+4. Post GitHub push commands
