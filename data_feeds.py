@@ -629,17 +629,19 @@ class DataManager:
         lookback_days: int = 60,
     ) -> Dict[str, Any]:
         """
-        One-shot fetch: bars + macro regime + sentiment for all symbols.
-        Returns structured dict ready for the signal engine.
+        One-shot fetch: bars + macro regime for all symbols.
+        Sentiment removed 2026-05-22 (P1-15): lexicon sentiment was computed
+        from Alpaca news API on every scan but sentiment_score=0.0 on every
+        Signal object — consuming API calls with zero alpha contribution.
+        Re-enable when a real NLP sentiment model is integrated.
         """
         bars = self.alpaca.get_daily_bars(symbols, lookback_days=lookback_days)
         macro = self.fred.compute_regime_score()
-        sentiment = self.news.get_sentiment_scores(list(bars.keys()))
 
         return {
             "bars": bars,
             "macro": macro,
-            "sentiment": sentiment,
+            "sentiment": {},   # disabled — see P1-15
             "symbols_with_data": list(bars.keys()),
             "timestamp": datetime.now().isoformat(),
         }

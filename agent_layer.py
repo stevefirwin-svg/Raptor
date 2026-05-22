@@ -67,7 +67,7 @@ VETO if ANY of these are true (otherwise PASS):
 5. macro_regime="CRISIS"
 6. macro_regime="RISK_OFF" AND kelly_fraction > 0.07
 
-PASS if macro_regime is RISK_ON or NEUTRAL — these are NOT veto conditions.
+PASS if macro_regime is RISK_ON, NEUTRAL, or BULLISH — these are NOT veto conditions.
 Default is PASS. Only VETO when a numbered rule above is explicitly met.
 
 Respond ONLY with this JSON, no other text:
@@ -164,6 +164,7 @@ class OllamaAgent:
         Health-checks Ollama first — if unresponsive, entire batch fast-fails to passthrough
         defaults instead of timing out once per symbol.
         """
+        _snapshot_prompts()  # lazy — only runs once per process, no-op on subsequent calls
         if not _ollama_alive():
             logger.warning(f"{self.name} | Ollama unreachable — returning passthrough defaults for all {len(contexts)} symbol(s)")
             results = {}
@@ -224,13 +225,24 @@ class OllamaAgent:
 
 
 # ── Prompt Version Control ────────────────────────────────────────────────────
+# P2-12 fix: was called at module level (_snapshot_prompts() on line 250) which
+# ran a filesystem glob on every import of agent_layer — slow I/O on every
+# main.py, exit_monitor.py, and hold_monitor.py startup.
+# Fixed: called lazily on first agent use, not at import time.
+
+_prompts_snapshotted = False
 
 def _snapshot_prompts():
     """
-    Save current prompt text to prompt_versions/ on every startup.
-    Uses a hash of the prompt content — only writes if prompts have changed.
-    Enables rollback to any prior prompt version by date.
+    Save current prompt text to prompt_versions/ if changed.
+    Uses content hash — only writes when prompt has actually changed.
+    Called once per process on first agent evaluate_batch() call.
     """
+    global _prompts_snapshotted
+    if _prompts_snapshotted:
+        return
+    _prompts_snapshotted = True
+
     import hashlib
     from pathlib import Path as _P
     vdir = _P("prompt_versions")
@@ -238,16 +250,13 @@ def _snapshot_prompts():
 
     for name, text in [("entry_prompt", ENTRY_PROMPT), ("hold_prompt", HOLD_PROMPT)]:
         h = hashlib.md5(text.encode()).hexdigest()[:8]
-        # Check if this exact version already saved
         existing = list(vdir.glob(f"{name}_*.txt"))
         already_saved = any(h in f.name for f in existing)
         if not already_saved:
             ts = datetime.now().strftime("%Y%m%d_%H%M%S")
             fname = vdir / f"{name}_{ts}_{h}.txt"
             fname.write_text(text)
-            logger.info(f"Prompt snapshot saved: {fname.name}")
-
-_snapshot_prompts()
+            logger.info("Prompt snapshot saved: %s", fname.name)
 
 
 # ── Agent Instances ────────────────────────────────────────────────────────────

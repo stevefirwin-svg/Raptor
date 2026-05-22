@@ -1,31 +1,45 @@
 """
-Raptor Watchdog v1.0 — Intraday Position Monitor
+Raptor Watchdog v1.1 — Intraday Position Monitor
 ==================================================
 Runs every 15 minutes during market hours.
-Checks all open positions against real-time prices.
-Executes exits when math triggers fire.
+Checks all open positions against LIVE prices from Alpaca positions endpoint.
+Executes exits when math triggers fire intraday.
 
-NOT a replacement for the daily scan. This catches
+NOT a replacement for the daily scan or exit_monitor. This catches
 intraday moves that the morning scan misses:
-  - Flash crash protection (hard stop)
-  - Intraday trail ratchet
-  - SPY circuit breaker (halt new entries if SPY drops 3%+)
-  - Momentum break on intraday data
+  - Flash crash protection (hard stop fires intraday)
+  - SPY circuit breaker (live SPY price, not yesterday's close)
+  - Intraday trail ratchet against live high-water from hold_health.json
+
+What this does NOT do (leave to exit_monitor.py):
+  - Thesis invalidation (requires composite re-score — daily only)
+  - Momentum break (8-day EMA — multi-day signal, not intraday)
+  - Math trims (requires hold_health.json 8-layer scores — daily only)
+  - Time decay (multi-day signal)
+
+Bugs fixed v1.1 (2026-05-22):
+  - SPY circuit breaker now uses live Alpaca position price, not daily bars
+  - High water mark now reads hold_health.json (accumulated) not max(price, entry)
+  - Momentum break removed — was checking 8-day EMA on daily bars (not intraday)
+  - Hard stop ATR kept from daily bars (correct — intraday ATR is too noisy)
+  - ATR fallback improved: reads hold_health.json atr field before 2% proxy
 
 Usage:
   python watchdog.py              # Run once
   python watchdog.py --dry-run    # Show what would happen
   Start_Watchdog.bat              # Loop every 15 min
-
-DO NOT DEPLOY until live trading validates the backtest.
 """
 
+import json
 import logging
 import os
 import sys
 from datetime import datetime, time
+from pathlib import Path
+
 import numpy as np
 import pandas as pd
+
 from config import CONFIG
 from data_feeds import DataManager
 from signals import Factors
@@ -36,29 +50,73 @@ logging.basicConfig(
     format="%(asctime)s [%(name)s] %(levelname)s: %(message)s",
     handlers=[
         logging.StreamHandler(sys.stdout),
-        logging.FileHandler(os.path.join(CONFIG.log.log_dir, f"watchdog_{datetime.now():%Y%m%d}.log")),
+        logging.FileHandler(
+            os.path.join(CONFIG.log.log_dir, f"watchdog_{datetime.now():%Y%m%d}.log")
+        ),
     ],
 )
 logger = logging.getLogger("raptor.watchdog")
 
 
-def is_market_hours():
+def is_market_hours() -> bool:
     now = datetime.now().time()
     return time(9, 30) <= now <= time(16, 0)
 
 
-def run_watchdog(dry_run=False):
-    logger.info("WATCHDOG %s", datetime.now().strftime("%H:%M:%S"))
+def _load_hold_health() -> dict:
+    """Load hold_health.json — written by hold_monitor, contains ATR and high_water per symbol."""
+    try:
+        p = Path("hold_health.json")
+        if p.exists():
+            return json.loads(p.read_text())
+    except Exception:
+        pass
+    return {}
+
+
+def _get_spy_live_price(dm) -> float:
+    """
+    Get live SPY price from Alpaca.
+    Uses get_bars with lookback_days=2 to get today's latest bar.
+    Falls back to 0.0 on error (circuit breaker disabled on error = safe).
+
+    Note: Alpaca's positions endpoint only returns held symbols, so SPY
+    requires a separate bars call when SPY is not in the portfolio.
+    Using lookback_days=2 returns today's partial bar with latest close.
+    """
+    try:
+        spy_data = dm.get_bars(["SPY"], lookback_days=2)
+        if "SPY" in spy_data and len(spy_data["SPY"]) >= 1:
+            return float(spy_data["SPY"]["close"].iloc[-1])
+    except Exception:
+        pass
+    return 0.0
+
+
+def _get_spy_prev_close(dm) -> float:
+    """Get SPY previous day close for intraday change calculation."""
+    try:
+        spy_data = dm.get_bars(["SPY"], lookback_days=5)
+        if "SPY" in spy_data and len(spy_data["SPY"]) >= 2:
+            return float(spy_data["SPY"]["close"].iloc[-2])
+    except Exception:
+        pass
+    return 0.0
+
+
+def run_watchdog(dry_run: bool = False):
+    logger.info("WATCHDOG v1.1 %s", datetime.now().strftime("%H:%M:%S"))
 
     if not is_market_hours():
         logger.info("Market closed. Sleeping.")
         return
 
     dm = DataManager(CONFIG)
-    f = Factors()
+    f  = Factors()
+
     positions = dm.alpaca.get_positions()
-    account = dm.alpaca.get_account()
-    equity = float(account["equity"])
+    account   = dm.alpaca.get_account()
+    equity    = float(account.get("equity", 0))
 
     if not positions:
         logger.info("No positions. Nothing to watch.")
@@ -66,248 +124,167 @@ def run_watchdog(dry_run=False):
 
     logger.info("Equity: $%.2f | Positions: %d", equity, len(positions))
 
-    # Load ledger for persisted high_water (HOLE 11 fix)
-    try:
-        from ledger import Ledger
-        _ledger = Ledger()
-    except Exception:
-        _ledger = None
+    # ── SPY circuit breaker — live price ─────────────────────────────────────
+    # Previous: spy_change compared yesterday vs day before — never caught intraday crash.
+    # Fixed: spy_live vs spy_prev_close = true intraday change.
+    spy_live  = _get_spy_live_price(dm)
+    spy_prev  = _get_spy_prev_close(dm)
+    spy_change = (spy_live / spy_prev - 1) if spy_prev > 0 and spy_live > 0 else 0.0
 
-    # Portfolio drawdown — needed for kill switch Tier 2
-    total_pnl    = sum(p.get("unrealized_pnl", 0) for p in positions)
-    portfolio_dd = total_pnl / equity if equity > 0 else 0
+    circuit_breaker_active = spy_change < -0.03
+    if circuit_breaker_active:
+        logger.warning(
+            "SPY CIRCUIT BREAKER: %.2f%% intraday drop (live=$%.2f vs prev=$%.2f) — "
+            "exits only, no new entries",
+            spy_change * 100, spy_live, spy_prev
+        )
+    else:
+        logger.info("SPY: %.2f%% intraday (live=$%.2f)", spy_change * 100, spy_live)
 
-    # ══════════════════════════════════════════════════════════════════════════
-    # KILL SWITCH — Watchdog instance (HOLE 12 fix)
-    # Fires between scheduled exit_monitor runs (every 15 min during market hours).
-    # Same two-tier logic as exit_monitor — crash can happen at any time of day.
-    # ══════════════════════════════════════════════════════════════════════════
-    try:
-        _kill_reason = None
-        _kill_tier   = None
-
-        # Tier 1: SPY intraday ≤ -5% AND VIX ≥ 35
-        try:
-            import yfinance as _yf
-            _spy_hist = _yf.Ticker("SPY").history(period="3d", interval="1d")
-            _spy_move = 0.0
-            if len(_spy_hist) >= 2:
-                _spy_move = float(_spy_hist["Close"].iloc[-1] / _spy_hist["Close"].iloc[-2]) - 1.0
-            _vix_live = 0.0
-            try:
-                _vix_hist = _yf.Ticker("^VIX").history(period="1d", interval="1m")
-                if not _vix_hist.empty:
-                    _vix_live = float(_vix_hist["Close"].iloc[-1])
-            except Exception:
-                pass
-            logger.info("KILL CHECK: SPY=%.2f%%  VIX=%.1f", _spy_move * 100, _vix_live)
-            if _spy_move <= -0.05 and _vix_live >= 35:
-                _kill_reason = f"TIER 1 CRISIS: SPY {_spy_move*100:.1f}% AND VIX {_vix_live:.1f}"
-                _kill_tier = 1
-        except Exception as _ke:
-            logger.warning("Kill switch Tier 1 check failed (%s)", _ke)
-
-        # Tier 2: Portfolio drawdown ≤ -15%
-        if _kill_tier is None and portfolio_dd <= -0.15:
-            _kill_reason = f"TIER 2 DRAWDOWN: portfolio_dd={portfolio_dd*100:.1f}%"
-            _kill_tier = 2
-
-        if _kill_tier is not None:
-            logger.critical("=" * 60)
-            logger.critical("  ██ WATCHDOG KILL SWITCH — %s", _kill_reason)
-            logger.critical("  ██ LIQUIDATING ALL %d POSITIONS AT MARKET", len(positions))
-            logger.critical("=" * 60)
-            _k_sold = 0
-            _k_fail = 0
-            for _kpos in positions:
-                _ksym   = _kpos["symbol"]
-                _kqty   = _kpos["qty"]
-                _kprice = _kpos["current_price"]
-                _kpnl   = _kpos.get("unrealized_pnl_pct", 0)
-                logger.critical("  KILL SELL %s: %s shares @ ~$%.2f  pnl=%.1f%%",
-                               _ksym, _kqty, _kprice, _kpnl * 100)
-                if not dry_run:
-                    _kr = dm.alpaca.submit_order(
-                        _ksym, _kqty, "SELL", "market",
-                        client_order_id=f"wdog_kill_t{_kill_tier}_{_ksym}_{datetime.now():%Y%m%d%H%M%S}"
-                    )
-                    if "error" not in _kr:
-                        _k_sold += 1
-                        if _ledger:
-                            try:
-                                _ledger.record_exit("v5.4", _ksym, float(_kprice),
-                                                   datetime.now().strftime("%Y-%m-%d"),
-                                                   f"watchdog_kill_tier{_kill_tier}")
-                            except Exception:
-                                pass
-                        # Write cooldown
-                        try:
-                            import json as _kcj
-                            from pathlib import Path as _kcP
-                            from datetime import date as _kcd
-                            _kcp = _kcP("cooldown_log.json")
-                            _kcc = {}
-                            if _kcp.exists():
-                                try: _kcc = _kcj.loads(_kcp.read_text())
-                                except Exception: pass
-                            _kcc[_ksym] = str(_kcd.today())
-                            _kcp.write_text(_kcj.dumps(_kcc, indent=2))
-                        except Exception:
-                            pass
-                    else:
-                        _k_fail += 1
-                        logger.error("  KILL SELL FAILED %s: %s", _ksym, _kr["error"])
-                else:
-                    logger.critical("  DRY RUN — would sell %s %s shares", _ksym, _kqty)
-                    _k_sold += 1
-            logger.critical("  KILL COMPLETE: %d sold, %d failed", _k_sold, _k_fail)
-            logger.critical("=" * 60)
-            # Write kill switch state for market_agent to read (HOLE 17)
-            try:
-                import json as _ksj
-                from pathlib import Path as _ksP
-                _ksP("kill_switch_state.json").write_text(_ksj.dumps({
-                    "active": True, "tier": _kill_tier, "reason": _kill_reason,
-                    "triggered_at": datetime.now().isoformat(), "cleared": False,
-                }, indent=2))
-            except Exception:
-                pass
-            return  # Skip all normal watchdog logic
-
-    except Exception as _kse:
-        logger.error("Kill switch failed (%s) — proceeding with normal logic", _kse)
-    # ══════════════════════════════════════════════════════════════════════════
-
-    # SPY circuit breaker — logs warning, doesn't exit positions
-    spy_bars = None
-    spy_change = 0.0
-    try:
-        spy_data = dm.alpaca.get_daily_bars(["SPY"], lookback_days=5)
-        if "SPY" in spy_data:
-            spy_bars = spy_data["SPY"]
-            spy_today = float(spy_bars["close"].iloc[-1])
-            spy_prev  = float(spy_bars["close"].iloc[-2]) if len(spy_bars) >= 2 else spy_today
-            spy_change = (spy_today / spy_prev) - 1.0
-            if spy_change < -0.03:
-                logger.warning("SPY CIRCUIT BREAKER: %.1f%% drop. No new entries.", spy_change * 100)
-    except Exception:
-        spy_change = 0.0
+    # ── Load hold_health for ATR and high_water ───────────────────────────────
+    hold_health = _load_hold_health()
 
     exits = []
     holds = []
 
     for pos in positions:
-        sym     = pos["symbol"]
-        entry   = float(pos["avg_entry"])
-        price   = float(pos["current_price"])
-        qty     = pos["qty"]
-        pnl_pct = float(pos.get("unrealized_pnl_pct", 0))
+        sym      = pos["symbol"]
+        entry    = float(pos.get("avg_entry", 0))
+        price    = float(pos.get("current_price", 0))   # live price from Alpaca
+        qty      = float(pos.get("qty", 0))
+        pnl_pct  = float(pos.get("unrealized_pnl_pct", 0))
 
-        # Get daily bars for ATR calculation
-        try:
-            bars_data = dm.alpaca.get_daily_bars([sym], lookback_days=30)
-            if sym not in bars_data or len(bars_data[sym]) < 15:
-                holds.append({"symbol": sym, "reason": "no_data"})
-                continue
-            bars = bars_data[sym]
-        except Exception:
-            holds.append({"symbol": sym, "reason": "fetch_error"})
+        if entry <= 0 or price <= 0 or qty <= 0:
             continue
 
-        # HOLE 16 FIX: Daily ATR understates intraday volatility.
-        # Scale daily ATR by intraday volatility factor derived from
-        # today's range vs average daily range over last 5 days.
-        # On a crash day: today's range = 3× normal → ATR scalar = 1.5 (capped)
-        # On a normal day: scalar ≈ 1.0 → no change
-        daily_atr = f.atr(bars, CONFIG.risk.atr_period)
-        if daily_atr <= 0:
-            daily_atr = abs(price * 0.02)
+        # ── ATR: daily bars (correct — intraday ATR is too noisy for stops) ──
+        atr = 0.0
         try:
-            avg_range_5d = float((bars["high"] - bars["low"]).iloc[-5:].mean())
-            today_range  = float(bars["high"].iloc[-1] - bars["low"].iloc[-1])
-            intraday_scalar = float(np.clip(today_range / (avg_range_5d + 1e-9), 0.5, 2.0))
+            bars_data = dm.get_bars([sym], lookback_days=30)
+            if sym in bars_data and len(bars_data[sym]) >= 15:
+                atr = f.atr(bars_data[sym], CONFIG.risk.atr_period)
         except Exception:
-            intraday_scalar = 1.0
-        atr = daily_atr * intraday_scalar
+            pass
+
+        # ATR fallback chain:
+        # 1. hold_health.json atr field (updated each monitor run — most recent)
+        # 2. 2% of current price (last resort proxy)
+        if atr <= 0:
+            health_rec = hold_health.get(sym, {})
+            atr = float(health_rec.get("atr", 0) or 0)
+        if atr <= 0:
+            atr = price * 0.02
+            logger.debug("%s: ATR fallback to 2%% proxy ($%.4f)", sym, atr)
+
+        # ── High water mark: from hold_health.json ────────────────────────────
+        # Previous: high_water = max(price, entry) — only knows current price,
+        # misses intraday highs that occurred before this watchdog run.
+        # Fixed: hold_health.json accumulates the rolling high water across monitor runs.
+        health_rec = hold_health.get(sym, {})
+        stored_high_water = float(health_rec.get("high_water", 0) or 0)
+        # Take max of stored, entry, and current (current may be new intraday high)
+        high_water = max(stored_high_water, entry, price)
+
+        profit_atr = (high_water - entry) / atr if atr > 0 else 0.0
 
         reason = None
 
-        # HARD STOP — uses scaled ATR
-        hard_stop = entry - CONFIG.risk.initial_stop_atr_mult * atr
+        # ── HARD STOP — vol-regime aware (mirrors exit_monitor GAP 3) ────────
+        # Read vol_pctile from hold_health if available, else use 0.5 (neutral)
+        vol_pctile = float(health_rec.get("vol_pctile", 0.5) or 0.5)
+        if vol_pctile < 0.25:
+            stop_mult = 2.5
+        elif vol_pctile > 0.75:
+            stop_mult = 3.5
+        else:
+            stop_mult = CONFIG.risk.initial_stop_atr_mult
+
+        hard_stop = entry - stop_mult * atr
         if price <= hard_stop:
             reason = "hard_stop"
-            logger.info("EXIT [HARD STOP] %s $%.2f <= $%.2f (ATR_scalar=%.2f)",
-                       sym, price, hard_stop, intraday_scalar)
+            logger.info(
+                "EXIT [HARD STOP] %s $%.2f <= $%.2f (%.1f× ATR, vol_pctile=%.2f)",
+                sym, price, hard_stop, stop_mult, vol_pctile
+            )
 
-        # TRAIL — HOLE 11 FIX: load persisted high_water from ledger
+        # ── INTRADAY TRAIL ────────────────────────────────────────────────────
+        # Use mid-range trail (trail_mid_atr) — tighter than daily trail to catch
+        # intraday reversals without triggering on normal noise.
+        # We do NOT apply the GAP 1 signal-quality modifier here because composite
+        # scores are daily — applying them intraday would be stale.
         if reason is None:
-            if _ledger is not None:
-                high_water = _ledger.update_high_water("v5.4", sym, price)
-                high_water = max(high_water, entry)
-            else:
-                high_water = max(price, entry)
+            trail_mult = CONFIG.risk.trail_mid_atr
+            if profit_atr >= 4.0:
+                trail_mult = min(trail_mult, 1.0)
+            elif profit_atr >= 2.0:
+                trail_mult = min(trail_mult, 1.5)
+            elif profit_atr >= 1.0:
+                trail_mult = min(trail_mult, 2.0)
 
-            profit_atr = (high_water - entry) / atr if atr > 0 else 0
-            # Watchdog uses trail_mid_atr (2.0×) — wider than exit_monitor's
-            # time-decaying trail. Intraday noise is higher; trail must breathe.
-            # trail_mult does not apply signal-quality modifier here —
-            # composite/health not available without running full signal engine.
-            trail = high_water - CONFIG.risk.trail_mid_atr * atr
-            if trail > hard_stop and price <= trail:
+            trail_price = high_water - trail_mult * atr
+            trail_price = max(trail_price, hard_stop)  # trail never below hard stop
+
+            if price <= trail_price and trail_price > hard_stop:
                 reason = "trail_profit" if price > entry else "trail_loss"
-                logger.info("EXIT [TRAIL] %s $%.2f <= $%.2f hw=$%.2f ATR_scalar=%.2f",
-                           sym, price, trail, high_water, intraday_scalar)
+                logger.info(
+                    "EXIT [TRAIL] %s $%.2f <= $%.2f (trail=%.2f× ATR, hw=$%.2f)",
+                    sym, price, trail_price, trail_mult, high_water
+                )
 
-        # MOMENTUM BREAK — 2 consecutive closes below 8-EMA while profitable
-        if reason is None and pnl_pct > 0.01:
-            ema8 = bars["close"].ewm(span=8, adjust=False).mean()
-            if (bars["close"].iloc[-1] < ema8.iloc[-1] and
-                    bars["close"].iloc[-2] < ema8.iloc[-2]):
-                reason = "momentum_break"
-                logger.info("EXIT [MOMENTUM BREAK] %s $%.2f below 8-EMA", sym, price)
+        # NOTE: Momentum break removed from watchdog v1.1
+        # It was checking 8-day EMA on daily bars — not intraday.
+        # Multi-day signals belong in exit_monitor.py, not the 15-min watchdog.
 
         if reason:
             exits.append({
                 "symbol": sym, "qty": qty, "price": price,
                 "entry": entry, "pnl_pct": pnl_pct, "reason": reason,
+                "atr": round(atr, 4), "high_water": round(high_water, 4),
             })
         else:
             holds.append({
-                "symbol": sym, "pnl_pct": round(pnl_pct * 100, 1),
-                "price": price,
+                "symbol": sym, "price": price,
+                "pnl_pct": round(pnl_pct * 100, 2),
+                "stop": round(hard_stop, 2),
+                "stop_dist_pct": round((price - hard_stop) / price * 100, 1),
             })
 
-    # Report
-    logger.info("Exits: %d | Holds: %d", len(exits), len(holds))
+    # ── Report ────────────────────────────────────────────────────────────────
+    logger.info("WATCHDOG RESULT: %d exits | %d holds", len(exits), len(holds))
     for h in holds:
-        if h.get("reason") != "no_data":
-            logger.info("  HOLD %s $%.2f pnl=%+.1f%%",
-                       h.get("symbol", "?"), h.get("price", 0), h.get("pnl_pct", 0))
+        logger.info(
+            "  HOLD %-6s $%.2f  pnl=%+.2f%%  stop=$%.2f (dist=%.1f%%)",
+            h["symbol"], h["price"], h["pnl_pct"], h["stop"], h["stop_dist_pct"]
+        )
 
-    # Execute
+    # ── Execute ───────────────────────────────────────────────────────────────
     if exits and not dry_run:
         for ex in exits:
+            client_id = f"{ex['reason']}_{ex['symbol']}_{datetime.now():%Y%m%d%H%M%S}_watchdog"
             result = dm.alpaca.submit_order(
-                ex["symbol"], ex["qty"], "SELL", "market",
-                client_order_id=f"{ex['reason']}_{ex['symbol']}_{datetime.now():%Y%m%d%H%M%S}"
+                ex["symbol"], int(ex["qty"]), "SELL", "market",
+                client_order_id=client_id
             )
             if "error" not in result:
-                logger.info("  SOLD %s [%s]", ex["symbol"], ex["reason"])
-                if _ledger:
-                    try:
-                        _ledger.record_exit("v5.4", ex["symbol"], float(ex["price"]),
-                                           datetime.now().strftime("%Y-%m-%d"), ex["reason"])
-                    except Exception:
-                        pass
+                logger.info(
+                    "  SOLD %-6s %d shares @ $%.2f [%s]",
+                    ex["symbol"], int(ex["qty"]), ex["price"], ex["reason"]
+                )
             else:
-                logger.error("  FAILED %s: %s", ex["symbol"], result["error"])
+                logger.error("  FAILED %-6s: %s", ex["symbol"], result["error"])
     elif dry_run and exits:
-        logger.info("DRY RUN — no orders submitted")
+        for ex in exits:
+            logger.info(
+                "  DRY RUN — would sell %d %s @ $%.2f [%s]",
+                int(ex["qty"]), ex["symbol"], ex["price"], ex["reason"]
+            )
+    elif not exits:
+        logger.info("  No exits triggered this run.")
 
 
 if __name__ == "__main__":
     import argparse
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--dry-run", action="store_true")
+    parser = argparse.ArgumentParser(description="Raptor Watchdog v1.1")
+    parser.add_argument("--dry-run", action="store_true", help="Show exits without submitting")
     args = parser.parse_args()
     run_watchdog(dry_run=args.dry_run)

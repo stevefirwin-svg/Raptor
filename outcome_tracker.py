@@ -27,10 +27,10 @@ ALPACA_KEY    = os.getenv("ALPACA_API_KEY")
 ALPACA_SECRET = os.getenv("ALPACA_SECRET_KEY")
 BASE_URL      = os.getenv("ALPACA_BASE_URL", "https://paper-api.alpaca.markets")
 
-ENTRY_VETOES_PATH    = "entry_vetoes.json"
-HOLD_DECISIONS_PATH  = "hold_decisions.json"
-OUTCOME_LOG_PATH     = "outcome_log.json"
-OUTCOME_PENDING_PATH = "outcome_pending.json"
+ENTRY_VETOES_PATH   = "entry_vetoes.json"
+HOLD_DECISIONS_PATH = "hold_decisions.json"
+OUTCOME_LOG_PATH    = "outcome_log.json"
+POSITION_LEDGER_PATH = "position_ledger.json"
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -142,21 +142,32 @@ def normalize_decision(record, agent_type: str) -> dict:
 
 # ── Core tagging ──────────────────────────────────────────────────────────────
 
-def load_outcome_pending() -> dict:
-    """Load outcome_pending.json sidecar -- exit metadata keyed by Alpaca order ID.
-    Written by exit_monitor on each sell submission. Primary source for exit_path."""
-    if not os.path.exists(OUTCOME_PENDING_PATH):
+def load_ledger_exit_map() -> dict:
+    """
+    Build a map of symbol -> exit_reason from position_ledger.json closed trades.
+    Used as fallback when client_order_id is missing or blank (legacy orders,
+    manual exits, or Alpaca paper trading truncation).
+    Key: symbol (str), Value: exit_reason (str)
+    Only the most recent closed entry per symbol is kept.
+    """
+    if not os.path.exists(POSITION_LEDGER_PATH):
         return {}
     try:
-        with open(OUTCOME_PENDING_PATH, "r") as f:
-            data = json.load(f)
-        return data if isinstance(data, dict) else {}
-    except (json.JSONDecodeError, OSError):
+        with open(POSITION_LEDGER_PATH) as f:
+            ledger = json.load(f)
+        closed = ledger.get("closed", [])
+        result = {}
+        for entry in closed:
+            sym = entry.get("symbol")
+            reason = entry.get("exit_reason") or entry.get("metadata", {}).get("exit_reason")
+            if sym and reason:
+                result[sym] = reason  # last writer wins — most recent exit
+        return result
+    except Exception:
         return {}
 
 
-def build_outcome_record(sell_order, buy_order, entry_decision, hold_decision,
-                         pending_meta: dict = None) -> dict:
+def build_outcome_record(sell_order, buy_order, entry_decision, hold_decision) -> dict:
     symbol     = sell_order["symbol"]
     exit_ts    = sell_order["filled_at"]
     exit_price = float(sell_order.get("filled_avg_price") or 0)
@@ -173,20 +184,32 @@ def build_outcome_record(sell_order, buy_order, entry_decision, hold_decision,
         hold_days   = None
         pnl_pct     = None
 
-    # P0-1 fix: Primary exit path from outcome_pending.json sidecar (keyed by order ID).
-    # Falls back to client_order_id substring parsing for legacy orders only.
+    # Detect exit path from client_order_id label written by exit_monitor.
+    # Falls back to position_ledger.json exit_reason when client_order_id is
+    # absent (legacy orders, manual exits, Alpaca paper trading truncation).
+    client_id = sell_order.get("client_order_id", "") or ""
     exit_path = "unknown"
-    if pending_meta:
-        exit_path = pending_meta.get("exit_reason", "unknown")
+    exit_path_labels = [
+        "hard_stop", "trail_profit", "trail_loss", "profit_target",
+        "momentum_break", "agent_exit", "trailing_stop", "thesis_invalid",
+        "leveraged_3x_cap", "leveraged_2x_cap", "time_decay", "portfolio_heat"
+    ]
+    for path in exit_path_labels:
+        if path in client_id:
+            exit_path = path
+            break
+
+    # Ledger fallback — only if client_order_id gave us nothing
     if exit_path == "unknown":
-        client_id = sell_order.get("client_order_id", "")
-        for path in ["hard_stop", "trail_profit", "trail_loss", "profit_target",
-                     "momentum_break", "agent_exit", "trailing_stop", "thesis_invalid",
-                     "leveraged_3x_cap", "leveraged_2x_cap", "time_decay", "portfolio_heat",
-                     "math_exit", "math_trim"]:
-            if path in client_id:
+        _ledger_map = load_ledger_exit_map()
+        ledger_reason = _ledger_map.get(symbol, "")
+        for path in exit_path_labels:
+            if path in ledger_reason:
                 exit_path = path
                 break
+        # Accept raw ledger reason string even if it doesn't match a canonical label
+        if exit_path == "unknown" and ledger_reason:
+            exit_path = ledger_reason
 
     return {
         "symbol":           symbol,
@@ -211,13 +234,11 @@ def run_tracker(verbose: bool = True) -> int:
 
     entry_vetoes   = load_json_list(ENTRY_VETOES_PATH)
     hold_decisions = load_json_list(HOLD_DECISIONS_PATH)
-    pending_exits  = load_outcome_pending()  # P0-1: sidecar with exit reasons keyed by order ID
 
     if verbose:
         print(f"[OutcomeTracker] Existing tagged trades : {len(existing)}")
         print(f"[OutcomeTracker] Entry veto records     : {len(entry_vetoes)}")
         print(f"[OutcomeTracker] Hold decision records  : {len(hold_decisions)}")
-        print(f"[OutcomeTracker] Pending exit metadata  : {len(pending_exits)}")
 
     try:
         sells = fetch_closed_orders()
@@ -247,8 +268,7 @@ def run_tracker(verbose: bool = True) -> int:
 
         entry_dec = last_decision_before(entry_vetoes,   symbol, exit_ts)
         hold_dec  = last_decision_before(hold_decisions, symbol, exit_ts)
-        _pending  = pending_exits.get(order_id)  # P0-1: sidecar metadata for this order
-        record    = build_outcome_record(sell, buy, entry_dec, hold_dec, pending_meta=_pending)
+        record    = build_outcome_record(sell, buy, entry_dec, hold_dec)
         new_records.append(record)
 
         if verbose:

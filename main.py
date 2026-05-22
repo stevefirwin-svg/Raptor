@@ -22,6 +22,106 @@ logging.basicConfig(
 logger = logging.getLogger("raptor.main")
 
 
+def _get_cooldown_symbols(cooldown_days: int = 5) -> set:
+    """
+    GAP 6 — Re-entry cooldown after stop-out.
+
+    Returns set of symbols that were stopped out within the last `cooldown_days`
+    trading days and are therefore blocked from re-entry.
+
+    A stop-out on a momentum-driven decline means the thesis failed. Re-entering
+    the next day if the symbol still ranks in top-N burns capital twice on the
+    same failing trade. Math must re-qualify the thesis via cooldown + re-scoring.
+
+    Sources (checked in order of reliability):
+      1. outcome_log.json — exit_path=hard_stop/trail_loss in last N days
+      2. position_ledger.json closed — exit_reason containing stop/trail in last N days
+
+    Only hard stops and trail_loss exits trigger cooldown.
+    Profitable trail exits (trail_profit) do NOT — the thesis worked, re-entry ok.
+    """
+    import json as _j
+    from datetime import date as _date, timedelta as _td
+
+    cooldown_symbols = set()
+    cutoff = _date.today() - _td(days=cooldown_days)
+
+    stop_paths = {"hard_stop", "trail_loss", "trailing_stop"}
+
+    # Source 1: outcome_log.json
+    try:
+        if os.path.exists("outcome_log.json"):
+            with open("outcome_log.json") as f:
+                records = _j.load(f)
+            for r in records:
+                exit_path = r.get("actual_exit_path", "")
+                exit_date = r.get("exit_date", "")
+                if exit_path in stop_paths and exit_date:
+                    try:
+                        ed = datetime.strptime(exit_date[:10], "%Y-%m-%d").date()
+                        if ed >= cutoff:
+                            cooldown_symbols.add(r["symbol"])
+                    except Exception:
+                        pass
+    except Exception:
+        pass
+
+    # Source 2: position_ledger.json closed trades
+    try:
+        if os.path.exists("position_ledger.json"):
+            with open("position_ledger.json") as f:
+                ledger_data = _j.load(f)
+            for trade in ledger_data.get("closed", []):
+                reason = trade.get("exit_reason", "")
+                exit_date = trade.get("exit_date", "")
+                if any(p in reason for p in ["hard_stop", "trail_loss", "trailing_stop"]) and exit_date:
+                    try:
+                        ed = datetime.strptime(exit_date[:10], "%Y-%m-%d").date()
+                        if ed >= cutoff:
+                            cooldown_symbols.add(trade["symbol"])
+                    except Exception:
+                        pass
+    except Exception:
+        pass
+
+    return cooldown_symbols
+
+
+def _get_composite_velocity(symbol: str, lookback_days: int = 3) -> float:
+    """
+    GAP 5 — Composite velocity: rate of change of composite score.
+
+    composite_velocity = composite_today - composite_{N days ago}
+
+    Positive = accelerating (signal strengthening) — priority entry, size up.
+    Negative = decelerating (signal fading) — defer or size down.
+
+    Reads hold_history.json snapshots if the symbol has recent history.
+    Falls back to 0.0 (neutral) if no history available — new entries without
+    history are not penalized, just not boosted.
+
+    Only used as a sizing modifier, not a hard gate — ensures we don't block
+    valid entries just because the symbol has no hold_history yet.
+    """
+    import json as _j
+    try:
+        if not os.path.exists("hold_history.json"):
+            return 0.0
+        with open("hold_history.json") as f:
+            hh = _j.load(f)
+        snaps = hh.get("positions", {}).get(symbol, {}).get("snapshots", [])
+        if len(snaps) < 2:
+            return 0.0
+        # Sort by timestamp, get last and Nth-last
+        snaps_sorted = sorted(snaps, key=lambda s: s.get("timestamp", ""))
+        latest = snaps_sorted[-1].get("composite", 0.0)
+        prior_idx = max(0, len(snaps_sorted) - 1 - lookback_days)
+        prior = snaps_sorted[prior_idx].get("composite", 0.0)
+        return round(float(latest - prior), 4)
+    except Exception:
+        return 0.0
+
+
 def run_daily_scan():
     logger.info("=" * 60)
     logger.info("RAPTOR %s DAILY SCAN - %s", MODEL_ID, datetime.now().isoformat())
@@ -94,28 +194,22 @@ def run_daily_scan():
     bars, macro, sentiment = dataset["bars"], dataset["macro"], dataset["sentiment"]
     spy_bars = bars.get("SPY")
 
-    # P0-8 fix: Use macro_context.json as the canonical macro source (written by
-    # macro_context.py at 9:00 AM). Ensures main.py, agent_layer, and signals
-    # all use the same regime label from the same computation.
-    try:
-        import json as _mcjson
-        from pathlib import Path as _mcPath
-        _mc_path = _mcPath("macro_context.json")
-        if _mc_path.exists():
-            _mc_data = _mcjson.loads(_mc_path.read_text())
-            _mc_regime = _mc_data.get("regime")
-            if _mc_regime:
-                macro["regime"] = _mc_regime
-                logger.info("[P0-8] Using macro_context.json regime=%s (canonical source)", _mc_regime)
-    except Exception as _mce:
-        logger.warning("[P0-8] Could not load macro_context.json (%s) -- using data_feeds fallback", _mce)
-
     logger.info("Data: %d symbols | Macro: %s (%.3f)",
                 len(bars), macro["regime"], macro["score"])
 
     engine = QuantSignalEngine(CONFIG)
     signals = engine.generate_signals(bars, macro, sentiment, spy_bars)
     signals = [s for s in signals if s.symbol not in all_held]
+
+    # GAP 6 — Re-entry cooldown: block symbols stopped out in last 5 days
+    _cooldown = _get_cooldown_symbols(cooldown_days=5)
+    if _cooldown:
+        before_cd = len(signals)
+        signals = [s for s in signals if s.symbol not in _cooldown]
+        blocked = before_cd - len(signals)
+        if blocked:
+            logger.info("COOLDOWN: blocked %d symbol(s) stopped out within 5 days: %s",
+                       blocked, sorted(_cooldown & {s.symbol for s in signals} | _cooldown))
 
     if not signals:
         logger.info("No signals today. Patience.")
@@ -168,8 +262,20 @@ def run_daily_scan():
         if placed >= _mg_max_new:
             logger.info("SKIP %s — margin guard cap reached (%d new positions)", sig.symbol, _mg_max_new)
             break
+
+        # GAP 5 — Composite velocity sizing modifier
+        # Entry is based on composite score at a single point in time. A stock
+        # accelerating (composite rising day over day) is a far better entry than
+        # one decelerating toward the threshold — same score, very different trajectory.
+        # velocity = composite_today - composite_3d_ago from hold_history.json
+        # Modifier scales kelly continuously: +0.2 per unit velocity, capped at ±20%.
+        # Decelerating signals near threshold are sized smaller, not blocked.
+        comp_vel = _get_composite_velocity(sig.symbol, lookback_days=3)
+        vel_modifier = max(0.80, min(1.20, 1.0 + comp_vel * 0.2))
+        effective_kelly = sig.kelly_fraction * vel_modifier
+
         # Size from MY allocation, not full account
-        shares = int((my_equity * sig.kelly_fraction) / sig.entry_price)
+        shares = int((my_equity * effective_kelly) / sig.entry_price)
         if shares < 1:
             continue
         # Buying power guard — ensures Alpaca won't reject the order
@@ -188,8 +294,13 @@ def run_daily_scan():
             ledger.record_entry(MODEL_ID, sig.symbol, shares, sig.entry_price,
                                 datetime.now().strftime("%Y-%m-%d"),
                                 {"t_stat": sig.t_statistic, "stop": sig.stop_price,
-                                 "tp": sig.take_profit, "regime": sig.regime})
-            logger.info("ORDER [%s]: BUY %d %s @ $%.2f", MODEL_ID, shares, sig.symbol, limit or sig.entry_price)
+                                 "tp": sig.take_profit, "regime": sig.regime,
+                                 "composite_score": sig.composite_score,
+                                 "composite_velocity": comp_vel,
+                                 "kelly_fraction": round(effective_kelly, 4)})
+            logger.info("ORDER [%s]: BUY %d %s @ $%.2f  vel=%.3f  kelly_adj=%.3f",
+                       MODEL_ID, shares, sig.symbol, limit or sig.entry_price,
+                       comp_vel, effective_kelly)
         else:
             logger.error("FAILED: %s - %s", sig.symbol, result["error"])
 

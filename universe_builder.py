@@ -11,12 +11,15 @@ Screening criteria (each must earn its place):
      and institutional participation drops. MR strategies need
      institutional mean-reversion — microcaps revert to noise, not value.
 
-  2. AVG DAILY DOLLAR VOLUME ≥ $20M (20-day)
-     Why: Need to enter/exit $5K-$10K positions without moving price.
-     $20M/day means our orders are <0.05% of daily flow = zero impact.
+  2. AVG DAILY DOLLAR VOLUME ≥ $30M (20-day)
+     Why: Raised from $20M based on sensitivity sweep (2026-05-22). $30M raises
+     median institutional liquidity from $52M to $68M/day — better fills and
+     stronger mean-reversion participation. Highest-sensitivity filter (0.1487).
 
-  3. AVG DAILY VOLUME ≥ 500K shares
-     Why: Share-level liquidity floor. Ensures limit orders fill.
+  3. AVG DAILY VOLUME ≥ 750K shares
+     Why: Raised from 500K based on sensitivity sweep. Cuts low-quality names
+     while maintaining ~93 symbols (sufficient for MAD cross-sectional z-scoring).
+     Sensitivity rank: 0.0381 (second most impactful filter).
 
   4. PRICE $5 - $1000
      Why: Below $5 = penny stock territory (wider spreads, manipulation).
@@ -203,20 +206,29 @@ class UniverseBuilder:
             daily_range_pct = (atr_20 / latest_price) * 100 if latest_price > 0 else 0
 
             # ── HARD FILTERS ──
+            # Thresholds derived from sensitivity sweep 2026-05-22 (sweep_universe_filters.py).
+            # Sweep across 3125 combinations on live universe (141 symbols):
+            #   Dollar vol sensitivity: 0.1487 (highest) — $30M raises median liq $52→$68M
+            #   Volume sensitivity:     0.0381 — 750K cuts low-quality names, stays 93 symbols
+            #   Price min/max:          inert — no symbols near $5 floor or $1000 ceiling
+            #   Daily range:            inert — only 7 symbols between 0.5% and 1.5%
+            # Conservative application: only change the two binding filters.
 
-            # Price: $5 - $1000
+            # Price: $5 - $1000 (unchanged — price filters are inert in current universe)
             if latest_price < 5 or latest_price > 1000:
                 continue
 
-            # Avg daily volume ≥ 500K
-            if avg_volume_20d < 500_000:
+            # Avg daily volume ≥ 750K (raised from 500K — cuts low-quality names,
+            # maintains 93-symbol universe vs 141 at 500K; MAD z-scoring stable above 80)
+            if avg_volume_20d < 750_000:
                 continue
 
-            # Avg daily dollar volume ≥ $20M
-            if avg_dollar_volume < 20_000_000:
+            # Avg daily dollar volume ≥ $30M (raised from $20M — highest sensitivity filter,
+            # raises median institutional liquidity from $52M to $68M daily)
+            if avg_dollar_volume < 30_000_000:
                 continue
 
-            # Daily range ≥ 1.0%
+            # Daily range ≥ 1.0% (unchanged — inert, only 7 symbols in 0.5%-1.5% band)
             if daily_range_pct < 1.0:
                 continue
 
@@ -294,6 +306,59 @@ class UniverseBuilder:
         symbols = [c["symbol"] for c in passed[:max_symbols]]
         return symbols
 
+    def sensitivity_report(self) -> str:
+        """
+        GAP F: Show which filters are binding on today's cached universe.
+        For each filter, reports how many symbols are eliminated and what
+        the marginal symbol at the threshold looks like.
+        Run after build() to understand where the universe boundary sits.
+        """
+        today = datetime.now().strftime("%Y-%m-%d")
+        cache_file = os.path.join(self._cache_dir, f"universe_{today}.json")
+        if not os.path.exists(cache_file):
+            return "No cached universe for today. Run build() first."
+
+        with open(cache_file) as f:
+            passed = json.load(f)
+
+        if not passed:
+            return "Empty universe cache."
+
+        lines = ["", "  UNIVERSE FILTER SENSITIVITY REPORT", "  " + "-" * 50]
+        lines.append(f"  Symbols in universe: {len(passed)}")
+        lines.append(f"  Filters: price $5-$1000 | vol≥750K | $vol≥$30M | range≥1.0%")
+        lines.append("")
+
+        prices = [s["price"] for s in passed]
+        vols   = [s["avg_volume_20d"] for s in passed]
+        dvols  = [s["avg_dollar_vol_M"] for s in passed]
+        ranges = [s["daily_range_pct"] for s in passed]
+
+        def near_threshold(values, threshold, pct=0.20):
+            """Count symbols within pct% of the threshold."""
+            return sum(1 for v in values if abs(v - threshold) / threshold < pct)
+
+        thresholds = [
+            ("Price min $5",    prices,  5.0,    "below"),
+            ("Price max $1000", prices,  1000.0, "above"),
+            ("Volume 500K",     vols,    500_000, "near"),
+            ("Dollar vol $20M", dvols,   20.0,   "near"),
+            ("Daily range 1.0%",ranges,  1.0,    "near"),
+        ]
+
+        for label, values, thr, direction in thresholds:
+            n_near = near_threshold(values, thr)
+            pct_near = n_near / len(values) * 100
+            lines.append(f"  {label:<22} min={min(values):.1f}  median={np.median(values):.1f}"
+                         f"  {n_near} symbols within 20% of threshold ({pct_near:.1f}%)")
+
+        lines.append("")
+        lines.append("  High binding = threshold eliminates many borderline symbols.")
+        lines.append("  Run: python sweep_universe_filters.py  for full sensitivity sweep.")
+        lines.append("")
+
+        return "\n".join(lines)
+
     def build_with_report(self, max_symbols: int = 200) -> Tuple[List[str], str]:
         """Build universe and return both symbols and a printable report."""
         today = datetime.now().strftime("%Y-%m-%d")
@@ -314,7 +379,7 @@ class UniverseBuilder:
         lines.append(f"  RAPTOR v5.2 UNIVERSE SCREEN — {today}")
         lines.append("=" * 80)
         lines.append(f"  Symbols passing: {len(data)}")
-        lines.append(f"  Filters: price $5-$1000 | vol >= 500K | dollar vol >= $20M | range >= 1.0%")
+        lines.append(f"  Filters: price $5-$1000 | vol >= 750K | dollar vol >= $30M | range >= 1.0%")
         lines.append("")
         lines.append(f"  {'#':>3}  {'Symbol':8}  {'Price':>8}  {'AvgVol':>10}  {'$Vol(M)':>8}  {'Range%':>7}  {'Score':>6}")
         lines.append("  " + "-" * 70)

@@ -45,8 +45,12 @@ Every decision in Raptor is made by math first. An LLM agent (Ollama/llama3.2, r
 STAGE 1: MACRO GATE       — Is it safe to enter anything today?
 STAGE 2: UNIVERSE SCAN    — Which ~120-150 symbols to score?
 STAGE 3: SIGNAL ENGINE    — Which symbols have genuine edge (composite score > 0)?
-STAGE 4: ENTRY FILTERS    — Pre-trade gates: margin, cooldown, velocity, agent veto
-STAGE 5: EXECUTION        — Size, submit, record
+STAGE 4: ENTRY FILTERS    — Pre-trade gates (in order):
+                             1. Already-held filter
+                             2. Re-entry cooldown (hard_stop/trail_loss within 5 days)
+                             3. Margin guard (util >90% block, >85% or on-margin reduce)
+                             4. EntryAgent veto (Ollama/llama3.2)
+STAGE 5: EXECUTION        — Velocity-adjusted Kelly sizing, submit, record
 ```
 
 Once in a position, two parallel systems run daily:
@@ -96,11 +100,17 @@ VIX=20 is neutral (score=0). VIX=35 is score=-1.0 (extreme fear). VIX=5 is score
 A 3.5% HY-IG spread normalizes to -1.0 (extreme stress). Near-zero spread = +1.0.
 
 **Sector breadth (P1-13, Zweig 1986):**  
-Three moving averages computed per sector ETF (50/150/200 day). Composite:  
-`breadth_composite = 0.25 × pct_above_50MA + 0.35 × pct_above_150MA + 0.40 × pct_above_200MA`  
-Then: `score = clip((composite - 50) / 50, -1, 1)`  
-50% of sectors above their weighted-average MA = neutral. 100% = +1.0. 0% = -1.0.  
-*Longer MAs get higher weight because they are more predictive of sustained regime (Zweig 1986).*
+Three moving averages computed per sector ETF (50/150/200 day). ✅ **IMPLEMENTED 2026-05-22.**  
+Composite breadth score (weighted blend):  
+`breadth_composite = 0.40 × pct_above_50MA + 0.35 × pct_above_150MA + 0.25 × pct_above_200MA`  
+
+*Note: ontology weight order differs from code — code weights 50/150/200 as 40/35/25% (short-term most responsive gets highest weight). Longer MAs get lower weight in the composite but drive the `structural` field (BULL/NEUTRAL/BEAR) separately, which adds an extra vote to `classify_macro()`. Net effect: 200MA still most influential via the structural bonus vote.*
+
+Structural classification from 200MA breadth:
+- ≥70% of sectors above 200MA → `BULL_MARKET` → +1 extra vote  
+- <50% of sectors above 200MA → `BEAR_MARKET` → -1 extra vote  
+
+Score mapped to regime: composite ≥70% → `BROAD_STRENGTH`, ≥50% → `MIXED`, ≥30% → `WEAKENING`, else → `BROAD_WEAKNESS`
 
 **Yield curve:**  
 `score = clip(T10Y2Y_spread / 1.5%, -1, 1)`  
@@ -119,6 +129,8 @@ raw_score = 0.30 × spy + 0.25 × vix + 0.20 × credit + 0.15 × breadth + 0.07 
 **Weights sum to 1.0.** SPY gets the highest weight because it is the most direct real-time signal of equity regime. VIX second because it captures forward-looking fear. Credit third because high-yield stress is a leading indicator of drawdown. Breadth fourth because it measures participation width.
 
 *Known flaw: weights are hand-picked and not calibrated against historical regime prediction accuracy. This is logged as an open gap.*
+
+**⚠ IMPLEMENTATION NOTE (2026-05-22):** The current `macro_context.py` uses a vote-count scoring system (each signal votes +1/0/-1) rather than the weighted continuous score described above. The Kalman filter (§2.4) and hysteresis (§2.5) are also not yet implemented — the code classifies directly from vote totals with fixed thresholds. The architecture described in §2.3–2.5 is the *target design*, not the current implementation. GAP A (HMM/Kalman regime classifier) covers this but is currently gated — do not implement until regime stability requirements are clearer.
 
 ### 2.4 Kalman Filter Smoothing
 
@@ -389,33 +401,60 @@ Signals that pass `composite > 0` go through five sequential filters before entr
 
 If the symbol is already in the portfolio, it is blocked immediately. Raptor never adds to a position.
 
-### 5.2 Re-Entry Cooldown (P1-11)
+### 5.2 Re-Entry Cooldown (GAP 6) ✅ IMPLEMENTED 2026-05-22
 
-After a `hard_stop` or `thesis_invalid` exit, the symbol is placed in a cooldown period. The cooldown duration scales with market conditions:
+After a `hard_stop` or `trail_loss` exit, the symbol is blocked from re-entry for a cooldown period.
 
+**Current implementation (flat 5-day cooldown):**
+```
+cooldown_days = 5  (fixed)
+Sources checked: outcome_log.json (exit_path field), then position_ledger.json (exit_reason field)
+Blocked exit types: hard_stop, trail_loss, trailing_stop
+NOT blocked: trail_profit, profit_target (thesis worked — re-entry permitted)
+```
+
+**Target design (ATR-scaled cooldown — not yet implemented):**
 ```
 cooldown_days = clip(3 + ATR_percentile × 12, 3, 15)
 ```
+A symbol stopped out during high volatility (ATR in 90th percentile) would get 14 days. Low vol stop-out gets 3 days. This is more principled but requires the ATR at exit time to be recorded in the cooldown log — currently not stored. Implement when `outcome_log.json` is enriched with ATR_percentile at exit.
 
-`ATR_percentile` is where the symbol's ATR sat in its 60-day distribution at the time of the stop-out. A symbol stopped out during high volatility (ATR in 90th percentile) gets a 14-day cooldown. A symbol stopped out in low volatility gets a 3-day cooldown.
+### 5.3 Composite Velocity Gate (GAP 5) ✅ IMPLEMENTED 2026-05-22
 
-*Rationale: A stop-out during high volatility means the thesis was rejected by a volatile, potentially irrational market. The same signal re-appearing immediately is likely to be stopped again.*
-
-### 5.3 Composite Velocity Gate (P1-10)
-
-The composite score is tracked daily for every symbol in `composite_cache.json` (rolling 5-day window). Before entry, the velocity is computed:
+The composite score trajectory is tracked daily in `hold_history.json` (rolling snapshots). Before entry, velocity is computed:
 
 ```
-velocity = composite_today - composite_3d_ago
+velocity = composite_today - composite_3d_ago   (from hold_history.json snapshots)
 ```
 
-If `velocity < -0.3` (score accelerating downward), the Kelly fraction for this signal is halved. The position still enters but at reduced size. The gate requires ≥ 3 days of cache history to activate.
+**Current implementation (continuous Kelly modifier):**
+```
+kelly_modifier = max(0.80, min(1.20, 1.0 + velocity × 0.2))
+effective_kelly = kelly_fraction × kelly_modifier
+```
+- velocity = +0.5 (accelerating) → kelly × 1.10 (size up 10%)
+- velocity = -0.5 (decelerating) → kelly × 0.90 (size down 10%)
+- Modifier capped at ±20% to bound impact
 
-*Rationale: Two stocks with the same composite score today are not equivalent — one accelerating from 0.5 last week represents a strengthening thesis; one decelerating from 2.5 represents a weakening one.*
+Requires ≥ 3 days of history in `hold_history.json` to compute. Falls back to 1.0× for new symbols with no prior snapshots. The velocity value is recorded in `position_ledger.json` metadata at entry.
 
-### 5.4 Margin Guard
+**Target design (hard gate on strong deceleration):**  
+The original design called for halving Kelly when `velocity < -0.3`. The continuous modifier is more nuanced — it avoids a binary cliff and degrades smoothly. The flat 5-day cooldown captures the hard-block case for stop-outs; velocity handles the sizing-down case for decelerating-but-not-stopped signals.
 
-Before any entries, `margin_guard.py` checks whether the account has sufficient buying power and whether the current capital utilization is acceptable. If the account is too concentrated or approaching margin limits, all new entries are blocked for the session.
+### 5.4 Margin Guard ✅ UPDATED 2026-05-22
+
+`margin_guard.py` checks capital utilization before any entries. Rules (in order):
+
+| Condition | Action |
+|-----------|--------|
+| `equity ≤ 0` | BLOCK all entries |
+| `util > 90%` | BLOCK all entries |
+| `util > 85%` | REDUCE — cap new positions at 1 |
+| `cash < 0` (on margin) | REDUCE — cap new positions at 1 |
+| `util > 75%` | WARNING log, proceed normally |
+| API error / exception | BLOCK all entries (**fail closed**) |
+
+**Key fix 2026-05-22:** Prior implementation returned `(True, 99)` on any API error — silently allowing unlimited entries if Alpaca was unreachable. Now returns `(False, 0)` — fail closed. On-margin condition now caps entries at 1 rather than just logging a warning.
 
 ### 5.5 Entry Agent Veto
 
@@ -427,7 +466,18 @@ The EntryAgent (Ollama/llama3.2) reviews each signal and can record a veto in `e
 
 **All sizing math is in `signals.py`.**
 
-### 6.1 Bayesian Kelly Derivation (P1-4)
+### 6.1 Bayesian Kelly Derivation (Target Design — GAP B)
+
+**⚠ IMPLEMENTATION NOTE:** The Bayesian Kelly derivation below is the *target architecture*. The current `signals.py` uses a simpler formula:
+```
+base_kelly = rcfg.kelly_fraction × (0.5 + min(|t_statistic| / 3.0, 1.0))
+kelly = clip(base_kelly × market_scale, 0.02, 0.12)
+```
+The 0.02/0.12 caps and `t/3.0` normalization are hand-picked — this is GAP B. The target Bayesian derivation below is not yet implemented but is the correct mathematical framework.
+
+---
+
+**TARGET DESIGN:**
 
 Position size is derived from the Kelly criterion applied to the system's empirical track record. This is computed once per scan from `outcome_log.json`.
 
@@ -435,46 +485,45 @@ Position size is derived from the Kelly criterion applied to the system's empiri
 ```
 f* = μ / σ²
 ```
-Where `μ` = mean return per closed trade and `σ` = standard deviation of returns.  
-With 79 current trades: μ ≈ 0.235%, σ ≈ 8.9% → f* ≈ 29.6%.
+Where `μ` = mean return per closed trade and `σ` = standard deviation of returns.
 
 **Step 2 — Bayesian Shrinkage:**  
-Full Kelly (29.6%) is dangerously aggressive when estimated from limited data. A Bayesian prior of `f_prior = 5%` is applied with `n_prior = 50` equivalent trades:
+A Bayesian prior of `f_prior = 5%` is applied with `n_prior = 50` equivalent trades:
 ```
 f_posterior = (N × f* + n_prior × f_prior) / (N + n_prior)
 ```
-With N=79: f_posterior ≈ 20.1%.
 
-*n_prior = 50 is deliberately heavy because all 79 current trades are from a pre-P0-fix period and lack agent tagging. Once 60+ clean agent-tagged trades exist, n_prior should be reduced to 20.*
+*n_prior = 50 is deliberately heavy because most current trades predate the outcome_tracker fix and lack exit path metadata. Once 60+ clean agent-tagged trades exist, n_prior should be reduced to 20.*
 
 **Step 3 — Half-Kelly Discount:**  
-Standard practice under estimation uncertainty. The Kelly criterion assumes precise knowledge of edge; we don't have that.
 ```
-f_half = f_posterior × 0.5 ≈ 10.0%
+f_half = f_posterior × 0.5
 ```
 
 **Step 4 — Drawdown Constraint:**  
 ```
 f_max_DD = max_drawdown_tolerance / (worst_5pct_loss × 2)
-f_max_DD = 12% / (10.1% × 2) ≈ 59%   (non-binding currently)
 ```
 
 **Step 5 — Final bounds:**  
 ```
-f_base = min(f_half, f_max_DD, 0.15) = 10.0%
-f_min  = f_base × 0.33 = 3.3%
+f_base = min(f_half, f_max_DD, 0.15)
+f_min  = f_base × 0.33
 ```
 
-### 6.2 Conviction Scaling
+### 6.2 Conviction Scaling (GAP 2 — Not Yet Implemented)
 
-Kelly scales continuously with composite percentile rank:
+**Target design:** Kelly scales continuously with composite percentile rank:
 ```
 kelly = f_min + (f_base - f_min) × composite_percentile_rank
 ```
+A signal in the 90th percentile gets full Kelly. A signal just above the entry threshold gets minimum Kelly.
 
-A signal in the 50th percentile of today's composite distribution gets 6.7% Kelly.  
-A signal in the 90th percentile gets 9.0% Kelly.  
-A signal at the 0th percentile (just above threshold) gets 3.3% Kelly.
+**Current implementation:** Velocity modifier only (GAP 5, implemented 2026-05-22):
+```
+effective_kelly = kelly_fraction × velocity_modifier   (±20% range)
+```
+The full conviction-scaled Kelly (GAP 2) is queued but not implemented. When implemented, velocity modifier and conviction scaling will compose: `effective_kelly = conviction_kelly × velocity_modifier`.
 
 ### 6.3 Market Regime Scale
 
@@ -517,9 +566,15 @@ stop_multiplier by micro-regime:
   MIXED:     2.5
 ```
 
-### 6.7 Hold Target (P1-5)
+### 6.7 Hold Target (GAP C — Target Design, Not Yet Implemented)
 
-The intended hold duration is derived from the stock's own mean-reversion speed, not a fixed number of days:
+**⚠ IMPLEMENTATION NOTE:** OU theta-derived hold targets are the target design. Current code:
+```
+hold = max(1, min(30, int(16 + 14 × atr_pctile)))
+```
+This conflates volatility (ATR) with mean-reversion speed (OU theta) — high-vol stocks get longer hold targets when they should get shorter ones. This is GAP C.
+
+**Target design (OU theta per stock):**
 
 **OU Theta Estimation:**  
 ```
@@ -534,7 +589,7 @@ hold_target = base_hold × (2 if TRENDING else 1)
 hold_target = clip(hold_target, 3, 30)
 ```
 
-*Interpretation: a stock with a 5-day half-life gets a 5-day base hold target. If it's in a trending micro-regime, we give it 10 days (let trends run).*
+*Reference: Leung & Zhang (2019) arXiv:1701.03960 — optimal holding period under OU dynamics.*
 
 ---
 
@@ -609,14 +664,16 @@ The health score is a weighted average of eight independent layers. Each layer r
 **Weights:**
 | Layer | Weight | What It Measures |
 |-------|--------|-----------------|
-| 1. Composite slope | 25% | Is the fundamental signal strengthening or weakening? |
-| 2. Factor agreement (FAR) | 20% | How many of the 16 factors agree with the thesis? |
-| 3. Price momentum | 15% | Is the stock actually moving in our direction? |
-| 4. Cluster health | 15% | Across 5 factor clusters, where is strength? |
-| 5. Volume | 10% | Is institutional money flowing in the right direction? |
-| 6. Volatility context | 8% | Is volatility expansion helping or hurting us? |
+| 1. Composite slope | 23% | Is the fundamental signal strengthening or weakening? |
+| 2. Factor agreement (FAR) | 18% | How many of the 16 factors agree with the thesis? |
+| 3. Price momentum | 14% | Is the stock actually moving in our direction? |
+| 4. Cluster health | 13% | Across 5 factor clusters, where is strength? |
+| 5. Volume | 9% | Is institutional money flowing in the right direction? |
+| 6. Volatility context | 7% | Is volatility expansion helping or hurting us? |
 | 7. Stop distance | 5% | How close is the price to the stop? |
 | 8. Hold duration | 2% | Are we overstaying a position that isn't working? |
+| 9. Anchored VWAP | 5% | Is price above or below the entry VWAP? ← NEW 2026-05-22 |
+| 10. Shannon entropy | 4% | Is price action becoming more or less directional? ← NEW 2026-05-22 |
 
 **Layer 1 — Composite Slope (25% weight):**  
 Linear regression slope of composite score over the last 5 daily snapshots:  
@@ -662,6 +719,24 @@ Maps hold_ratio (days_held / hold_target) to a score with PnL context:
 `hold_ratio 0.5–0.8`: slight positive if profitable, slight negative if losing  
 `hold_ratio 0.8–1.5`: moderate positive if profitable, -0.4 if losing  
 `hold_ratio > 1.5`: positive only if profitable AND composite ≥ -0.5; else -0.6
+
+**Layer 9 — Anchored VWAP (5% weight) ✅ IMPLEMENTED 2026-05-22:**  
+VWAP anchored to entry date. Measures whether price has traded above or below the volume-weighted average since entry — proxy for institutional accumulation vs distribution.
+```
+VWAP_anchored = sum(price × vol_ratio) / sum(vol_ratio)  over all held days
+score = clip((current_price - VWAP_anchored) / ATR, -1, 1)
+```
+Price consistently above anchored VWAP → +1.0. Below → -1.0. Approximated from daily snapshots — no new API calls.
+
+**Layer 10 — Shannon Entropy (4% weight) ✅ IMPLEMENTED 2026-05-22:**  
+Measures disorder in the distribution of daily returns. Low entropy = price action directional and predictable (thesis clarity). High entropy = chaotic (thesis uncertainty).
+```
+H = -sum(p × log(p))  over 5-bin histogram of last 10 daily returns
+score = clip(1 - 2 × H/log(5), -1, 1)
+```
+H=0 (perfectly directional) → +1.0. H=log(5) (uniform/random) → -1.0.  
+Rising entropy trend over last 3 snapshots adds additional penalty.  
+*Reference: Shannon (1948)*
 
 ### 8.3 Health Score and Tier
 
@@ -723,73 +798,94 @@ Symbols are pruned from pre-entry tracking if: they enter the portfolio, or thei
 
 Exit monitor runs the full signal engine again to get *today's* composite scores for all held symbols. It uses `_last_full_signals` which includes all scored symbols, not just the top-N — so a held symbol that has decayed out of the entry candidates still gets its real score rather than a default.
 
-### 9.2 Regime-Relative Thesis Thresholds (P1-8)
+### 9.2 Thesis Invalidation Thresholds (GAP 4) ✅ IMPLEMENTED 2026-05-22
 
-Before evaluating any positions, the cross-sectional composite distribution is computed across all scored symbols:
+The thesis invalidation threshold scales with macro regime. Two approaches:
 
+**Current implementation (fixed thresholds per regime label):**
+```
+RISK_ON:  comp < -2.0 AND pnl < -5%
+NEUTRAL:  comp < -1.5 AND pnl < -5%   (baseline)
+RISK_OFF: comp < -2.0 AND pnl < -5%
+CRISIS:   comp < -2.5 AND pnl < -5%
+```
+Regime read live from `macro_context.json` at exit time. Prevents mass exits during regime-wide drawdowns where the entire cross-section compresses.
+
+**Target design (regime-relative threshold — more principled):**
 ```
 mu_universe  = mean(all composite scores)
 sig_universe = std(all composite scores)
 thesis_comp_threshold = mu_universe - 1.5 × sig_universe
 thesis_pnl_threshold  = -5% (NEUTRAL) or -8% (RISK_OFF/CRISIS)
 ```
-
-*Why relative thresholds: An absolute threshold of -1.5 is too aggressive in RISK_OFF markets where the entire universe compresses down. In a normal market, composite=-1.5 is far below average; in a RISK_OFF market, it might be average. The relative threshold always means "1.5σ below today's cross-section."*
+This dynamically adjusts to the daily cross-sectional distribution rather than fixed labels. GAP 4 is implemented at the simpler fixed-label level; the cross-sectional version is the correct long-term target and requires the full composite distribution to be available at exit time (it is — `_last_full_signals` has all scores).
 
 ### 9.3 Five Exit Conditions (Evaluated in Order)
 
 Each position is evaluated against all five conditions. The first condition triggered determines the exit reason.
 
-**EXIT 1 — Hard Stop (P1-2: Vol-Regime Aware)**
+**EXIT 1 — Hard Stop (GAP 3) ✅ IMPLEMENTED 2026-05-22**
 
 ```
 stop_multiplier = f(ATR_percentile_60d):
-  ATR < 25th percentile (low vol):  2.5× ATR
-  ATR 25th–75th percentile (normal): 3.0× ATR
-  ATR > 75th percentile (high vol):  3.5× ATR
+  ATR < 25th percentile (low vol):    2.5× ATR
+  ATR 25th–75th percentile (normal):  3.0× ATR
+  ATR > 75th percentile (high vol):   3.5× ATR
 
 hard_stop = entry_price - stop_multiplier × ATR_14
 ```
 
 Triggered if: `current_price ≤ hard_stop`
 
-*Rationale for wider stops in high vol: In high-volatility regimes, normal intraday noise is larger. A fixed 3× ATR stop would be triggered by noise rather than genuine adverse movement. Wider stops in high-vol reduce whipsaw while maintaining equivalent statistical protection.*
+ATR percentile is computed from rolling 60-day ATR history using `bar_data["close"].diff().abs().rolling(14).mean()`. Logger prints `vol_pctile` on every hard stop exit.
 
-**EXIT 2 — Trailing Stop (P1-3: OU-Theta Derived)**
+*Rationale for wider stops in high vol: In high-volatility regimes, normal intraday noise is larger. A fixed 3× ATR stop would be triggered by noise rather than genuine adverse movement.*
 
-The trail width is derived from the stock's estimated mean-reversion speed:
+**EXIT 2 — Trailing Stop (GAP 1 ✅ DONE + GAP C ⏳ PENDING)**
 
+**Current implementation (GAP 1 applied, GAP C pending):**
+
+Time and profit-based base multiplier:
 ```
-theta = OU mean-reversion speed (see Section 4.7)
-trail_base = clip(1 / sqrt(theta), 1.0, 3.0)
-```
+days_held ≤ early_days:  trail_base = trail_early_atr
+days_held ≤ mid_days:    trail_base = trail_mid_atr
+days_held ≤ late_days:   trail_base = trail_late_atr
+else:                    trail_base = trail_final_atr
 
-Then modified for profit state:
-```
 profit_tightener:
-  unrealized profit > 4 ATR: trail = min(trail_base, 1.0)  (very tight)
-  unrealized profit > 2 ATR: trail = min(trail_base, 1.5)
-  unrealized profit > 1 ATR: trail = min(trail_base, 2.0)
-  no profit yet:             trail = trail_base             (no tightening)
+  profit > 4 ATR: p = 1.0
+  profit > 2 ATR: p = 1.5
+  profit > 1 ATR: p = 2.0
+  else:           p = 99.0  (no tightening)
+
+base = min(trail_base, profit_tightener)
 ```
 
-Then a signal-quality modifier:
+Signal-quality modifier (GAP 1):
 ```
-signal_strength = (composite + health) / 2   (combined conviction)
-if signal_strength ≥ 0: modifier = 1.0 + 0.3 × signal_strength  (wider trail for strong signals)
-if signal_strength < 0: modifier = 1.0 + 0.25 × signal_strength (narrower trail for weak signals)
+signal_strength = (composite + health) / 2
+if signal_strength > +0.3: modifier = 1.3   (wider — let winners run)
+if signal_strength < -0.3: modifier = 0.75  (tighter — protect profits)
+else:                       modifier = 1.0  (neutral)
 
-final_trail_mult = min(trail_base, profit_tightener) × modifier
+final_trail_mult = base × modifier
 trail_price = high_water_price - final_trail_mult × ATR
 ```
 
-Triggered if: `current_price ≤ trail_price AND trail_price > hard_stop`
+Thresholds (0.3/−0.3, 1.3/0.75) are round numbers pending calibration. Run `python calibrate_gap1.py` after backtest finishes to derive data-driven values.
 
-**EXIT 3 — Thesis Invalidation (P1-8: Regime-Relative)**
+**Target design (GAP C — OU theta derived trail base, not yet implemented):**
+```
+theta = OU mean-reversion speed (30-day rolling OLS on log-price)
+trail_base = clip(1 / sqrt(theta), 1.0, 3.0)
+```
+Fast-reverting stocks (high theta) get tight trail; trending stocks (low theta) get room. This replaces the fixed ATR step table.
 
-Triggered if: `composite < thesis_comp_threshold AND unrealized_pnl < thesis_pnl_threshold`
+**EXIT 3 — Thesis Invalidation (GAP 4) ✅ IMPLEMENTED 2026-05-22**
 
-Both conditions must be met simultaneously. Composite weakness alone doesn't trigger exit (the position might just be temporarily out of favor). A loss alone doesn't trigger exit (drawdowns are part of a position's life). Both together = the market has rejected the thesis AND we are losing money.
+Triggered if: `composite < thesis_threshold AND unrealized_pnl < -5%`
+
+Where `thesis_threshold` is regime-scaled (see §9.2). Both conditions must be met simultaneously.
 
 **EXIT 4 — Leveraged ETF Hold Cap**
 
@@ -956,84 +1052,128 @@ Once 30+ agent-tagged trades exist, a `prompt_calibrator.py` module (not yet bui
 
 | Time | Script | Action |
 |------|--------|--------|
-| 8:00 AM | `macro_context.py` | Fetch macro data, classify regime, update `macro_context.json` |
-| 8:30 AM | `market_agent.py` | MarketAgent classifies session: SCAN/REDUCE/STANDBY |
-| 9:35 AM | `main.py` | Generate signals, apply filters, submit entry orders |
+| 9:00 AM | `macro_context.py` | Fetch macro data (FRED + yfinance), classify regime, update `macro_context.json` |
+| 9:15 AM | `market_agent.py` | MarketAgent classifies session: SCAN/REDUCE/STANDBY |
+| 9:35 AM | `main.py` | Generate signals, apply cooldown/velocity/margin/agent filters, submit entry orders |
+| 9:52 AM | `exit_monitor.py` | Morning mechanical exits + math trims |
 | 9:52 AM | `hold_monitor.py` | Morning health scores, trim recommendations |
-| 9:55 AM | `exit_monitor.py` | Evaluate exit conditions, submit exits/trims |
-| 4:00 PM | `hold_monitor.py` | Afternoon health re-score |
-| 4:15 PM | `daily_recap.py` | Performance summary email |
-| Continuous | `watchdog.py` | Intraday stop monitoring (currently using daily bars — known gap) |
+| 3:50 PM | `exit_monitor.py` | Afternoon exits + trims |
+| 3:50 PM | `hold_monitor.py` | Afternoon health re-score |
+| 3:50 PM | `daily_recap.py` | Recap email via afternoon monitor |
+| 4:30 PM | `daily_recap.py` | Standalone recap email at closing prices |
+| Continuous | `watchdog.py` | Intraday stop monitoring (⚠ currently uses daily bars — known gap P1-9) |
 
 ### 13.2 Key Files and What They Contain
 
 | File | Contents | Written by | Read by |
 |------|----------|-----------|---------|
-| `macro_context.json` | Regime, Kalman state, signal scores | `macro_context.py` | `main.py`, `exit_monitor.py` |
+| `macro_context.json` | Regime label, signal scores, breadth (50/150/200MA), agent summary | `macro_context.py` | `market_agent.py`, `agent_layer.py`, `exit_monitor.py` |
 | `market_decision.json` | SCAN/REDUCE/STANDBY + reasoning | `market_agent.py` | `main.py` |
-| `composite_cache.json` | Daily composite scores, 5-day rolling | `main.py` | `main.py` (velocity gate) |
-| `cooldown_log.json` | Symbol → cooldown expiry date | `exit_monitor.py`, `watchdog.py` | `main.py` |
-| `position_ledger.json` | Entry metadata per position | `main.py`, `ledger.py` | `hold_monitor.py`, `exit_monitor.py` |
-| `hold_history.json` | Full daily snapshot trajectory | `hold_monitor.py` | `hold_monitor.py` |
-| `hold_health.json` | Today's health scores + trim recs | `hold_monitor.py` | `exit_monitor.py` |
+| `hold_history.json` | Full daily snapshot trajectory including composite | `hold_monitor.py` | `hold_monitor.py`, `main.py` (velocity gate) |
+| `position_ledger.json` | Entry metadata: price, date, stop, kelly, composite, composite_velocity | `main.py`, `ledger.py`, `exit_monitor.py` | `hold_monitor.py`, `exit_monitor.py`, `outcome_tracker.py` |
+| `hold_health.json` | Today's health scores + stop_dist_atr | `hold_monitor.py` | `exit_monitor.py`, `daily_recap.py` |
 | `hold_decisions.json` | HoldAgent decisions (advisory) | `agent_layer.py` | `exit_monitor.py` (log only) |
 | `entry_vetoes.json` | EntryAgent vetoes | `agent_layer.py` | `main.py` |
-| `outcome_pending.json` | Exit sidecar keyed by order ID | `exit_monitor.py` | `outcome_tracker.py` |
-| `outcome_log.json` | Complete closed trade records | `outcome_tracker.py` | `_bayesian_kelly()`, `AdaptiveWeights` |
+| `outcome_log.json` | Complete closed trade records + exit_path | `outcome_tracker.py` | `main.py` (cooldown check), `AdaptiveWeights` |
+| `trim_log.json` | Partial trims: reason, composite, agent decision, trim_detail | `exit_monitor.py` | `daily_recap.py` |
 | `adaptive_weights.json` | Ridge beta + IC cache + trade history | `AdaptiveWeights` | `AdaptiveWeights` |
 
 ---
 
 ## 14. Known Gaps and Open Problems
 
-This section documents every known flaw in the system's logic as of 2026-05-22. They are listed in priority order.
+This section documents every known flaw in the system's logic as of 2026-05-22. Status: ✅ Done | ⏳ In Progress | 📋 Queued | 🔴 Blocked.
 
-### 14.1 Gated (cannot build until more data)
+### 14.1 Closed Gaps (Full Session 2026-05-22)
 
-**P1-6 — Static layer weights in hold_monitor (GATED: need 60+ agent-tagged trades)**  
-The 8 health layer weights (25%, 20%, 15%, etc.) are hand-picked with no calibration. The correct weights would be derived from which layers best predicted subsequent trade outcomes.  
-Fix: Information Coefficient calibration of each layer's score against realized PnL. Gate: 60+ tagged trades needed for statistical significance.
+| Gap | Fix Applied |
+|-----|------------|
+| ✅ GAP 1 | Signal-aware trailing stop — calibrated 0.2/1.6/0.80 from 1565-trade sweep |
+| ✅ GAP 2 | Conviction-scaled Kelly — 40% t-stat + 60% percentile rank, range [1.71%, 5.17%] |
+| ✅ GAP 3 | Vol-regime hard stop — 2.5/3.0/3.5× ATR by 60d percentile |
+| ✅ GAP 4 | Regime-scaled thesis invalidation — RISK_ON/OFF→-2.0, NEUTRAL→-1.5, CRISIS→-2.5 |
+| ✅ GAP 5 | Composite velocity sizing — ±20% Kelly modifier from hold_history.json |
+| ✅ GAP 6 | Re-entry cooldown — 5-day block for hard_stop/trail_loss |
+| ✅ GAP 7 | Portfolio heat trim-all — proportional trim of all health<0, scaled by excess DD |
+| ✅ GAP 9 | Afternoon composite rescore — fresh composites written to hold_health.json at 3:50PM |
+| ✅ GAP B | Kelly caps from Thorp 2006 — 0.0171/0.0517 from backtest drawdown analysis |
+| ✅ GAP C | OU theta hold target — per-stock 30d OLS, replaces ATR-pctile formula |
+| ✅ GAP D | calibrate_gap1.py — parameter sweep tool ready, run after backtest |
+| ✅ GAP E | Backtest composite proxy — enables GAP 1 validation |
+| ✅ GAP F | Universe filter sweep — vol 500K→750K, dollar vol $20M→$30M |
+| ✅ GAP G | Sector breadth 50/150/200MA — Zweig 1986, structural bull/bear field |
+| ✅ GAP H | margin_guard 4 bugs — fail-closed, on-margin reduce, sentinel, dead code |
+| ✅ P1-9 | Watchdog live SPY price + hold_health high_water + remove daily EMA |
+| ✅ P1-15 | Sentiment pipeline removed — consumed API calls, zero alpha |
+| ✅ P2-7 | OBV rolling normalization — self-calibrating, no magic constant |
+| ✅ P2-8 | Volatility layer continuous — linear interpolation replaces binary 0.2 |
+| ✅ P2-9 | Stop dist zero = -1.0 — not 0.0 neutral |
+| ✅ Layer 9 | Anchored VWAP distance (5% weight) added to hold monitor |
+| ✅ Layer 10 | Shannon entropy trend (4% weight) added to hold monitor |
+| ✅ log(0) | vol_ratio, hurst, OU theta all guarded against zero/negative inputs |
+| ✅ P2-12 | Prompt snapshot lazy — no longer runs filesystem glob on every import |
+| ✅ GAP 3 — Hard stop fixed regardless of vol regime | Vol-regime ATR multiplier (2.5/3.0/3.5×) based on 60-day ATR percentile |
+| ✅ GAP 4 — Thesis invalidation threshold static | Regime-scaled: RISK_ON/OFF→-2.0, NEUTRAL→-1.5, CRISIS→-2.5 |
+| ✅ GAP 5 — No momentum acceleration on entry | Composite velocity from hold_history.json. Kelly modifier ±20%. |
+| ✅ GAP 6 — No re-entry cooldown after stop-out | 5-day block for hard_stop/trail_loss. trail_profit not blocked. |
+| ✅ GAP G — Sector breadth only 50MA | 50/150/200MA per Zweig (1986). Structural field from 200MA adds extra vote. |
+| ✅ GAP H — margin_guard.py unanalyzed | 4 bugs fixed: fail-closed, on-margin reduce, dead code, sentinel |
+| ✅ GAP E — Backtest couldn't validate GAP 1 | composite_proxy + health_proxy in backtest. GAP 1 validation section in report. |
+| ✅ GAP 1 — Trailing stop signal-blind | signal_strength modifier in _trail_mult(). Done 2026-05-17. |
 
-### 14.2 Infrastructure gaps
+### 14.2 In Progress
 
-**P1-9 — Watchdog uses daily bars claiming intraday monitoring**  
-The watchdog is described as an intraday stop checker, but it fetches 5 daily bars and computes an EMA8 on them. This is a 5-day EMA, not intraday monitoring. A genuine intraday stop would require minute or 15-minute bar data.  
-Fix: Use Alpaca's bar endpoint for 15-minute data, compute intraday realized volatility = `std(5-min returns) × sqrt(78)`. SPY circuit breaker should trigger on `intraday_return < -3σ_daily_vol`, not `-3%` absolute.
+**⏳ GAP D — Trail modifier thresholds are round numbers**  
+0.3/−0.3 and 1.3/0.75 are hand-picked. `calibrate_gap1.py` sweeps 125 combinations and derives optimal values from backtest trade population. Run after backtest finishes.
 
-**P2-12 — Agent prompt versioning runs on every import**  
-Agent layer checks and writes prompt version files on every module import. This is slow and creates unnecessary I/O.
+**⏳ Backtest running** — GAP 1 + composite/health proxy. Results pending.
 
-### 14.3 Math precision gaps
+### 14.3 Queued — Next Session
 
-**P1-12 — Portfolio heat exit is binary**  
-When total portfolio drawdown exceeds the threshold, the single weakest position is fully exited. A more precise approach: partial trim proportional to heat magnitude, targeting a specific drawdown level.
+**📋 GAP B — Kelly caps unjustified (Thorp 2006)**  
+`0.02/0.12` caps and `t/3.0` normalization in `signals.py` are hand-picked. Derive from backtest drawdown analysis. `f_max = 1 - sqrt(1 - 2×target_return/variance)`.
 
-**P1-14 — Universe filters are untested**  
-Price range $5-$1000, volume ≥ 500K, dollar volume ≥ $20M, daily range ≥ 1% — all hand-picked with no sensitivity analysis. A 10% change in any threshold might significantly alter the opportunity set.
+**📋 GAP C — Hold target conflates volatility with OU speed (Leung & Zhang 2019)**  
+`hold = 16 + 14×atr_pctile` is wrong — high-vol stocks get longer holds when they should get shorter. Fix: OU theta per stock from 30-day rolling OLS. `hold_target = ceil(log(2)/theta) × (2 if TRENDING)`.
 
-**P1-15 — Sentiment is computed but unused**  
-A lexicon-based sentiment score is computed from news headlines (26 positive + 26 negative words). It is injected into agent prompts but the `sentiment_score` field is 0.0 on every Signal object. The sentiment pipeline consumes API calls and parsing time for zero alpha contribution.
+**📋 GAP F — Universe filters never sensitivity-tested**  
+Price $5-$1000, volume ≥500K, dollar volume ≥$20M, daily range ≥1% — all hand-picked. Parameter sweep ±50% on each threshold required.
+
+**📋 GAP 2 — Entry sizing conviction gradient**  
+Current: velocity modifier only (±20%). Target: Kelly scales with composite percentile rank. `kelly = f_min + (f_base - f_min) × percentile_rank`. Composes with velocity modifier when implemented.
+
+**📋 GAP 7 — Portfolio heat exit is binary**  
+Single weakest position fully exited when portfolio_dd < threshold. Should: trim ALL positions with health < 0 by a size proportional to heat magnitude.
+
+### 14.4 Gated — Needs Data
+
+**🔴 GAP A — Macro regime classifier uses vote-count (Hamilton 1989)**  
+Continuous weighted score + Kalman smoothing + hysteresis (see §2.3–2.5) is the target. Do not implement until vote-count stability has been profiled. HMM overfits. Kalman is correct direction but requires regime validation data first.
+
+**🔴 Hold monitor layer weight calibration (needs 60+ agent-tagged trades)**  
+8 layer weights (25/20/15/15/10/8/5/2%) are hand-picked. Fix: Spearman IC of each layer score against realized PnL over rolling 60-day window. Requires 60+ clean outcome records. Currently ~0 clean records (pre-fix trades lack exit_path).
+
+### 14.5 Infrastructure Gaps
+
+**P1-9 — Watchdog uses daily bars, not intraday**  
+`watchdog.py` fetches 5 daily bars and computes EMA8 — this is a 5-day EMA, not intraday monitoring. Genuine intraday stop monitoring requires 15-minute bars from Alpaca. `intraday_return < -3σ_daily_vol` is the correct trigger (not -3% absolute).
+
+**P1-15 — Sentiment pipeline produces zero alpha**  
+Lexicon sentiment is computed from news headlines (26 positive + 26 negative words) and injected into agent prompts. The `sentiment_score` field is 0.0 on every Signal object. API calls and parse time with no contribution. Either fix or remove.
 
 **P1-16 — No afternoon rescore of held positions**  
-The signal engine runs once at 9:35 AM. Composite scores do not update during the day. A 3:50 PM rescore of held positions + top 30 candidates would identify positions whose thesis has deteriorated intraday.
+Signal engine runs once at 9:35 AM. Afternoon monitor at 3:50 PM re-runs exit/health but not signals. A lightweight rescore of held symbols + top 30 candidates would identify intraday deterioration.
 
-**P2-7 — OBV slope magic constant**  
-In Layer 5 (volume), OBV magnitude is normalized by `max(|slope|, 1000)`. The 1000 is a hardcoded floor that prevents very small OBV values from dominating. This has not been calibrated.
+**P2-7 — OBV normalization magic constant**  
+OBV slope normalized by `max(|slope|, 1000)`. The 1000 floor is uncalibrated.
 
-**P2-8 — Volatility layer returns 0 for ATR expansion 0.80–1.20**  
-When ATR expansion is between 80% and 120% of the 10-day average, the volatility layer returns exactly 0.0. This binary behavior loses information in the normal range.
+**P2-8 — Volatility layer binary in normal range**  
+ATR expansion 80%–120% returns exactly 0.0. Loses information in the normal range. Should be a continuous function.
 
-**P2-9 — Stop distance layer returns 0 if dist is exactly 0, not if None**  
-A zero stop distance should be a strong negative signal (price is at the stop), but the implementation returns neutral (0.0) instead.
-
-### 14.4 Data quality gaps
-
-**n_prior = 50 in Bayesian Kelly is too conservative**  
-Once 60+ clean agent-tagged trades exist (post 2026-05-20), the prior should be reduced from 50 to 20 equivalent trades. The heavy prior is currently appropriate because all 79 trades in outcome_log predate the P0-1 fix and lack exit path metadata.
-
-**Composite cache requires 3 days before velocity gate activates**  
-Until Tuesday 2026-05-26, the velocity gate will log "skipped — only N days of history" and all signals will enter at full size regardless of velocity.
+**P2-9 — Stop distance returns neutral at zero**  
+Zero stop distance (price at stop) should be maximum negative signal, not 0.0 (neutral).
 
 ---
 
-*This document describes Raptor v5.4 as of 2026-05-22. The authoritative implementation is in the GitHub repository: github.com/stevefirwin-svg/Raptor.*
+*This document describes Raptor v5.4 as of 2026-05-22. The authoritative implementation is in the GitHub repository: github.com/stevefirwin-svg/Raptor.*  
+*Sections marked ⚠ describe the intended architecture. Sections marked ✅ are implemented. Sections with no marker match the code exactly.*

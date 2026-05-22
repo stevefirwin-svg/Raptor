@@ -7,10 +7,13 @@ before placing any new entry orders.
 Also runnable standalone for a quick account health snapshot.
 
 Rules:
-  - Cash negative (on margin): WARN, allow entries only if utilization < 85%
+  - Cash negative (on margin): REDUCE — cap new positions at 1
   - Utilization > 90%: BLOCK all new entries
   - Utilization > 85%: REDUCE — scale max new positions to 1
   - Utilization <= 85%: ALLOW normal operation
+
+Fail-safe: API errors return BLOCKED (fail closed, not open).
+Any exception during the check blocks entries to protect capital.
 
 Usage:
   from margin_guard import check_margin_safety
@@ -32,6 +35,10 @@ BLOCK_THRESHOLD  = 0.90   # >90% utilization: no new entries
 REDUCE_THRESHOLD = 0.85   # >85%: max 1 new position
 WARN_THRESHOLD   = 0.75   # >75%: log warning
 
+# Sentinel for unlimited entries — large enough to never cap normal operation
+# but explicit rather than magic number 99.
+_UNLIMITED = 10_000
+
 
 def check_margin_safety(dm) -> Tuple[bool, int, str]:
     """
@@ -42,7 +49,10 @@ def check_margin_safety(dm) -> Tuple[bool, int, str]:
         max_new  (int)   — max new positions allowed this scan (0 = blocked)
         reason   (str)   — explanation for log
 
-    Usage in main.py (add near top of run_daily_scan, after account fetch):
+    Fail-safe: returns BLOCKED on any API error (fail closed, not open).
+    Previously returned (True, 99, ...) on error — silently bypassed all checks.
+
+    Usage in main.py:
         allowed, max_new, reason = check_margin_safety(dm)
         if not allowed:
             logger.warning("MARGIN GUARD: %s", reason)
@@ -54,15 +64,20 @@ def check_margin_safety(dm) -> Tuple[bool, int, str]:
         account   = dm.alpaca.get_account()
         positions = dm.alpaca.get_positions()
 
-        equity    = float(account.get("equity", 0))
-        cash      = float(account.get("cash", 0))
-        portfolio_value = float(account.get("portfolio_value", equity))
+        equity = float(account.get("equity", 0))
+        cash   = float(account.get("cash", 0))
+        # portfolio_value intentionally not used — equity (net liquidation value)
+        # is the correct denominator for utilization. portfolio_value == equity
+        # in paper trading; keeping equity for consistency with live semantics.
 
         if equity <= 0:
             return False, 0, "equity is zero or negative — blocking all entries"
 
         # market_value not returned by this Alpaca client — compute from qty * current_price
-        total_mv  = sum(abs(float(p.get("qty", 0))) * float(p.get("current_price", 0)) for p in positions)
+        total_mv  = sum(
+            abs(float(p.get("qty", 0))) * float(p.get("current_price", 0))
+            for p in positions
+        )
         util      = total_mv / equity
         on_margin = cash < 0
         margin_pct = abs(cash) / equity if on_margin else 0.0
@@ -77,23 +92,34 @@ def check_margin_safety(dm) -> Tuple[bool, int, str]:
         for line in status_lines:
             logger.info("MARGIN GUARD: %s", line)
 
+        # ── Hard block ────────────────────────────────────────────────────────
         if util > BLOCK_THRESHOLD:
             return False, 0, f"utilization {util:.1%} > {BLOCK_THRESHOLD:.0%} — blocking new entries"
 
+        # ── Reduce: over threshold OR on margin ───────────────────────────────
+        # On-margin means Alpaca is lending capital — adding positions increases
+        # leverage. Cap at 1 new position the same as the REDUCE threshold.
         if util > REDUCE_THRESHOLD:
             return True, 1, f"utilization {util:.1%} > {REDUCE_THRESHOLD:.0%} — capping at 1 new entry"
 
-        if util > WARN_THRESHOLD or on_margin:
-            msg = f"utilization {util:.1%}"
-            if on_margin:
-                msg += f", on margin (${abs(cash):,.0f})"
-            logger.warning("MARGIN GUARD: WARNING — %s", msg)
+        if on_margin:
+            logger.warning(
+                "MARGIN GUARD: ON MARGIN ($%s, %.1f%% of equity) — capping at 1 new entry",
+                f"{abs(cash):,.0f}", margin_pct * 100
+            )
+            return True, 1, f"on margin (${abs(cash):,.0f}, {margin_pct:.1%}) — capping at 1 new entry"
 
-        return True, 99, f"utilization {util:.1%} — normal operation"
+        # ── Warning only ──────────────────────────────────────────────────────
+        if util > WARN_THRESHOLD:
+            logger.warning("MARGIN GUARD: WARNING — utilization %s", f"{util:.1%}")
+
+        return True, _UNLIMITED, f"utilization {util:.1%} — normal operation"
 
     except Exception as e:
-        logger.warning("MARGIN GUARD: check failed (%s) — allowing entries (fail-safe)", e)
-        return True, 99, f"guard error: {e}"
+        # Fail CLOSED — if we can't verify capital state, don't risk new entries.
+        # Previous behavior (fail open, return True) was a silent capital risk.
+        logger.error("MARGIN GUARD: check failed (%s) — BLOCKING entries (fail closed)", e)
+        return False, 0, f"guard error (fail closed): {e}"
 
 
 def print_snapshot():
@@ -148,7 +174,7 @@ def print_snapshot():
 
     allowed, max_new, reason = check_margin_safety(dm)
     print(f"  Entry verdict: {'ALLOWED' if allowed else 'BLOCKED'} — {reason}")
-    print(f"  Max new positions this scan: {max_new if max_new < 99 else 'unlimited'}\n")
+    print(f"  Max new positions this scan: {max_new if max_new < _UNLIMITED else 'unlimited'}\n")
 
 
 if __name__ == "__main__":
