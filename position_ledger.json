@@ -16,22 +16,6 @@
         "high_water": 46.175
       }
     },
-    "v5.4:CVE": {
-      "model": "v5.4",
-      "symbol": "CVE",
-      "shares": 323,
-      "entry_price": 28.72,
-      "entry_date": "2026-05-15",
-      "metadata": {
-        "stop": 26.8909,
-        "regime": "BACKFILL",
-        "t_stat": null,
-        "kelly_fraction": null,
-        "composite_score": null,
-        "note": "Backfilled from Alpaca \u2014 entry_date approximate",
-        "high_water": 31.605
-      }
-    },
     "v5.4:STM": {
       "model": "v5.4",
       "symbol": "STM",
@@ -46,6 +30,126 @@
         "composite_score": null,
         "note": "Backfilled from Alpaca \u2014 entry_date approximate",
         "high_water": 62.39
+      }
+    },
+    "v5.4:AMD": {
+      "model": "v5.4",
+      "symbol": "AMD",
+      "shares": 23,
+      "entry_price": 304.32,
+      "entry_date": "2026-05-22",
+      "metadata": {
+        "stop": 276.39,
+        "regime": "BACKFILL",
+        "t_stat": null,
+        "kelly_fraction": null,
+        "composite_score": null,
+        "note": "Backfilled from Alpaca \u2014 entry_date approximate"
+      }
+    },
+    "v5.4:CVE": {
+      "model": "v5.4",
+      "symbol": "CVE",
+      "shares": 267,
+      "entry_price": 28.72,
+      "entry_date": "2026-05-22",
+      "metadata": {
+        "stop": 26.911,
+        "regime": "BACKFILL",
+        "t_stat": null,
+        "kelly_fraction": null,
+        "composite_score": null,
+        "note": "Backfilled from Alpaca \u2014 entry_date approximate"
+      }
+    },
+    "v5.4:DKNG": {
+      "model": "v5.4",
+      "symbol": "DKNG",
+      "shares": 251,
+      "entry_price": 25.053855,
+      "entry_date": "2026-05-22",
+      "metadata": {
+        "stop": 23.5467,
+        "regime": "BACKFILL",
+        "t_stat": null,
+        "kelly_fraction": null,
+        "composite_score": null,
+        "note": "Backfilled from Alpaca \u2014 entry_date approximate"
+      }
+    },
+    "v5.4:INTC": {
+      "model": "v5.4",
+      "symbol": "INTC",
+      "shares": 89,
+      "entry_price": 87.74,
+      "entry_date": "2026-05-22",
+      "metadata": {
+        "stop": 80.5916,
+        "regime": "BACKFILL",
+        "t_stat": null,
+        "kelly_fraction": null,
+        "composite_score": null,
+        "note": "Backfilled from Alpaca \u2014 entry_date approximate"
+      }
+    },
+    "v5.4:KDP": {
+      "model": "v5.4",
+      "symbol": "KDP",
+      "shares": 314,
+      "entry_price": 28.670593,
+      "entry_date": "2026-05-22",
+      "metadata": {
+        "stop": 26.9126,
+        "regime": "BACKFILL",
+        "t_stat": null,
+        "kelly_fraction": null,
+        "composite_score": null,
+        "note": "Backfilled from Alpaca \u2014 entry_date approximate"
+      }
+    },
+    "v5.4:PLTD": {
+      "model": "v5.4",
+      "symbol": "PLTD",
+      "shares": 731,
+      "entry_price": 7.74,
+      "entry_date": "2026-05-22",
+      "metadata": {
+        "stop": 7.266,
+        "regime": "BACKFILL",
+        "t_stat": null,
+        "kelly_fraction": null,
+        "composite_score": null,
+        "note": "Backfilled from Alpaca \u2014 entry_date approximate"
+      }
+    },
+    "v5.4:SMCI": {
+      "model": "v5.4",
+      "symbol": "SMCI",
+      "shares": 186,
+      "entry_price": 34.096966,
+      "entry_date": "2026-05-22",
+      "metadata": {
+        "stop": 31.9783,
+        "regime": "BACKFILL",
+        "t_stat": null,
+        "kelly_fraction": null,
+        "composite_score": null,
+        "note": "Backfilled from Alpaca \u2014 entry_date approximate"
+      }
+    },
+    "v5.4:TSLA": {
+      "model": "v5.4",
+      "symbol": "TSLA",
+      "shares": 1,
+      "entry_price": 391.11,
+      "entry_date": "2026-05-22",
+      "metadata": {
+        "stop": 365.6058,
+        "regime": "BACKFILL",
+        "t_stat": null,
+        "kelly_fraction": null,
+        "composite_score": null,
+        "note": "Backfilled from Alpaca \u2014 entry_date approximate"
       }
     }
   },
@@ -295,6 +399,27 @@
       "exit_reason": "math_trim_7%",
       "pnl": -22.10484099999993,
       "pnl_pct": -0.002287814556189982
+    },
+    {
+      "model": "v5.4",
+      "symbol": "CVE",
+      "shares": 323,
+      "entry_price": 28.72,
+      "entry_date": "2026-05-15",
+      "metadata": {
+        "stop": 26.8909,
+        "regime": "BACKFILL",
+        "t_stat": null,
+        "kelly_fraction": null,
+        "composite_score": null,
+        "note": "Backfilled from Alpaca \u2014 entry_date approximate",
+        "high_water": 31.605
+      },
+      "exit_price": 30.005,
+      "exit_date": "2026-05-22",
+      "exit_reason": "math_trim_17%",
+      "pnl": 415.05500000000006,
+      "pnl_pct": 0.044742339832869016
     }
   ]
 }

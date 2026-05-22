@@ -4,37 +4,36 @@
 =================================================================
 
   RETURNS
-    Total Return:        591.47%
-    CAGR:                 42.94%
+    Total Return:        498.95%
+    CAGR:                 39.19%
     Benchmark (SPY):     112.50%
-    Alpha:               478.97%
+    Alpha:               386.45%
 
   RISK
-    Sharpe Ratio:         0.957
-    Sortino Ratio:        2.205
-    Calmar Ratio:         1.163
-    Max Drawdown:        -36.92%
-    Annual Volatility:    39.54%
+    Sharpe Ratio:         1.259
+    Sortino Ratio:        2.499
+    Calmar Ratio:         1.239
+    Max Drawdown:        -31.63%
+    Annual Volatility:    24.72%
 
   TRADES
-    Total Trades:          1175
-    Win Rate:              48.5%
-    Avg Win:              11.80%
-    Avg Loss:             -7.65%
-    Expectancy:           1.783%
-    Profit Factor:         1.51
+    Total Trades:          1565
+    Win Rate:              46.7%
+    Avg Win:              10.35%
+    Avg Loss:             -6.30%
+    Expectancy:           1.474%
+    Profit Factor:         1.50
 
   EXECUTION
-    Avg Hold Days:          8.8
-    Median Hold:            8.0
-    Exit [trail_profit]:   400
-    Exit [profit_target]:   128
-    Exit [momentum_break]:    42
-    Exit [trail_loss  ]:   602
-    Exit [hard_stop   ]:     3
+    Avg Hold Days:          7.9
+    Median Hold:            7.0
+    Exit [trail_profit]:   561
+    Exit [profit_target]:   141
+    Exit [trail_loss  ]:   834
+    Exit [momentum_break]:    29
 
   P&L
-    Net P&L:           $  594,016.55
-    Final Equity:      $  691,473.18
+    Net P&L:           $  506,549.13
+    Final Equity:      $  598,949.70
 
 =================================================================

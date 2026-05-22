@@ -310,5 +310,31 @@
     "agent_decision": "HOLD",
     "agent_conf": 0.9,
     "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-05-22T15:50:23.068896",
+    "symbol": "CVE",
+    "trim_qty": 56,
+    "price": 30.005,
+    "pnl_pct": 4.47,
+    "reason": "math_trim_17%",
+    "composite": 0.1455,
+    "trim_detail": "severity=0.098 x stop_mult=0.75 x far_mult=1.05 x pnl_mult=0.80 + slope_adj=0.113 = 0.175 -> 17.5% (56 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.5,
+    "agent_reasoning": "Agent unavailable \u2014 passthrough default"
+  },
+  {
+    "timestamp": "2026-05-22T15:50:23.068950",
+    "symbol": "PLTD",
+    "trim_qty": 232,
+    "price": 7.87,
+    "pnl_pct": 1.68,
+    "reason": "math_trim_24%",
+    "composite": -0.1099,
+    "trim_detail": "severity=0.178 x stop_mult=0.75 x far_mult=1.13 x pnl_mult=1.00 + slope_adj=0.090 = 0.241 -> 24.1% (232 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.5,
+    "agent_reasoning": "Agent unavailable \u2014 passthrough default"
   }
 ]

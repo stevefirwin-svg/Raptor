@@ -158,5 +158,25 @@
     "agent_confidence": 0.9,
     "agent_reasoning": "insufficient history: 0 days",
     "submitted_at": "2026-05-22T09:52:10.587190"
+  },
+  "271291a3-8177-4045-b020-5981ddf9cd2f": {
+    "symbol": "CVE",
+    "exit_reason": "math_trim_17%",
+    "composite": 0.1455,
+    "trim_detail": "severity=0.098 x stop_mult=0.75 x far_mult=1.05 x pnl_mult=0.80 + slope_adj=0.113 = 0.175 -> 17.5% (56 sh)",
+    "agent_decision": "HOLD",
+    "agent_confidence": 0.5,
+    "agent_reasoning": "Agent unavailable \u2014 passthrough default",
+    "submitted_at": "2026-05-22T15:50:23.003577"
+  },
+  "200f4604-34a2-4e46-a151-f9c27b836128": {
+    "symbol": "PLTD",
+    "exit_reason": "math_trim_24%",
+    "composite": -0.1099,
+    "trim_detail": "severity=0.178 x stop_mult=0.75 x far_mult=1.13 x pnl_mult=1.00 + slope_adj=0.090 = 0.241 -> 24.1% (232 sh)",
+    "agent_decision": "HOLD",
+    "agent_confidence": 0.5,
+    "agent_reasoning": "Agent unavailable \u2014 passthrough default",
+    "submitted_at": "2026-05-22T15:50:23.055855"
   }
 }
