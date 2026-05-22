@@ -1,5 +1,5 @@
 # Raptor Trading System — Master Development Skill & Architecture Ontology
-*Last updated: 2026-05-15*
+*Last updated: 2026-05-22*
 
 ---
 
@@ -112,7 +112,7 @@
          │   ├─ EXIT 2: trailing_stop — price ≤ high_water - trail×ATR
          │   │          trail multiplier: 2.5→2.0→1.5→1.0 ATR by days held
          │   │          profit tightener: tightens when up >1/2/4 ATR
-         │   ├─ EXIT 3: thesis_invalid — comp < -1.5 AND pnl < -5%
+         │   ├─ EXIT 3: thesis_invalid — comp < (μ_universe − 1.5σ) AND pnl < −5% (−8% in RISK_OFF/CRISIS)
          │   ├─ EXIT 4B: leveraged_3x_cap — 3x ETF held > 3 days
          │   │           leveraged_2x_cap — 2x ETF held > 10 days
          │   └─ EXIT 5: time_decay — flat 20d AND losing AND held ≥ 10 days
@@ -277,7 +277,7 @@ Signal objects (top-N)
     │
     ├─ Position sizing:
     │   shares = int(my_equity × kelly_fraction / entry_price)
-    │   my_equity = account.equity × EQUITY_ALLOCATION × risk_scalar
+    │   my_equity = account.equity × risk_scalar  [P2-15: EQUITY_ALLOCATION removed, was 1.00 no-op]
     │   kelly capped 0.02-0.12 in signals.py
     │
     ├─ Guards: buying_power × 0.95, margin_guard max_new cap
@@ -299,7 +299,7 @@ Alpaca positions (live, source of truth)
     │   EXIT 1: hard_stop        price ≤ entry - 3.0×ATR
     │   EXIT 2: trailing_stop    price ≤ high_water - trail×ATR
     │                            trail: 2.5/2.0/1.5/1.0 ATR by days_held
-    │   EXIT 3: thesis_invalid   comp < -1.5 AND pnl < -5%
+    │   EXIT 3: thesis_invalid   comp < (μ_universe − 1.5σ) AND pnl < −5% (−8% RISK_OFF/CRISIS) [P1-8]
     │   EXIT 4: portfolio_heat   portfolio_dd < -12%
     │   EXIT 4B: lev_cap         3x ETF > 3 days, 2x ETF > 10 days
     │   EXIT 5: time_decay       flat 20d AND losing AND held ≥ 10 days
@@ -855,3 +855,164 @@ Ran Select-String checks on laptop against actual files. All P0 fixes from CoWor
 2. Upload RAPTOR_AUDIT_AND_PLAN.md — master plan lives there
 3. Check outcome_pending.json count — if 10+, build P1-4 Bayesian Kelly
 4. Next P1 items: P1-8 (regime-relative thesis threshold), P1-9 (watchdog intraday), P1-10 (composite velocity entry)
+
+---
+
+## 19. SESSION — 2026-05-22 (P1 Math Foundation Complete + Hygiene)
+
+### What was done this session
+
+#### GitHub integration ✅
+- Repo made public for Claude bash_tool access: github.com/stevefirwin-svg/Raptor
+- Claude now clones fresh on each session — always reads current code, not stale project snapshots
+
+#### P2 Hygiene ✅
+**P2-15 — EQUITY_ALLOCATION=1.00 removed (main.py)**
+- Was a no-op vestige of v6 A/B testing (1.00 × equity = equity)
+- `my_equity = account["equity"]` directly. Dead constant removed.
+
+**P2-16 — kelly_fraction=0.15 in config.py updated (config.py)**
+- Field superseded by P1-4 _bayesian_kelly() — no longer read by signals.py
+- Comment updated to document dead status. Field retained for schema compatibility.
+
+#### P1 Alpha Gaps ✅
+
+**P1-4 — Bayesian Kelly (signals.py)**
+- `_bayesian_kelly()` function: reads outcome_log.json, computes f* = μ/σ² from 79 closed trades
+- Bayesian shrinkage: n_prior=50 (heavy while data is pre-P0 quality), posterior f*=0.20
+- Half-Kelly discount: f_base=0.100, f_min=0.033
+- Kelly now scales continuously with composite_percentile rank (pctile=0→3.3%, pctile=1→10.0%)
+- Replaces: `base_kelly = 0.15 × (0.5 + min(|t|/3.0, 1.0))` — both constants unjustified
+- Self-updating: as more trades close, f* refines automatically. n_prior should shrink to 20 after 60+ clean agent-tagged trades.
+- Reference: Thorp 2006
+
+**P1-7 — Continuous Kelly-Anchored Trim (hold_monitor.py)**
+- compute_trim() now has dual paths:
+  - PRIMARY (entry_kelly present): trim_pct = 1 - (current_kelly / entry_kelly)
+    health_norm maps [-1.0, TIER_STABLE] → [0, 1] → scales current_kelly proportionally
+    health=-0.16 (just decaying) → 1.2% trim. health=-0.9 → 88% trim. Fully continuous.
+  - FALLBACK (entry_kelly=None, backfill positions): legacy severity formula retained
+- Action labels (TRIM_MINOR/MODERATE/MAJOR/EXIT) are display tiers only — derived from trim_pct, not hardcoded thresholds
+- `components.path` field identifies which path fired for every trim decision
+- All existing backfill positions use fallback until they close/re-enter with P1-4 kelly
+
+**P1-8 — Regime-Relative Thesis Invalidation (exit_monitor.py)**
+- Replaces: `comp < -1.5 AND pnl < -5%` (absolute, regime-blind)
+- comp threshold: `μ_universe - 1.5σ_universe` (cross-sectional, recomputed each scan from full_map)
+- pnl threshold: -5% normal regimes, -8% in RISK_OFF/CRISIS (market is down, more tolerance)
+- Both thresholds logged every scan: `[P1-8] Thesis thresholds: comp<X AND pnl<Y% (regime=Z)`
+- Fallback to -1.5/-5% if full_map universe is thin (<10 symbols)
+
+**P1-10 — Composite Velocity Gate (main.py)**
+- Writes today's full universe composites to composite_cache.json after every scan (5-day rolling window, auto-prunes)
+- velocity = composite_today − composite_3d_ago per signal candidate
+- Requires 3+ days of cache history before gate activates (avoids over-firing on thin data)
+- Decelerating signals (vel < -0.3): kelly × 0.5 — still enters, half size
+- Accelerating/neutral: unchanged
+- Cache already had 2 days (2026-05-17, 2026-05-18) — gate active by Tuesday 2026-05-26
+
+**P1-11 — Re-entry Cooldown (main.py + exit_monitor.py)**
+- exit_monitor.py writes cooldown on hard_stop or thesis_invalid exits
+- Duration: 3–15 days scaled by ATR percentile (high-vol stop-outs cool longer)
+- main.py reads cooldown_log.json, prunes expired entries, blocks cooldown symbols before entry agent
+- watchdog.py was already writing same format — both writers now consistent
+- OWL entry (2026-05-18) in cooldown_log — will be pruned as expired on next run
+
+**P1-13 — Multi-MA Sector Breadth (macro_context.py)**
+- Replaces: single pct_above_50ma
+- Now computes: pct_above_50ma, pct_above_150ma, pct_above_200ma per sector ETF
+- Composite: 0.25×50MA + 0.35×150MA + 0.40×200MA (Zweig 1986 — longer MAs more predictive)
+- Fallback: `breadth.get("breadth_composite") or breadth.get("pct_above_50ma")` — backward compatible with old macro_context.json data
+- Data pull changed: 3mo → 1y (need 200 bars for 200MA)
+- Reference: Zweig 1986
+
+### P1 Status Summary (as of 2026-05-22)
+| Item | Status | File |
+|------|--------|------|
+| P1-1 Kalman regime | ✅ LIVE | macro_context.py |
+| P1-2 Vol-regime stop | ✅ LIVE | exit_monitor.py |
+| P1-3 OU trail | ✅ LIVE | exit_monitor.py |
+| P1-4 Bayesian Kelly | ✅ LIVE | signals.py |
+| P1-5 OU hold target | ✅ LIVE | signals.py |
+| P1-6 IC layer weights | ⏳ GATED (need 60+ agent-tagged trades) | hold_monitor.py |
+| P1-7 Continuous trim | ✅ LIVE (kelly path) / fallback for backfill | hold_monitor.py |
+| P1-8 Regime-relative thesis | ✅ LIVE | exit_monitor.py |
+| P1-9 Watchdog intraday bars | ❌ NOT BUILT | watchdog.py |
+| P1-10 Composite velocity gate | ✅ LIVE (active after 3d cache) | main.py |
+| P1-11 Re-entry cooldown | ✅ LIVE | main.py + exit_monitor.py |
+| P1-12 Portfolio heat partial trim | ❌ NOT BUILT | exit_monitor.py |
+| P1-13 Multi-MA breadth | ✅ LIVE | macro_context.py |
+| P1-14 Universe sweep | ❌ NOT BUILT (backtest work) | universe_builder.py |
+| P1-15 Sentiment / dead path | ❌ NOT BUILT | data_feeds.py |
+| P1-16 Afternoon rescore | ❌ NOT BUILT | signals.py |
+
+### Critical Rules Added This Session
+- `EQUITY_ALLOCATION` is dead — never re-add. `my_equity = account["equity"]` directly.
+- `kelly_fraction` in RiskConfig is dead — never read. All Kelly sizing via `_bayesian_kelly()`.
+- `n_prior=50` in _bayesian_kelly() should be reduced to 20 after 60+ clean agent-tagged trades.
+- composite_cache.json is now the source of truth for velocity. Do not delete it between sessions.
+- cooldown_log.json persists across sessions. Prune is automatic (main.py on each run).
+
+### Session Start Checklist (next session)
+1. `git clone https://github.com/stevefirwin-svg/Raptor /home/claude/raptor` — always clone fresh
+2. Run the 4 data-quality checks from RAPTOR_MASTER_PLAN.md Session Start Checklist
+3. **RAPTOR_MASTER_PLAN.md is now the master plan** — supersedes RAPTOR_AUDIT_AND_PLAN.md
+4. Next build order: CRIT-3 (Rank IC) → CRIT-4 (Atomic writes) → CRIT-1 (Bootstrap Kelly) → CRIT-2 (Exponential decay)
+5. Do NOT touch LAYER_WEIGHTS or n_prior manually before data gates are met — see MASTER_PLAN
+
+---
+
+## 20. EXTERNAL AUDIT FINDINGS — 2026-05-22 (Grok + ChatGPT)
+
+### Context
+Two independent AI reviews of RAPTOR_ONTOLOGY.md were conducted. Both reviewed from a quant fund perspective. Key findings incorporated into RAPTOR_MASTER_PLAN.md. Summary here.
+
+### Maturity Scorecard (ChatGPT)
+| Component | Score | Notes |
+|-----------|-------|-------|
+| Signal engineering | 8/10 | Strong — MAD, cross-sectional, 16 factors |
+| Risk engineering | 7/10 | No correlation model drops this |
+| Statistical rigor | 5/10 | Kelly formula instability, binary IC, no decay |
+| Adaptation | 4/10 | Exists but misspecified — not truly learning |
+| Production architecture | 8/10 | Clean, but JSON non-atomic |
+| Institutional readiness | 5/10 | Need walk-forward, regime attribution |
+
+### Five Critical Findings (Data-Validated)
+
+**1. Bootstrap Kelly P25 = -75.4%**
+The μ/σ² Kelly formula is sitting on a distribution with kurtosis=10.8, skewness=2.4.
+Bootstrap 10,000 resamples: P25 = -75%. The Bayesian prior (n_prior=50) saves us accidentally.
+Fix: Bootstrap Kelly, take P25. → CRIT-1
+
+**2. Exponential decay missing from all learning**
+Ridge, IC, and Bayesian Kelly all treat a 12-month-old trade equally to yesterday's.
+Markets regime-shift. Old data contaminates new signals.
+Fix: w_t = exp(-0.005 × days_since_trade). Half-life ≈ 139 days. → CRIT-2
+
+**3. Binary IC discards 80% of information**
+Binary sign-match IC: 0.06. Rank IC (Spearman): 0.30. Same data, 5× more signal.
+Fix: scipy.stats.spearmanr replaces sign-match loop. One line. → CRIT-3
+
+**4. JSON writes are not atomic**
+Crash during write = corrupt state file = silent wrong decisions next run.
+Fix: os.replace(tmp, path) everywhere. → CRIT-4
+
+**5. No portfolio correlation model**
+Kelly assumes independence. NVDA + AMD + SMH + TSM = one semiconductor trade at 4× beta.
+Fix: Correlation gate — if pairwise corr > 0.70, scale second position's Kelly down. → CRIT-5
+
+### What ChatGPT Got Wrong (steelmanned)
+- "Adaptive system is cosmetic": Too harsh. Adaptation exists, it's misspecified. Not fake.
+- "Need XGBoost now": Wrong. At 79 trades, tree models overfit. Ridge + λ=1.0 is correct.
+- "Circular dependency catastrophic": Time constants (days between updates) prevent runaway.
+- "Architecture needs HMM → XGBoost → covariance optimizer": Right destination, wrong timing.
+
+### New Category System (replaces P0/P1/P2)
+RAPTOR_MASTER_PLAN.md introduces:
+- 🔴 CRITICAL: Math errors in live formulas (CRIT-1 through CRIT-5)
+- 🟠 MATH: Statistical improvements (MATH-1 through MATH-8)
+- 🟡 ARCHITECTURE: Right direction, premature at current scale (ARCH-1 through ARCH-6)
+- 🟢 HYGIENE: Dead code, fragile I/O (unchanged from P2 list)
+
+### Critical Rule Added
+The bootstrap Kelly result (P25 = -75.4%) means: **never trust μ/σ² Kelly at face value on fat-tailed trade distributions.** Always validate with bootstrap before deploying any Kelly variant. This applies to every future version of _bayesian_kelly().

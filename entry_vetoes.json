@@ -287,5 +287,65 @@
     "symbol": "NVDA",
     "timestamp": "2026-05-15T13:05:03.798831",
     "agent": "EntryAgent"
+  },
+  {
+    "decision": "PASS",
+    "confidence": 0.5,
+    "veto_reason": null,
+    "reasoning": "Agent unavailable \u2014 passthrough default",
+    "flags": [
+      "agent_error"
+    ],
+    "symbol": "RGTI",
+    "timestamp": "2026-05-22T09:35:16.021411",
+    "agent": "EntryAgent"
+  },
+  {
+    "decision": "PASS",
+    "confidence": 0.5,
+    "veto_reason": null,
+    "reasoning": "Agent unavailable \u2014 passthrough default",
+    "flags": [
+      "agent_error"
+    ],
+    "symbol": "QBTS",
+    "timestamp": "2026-05-22T09:35:16.021430",
+    "agent": "EntryAgent"
+  },
+  {
+    "decision": "PASS",
+    "confidence": 0.5,
+    "veto_reason": null,
+    "reasoning": "Agent unavailable \u2014 passthrough default",
+    "flags": [
+      "agent_error"
+    ],
+    "symbol": "BMY",
+    "timestamp": "2026-05-22T09:35:16.021435",
+    "agent": "EntryAgent"
+  },
+  {
+    "decision": "PASS",
+    "confidence": 0.5,
+    "veto_reason": null,
+    "reasoning": "Agent unavailable \u2014 passthrough default",
+    "flags": [
+      "agent_error"
+    ],
+    "symbol": "OXY",
+    "timestamp": "2026-05-22T09:35:16.021438",
+    "agent": "EntryAgent"
+  },
+  {
+    "decision": "PASS",
+    "confidence": 0.5,
+    "veto_reason": null,
+    "reasoning": "Agent unavailable \u2014 passthrough default",
+    "flags": [
+      "agent_error"
+    ],
+    "symbol": "XLF",
+    "timestamp": "2026-05-22T09:35:16.021442",
+    "agent": "EntryAgent"
   }
 ]

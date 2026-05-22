@@ -32,22 +32,6 @@
         "high_water": 31.605
       }
     },
-    "v5.4:KDP": {
-      "model": "v5.4",
-      "symbol": "KDP",
-      "shares": 337,
-      "entry_price": 28.670593,
-      "entry_date": "2026-05-15",
-      "metadata": {
-        "stop": 26.9264,
-        "regime": "BACKFILL",
-        "t_stat": null,
-        "kelly_fraction": null,
-        "composite_score": null,
-        "note": "Backfilled from Alpaca \u2014 entry_date approximate",
-        "high_water": 29.435
-      }
-    },
     "v5.4:STM": {
       "model": "v5.4",
       "symbol": "STM",
@@ -290,6 +274,27 @@
       "exit_reason": "math_trim_14%",
       "pnl": 62.819625000000286,
       "pnl_pct": 0.003039252841528839
+    },
+    {
+      "model": "v5.4",
+      "symbol": "KDP",
+      "shares": 337,
+      "entry_price": 28.670593,
+      "entry_date": "2026-05-15",
+      "metadata": {
+        "stop": 26.9264,
+        "regime": "BACKFILL",
+        "t_stat": null,
+        "kelly_fraction": null,
+        "composite_score": null,
+        "note": "Backfilled from Alpaca \u2014 entry_date approximate",
+        "high_water": 29.435
+      },
+      "exit_price": 28.605,
+      "exit_date": "2026-05-21",
+      "exit_reason": "math_trim_7%",
+      "pnl": -22.10484099999993,
+      "pnl_pct": -0.002287814556189982
     }
   ]
 }

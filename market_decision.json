@@ -1,9 +1,9 @@
 {
   "decision": "SCAN",
   "risk_scalar": 1.0,
-  "confidence": null,
-  "reasoning": "macro_regime is RISK_ON with VIX at 17.93 and no extreme signals present.",
-  "source": "rule+llama3.2",
+  "confidence": 0.9,
+  "reasoning": "Macro RISK_ON \u2014 full scan, normal sizing.",
+  "source": "rule_only",
   "macro_regime": "RISK_ON",
-  "timestamp": "2026-05-20T13:15:30.445675+00:00"
+  "timestamp": "2026-05-22T13:15:05.004757+00:00"
 }
