@@ -487,6 +487,11 @@ REV cluster:   rev_momentum
 23. **On-margin = REDUCE** — cash < 0 caps new entries at 1, same as util >85%.
 24. **composite_velocity recorded in ledger** at every entry — required for future IC calibration.
 25. **Cooldown symbols from outcome_log first**, position_ledger second — outcome_log is authoritative.
+26. **PROJECT MOUNT DOES NOT SYNC TO LAPTOP — MANDATORY END-OF-SESSION DELIVERY.** str_replace edits only exist in the Claude project mount. They do NOT automatically appear on Steve's laptop or in the GitHub repo. At the end of EVERY session where any file was modified, Claude MUST:
+    - Copy ALL changed files to `/mnt/user-data/outputs/`
+    - Call `present_files` with all of them so Steve can download
+    - Remind Steve to run: `git add <files>`, `git commit -m "..."`, `git push origin main`
+    Without this step, ALL work from the session is lost. This is the highest-priority housekeeping rule. Non-negotiable. No exceptions.
 
 ---
 
@@ -504,10 +509,8 @@ REV cluster:   rev_momentum
 - Don't remove _last_full_signals from signals.py
 - Don't use account["cash"] for buying power — use buying_power
 - Don't add Ollama calls to exit_monitor
-- Don't use market_value from Alpaca positions — field doesn't exist
-- Don't re-introduce parallel agent calls
-- Don't fail open in margin_guard — always fail closed on API error
-- Don't use sqrt(252) to annualize per-trade returns — use sqrt(252/avg_hold_days)
+- Don't end a session without copying all modified files to outputs and calling present_files
+- Don't assume str_replace changes are on Steve's laptop — they are not until downloaded
 
 ---
 
