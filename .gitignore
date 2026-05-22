@@ -1,10 +1,36 @@
-﻿.env
-_env
+﻿# Runtime data — changes every session, not code
+hold_health.json
+hold_history.json
+hold_decisions.json
+outcome_log.json
+outcome_pending.json
+trim_log.json
+position_ledger.json
+entry_vetoes.json
+market_decision.json
+macro_context.json
+adaptive_weights.json
+raptor_state.json
+crypto_ledger.json
+
+# Backtest outputs — large, regenerable
+backtest_results/
+
+# Sweep outputs
+sweep_universe_results.json
+
+# Cache
+cache/
+
+# Python
 __pycache__/
 *.pyc
 *.pyo
-cache/
+
+# Logs
 logs/
-backup_*/
 *.log
-install_updates.py
+
+# Environment
+_env
+.env
