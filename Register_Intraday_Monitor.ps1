@@ -38,8 +38,7 @@ $Trigger = New-ScheduledTaskTrigger `
 $Settings = New-ScheduledTaskSettingsSet `
     -ExecutionTimeLimit (New-TimeSpan -Hours 8) `
     -MultipleInstances IgnoreNew `
-    -StartWhenAvailable `
-    -WakeToRun $false
+    -StartWhenAvailable
 
 # ── Principal: run as current user, only when logged in ──────────────────────
 $Principal = New-ScheduledTaskPrincipal `
