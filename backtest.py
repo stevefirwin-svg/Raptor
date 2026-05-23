@@ -285,24 +285,37 @@ class Backtester:
         end = end or self.bcfg.end_date
 
         if not symbols:
-            # Try dynamic universe (same screen as live trading)
-            try:
-                from universe_builder import UniverseBuilder
-                ub = UniverseBuilder(self.cfg)
-                symbols = ub.build(max_symbols=150)
-                print(f"Dynamic universe: {len(symbols)} symbols")
-            except Exception as e:
-                print(f"Universe builder failed ({e}), using core list")
-                symbols = [
-                    "AAPL", "MSFT", "GOOGL", "AMZN", "NVDA", "META", "TSLA",
-                    "AMD", "CRM", "NFLX", "ADBE", "PYPL", "SQ", "SHOP",
-                    "UBER", "ABNB", "COIN", "SNOW", "DDOG", "NET",
-                    "JPM", "BAC", "GS", "MS", "V", "MA",
-                    "XOM", "CVX", "LLY", "UNH", "JNJ", "PFE",
-                    "CAT", "DE", "BA", "RTX", "LMT", "GE",
-                    "HD", "LOW", "TGT", "WMT", "COST", "NKE",
-                    "DIS", "CMCSA",
-                ]
+            # ── PRIORITY 1: locked backtest universe file ─────────────────────
+            # backtest_universe.txt is a fixed, date-stamped symbol list that
+            # does not change with live market conditions. This ensures
+            # reproducible results across sessions.
+            bt_universe_file = os.path.join(os.path.dirname(__file__), "backtest_universe.txt")
+            if os.path.exists(bt_universe_file):
+                with open(bt_universe_file) as f:
+                    symbols = [s.strip() for s in f if s.strip() and not s.startswith("#")]
+                print(f"Locked backtest universe: {len(symbols)} symbols (backtest_universe.txt)")
+
+            else:
+                # ── PRIORITY 2: live universe builder (non-reproducible — avoid for analysis) ──
+                print("WARNING: backtest_universe.txt not found — using live universe screen.")
+                print("WARNING: Results will vary by run date. Run generate_backtest_universe.py to fix.")
+                try:
+                    from universe_builder import UniverseBuilder
+                    ub = UniverseBuilder(self.cfg)
+                    symbols = ub.build(max_symbols=150)
+                    print(f"Live universe: {len(symbols)} symbols")
+                except Exception as e:
+                    print(f"Universe builder failed ({e}), using core list")
+                    symbols = [
+                        "AAPL", "MSFT", "GOOGL", "AMZN", "NVDA", "META", "TSLA",
+                        "AMD", "CRM", "NFLX", "ADBE", "PYPL", "SQ", "SHOP",
+                        "UBER", "ABNB", "COIN", "SNOW", "DDOG", "NET",
+                        "JPM", "BAC", "GS", "MS", "V", "MA",
+                        "XOM", "CVX", "LLY", "UNH", "JNJ", "PFE",
+                        "CAT", "DE", "BA", "RTX", "LMT", "GE",
+                        "HD", "LOW", "TGT", "WMT", "COST", "NKE",
+                        "DIS", "CMCSA",
+                    ]
 
         print(f"Loading data for {len(symbols)} symbols ({start} to {end})...")
         all_bars = self._load_data(symbols, start, end)
@@ -746,6 +759,8 @@ if __name__ == "__main__":
     parser.add_argument("--end", default=None, help="End date YYYY-MM-DD")
     parser.add_argument("--no-gap1", action="store_true",
                         help="Disable GAP 1 signal-quality trail modifier (reproduces pre-GAP1 baseline)")
+    parser.add_argument("--symbols", default=None,
+                        help="Comma-separated symbol list e.g. AAPL,MSFT,NVDA (overrides universe file)")
     args = parser.parse_args()
 
     cfg = CONFIG
@@ -759,7 +774,8 @@ if __name__ == "__main__":
     print(f"  GAP 1 modifier: {'ENABLED' if gap1 else 'DISABLED (baseline mode)'}\n")
 
     bt = Backtester(cfg, gap1_enabled=gap1)
-    results = bt.run(start=args.start, end=args.end)
+    sym_override = [s.strip() for s in args.symbols.split(",")] if args.symbols else None
+    results = bt.run(symbols=sym_override, start=args.start, end=args.end)
 
     if results:
         bt.print_report(results)

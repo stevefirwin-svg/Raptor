@@ -1,50 +1,76 @@
 =================================================================
-  RAPTOR v5.4 BACKTEST REPORT
+  RAPTOR v5.4 BACKTEST REPORT  [GAP 1 ACTIVE]
   2020-01-01 to 2025-12-31
 =================================================================
 
   RETURNS
-    Total Return:        142.46%
-    CAGR:                 17.78%
+    Total Return:        156.18%
+    CAGR:                 18.98%
     Benchmark (SPY):     112.50%
-    Alpha:                29.96%
+    Alpha:                43.67%
 
   RISK
-    Sharpe Ratio:         1.079
-    Sortino Ratio:        2.561
-    Calmar Ratio:         1.617
-    Max Drawdown:        -11.00%
-    Annual Volatility:    11.11%
+    Sharpe Ratio:         0.986
+    Sortino Ratio:        2.772
+    Calmar Ratio:         1.047
+    Max Drawdown:        -18.13%
+    Annual Volatility:    13.44%
 
   TRADES
-    Total Trades:          1404
-    Win Rate:              44.4%
-    Avg Win:              12.09%
-    Avg Loss:             -6.12%
-    Expectancy:           1.958%
-    Profit Factor:         1.65
+    Total Trades:          1197
+    Win Rate:              48.4%
+    Avg Win:              12.94%
+    Avg Loss:             -7.65%
+    Expectancy:           2.307%
+    Profit Factor:         1.79
 
   EXECUTION
-    Avg Hold Days:          9.0
-    Median Hold:            8.0
-    Exit [trail_profit]:   343
-    Exit [profit_target]:   191
-    Exit [trail_loss  ]:   779
+    Avg Hold Days:         10.5
+    Median Hold:           10.0
+    Exit [trail_profit]:   306
     Exit [momentum_break]:    89
-    Exit [hard_stop   ]:     2
+    Exit [profit_target]:   184
+    Exit [trail_loss  ]:   603
+    Exit [hard_stop   ]:    15
 
   P&L
-    Net P&L:           $  144,900.21
-    Final Equity:      $  242,463.93
+    Net P&L:           $  157,062.67
+    Final Equity:      $  256,175.26
 
-  GAP 1 VALIDATION — Signal-Aware Trail Modifier
-  (Strong signal = wider trail. Weak = tighter.)
-  Bucket                 N    Win%   Avg PnL%   Avg Comp
-  ----------------------------------------------------
-  Strong               463    64.4%     6.519%      1.977
-  Neutral              478    46.9%     1.399%      1.452
-  Weak                 463    21.8%    -2.026%     -0.219
+=================================================================
+  GAP 1 — Signal-Aware Trail Modifier (LIVE in backtest)
+  composite_score drives trail width: Strong=1.3x  Neutral=1.0x  Weak=0.75x
 
-  Strong vs Weak PnL delta: +8.545%  [GAP 1 VALIDATED]
+  Bucket         N   Win%  AvgPnL%  MedPnL%  StdPnL%  AvgHold  TrailMod ExitMix
+  ------------------------------------------------------------------------------------------
+  Strong      1195  48.4%    2.298   -0.300   20.555     10.5      1.30x  trai:602  trai:306  prof:183  mome:89  hard:15
+  Neutral        2  50.0%    7.240    7.240    9.400     11.0      1.00x  trai:1  prof:1
+
+  Strong vs Weak PnL delta: +2.298%  [NEEDS CALIBRATION]
+
+=================================================================
+  EXIT PATH QUALITY
+
+  Exit Path              N   Win%   AvgPnL%  AvgHold
+  --------------------------------------------------
+  trail_profit         306 100.0%     7.724     12.3
+  profit_target        184 100.0%    25.434     13.1
+  momentum_break        89 100.0%     5.031     11.8
+  trail_loss           603   0.0%    -7.520      8.7
+  hard_stop             15   0.0%   -13.043      7.3
+
+=================================================================
+  HOLD-DAY DISTRIBUTION
+
+    P25: 6.0d    P50: 10.0d    P75: 14.0d    P90: 18.0d    Max: 30.0d
+
+=================================================================
+  REGIME BREAKDOWN
+
+  Regime                   N   Win%   AvgPnL%
+  ---------------------------------------------
+  NEUTRAL/TRENDING       973  48.1%     2.268
+  NEUTRAL/MIXED          223  49.8%     2.491
+  NEUTRAL/REVERTING        1   0.0%    -0.870
 
 =================================================================
