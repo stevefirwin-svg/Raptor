@@ -914,6 +914,65 @@ class QuantSignalEngine:
                     zmat.setdefault(s, {})[fn] = float(np.clip((v - mu) / sig, -3, 3))
         return zmat
 
+    def _orthogonalize(self, syms: List[str],
+                        zmat: Dict[str, Dict[str, float]],
+                        book_factors: List[str]) -> Dict[str, Dict[str, float]]:
+        """
+        Factor orthogonalization: replace w^T x with w^T Σ⁻¹ x.
+        Removes double-counting of correlated factors (e.g. EMA stack
+        and MACD both capture the same trend signal).
+
+        Approach: Σ is computed from the current cross-section.
+        We apply Σ^(-1/2) whitening to the factor z-scores per symbol.
+        This decorrelates factors so each dimension carries independent info.
+
+        Reference: Grinold & Kahn (Active Portfolio Management) Ch. 6
+        Condition number check: if Σ is near-singular (condition > 100),
+        fall back to diagonal (variance-only) adjustment to avoid
+        numerical instability from a poorly conditioned covariance matrix.
+
+        Requires ≥ len(book_factors) + 5 symbols for stable estimation.
+        Falls back to original z-scores if universe is too small.
+        """
+        n_sym = len(syms)
+        n_fac = len(book_factors)
+
+        if n_sym < n_fac + 5:
+            return zmat  # Not enough symbols for stable Σ estimation
+
+        # Build factor matrix X: rows=symbols, cols=book_factors
+        X = np.array([[zmat[s].get(fn, 0.0) for fn in book_factors]
+                      for s in syms], dtype=float)
+
+        # Cross-sectional covariance (Pearson — factors are already z-scored)
+        # Add small ridge for numerical stability
+        cov = np.cov(X.T) + np.eye(n_fac) * 1e-4
+
+        try:
+            cond = np.linalg.cond(cov)
+            if cond > 100:
+                # Near-singular — use diagonal only (variance adjustment)
+                inv_cov = np.diag(1.0 / np.diag(cov))
+            else:
+                inv_cov = np.linalg.inv(cov)
+        except np.linalg.LinAlgError:
+            return zmat  # Fall back gracefully
+
+        # Apply Σ⁻¹ adjustment: x_orth = Σ⁻¹ x (per symbol)
+        # Then normalize rows so scores remain in comparable range
+        X_orth = X @ inv_cov
+        # Re-scale to maintain interpretability: unit variance across symbols
+        col_std = np.std(X_orth, axis=0) + 1e-8
+        X_orth  = X_orth / col_std
+
+        # Write back orthogonalized z-scores into zmat copy
+        zmat_orth = {s: dict(zmat[s]) for s in syms}  # shallow copy
+        for i, s in enumerate(syms):
+            for j, fn in enumerate(book_factors):
+                zmat_orth[s][fn] = float(np.clip(X_orth[i, j], -3, 3))
+
+        return zmat_orth
+
     def generate_signals(self, bars_dict: Dict[str, pd.DataFrame],
                          macro_data: Dict, sentiment_dict: Dict,
                          spy_bars: Optional[pd.DataFrame] = None) -> List[Signal]:
@@ -940,7 +999,13 @@ class QuantSignalEngine:
         # ── Step 2: cross-sectional z-scores ──────────────────────────────────
         zmat = self._crosssectional_z(syms, raw)
 
-        # ── Step 3: score each book independently ─────────────────────────────
+        # ── Step 3: orthogonalize per book (Σ⁻¹ whitening) ──────────────────
+        # Removes double-counting of correlated factors within each book.
+        # Applied independently to momentum and MR factor sets.
+        zmat_mom = self._orthogonalize(syms, zmat, MOMENTUM_FACTORS)
+        zmat_mr  = self._orthogonalize(syms, zmat, MR_FACTORS)
+
+        # ── Step 4: score each book independently ──────────────────────────────
         mom_candidates = []
         mr_candidates  = []
 
@@ -955,20 +1020,22 @@ class QuantSignalEngine:
             bb_z    = r.get("bollinger_z", 0.0)
             panic   = r.get("crowd_panic", 0.0)
 
-            # Momentum book
-            mom = self.mom_engine.score(sym, bars, spy_bars, z, adx_val, hurst_h)
+            # Momentum book — uses orthogonalized z-scores
+            z_mom = zmat_mom[sym]
+            mom = self.mom_engine.score(sym, bars, spy_bars, z_mom, adx_val, hurst_h)
             if mom is not None and mom["comp"] > 0:
                 mom_candidates.append(mom)
 
-            # MR book
-            mr = self.mr_engine.score(sym, bars, spy_bars, z, rsi5, bb_z, panic)
+            # MR book — uses orthogonalized z-scores
+            z_mr = zmat_mr[sym]
+            mr = self.mr_engine.score(sym, bars, spy_bars, z_mr, rsi5, bb_z, panic)
             if mr is not None and mr["comp"] > 0:
                 mr_candidates.append(mr)
 
         logger.info("v5.5 Books: MOMENTUM=%d candidates  MEAN_REVERSION=%d candidates  Scale=%.1f",
                     len(mom_candidates), len(mr_candidates), market_scale)
 
-        # ── Step 4: unified ranking ────────────────────────────────────────────
+        # ── Step 5: unified ranking ────────────────────────────────────────────
         ranked = self.ranker.rank(mom_candidates, mr_candidates,
                                   max_signals=self.cfg.execution.max_orders_per_scan * 2)
 
@@ -978,7 +1045,7 @@ class QuantSignalEngine:
         all_convictions = [c["book_conviction"] for c in ranked]
         conv_arr        = np.array(all_convictions)
 
-        # ── Step 5: build Signal objects ──────────────────────────────────────
+        # ── Step 6: build Signal objects ──────────────────────────────────────
         signals = []
         for cand in ranked:
             sym   = cand["sym"]

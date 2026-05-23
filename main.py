@@ -172,13 +172,16 @@ def run_daily_scan():
             available_bp -= order_cost
             ledger.record_entry(MODEL_ID, sig.symbol, shares, sig.entry_price,
                                 datetime.now().strftime("%Y-%m-%d"),
-                                {"t_stat":      sig.t_statistic,
-                                 "stop":        sig.stop_price,
-                                 "tp":          sig.take_profit,
-                                 "regime":      sig.regime,
-                                 "trade_type":  sig.trade_type,
-                                 "pattern":     getattr(sig, "pattern_signal", ""),
-                                 "conviction":  round(getattr(sig, "book_conviction", 0.0), 4)})
+                                {"t_stat":        sig.t_statistic,
+                                 "stop":          sig.stop_price,
+                                 "tp":            sig.take_profit,
+                                 "regime":        sig.regime,
+                                 "trade_type":    sig.trade_type,
+                                 "pattern":       getattr(sig, "pattern_signal", ""),
+                                 "conviction":    round(getattr(sig, "book_conviction", 0.0), 4),
+                                 "composite":     round(sig.composite_score, 4),
+                                 "factor_scores": {k: round(v, 4) for k, v in
+                                                   getattr(sig, "factor_scores", {}).items()}})
             logger.info("ORDER [%s|%s]: BUY %d %s @ $%.2f  pattern=%s  conviction=%.3f",
                         MODEL_ID, sig.trade_type, shares, sig.symbol,
                         limit or sig.entry_price,
