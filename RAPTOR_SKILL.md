@@ -53,17 +53,19 @@
 ### 2.2 — Signal Engine Detail (v5.5)
 
 **MomentumSignalEngine**
-- Factors: ma_stack, macd_accel, adx_dir, rel_strength, obv_r2, accum_dist, price_cloud, vol_ratio
+- Factors: ma_stack, adx_dir, rel_strength, obv_r2, accum_dist, price_cloud, vol_ratio
+- Removed 2026-05-23: macd_accel (IC=−0.34, t=−3.42 — significant negative predictor)
 - Gates: (Hurst H > 0.52 OR ADX > 22) AND price > 50 EMA AND rel_strength ≥ -0.01
 - Entry timing: pullback to 8/21 EMA on declining volume
 - Suppresses entry on: bearish_engulfing, evening_star, three_black_crows
 - Stop: rcfg.initial_stop_atr_mult (wide). Hold target: 15 days. No fixed take-profit.
 
-**MeanReversionSignalEngine**
+**MeanReversionSignalEngine — SUSPENDED (IC validation failed 2026-05-23)**
 - Factors: rsi_mr, bollinger_z, crowd_panic, ma_distance, bb_squeeze, rev_momentum, atr_pctile
-- Gates: RSI(5) < 35 AND bb_z > 0 (below lower band) AND crowd_panic > 0.005 AND bottom pattern required
-- Entry timing: panic exhaustion + Bulkowski confirmation
-- Stop: 1.5x ATR (tight). Hold target: 2–5 days. Take-profit: 20-day SMA.
+- IC study (94 obs): ma_distance=−0.54★, atr_pctile=−0.44★, bb_squeeze=−0.39★, bollinger_z=−0.31★
+- All significant factors negative — book is selecting downtrends, not reversals
+- Code preserved. Gate lifted when rolling IC turns positive across ≥2 factors
+- Lift condition: ma_distance IC > +0.05 AND t-stat > 1.5 over 60+ observations
 
 **BottomTopDetector** — Bulkowski (2008) validated patterns >60% reversal rate:
 - Bottom: hammer (60.4%), bullish_engulfing (63.0%), morning_star (61.5%), piercing_line (62.1%), three_white_soldiers (65.4%), rsi_bull_divergence
@@ -279,24 +281,65 @@ Backtest exit checks must match live monitor frequency. If `exit_monitor.py` run
 ## 9. CRITICAL RULES
 
 1. **Dual-book architecture is the foundation.** Never blend MOM and MR factors into one composite.
-2. **Backtest universe = backtest_universe.txt.** Never use live cache for analysis.
-3. **str_replace for edits, create_file for new files only.**
-4. **Backtest both books independently before combining** — validate each has edge on its own.
-5. **Ledger must match Alpaca.** Resync: `python backfill_ledger.py --write`
-6. **Exit path labels:** hard_stop, trail_profit, trail_loss, profit_target, momentum_break, thesis_invalid, portfolio_heat, time_decay, time_stop, math_exit, math_trim_X%
-7. **Clear pycache before every test:** `Remove-Item -Recurse -Force __pycache__`
-8. **Never use defaults in agent context.** Missing data → skip position entirely.
-9. **Math trim governs execution.** HoldAgent is advisory only.
-10. **signals.py must set self._last_full_signals** before top-N filter.
-11. **Use account["buying_power"] not account["cash"]** for capital checks.
-12. **exit_monitor never calls Ollama.** Reads hold_decisions.json advisory only.
-13. **Do NOT start Layer 3** until 30+ agent-tagged trades in outcome_log.json.
-14. **PowerShell only** (not CMD).
-15. **Read file + callers + shared utilities before any edit.**
+2. **MR book is SUSPENDED.** IC data shows all significant MR factors predict losses. Do not lift gate without IC evidence (ma_distance IC > 0.05, t > 1.5, n ≥ 60).
+3. **Backtest universe = backtest_universe.txt.** Never use live cache for analysis.
+4. **str_replace for edits, create_file for new files only.**
+5. **Backtest both books independently before combining** — validate each has edge on its own.
+6. **Ledger must match Alpaca.** Resync: `python backfill_ledger.py --write`
+7. **Exit path labels:** hard_stop, trail_profit, trail_loss, profit_target, momentum_break, thesis_invalid, portfolio_heat, time_decay, time_stop, math_exit, math_trim_X%
+8. **Clear pycache before every test:** `Remove-Item -Recurse -Force __pycache__`
+9. **Never use defaults in agent context.** Missing data → skip position entirely.
+10. **Math trim governs execution.** HoldAgent is advisory only.
+11. **signals.py must set self._last_full_signals** before top-N filter.
+12. **Use account["buying_power"] not account["cash"]** for capital checks.
+13. **exit_monitor never calls Ollama.** Reads hold_decisions.json advisory only.
+14. **Do NOT start Layer 3** until 30+ agent-tagged trades in outcome_log.json.
+15. **PowerShell only** (not CMD).
+16. **Read file + callers + shared utilities before any edit.**
 
 ---
 
-## 10. WHAT NOT TO DO
+## 10. IC VALIDATION FINDINGS (2026-05-23, 94 observations)
+
+Factor IC measured via Spearman correlation against realized returns (hold_history + outcome_log, Option C weighted).
+
+**Momentum factors — keep:**
+| Factor | IC | t-stat | Status |
+|--------|----|--------|--------|
+| adx_dir | +0.44 | +4.68 | ✅ Strong |
+| ma_stack | +0.33 | +3.34 | ✅ Strong |
+| accum_dist | +0.20 | +1.94 | ✅ Marginal |
+| price_cloud | +0.19 | +1.83 | ✅ Marginal |
+| rel_strength | +0.09 | +0.86 | ⚠ Weak — watch |
+| obv_r2 | +0.06 | +0.61 | ⚠ Weak — watch |
+| vol_ratio | −0.05 | −0.45 | ⚠ Noise — watch |
+
+**Momentum factors — removed:**
+| Factor | IC | t-stat | Action |
+|--------|----|--------|--------|
+| macd_accel | −0.34 | −3.42 | ❌ Removed — significant negative predictor |
+
+**MR factors — all negative (book suspended):**
+| Factor | IC | t-stat | Note |
+|--------|----|--------|------|
+| ma_distance | −0.54 | −6.15 | Strongest signal — predicts losses |
+| atr_pctile | −0.44 | −4.70 | |
+| bb_squeeze | −0.39 | −3.74 | |
+| bollinger_z | −0.31 | −3.07 | |
+| rsi_mr | −0.00 | −0.02 | Not significant |
+| crowd_panic | +0.03 | +0.25 | Not significant |
+| rev_momentum | −0.05 | −0.46 | Not significant |
+
+**Factor covariance condition number: 271.8** — HIGH COLLINEARITY. Orthogonalization active and critical.
+
+**Kelly Engine (shadow mode, 73 equity trades):**
+- μ = 3.49%, σ = 25.90%, Win rate = 47.9%, Sharpe = 0.135
+- DD-constrained Kelly recommendation: **3.65% per trade**
+- Active mode at 100 trades. Current sizing range 2–12% — positions above 5–6% are above data-supported levels.
+
+---
+
+## 11. WHAT NOT TO DO
 
 - Don't blend MOM and MR factors into one composite score — proven to cancel
 - Don't use live universe cache for backtesting — non-reproducible
@@ -311,7 +354,7 @@ Backtest exit checks must match live monitor frequency. If `exit_monitor.py` run
 
 ---
 
-## 11. MATH-FIRST PRINCIPLES
+## 12. MATH-FIRST PRINCIPLES
 
 Every decision — buy, hold, trim, exit, size, weight — must be derived from mathematics, not intuition or round numbers.
 
@@ -341,7 +384,7 @@ Every decision — buy, hold, trim, exit, size, weight — must be derived from 
 
 ---
 
-## 12. MATH GAPS — OPEN ITEMS
+## 13. MATH GAPS — OPEN ITEMS
 
 | Gap | File | Problem | Status |
 |-----|------|---------|--------|
@@ -358,7 +401,7 @@ Every decision — buy, hold, trim, exit, size, weight — must be derived from 
 
 ---
 
-## 13. SESSION PROTOCOLS (MANDATORY)
+## 14. SESSION PROTOCOLS (MANDATORY)
 
 ### Start of every conversation
 1. Read RAPTOR_SKILL.md via project_knowledge_search before any technical work
@@ -386,7 +429,7 @@ Any architectural change MUST be reflected in Section 2 of this file in the same
 
 ---
 
-## 14. PROACTIVE THINKING STANDARDS
+## 15. PROACTIVE THINKING STANDARDS
 
 Claude is a quantitative research partner, not a code generator.
 
@@ -407,7 +450,7 @@ Claude is a quantitative research partner, not a code generator.
 
 ---
 
-## 15. INFRASTRUCTURE NOTES
+## 16. INFRASTRUCTURE NOTES
 
 - Task Scheduler edits require elevated (admin) PowerShell: `Set-ScheduledTask`
 - Regular PowerShell returns "Access is denied" for scheduler tasks
@@ -416,7 +459,7 @@ Claude is a quantitative research partner, not a code generator.
 
 ---
 
-## 16. LAYER 3 READINESS CHECK
+## 17. LAYER 3 READINESS CHECK
 
 ```powershell
 python -c "

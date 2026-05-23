@@ -234,21 +234,20 @@ Cross-sectional z-scoring (MAD-robust, per factor)
 
 All symbols with ≥ 80 bars of daily OHLCV data receive a full factor computation. Factors are separated by book — they are never blended.
 
-#### MOMENTUM FACTORS (8)
+#### MOMENTUM FACTORS (7) — IC validated 2026-05-23
+
+*Removed: `macd_accel` — IC=−0.34, t=−3.42 (94 obs). Statistically significant negative predictor.
+Correlated with ma_stack (ρ≈0.75); after orthogonalization its residual captures exhaustion, not continuation.*
 
 **MA Stack (`ma_stack`)**
 `order = (EMA8 > EMA21) + (EMA21 > EMA50) - 1` → -1, 0, +1
 `slope = clip(avg 5d return of EMA8/21/50 × 50, -0.4, 0.4)`
 `ma_stack = order × 0.6 + slope`
-Positive = EMAs aligned upward with upward slope.
-
-**MACD Acceleration (`macd_accel`)**
-`macd_accel = polyfit_slope(MACD_histogram[-5:]) / current_price`
-Positive = momentum building. Negative = dying.
+IC=+0.33, t=+3.34. Strong predictor. Positive = EMAs aligned upward with upward slope.
 
 **ADX Direction (`adx_dir`)**
 `adx_dir = ADX_14 × (+1 if +DI > -DI else -1)`
-Positive = structured uptrend.
+IC=+0.44, t=+4.68. Strongest predictor in model. Positive = structured uptrend.
 
 **Relative Strength (`rel_strength`)**
 `rel_strength = (sym[-1]/sym[-10]) - (SPY[-1]/SPY[-10])`
@@ -315,6 +314,8 @@ All factors are normalized cross-sectionally in one pass:
 
 ### 4.4 MomentumSignalEngine — Gates and Scoring
 
+*Active book. 7 IC-validated factors. macd_accel removed 2026-05-23 (IC=−0.34).*
+
 **Hard gates (ALL must pass):**
 1. Trend confirmed: Hurst H > 0.52 OR ADX_raw > 22
 2. Price above 50 EMA
@@ -340,28 +341,41 @@ Equal base weights adjusted by pullback_quality. `comp > 0` required.
 - No fixed take-profit — trail exit only
 - `momentum_break` exit: 2 consecutive closes below 8-EMA while profitable
 
-### 4.5 MeanReversionSignalEngine — Gates and Scoring
+### 4.5 MeanReversionSignalEngine — SUSPENDED (IC validation failed 2026-05-23)
 
-**Hard gates (ALL must pass):**
+**IC study results (94 observations, Spearman rank correlation):**
+
+| Factor | IC | t-stat | Verdict |
+|--------|----|--------|---------|
+| ma_distance | −0.54 | −6.15 | ❌ Strongest signal — predicts losses |
+| atr_pctile | −0.44 | −4.70 | ❌ |
+| bb_squeeze | −0.39 | −3.74 | ❌ |
+| bollinger_z | −0.31 | −3.07 | ❌ |
+| rsi_mr | −0.00 | −0.02 | Not significant |
+| crowd_panic | +0.03 | +0.25 | Not significant |
+| rev_momentum | −0.05 | −0.46 | Not significant |
+
+**Interpretation:** RSI<35 + below BB + panic volume in this data identifies stocks in genuine
+downtrends — not temporary panic lows. The model buys continuation of decline, not reversal.
+
+**Root cause hypothesis:** Insufficient regime conditioning. MR requires:
+- Macro regime: RISK_ON or BULLISH (not NEUTRAL/RISK_OFF)
+- Micro regime: REVERTING (Hurst H < 0.45, ADX < 20)
+- Firing in all regimes captures downtrends alongside genuine reversals
+
+**Status:** Code preserved. Gate commented out in `generate_signals()`. No live entries.
+
+**Lift condition:** ma_distance IC > +0.05 AND t-stat > 1.5 over ≥ 60 observations
+after adding RISK_ON + REVERTING regime conditioning. Re-run `python factor_lab.py`.
+
+**Original gates (preserved for when book is re-enabled with regime conditioning):**
 1. RSI(5) < 35
 2. `bollinger_z > 0` (price below lower Bollinger band)
 3. `crowd_panic > 0.005` (volume spike on down days)
-4. `BottomTopDetector.detect_bottom()` returns a pattern name (REQUIRED)
+4. `BottomTopDetector.detect_bottom()` returns pattern (REQUIRED)
 5. Distance to 20-day SMA > 0.5% (reversion room exists)
-
-**Pattern boost:**
-- `bullish_engulfing`, `morning_star`, `three_white_soldiers` → composite × 1.3
-- Other patterns → composite × 1.0
-
-**Composite:**
-`comp = Σ(z[fn] × w[fn]) × pattern_boost for fn in MR_FACTORS`
-Equal base weights. `comp > 0` required.
-
-**Exit ruleset (exit_monitor.py):**
-- Tight trail stop (1.5× ATR)
-- Hold target: 2–5 days (derived from distance_to_mean / 0.005)
-- Take-profit at 20-day SMA
-- Hard time_stop at 5 days regardless of P&L
+6. ⚠ ADD: macro regime = RISK_ON or BULLISH
+7. ⚠ ADD: micro regime = REVERTING (Hurst H < 0.45, ADX < 20)
 
 ### 4.6 BottomTopDetector — Bulkowski (2008) Pattern Library
 
@@ -878,6 +892,36 @@ In v5.5, agent prompts include `trade_type` so the agent reasons about the trade
 
 *Status: ✅ Done | 📋 Queued | 🔴 Blocked*
 
+### 14.0 IC Validation Findings (2026-05-23, 94 observations)
+
+IC = Spearman rank correlation between factor z-score and realized forward return.
+Data: hold_history.json (weight=1) + outcome_log.json equity trades (weight=2).
+
+| Factor | Book | IC | t-stat | Decision |
+|--------|------|----|--------|----------|
+| adx_dir | MOM | +0.44 | +4.68 | ✅ Keep — strongest predictor |
+| ma_stack | MOM | +0.33 | +3.34 | ✅ Keep |
+| accum_dist | MOM | +0.20 | +1.94 | ✅ Keep — marginal |
+| price_cloud | MOM | +0.19 | +1.83 | ✅ Keep — marginal |
+| rel_strength | MOM | +0.09 | +0.86 | ⚠ Watch — insufficient significance |
+| obv_r2 | MOM | +0.06 | +0.61 | ⚠ Watch |
+| vol_ratio | MOM | −0.05 | −0.45 | ⚠ Watch |
+| macd_accel | MOM | **−0.34** | **−3.42** | ❌ **Removed** |
+| ma_distance | MR | −0.54 | −6.15 | ❌ Book suspended |
+| atr_pctile | MR | −0.44 | −4.70 | ❌ Book suspended |
+| bb_squeeze | MR | −0.39 | −3.74 | ❌ Book suspended |
+| bollinger_z | MR | −0.31 | −3.07 | ❌ Book suspended |
+| rsi_mr | MR | −0.00 | −0.02 | Noise |
+| crowd_panic | MR | +0.03 | +0.25 | Noise |
+| rev_momentum | MR | −0.05 | −0.46 | Noise |
+
+Factor covariance condition number: **271.8** — HIGH COLLINEARITY. Orthogonalization confirmed critical.
+
+**Kelly Engine (73 equity trades, shadow mode):**
+- μ=3.49%, σ=25.90%, Win rate=47.9%, Sharpe=0.135
+- DD-constrained Kelly: **3.65% per trade** — sizing above 5–6% exceeds data support
+- Active mode threshold: 100 trades
+
 ### 14.1 Closed Gaps
 
 | Gap | Fix |
@@ -898,11 +942,20 @@ In v5.5, agent prompts include `trade_type` so the agent reasons about the trade
 | ✅ UNIVERSE | Locked backtest_universe.txt — reproducible backtests |
 | ✅ DUAL-BOOK | Single composite replaced with MomentumSignalEngine + MeanReversionSignalEngine |
 | ✅ PATTERNS | BottomTopDetector — 10 Bulkowski-validated patterns + RSI divergence |
+| ✅ IC LAB | factor_lab.py — Spearman IC, t-stat, regime breakdown, covariance per factor |
+| ✅ KELLY ENGINE | kelly_engine.py — outcome-derived Kelly, shadow mode, per-book (3.65% rec.) |
+| ✅ ORTHOGONALIZATION | signals.py — w^TΣ⁻¹x replaces w^Tx, condition number 271.8 confirmed |
+| ✅ macd_accel REMOVED | IC=−0.34, t=−3.42 — confirmed negative predictor removed 2026-05-23 |
+| ✅ MR SUSPENDED | All significant MR factors negative IC — gated pending regime conditioning |
 
 ### 14.2 Queued — Next Session
 
 **📋 SIM FIDELITY — Backtest exit checks run every bar (CRITICAL)**
 Exit monitor runs every 30 minutes live. Backtest checks exits on every bar. This makes backtest results non-reproducible in live trading — positions that exit mid-day in the backtest would survive until the next 30-min check live. Fix: backtest should only check exits at simulated 30-minute intervals (9:35, 10:05, 10:35... 3:50 ET) matching the live schedule.
+
+**📋 MR REGIME CONDITIONING — prerequisite for re-enabling MR book**
+Add two hard gates: (1) macro regime = RISK_ON or BULLISH, (2) micro = REVERTING.
+Re-run `python factor_lab.py`. Lift suspension only when ma_distance IC > +0.05, t > 1.5, n ≥ 60.
 
 **📋 MR EXIT SPLIT — exit_monitor.py not yet split by trade_type**
 The MR-specific exit rules (1.5× ATR stop, 5-day time_stop, profit_target at 20d SMA) are designed but not yet implemented in exit_monitor.py. Currently all positions use momentum-style exit logic. This must be built and backtested independently.

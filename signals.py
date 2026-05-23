@@ -4,8 +4,9 @@ Raptor v5.5 — Dual-Book Signal Engine
 Two separate, non-conflicting signal books:
 
   Book 1 — MOMENTUM: Trend continuation entries on pullbacks.
-            Factors: ma_stack, macd_accel, adx_dir, rel_strength,
+            Factors: ma_stack, adx_dir, rel_strength,
                      obv_r2, accum_dist, price_cloud, vol_ratio
+                     (macd_accel removed: IC=-0.34, t=-3.42, 2026-05-23)
             Gate:    micro == TRENDING, ADX > 25, price > 50 EMA
             Entry:   pullback to 8/21 EMA on declining volume
             Exit:    wide trail, momentum_break path, no fixed target
@@ -46,7 +47,9 @@ MEAN_REVERSION = "MEAN_REVERSION"
 
 # ── Factor name registries per book ───────────────────────────────────────────
 MOMENTUM_FACTORS = [
-    "ma_stack", "macd_accel", "adx_dir", "rel_strength",
+    # IC-validated factors only (factor_lab.py, 2026-05-23, 94 obs)
+    # Removed: macd_accel  IC=-0.34 t=-3.42 — statistically significant NEGATIVE predictor
+    "ma_stack", "adx_dir", "rel_strength",
     "obv_r2", "accum_dist", "price_cloud", "vol_ratio",
 ]
 MR_FACTORS = [
@@ -1026,14 +1029,18 @@ class QuantSignalEngine:
             if mom is not None and mom["comp"] > 0:
                 mom_candidates.append(mom)
 
-            # MR book — uses orthogonalized z-scores
-            z_mr = zmat_mr[sym]
-            mr = self.mr_engine.score(sym, bars, spy_bars, z_mr, rsi5, bb_z, panic)
-            if mr is not None and mr["comp"] > 0:
-                mr_candidates.append(mr)
+            # MR book — SUSPENDED 2026-05-23 pending IC validation
+            # All 5 significant MR factors have negative IC in 94-observation study.
+            # IC data: ma_distance=-0.54, atr_pctile=-0.44, bb_squeeze=-0.39,
+            #          bollinger_z=-0.31. Book is selecting downtrends, not reversals.
+            # Code preserved for data collection. Gate lifted when IC turns positive.
+            # z_mr = zmat_mr[sym]
+            # mr = self.mr_engine.score(sym, bars, spy_bars, z_mr, rsi5, bb_z, panic)
+            # if mr is not None and mr["comp"] > 0:
+            #     mr_candidates.append(mr)
 
-        logger.info("v5.5 Books: MOMENTUM=%d candidates  MEAN_REVERSION=%d candidates  Scale=%.1f",
-                    len(mom_candidates), len(mr_candidates), market_scale)
+        logger.info("v5.5 Books: MOMENTUM=%d candidates  MEAN_REVERSION=SUSPENDED  Scale=%.1f",
+                    len(mom_candidates), market_scale)
 
         # ── Step 5: unified ranking ────────────────────────────────────────────
         ranked = self.ranker.rank(mom_candidates, mr_candidates,
