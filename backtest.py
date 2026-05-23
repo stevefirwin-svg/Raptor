@@ -50,8 +50,6 @@ class Trade:
     composite_score: float
     kelly_fraction: float
     regime: str
-    composite_proxy: float = 0.0   # GAP 1 validation: avg composite during hold
-    health_proxy: float = 0.0      # GAP 1 validation: health at exit
 
 
 @dataclass
@@ -69,8 +67,6 @@ class Position:
     kelly_fraction: float
     regime: str
     days_held: int = 0
-    comp_history: list = field(default_factory=list)   # daily composite_proxy samples
-    health_at_exit: float = 0.0                        # health_proxy on final day
 
 
 class Backtester:
@@ -148,102 +144,7 @@ class Backtester:
         slip = self.bcfg.slippage_bps / 10_000
         return price * (1 + slip) if side == "BUY" else price * (1 - slip)
 
-    def _composite_proxy(self, day_data: pd.DataFrame, spy_data: pd.DataFrame,
-                         entry_price: float) -> float:
-        """
-        Composite score proxy for backtest simulation.
-        Approximates the live 16-factor composite using price data only.
-
-        Three components (each normalized to [-1, +1], then blended):
-          1. Momentum (ROC-20): 20-day rate of change vs cross-sectional median.
-             Captures trend direction — the dominant driver of the live composite.
-          2. Relative strength vs SPY (20d): stock outperformance vs benchmark.
-             Filters market-beta moves from stock-specific momentum.
-          3. EMA slope (8/21 EMA spread): short-term trend acceleration.
-             Proxy for the live factor_agreement layer.
-
-        Output scaled to [-2, +2] to match live composite range.
-        Not identical to live composite — correlation ~0.65 in validation
-        (sufficient for trail modifier calibration, not for entry signals).
-        """
-        try:
-            if len(day_data) < 25:
-                return 0.0
-
-            closes = day_data["close"]
-
-            # 1. Momentum: 20-day ROC
-            roc20 = (closes.iloc[-1] / closes.iloc[-21] - 1) if len(closes) >= 21 else 0.0
-
-            # 2. Relative strength vs SPY
-            rs = 0.0
-            if spy_data is not None and len(spy_data) >= 21:
-                spy_cl = spy_data["close"]
-                spy_roc = (spy_cl.iloc[-1] / spy_cl.iloc[-21] - 1) if len(spy_cl) >= 21 else 0.0
-                rs = roc20 - spy_roc  # excess return vs benchmark
-
-            # 3. EMA spread (8 vs 21): positive = short above long = uptrend
-            ema8 = closes.ewm(span=8, adjust=False).mean().iloc[-1]
-            ema21 = closes.ewm(span=21, adjust=False).mean().iloc[-1]
-            ema_spread = (ema8 - ema21) / ema21 if ema21 > 0 else 0.0
-
-            # Normalize each to [-1, +1] with soft clipping
-            def soft_clip(x, scale):
-                return max(-1.0, min(1.0, x / scale))
-
-            c1 = soft_clip(roc20, 0.08)     # 8% ROC → ±1
-            c2 = soft_clip(rs, 0.05)         # 5% excess return → ±1
-            c3 = soft_clip(ema_spread, 0.03) # 3% EMA spread → ±1
-
-            # Weighted blend: momentum 50%, RS 30%, EMA slope 20%
-            composite = 0.5 * c1 + 0.3 * c2 + 0.2 * c3
-
-            # Scale to [-2, +2] to match live composite range
-            return round(composite * 2.0, 3)
-
-        except Exception:
-            return 0.0
-
-    def _health_proxy(self, day_data: pd.DataFrame, entry_price: float,
-                      atr: float) -> float:
-        """
-        Position health proxy for backtest simulation.
-        Approximates the live 8-layer hold_monitor health score using price only.
-
-        Two components:
-          1. Short-term price action vs ATR: are recent moves confirming or
-             denying the thesis? 5-day return normalized by ATR.
-             Positive → price action healthy, negative → deteriorating.
-          2. Price vs entry: is the position above or below entry?
-             Scaled by magnitude. A large winner has positive health;
-             a drawdown position gets negative health.
-
-        Output in [-1, +1] to match live health range.
-        """
-        try:
-            if len(day_data) < 6 or atr <= 0:
-                return 0.0
-
-            closes = day_data["close"]
-            current = closes.iloc[-1]
-
-            # 1. 5-day return normalized by ATR (momentum health)
-            ret5 = (current - closes.iloc[-6]) if len(closes) >= 6 else 0.0
-            atr_norm = ret5 / atr  # +1 ATR move = healthy, -1 ATR = deteriorating
-
-            # 2. Position vs entry (thesis confirmation)
-            vs_entry = (current - entry_price) / (atr * 3.0)  # scaled to ~[-1, +1]
-
-            # Blend: 60% short-term action, 40% vs entry
-            health = 0.6 * max(-1.0, min(1.0, atr_norm / 2.0)) + \
-                     0.4 * max(-1.0, min(1.0, vs_entry))
-
-            return round(health, 3)
-
-        except Exception:
-            return 0.0
-
-    def _check_exits(self, date, positions, bars_dict, spy_full=None):
+    def _check_exits(self, date, positions, bars_dict):
         """
         v5.5 Multi-path exit system.
         
@@ -345,7 +246,6 @@ class Backtester:
             if exit_price is not None:
                 pnl = (exit_price - pos.entry_price) * pos.shares
                 pnl_pct_final = exit_price / pos.entry_price - 1
-                avg_comp = float(np.mean(pos.comp_history)) if pos.comp_history else 0.0
                 closed.append(Trade(
                     symbol=pos.symbol, entry_date=pos.entry_date,
                     exit_date=str(date.date()), entry_price=pos.entry_price,
@@ -354,8 +254,6 @@ class Backtester:
                     hold_days=pos.days_held, exit_reason=reason,
                     t_statistic=pos.t_statistic, composite_score=pos.composite_score,
                     kelly_fraction=pos.kelly_fraction, regime=pos.regime,
-                    composite_proxy=round(avg_comp, 3),
-                    health_proxy=round(pos.health_at_exit, 3),
                 ))
             else:
                 # Update high water mark
@@ -363,18 +261,14 @@ class Backtester:
                     pos.high_water = hi
 
                 # Update trailing stop — single source of truth via exit_monitor._trail_mult()
-                # Composite and health proxies computed from price data — see _composite_proxy()
-                # and _health_proxy(). Replaces the old (0.0, 0.0) neutral fallback that made
-                # GAP 1 impossible to validate in backtest (signal modifier was always 1.0x).
+                # composite and health not available in backtest simulation (no hold_health.json)
+                # so signal-quality modifier defaults to neutral (0.0, 0.0) — same as pre-GAP1 behavior.
+                # When hold_history is integrated into backtest, pass real composite/health here.
                 if atr > 0:
-                    spy_window = spy_full.loc[spy_full.index <= date].tail(30) \
-                        if spy_full is not None else None
-                    _comp_proxy = self._composite_proxy(day_data, spy_window, pos.entry_price)
-                    _hlth_proxy = self._health_proxy(day_data, pos.entry_price, atr)
-                    pos.comp_history.append(_comp_proxy)
-                    pos.health_at_exit = _hlth_proxy
+                    # GAP 1 ACTIVE: use entry composite_score as signal-quality proxy.
+                    # health not available historically — composite alone drives modifier.
                     trail_mult = _trail_mult(pos.days_held, profit_atr, self.rcfg,
-                                            composite=_comp_proxy, health=_hlth_proxy)
+                                            composite=pos.composite_score, health=0.0)
                     new_trail = pos.high_water - trail_mult * atr
                     pos.trailing_stop = max(pos.trailing_stop, new_trail)
                     pos.stop_price = max(pos.stop_price, pos.trailing_stop)
@@ -446,7 +340,7 @@ class Backtester:
 
         for day_idx, date in enumerate(all_dates):
             # 1. Check exits
-            positions, closed = self._check_exits(date, positions, all_bars, spy_full=spy_full)
+            positions, closed = self._check_exits(date, positions, all_bars)
             for t in closed:
                 cash += t.exit_price * t.shares
                 all_trades.append(t)
@@ -584,35 +478,89 @@ class Backtester:
         # Benchmark
         bench_ret = (benchmark.iloc[-1] / benchmark.iloc[0] - 1) if len(benchmark) > 1 else 0
 
-        # ── GAP 1 Validation: signal-aware trail modifier analysis ────────────
-        # Split trades by composite_proxy quartile. If GAP 1 is working:
-        #   - High composite (strong signal) trades should have better PnL
-        #     because trail was WIDER → let winners run longer.
-        #   - Low composite (weak signal) trades should have less drawdown
-        #     because trail was TIGHTER → cut losses faster.
-        # This is the core hypothesis being validated.
-        trades_with_proxy = [t for t in trades if hasattr(t, "composite_proxy")]
+        # ── GAP 1 STATISTICAL DIAGNOSTICS ─────────────────────────────────────────
+        def _bucket(t):
+            c = t.composite_score
+            if c > 0.3:   return "Strong"
+            elif c < -0.3: return "Weak"
+            else:          return "Neutral"
+
+        buckets = {"Strong": [], "Neutral": [], "Weak": []}
+        for t in trades:
+            buckets[_bucket(t)].append(t)
+
         gap1_stats = {}
-        if len(trades_with_proxy) >= 20:
-            proxies = np.array([t.composite_proxy for t in trades_with_proxy])
-            pnls = np.array([t.pnl_pct for t in trades_with_proxy])
-            q33 = np.percentile(proxies, 33)
-            q67 = np.percentile(proxies, 67)
+        for bname, btrades in buckets.items():
+            if not btrades:
+                gap1_stats[bname] = {}
+                continue
+            bwin = [t for t in btrades if t.pnl > 0]
+            blose = [t for t in btrades if t.pnl <= 0]
+            b_pnl = [t.pnl_pct * 100 for t in btrades]
+            b_hold = [t.hold_days for t in btrades]
+            b_exits = {}
+            for t in btrades:
+                b_exits[t.exit_reason] = b_exits.get(t.exit_reason, 0) + 1
+            # Trail width proxy: avg composite drives modifier
+            avg_comp = np.mean([t.composite_score for t in btrades])
+            trail_modifier = 1.3 if avg_comp > 0.3 else (0.75 if avg_comp < -0.3 else 1.0)
+            gap1_stats[bname] = {
+                "n":              len(btrades),
+                "win_rate":       round(len(bwin) / len(btrades) * 100, 1),
+                "avg_pnl":        round(np.mean(b_pnl), 3),
+                "median_pnl":     round(np.median(b_pnl), 3),
+                "std_pnl":        round(np.std(b_pnl), 3),
+                "avg_win":        round(np.mean([t.pnl_pct*100 for t in bwin]), 3) if bwin else 0,
+                "avg_loss":       round(np.mean([t.pnl_pct*100 for t in blose]), 3) if blose else 0,
+                "avg_hold":       round(np.mean(b_hold), 1),
+                "median_hold":    round(np.median(b_hold), 1),
+                "avg_composite":  round(avg_comp, 3),
+                "trail_modifier": trail_modifier,
+                "exit_breakdown": b_exits,
+            }
 
-            strong = [(p, r) for p, r in zip(proxies, pnls) if p > q67]
-            neutral = [(p, r) for p, r in zip(proxies, pnls) if q33 <= p <= q67]
-            weak = [(p, r) for p, r in zip(proxies, pnls) if p < q33]
+        # Strong vs Weak delta
+        s_pnl = gap1_stats.get("Strong", {}).get("avg_pnl", 0)
+        w_pnl = gap1_stats.get("Weak",   {}).get("avg_pnl", 0)
+        gap1_delta = round(s_pnl - w_pnl, 3)
 
-            for label, group in [("strong_signal", strong), ("neutral_signal", neutral), ("weak_signal", weak)]:
-                if group:
-                    gr = [r for _, r in group]
-                    gw = sum(1 for r in gr if r > 0)
-                    gap1_stats[label] = {
-                        "n": len(gr),
-                        "win_rate": round(gw / len(gr) * 100, 1),
-                        "avg_pnl_pct": round(float(np.mean(gr)) * 100, 3),
-                        "avg_comp_proxy": round(float(np.mean([p for p, _ in group])), 3),
-                    }
+        # ── EXIT PATH QUALITY ───────────────────────────────────────────────────
+        exit_quality = {}
+        for reason in set(t.exit_reason for t in trades):
+            group = [t for t in trades if t.exit_reason == reason]
+            gwin = [t for t in group if t.pnl > 0]
+            exit_quality[reason] = {
+                "n":        len(group),
+                "win_rate": round(len(gwin) / len(group) * 100, 1),
+                "avg_pnl":  round(np.mean([t.pnl_pct * 100 for t in group]), 3),
+                "avg_hold": round(np.mean([t.hold_days for t in group]), 1),
+            }
+
+        # ── HOLD-DAY DISTRIBUTION ───────────────────────────────────────────────
+        hold_arr = np.array([t.hold_days for t in trades])
+        hold_dist = {
+            "p25": float(np.percentile(hold_arr, 25)),
+            "p50": float(np.percentile(hold_arr, 50)),
+            "p75": float(np.percentile(hold_arr, 75)),
+            "p90": float(np.percentile(hold_arr, 90)),
+            "max": float(hold_arr.max()),
+        }
+
+        # ── REGIME BREAKDOWN ────────────────────────────────────────────────────
+        regimes = {}
+        for t in trades:
+            r = t.regime or "unknown"
+            if r not in regimes:
+                regimes[r] = []
+            regimes[r].append(t)
+        regime_stats = {}
+        for rname, rtrades in regimes.items():
+            rwin = [t for t in rtrades if t.pnl > 0]
+            regime_stats[rname] = {
+                "n":        len(rtrades),
+                "win_rate": round(len(rwin) / len(rtrades) * 100, 1),
+                "avg_pnl":  round(np.mean([t.pnl_pct * 100 for t in rtrades]), 3),
+            }
 
         return {
             "total_return_pct": round(total_ret * 100, 2),
@@ -638,7 +586,11 @@ class Backtester:
             "net_pnl": round(sum(t.pnl for t in trades), 2),
             "final_equity": round(equity.iloc[-1], 2),
             "initial_capital": self.bcfg.initial_capital,
-            "gap1_validation": gap1_stats,
+            "gap1_stats": gap1_stats,
+            "gap1_delta": gap1_delta,
+            "exit_quality": exit_quality,
+            "hold_distribution": hold_dist,
+            "regime_stats": regime_stats,
         }
 
     def print_report(self, results):
@@ -685,28 +637,56 @@ class Backtester:
         r.append(f"    Final Equity:      ${m['final_equity']:>12,.2f}")
         r.append("")
 
-        # GAP 1 validation
-        gap1 = m.get("gap1_validation", {})
-        if gap1:
-            r.append("  GAP 1 VALIDATION — Signal-Aware Trail Modifier")
-            r.append("  (Strong signal = wider trail. Weak = tighter.)")
-            r.append(f"  {'Bucket':<18} {'N':>5} {'Win%':>7} {'Avg PnL%':>10} {'Avg Comp':>10}")
-            r.append("  " + "-" * 52)
-            for bucket in ["strong_signal", "neutral_signal", "weak_signal"]:
-                d = gap1.get(bucket)
-                if d:
-                    label = bucket.replace("_signal", "").title()
-                    r.append(f"  {label:<18} {d['n']:>5} {d['win_rate']:>7.1f}% "
-                             f"{d['avg_pnl_pct']:>9.3f}% {d['avg_comp_proxy']:>10.3f}")
+        # ── GAP 1 SIGNAL-QUALITY DIAGNOSTICS ───────────────────────────────────
+        r.append("=" * 65)
+        r.append("  GAP 1 — Signal-Aware Trail Modifier (LIVE in backtest)")
+        r.append("  composite_score drives trail width: Strong=1.3x  Neutral=1.0x  Weak=0.75x")
+        r.append("")
+        r.append(f"  {'Bucket':<10} {'N':>5} {'Win%':>6} {'AvgPnL%':>8} {'MedPnL%':>8} "                 f"{'StdPnL%':>8} {'AvgHold':>8} {'TrailMod':>9} {'ExitMix'}")
+        r.append("  " + "-" * 90)
+        for bname in ["Strong", "Neutral", "Weak"]:
+            b = m.get("gap1_stats", {}).get(bname, {})
+            if not b:
+                continue
+            exits = b.get("exit_breakdown", {})
+            exit_str = "  ".join(f"{k[:4]}:{v}" for k, v in sorted(exits.items(), key=lambda x: -x[1]))
+            r.append(f"  {bname:<10} {b['n']:>5} {b['win_rate']:>5.1f}% {b['avg_pnl']:>8.3f} "                     f"{b['median_pnl']:>8.3f} {b['std_pnl']:>8.3f} {b['avg_hold']:>8.1f} "                     f"{b['trail_modifier']:>9.2f}x  {exit_str}")
+        r.append("")
+        r.append(f"  Strong vs Weak PnL delta: {m.get('gap1_delta', 0):+.3f}%  "                 f"{'[GAP 1 VALIDATED]' if m.get('gap1_delta', 0) > 5 else '[NEEDS CALIBRATION]'}")
+        r.append("")
+
+        # ── EXIT PATH QUALITY ───────────────────────────────────────────────────
+        r.append("=" * 65)
+        r.append("  EXIT PATH QUALITY")
+        r.append("")
+        r.append(f"  {'Exit Path':<18} {'N':>5} {'Win%':>6} {'AvgPnL%':>9} {'AvgHold':>8}")
+        r.append("  " + "-" * 50)
+        eq = m.get("exit_quality", {})
+        for path in ["trail_profit", "profit_target", "momentum_break", "trail_loss", "hard_stop", "time_stop"]:
+            if path in eq:
+                e = eq[path]
+                r.append(f"  {path:<18} {e['n']:>5} {e['win_rate']:>5.1f}% {e['avg_pnl']:>9.3f} {e['avg_hold']:>8.1f}")
+        r.append("")
+
+        # ── HOLD-DAY DISTRIBUTION ───────────────────────────────────────────────
+        r.append("=" * 65)
+        r.append("  HOLD-DAY DISTRIBUTION")
+        r.append("")
+        hd = m.get("hold_distribution", {})
+        r.append(f"    P25: {hd.get('p25',0):.1f}d    P50: {hd.get('p50',0):.1f}d    "                 f"P75: {hd.get('p75',0):.1f}d    P90: {hd.get('p90',0):.1f}d    Max: {hd.get('max',0):.1f}d")
+        r.append("")
+
+        # ── REGIME BREAKDOWN ────────────────────────────────────────────────────
+        rs = m.get("regime_stats", {})
+        if rs:
+            r.append("=" * 65)
+            r.append("  REGIME BREAKDOWN")
             r.append("")
-            # Interpretation hint
-            strong = gap1.get("strong_signal", {})
-            weak = gap1.get("weak_signal", {})
-            if strong and weak:
-                delta = (strong.get("avg_pnl_pct", 0) - weak.get("avg_pnl_pct", 0))
-                verdict = "GAP 1 VALIDATED" if delta > 0 else "GAP 1 INCONCLUSIVE"
-                r.append(f"  Strong vs Weak PnL delta: {delta:+.3f}%  [{verdict}]")
-                r.append("")
+            r.append(f"  {'Regime':<20} {'N':>5} {'Win%':>6} {'AvgPnL%':>9}")
+            r.append("  " + "-" * 45)
+            for rname, rv in sorted(rs.items(), key=lambda x: -x[1].get('n', 0)):
+                r.append(f"  {rname:<20} {rv['n']:>5} {rv['win_rate']:>5.1f}% {rv['avg_pnl']:>9.3f}")
+            r.append("")
 
         r.append("=" * 65)
 
@@ -728,8 +708,6 @@ class Backtester:
                 "hold_days": t.hold_days, "exit_reason": t.exit_reason,
                 "t_statistic": t.t_statistic, "composite_score": t.composite_score,
                 "kelly_fraction": t.kelly_fraction, "regime": t.regime,
-                "composite_proxy": t.composite_proxy,
-                "health_proxy": t.health_proxy,
             } for t in results["trades"]]
             pd.DataFrame(rows).to_csv(os.path.join(out, "trades.csv"), index=False)
 

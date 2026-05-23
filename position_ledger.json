@@ -47,21 +47,6 @@
         "note": "Backfilled from Alpaca \u2014 entry_date approximate"
       }
     },
-    "v5.4:CVE": {
-      "model": "v5.4",
-      "symbol": "CVE",
-      "shares": 267,
-      "entry_price": 28.72,
-      "entry_date": "2026-05-22",
-      "metadata": {
-        "stop": 26.911,
-        "regime": "BACKFILL",
-        "t_stat": null,
-        "kelly_fraction": null,
-        "composite_score": null,
-        "note": "Backfilled from Alpaca \u2014 entry_date approximate"
-      }
-    },
     "v5.4:DKNG": {
       "model": "v5.4",
       "symbol": "DKNG",
@@ -85,36 +70,6 @@
       "entry_date": "2026-05-22",
       "metadata": {
         "stop": 80.5916,
-        "regime": "BACKFILL",
-        "t_stat": null,
-        "kelly_fraction": null,
-        "composite_score": null,
-        "note": "Backfilled from Alpaca \u2014 entry_date approximate"
-      }
-    },
-    "v5.4:KDP": {
-      "model": "v5.4",
-      "symbol": "KDP",
-      "shares": 314,
-      "entry_price": 28.670593,
-      "entry_date": "2026-05-22",
-      "metadata": {
-        "stop": 26.9126,
-        "regime": "BACKFILL",
-        "t_stat": null,
-        "kelly_fraction": null,
-        "composite_score": null,
-        "note": "Backfilled from Alpaca \u2014 entry_date approximate"
-      }
-    },
-    "v5.4:PLTD": {
-      "model": "v5.4",
-      "symbol": "PLTD",
-      "shares": 731,
-      "entry_price": 7.74,
-      "entry_date": "2026-05-22",
-      "metadata": {
-        "stop": 7.266,
         "regime": "BACKFILL",
         "t_stat": null,
         "kelly_fraction": null,
@@ -420,6 +375,66 @@
       "exit_reason": "math_trim_17%",
       "pnl": 415.05500000000006,
       "pnl_pct": 0.044742339832869016
+    },
+    {
+      "model": "v5.4",
+      "symbol": "CVE",
+      "shares": 267,
+      "entry_price": 28.72,
+      "entry_date": "2026-05-22",
+      "metadata": {
+        "stop": 26.911,
+        "regime": "BACKFILL",
+        "t_stat": null,
+        "kelly_fraction": null,
+        "composite_score": null,
+        "note": "Backfilled from Alpaca \u2014 entry_date approximate"
+      },
+      "exit_price": 30.05,
+      "exit_date": "2026-05-23",
+      "exit_reason": "math_trim_31%",
+      "pnl": 355.11000000000047,
+      "pnl_pct": 0.04630919220055718
+    },
+    {
+      "model": "v5.4",
+      "symbol": "KDP",
+      "shares": 314,
+      "entry_price": 28.670593,
+      "entry_date": "2026-05-22",
+      "metadata": {
+        "stop": 26.9126,
+        "regime": "BACKFILL",
+        "t_stat": null,
+        "kelly_fraction": null,
+        "composite_score": null,
+        "note": "Backfilled from Alpaca \u2014 entry_date approximate"
+      },
+      "exit_price": 29.12,
+      "exit_date": "2026-05-23",
+      "exit_reason": "math_trim_23%",
+      "pnl": 141.11379800000026,
+      "pnl_pct": 0.015674841465609157
+    },
+    {
+      "model": "v5.4",
+      "symbol": "PLTD",
+      "shares": 731,
+      "entry_price": 7.74,
+      "entry_date": "2026-05-22",
+      "metadata": {
+        "stop": 7.266,
+        "regime": "BACKFILL",
+        "t_stat": null,
+        "kelly_fraction": null,
+        "composite_score": null,
+        "note": "Backfilled from Alpaca \u2014 entry_date approximate"
+      },
+      "exit_price": 7.86,
+      "exit_date": "2026-05-23",
+      "exit_reason": "math_trim_30%",
+      "pnl": 87.72000000000008,
+      "pnl_pct": 0.015503875968992276
     }
   ]
 }

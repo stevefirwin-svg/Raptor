@@ -4,36 +4,47 @@
 =================================================================
 
   RETURNS
-    Total Return:        498.95%
-    CAGR:                 39.19%
+    Total Return:        142.46%
+    CAGR:                 17.78%
     Benchmark (SPY):     112.50%
-    Alpha:               386.45%
+    Alpha:                29.96%
 
   RISK
-    Sharpe Ratio:         1.259
-    Sortino Ratio:        2.499
-    Calmar Ratio:         1.239
-    Max Drawdown:        -31.63%
-    Annual Volatility:    24.72%
+    Sharpe Ratio:         1.079
+    Sortino Ratio:        2.561
+    Calmar Ratio:         1.617
+    Max Drawdown:        -11.00%
+    Annual Volatility:    11.11%
 
   TRADES
-    Total Trades:          1565
-    Win Rate:              46.7%
-    Avg Win:              10.35%
-    Avg Loss:             -6.30%
-    Expectancy:           1.474%
-    Profit Factor:         1.50
+    Total Trades:          1404
+    Win Rate:              44.4%
+    Avg Win:              12.09%
+    Avg Loss:             -6.12%
+    Expectancy:           1.958%
+    Profit Factor:         1.65
 
   EXECUTION
-    Avg Hold Days:          7.9
-    Median Hold:            7.0
-    Exit [trail_profit]:   561
-    Exit [profit_target]:   141
-    Exit [trail_loss  ]:   834
-    Exit [momentum_break]:    29
+    Avg Hold Days:          9.0
+    Median Hold:            8.0
+    Exit [trail_profit]:   343
+    Exit [profit_target]:   191
+    Exit [trail_loss  ]:   779
+    Exit [momentum_break]:    89
+    Exit [hard_stop   ]:     2
 
   P&L
-    Net P&L:           $  506,549.13
-    Final Equity:      $  598,949.70
+    Net P&L:           $  144,900.21
+    Final Equity:      $  242,463.93
+
+  GAP 1 VALIDATION — Signal-Aware Trail Modifier
+  (Strong signal = wider trail. Weak = tighter.)
+  Bucket                 N    Win%   Avg PnL%   Avg Comp
+  ----------------------------------------------------
+  Strong               463    64.4%     6.519%      1.977
+  Neutral              478    46.9%     1.399%      1.452
+  Weak                 463    21.8%    -2.026%     -0.219
+
+  Strong vs Weak PnL delta: +8.545%  [GAP 1 VALIDATED]
 
 =================================================================

@@ -336,5 +336,44 @@
     "agent_decision": "HOLD",
     "agent_conf": 0.5,
     "agent_reasoning": "Agent unavailable \u2014 passthrough default"
+  },
+  {
+    "timestamp": "2026-05-23T09:52:15.521876",
+    "symbol": "CVE",
+    "trim_qty": 83,
+    "price": 30.05,
+    "pnl_pct": 4.63,
+    "reason": "math_trim_31%",
+    "composite": 0.0962,
+    "trim_detail": "severity=0.177 x stop_mult=0.75 x far_mult=1.02 x pnl_mult=1.00 + slope_adj=0.176 = 0.311 -> 31.1% (83 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.5,
+    "agent_reasoning": "Agent unavailable \u2014 passthrough default"
+  },
+  {
+    "timestamp": "2026-05-23T09:52:15.521943",
+    "symbol": "KDP",
+    "trim_qty": 71,
+    "price": 29.12,
+    "pnl_pct": 1.57,
+    "reason": "math_trim_23%",
+    "composite": -0.0859,
+    "trim_detail": "severity=0.035 x stop_mult=0.75 x far_mult=1.00 x pnl_mult=1.00 + slope_adj=0.200 = 0.226 -> 22.6% (71 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.5,
+    "agent_reasoning": "Agent unavailable \u2014 passthrough default"
+  },
+  {
+    "timestamp": "2026-05-23T09:52:15.521983",
+    "symbol": "PLTD",
+    "trim_qty": 221,
+    "price": 7.86,
+    "pnl_pct": 1.55,
+    "reason": "math_trim_30%",
+    "composite": -0.2024,
+    "trim_detail": "severity=0.217 x stop_mult=0.75 x far_mult=1.13 x pnl_mult=1.00 + slope_adj=0.119 = 0.302 -> 30.2% (221 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.5,
+    "agent_reasoning": "Agent unavailable \u2014 passthrough default"
   }
 ]

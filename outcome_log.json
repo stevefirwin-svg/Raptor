@@ -2304,5 +2304,57 @@
     "hold_timestamp": "2026-05-22T09:52:25.819139",
     "hold_trim_pct": null,
     "tagged_at": "2026-05-22T19:50:24.262875+00:00"
+  },
+  {
+    "symbol": "CVE",
+    "entry_date": "2026-04-30T13:53:12.078951Z",
+    "exit_date": "2026-05-22T19:50:24.255472Z",
+    "hold_days": 22,
+    "entry_price": 28.72,
+    "exit_price": 29.99,
+    "qty": 56.0,
+    "actual_pnl_pct": 4.422,
+    "actual_exit_path": "math_trim_31%",
+    "sell_order_id": "271291a3-8177-4045-b020-5981ddf9cd2f",
+    "entry_decision": null,
+    "entry_confidence": null,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "entry_timestamp": null,
+    "hold_decision": "HOLD",
+    "hold_confidence": 0.5,
+    "hold_reasoning": "Agent unavailable \u2014 passthrough default",
+    "hold_flags": [
+      "agent_error"
+    ],
+    "hold_timestamp": "2026-05-22T18:31:19.196192",
+    "hold_trim_pct": null,
+    "tagged_at": "2026-05-23T13:52:16.500620+00:00"
+  },
+  {
+    "symbol": "PLTD",
+    "entry_date": "2026-05-05T13:52:01.352726Z",
+    "exit_date": "2026-05-22T19:50:25.248634Z",
+    "hold_days": 17,
+    "entry_price": 7.74,
+    "exit_price": 7.86,
+    "qty": 232.0,
+    "actual_pnl_pct": 1.5504,
+    "actual_exit_path": "math_trim_30%",
+    "sell_order_id": "200f4604-34a2-4e46-a151-f9c27b836128",
+    "entry_decision": null,
+    "entry_confidence": null,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "entry_timestamp": null,
+    "hold_decision": "HOLD",
+    "hold_confidence": 0.5,
+    "hold_reasoning": "Agent unavailable \u2014 passthrough default",
+    "hold_flags": [
+      "agent_error"
+    ],
+    "hold_timestamp": "2026-05-22T18:31:19.196213",
+    "hold_trim_pct": null,
+    "tagged_at": "2026-05-23T13:52:16.844606+00:00"
   }
 ]
