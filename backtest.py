@@ -66,6 +66,9 @@ class Position:
     composite_score: float
     kelly_fraction: float
     regime: str
+    trade_type: str = "MOMENTUM"
+    pattern_signal: str = ""
+    hold_target_days: int = 15
     days_held: int = 0
 
 
@@ -409,6 +412,9 @@ class Backtester:
                         t_statistic=sig.t_statistic,
                         composite_score=sig.composite_score,
                         kelly_fraction=sig.kelly_fraction, regime=sig.regime,
+                        trade_type=getattr(sig, "trade_type", "MOMENTUM"),
+                        pattern_signal=getattr(sig, "pattern_signal", ""),
+                        hold_target_days=getattr(sig, "hold_target_days", 15),
                     ))
 
             # 3. Mark-to-market
@@ -442,6 +448,41 @@ class Backtester:
 
         return {"trades": all_trades, "equity": eq, "benchmark": bench,
                 "daily_returns": daily_ret, "metrics": metrics}
+
+
+def _compute_book_stats(trades):
+    """Per-book P&L breakdown for backtest report."""
+    books = {"MOMENTUM": [], "MEAN_REVERSION": []}
+    for t in trades:
+        book = getattr(t, "trade_type", "MOMENTUM")
+        if book in books:
+            books[book].append(t)
+    stats = {}
+    for book, btrades in books.items():
+        if not btrades:
+            stats[book] = None
+            continue
+        wins   = [t for t in btrades if t.pnl > 0]
+        losses = [t for t in btrades if t.pnl <= 0]
+        exits  = {}
+        for t in btrades:
+            exits[t.exit_reason] = exits.get(t.exit_reason, 0) + 1
+        patterns = {}
+        for t in btrades:
+            p = getattr(t, "pattern_signal", "") or "none"
+            patterns[p] = patterns.get(p, 0) + 1
+        stats[book] = {
+            "n":          len(btrades),
+            "win_rate":   round(len(wins) / len(btrades) * 100, 1),
+            "avg_win":    round(np.mean([t.pnl_pct*100 for t in wins]),   3) if wins   else 0,
+            "avg_loss":   round(np.mean([t.pnl_pct*100 for t in losses]), 3) if losses else 0,
+            "avg_pnl":    round(np.mean([t.pnl_pct*100 for t in btrades]), 3),
+            "avg_hold":   round(np.mean([t.hold_days   for t in btrades]), 1),
+            "pf":         round(sum(t.pnl for t in wins) / max(abs(sum(t.pnl for t in losses)), 1e-10), 2),
+            "exits":      exits,
+            "patterns":   dict(sorted(patterns.items(), key=lambda x: -x[1])[:5]),
+        }
+    return stats
 
     def _compute_metrics(self, trades, equity, daily_ret, benchmark):
         if not trades:
@@ -704,6 +745,26 @@ class Backtester:
             for rname, rv in sorted(rs.items(), key=lambda x: -x[1].get('n', 0)):
                 r.append(f"  {rname:<20} {rv['n']:>5} {rv['win_rate']:>5.1f}% {rv['avg_pnl']:>9.3f}")
             r.append("")
+
+        # ── PER-BOOK BREAKDOWN ─────────────────────────────────────────────────
+        bs = m.get("book_stats", {})
+        if bs:
+            r.append("=" * 65)
+            r.append("  PER-BOOK BREAKDOWN")
+            r.append("")
+            for book in ["MOMENTUM", "MEAN_REVERSION"]:
+                bdata = bs.get(book)
+                if not bdata:
+                    r.append(f"  {book}: no trades")
+                    continue
+                r.append(f"  {book}")
+                r.append(f"    Trades: {bdata['n']}  Win%: {bdata['win_rate']:.1f}%  "                         f"AvgPnL: {bdata['avg_pnl']:+.3f}%  AvgHold: {bdata['avg_hold']:.1f}d  PF: {bdata['pf']:.2f}")
+                r.append(f"    Avg Win: {bdata['avg_win']:+.3f}%  Avg Loss: {bdata['avg_loss']:+.3f}%")
+                exits_str = "  ".join(f"{k[:6]}:{v}" for k,v in sorted(bdata['exits'].items(), key=lambda x:-x[1]))
+                r.append(f"    Exits: {exits_str}")
+                pats_str = "  ".join(f"{k}:{v}" for k,v in list(bdata['patterns'].items())[:4])
+                r.append(f"    Patterns: {pats_str or 'none'}")
+                r.append("")
 
         r.append("=" * 65)
 

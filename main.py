@@ -22,106 +22,6 @@ logging.basicConfig(
 logger = logging.getLogger("raptor.main")
 
 
-def _get_cooldown_symbols(cooldown_days: int = 5) -> set:
-    """
-    GAP 6 — Re-entry cooldown after stop-out.
-
-    Returns set of symbols that were stopped out within the last `cooldown_days`
-    trading days and are therefore blocked from re-entry.
-
-    A stop-out on a momentum-driven decline means the thesis failed. Re-entering
-    the next day if the symbol still ranks in top-N burns capital twice on the
-    same failing trade. Math must re-qualify the thesis via cooldown + re-scoring.
-
-    Sources (checked in order of reliability):
-      1. outcome_log.json — exit_path=hard_stop/trail_loss in last N days
-      2. position_ledger.json closed — exit_reason containing stop/trail in last N days
-
-    Only hard stops and trail_loss exits trigger cooldown.
-    Profitable trail exits (trail_profit) do NOT — the thesis worked, re-entry ok.
-    """
-    import json as _j
-    from datetime import date as _date, timedelta as _td
-
-    cooldown_symbols = set()
-    cutoff = _date.today() - _td(days=cooldown_days)
-
-    stop_paths = {"hard_stop", "trail_loss", "trailing_stop"}
-
-    # Source 1: outcome_log.json
-    try:
-        if os.path.exists("outcome_log.json"):
-            with open("outcome_log.json") as f:
-                records = _j.load(f)
-            for r in records:
-                exit_path = r.get("actual_exit_path", "")
-                exit_date = r.get("exit_date", "")
-                if exit_path in stop_paths and exit_date:
-                    try:
-                        ed = datetime.strptime(exit_date[:10], "%Y-%m-%d").date()
-                        if ed >= cutoff:
-                            cooldown_symbols.add(r["symbol"])
-                    except Exception:
-                        pass
-    except Exception:
-        pass
-
-    # Source 2: position_ledger.json closed trades
-    try:
-        if os.path.exists("position_ledger.json"):
-            with open("position_ledger.json") as f:
-                ledger_data = _j.load(f)
-            for trade in ledger_data.get("closed", []):
-                reason = trade.get("exit_reason", "")
-                exit_date = trade.get("exit_date", "")
-                if any(p in reason for p in ["hard_stop", "trail_loss", "trailing_stop"]) and exit_date:
-                    try:
-                        ed = datetime.strptime(exit_date[:10], "%Y-%m-%d").date()
-                        if ed >= cutoff:
-                            cooldown_symbols.add(trade["symbol"])
-                    except Exception:
-                        pass
-    except Exception:
-        pass
-
-    return cooldown_symbols
-
-
-def _get_composite_velocity(symbol: str, lookback_days: int = 3) -> float:
-    """
-    GAP 5 — Composite velocity: rate of change of composite score.
-
-    composite_velocity = composite_today - composite_{N days ago}
-
-    Positive = accelerating (signal strengthening) — priority entry, size up.
-    Negative = decelerating (signal fading) — defer or size down.
-
-    Reads hold_history.json snapshots if the symbol has recent history.
-    Falls back to 0.0 (neutral) if no history available — new entries without
-    history are not penalized, just not boosted.
-
-    Only used as a sizing modifier, not a hard gate — ensures we don't block
-    valid entries just because the symbol has no hold_history yet.
-    """
-    import json as _j
-    try:
-        if not os.path.exists("hold_history.json"):
-            return 0.0
-        with open("hold_history.json") as f:
-            hh = _j.load(f)
-        snaps = hh.get("positions", {}).get(symbol, {}).get("snapshots", [])
-        if len(snaps) < 2:
-            return 0.0
-        # Sort by timestamp, get last and Nth-last
-        snaps_sorted = sorted(snaps, key=lambda s: s.get("timestamp", ""))
-        latest = snaps_sorted[-1].get("composite", 0.0)
-        prior_idx = max(0, len(snaps_sorted) - 1 - lookback_days)
-        prior = snaps_sorted[prior_idx].get("composite", 0.0)
-        return round(float(latest - prior), 4)
-    except Exception:
-        return 0.0
-
-
 def run_daily_scan():
     logger.info("=" * 60)
     logger.info("RAPTOR %s DAILY SCAN - %s", MODEL_ID, datetime.now().isoformat())
@@ -201,25 +101,16 @@ def run_daily_scan():
     signals = engine.generate_signals(bars, macro, sentiment, spy_bars)
     signals = [s for s in signals if s.symbol not in all_held]
 
-    # GAP 6 — Re-entry cooldown: block symbols stopped out in last 5 days
-    _cooldown = _get_cooldown_symbols(cooldown_days=5)
-    if _cooldown:
-        before_cd = len(signals)
-        signals = [s for s in signals if s.symbol not in _cooldown]
-        blocked = before_cd - len(signals)
-        if blocked:
-            logger.info("COOLDOWN: blocked %d symbol(s) stopped out within 5 days: %s",
-                       blocked, sorted(_cooldown & {s.symbol for s in signals} | _cooldown))
-
     if not signals:
         logger.info("No signals today. Patience.")
         return
 
     logger.info("Signals:")
     for i, s in enumerate(signals):
-        logger.info("  %d. %s  t=%.3f  pctl=%.0f%%  entry=$%.2f  stop=$%.2f  tp=$%.2f  kelly=%.3f  hold~%dd",
-                    i+1, s.symbol, s.t_statistic, s.composite_percentile*100,
-                    s.entry_price, s.stop_price, s.take_profit, s.kelly_fraction, s.hold_target_days)
+        logger.info("  %d. [%s] %s  t=%.3f  pctl=%.0f%%  entry=$%.2f  stop=$%.2f  tp=$%.2f  kelly=%.3f  hold~%dd  pattern=%s",
+                    i+1, s.trade_type[:3], s.symbol, s.t_statistic, s.composite_percentile*100,
+                    s.entry_price, s.stop_price, s.take_profit, s.kelly_fraction, s.hold_target_days,
+                    getattr(s, "pattern_signal", "") or "none")
 
     if not CONFIG.execution.paper_trading:
         logger.critical("PAPER TRADING OFF - refusing to execute")
@@ -262,20 +153,8 @@ def run_daily_scan():
         if placed >= _mg_max_new:
             logger.info("SKIP %s — margin guard cap reached (%d new positions)", sig.symbol, _mg_max_new)
             break
-
-        # GAP 5 — Composite velocity sizing modifier
-        # Entry is based on composite score at a single point in time. A stock
-        # accelerating (composite rising day over day) is a far better entry than
-        # one decelerating toward the threshold — same score, very different trajectory.
-        # velocity = composite_today - composite_3d_ago from hold_history.json
-        # Modifier scales kelly continuously: +0.2 per unit velocity, capped at ±20%.
-        # Decelerating signals near threshold are sized smaller, not blocked.
-        comp_vel = _get_composite_velocity(sig.symbol, lookback_days=3)
-        vel_modifier = max(0.80, min(1.20, 1.0 + comp_vel * 0.2))
-        effective_kelly = sig.kelly_fraction * vel_modifier
-
         # Size from MY allocation, not full account
-        shares = int((my_equity * effective_kelly) / sig.entry_price)
+        shares = int((my_equity * sig.kelly_fraction) / sig.entry_price)
         if shares < 1:
             continue
         # Buying power guard — ensures Alpaca won't reject the order
@@ -293,14 +172,26 @@ def run_daily_scan():
             available_bp -= order_cost
             ledger.record_entry(MODEL_ID, sig.symbol, shares, sig.entry_price,
                                 datetime.now().strftime("%Y-%m-%d"),
-                                {"t_stat": sig.t_statistic, "stop": sig.stop_price,
-                                 "tp": sig.take_profit, "regime": sig.regime,
-                                 "composite_score": sig.composite_score,
-                                 "composite_velocity": comp_vel,
-                                 "kelly_fraction": round(effective_kelly, 4)})
-            logger.info("ORDER [%s]: BUY %d %s @ $%.2f  vel=%.3f  kelly_adj=%.3f",
-                       MODEL_ID, shares, sig.symbol, limit or sig.entry_price,
-                       comp_vel, effective_kelly)
+                                {"t_stat":      sig.t_statistic,
+                                 "stop":        sig.stop_price,
+                                 "tp":          sig.take_profit,
+                                 "regime":      sig.regime,
+                                 "trade_type":  sig.trade_type,
+                                 "pattern":     getattr(sig, "pattern_signal", ""),
+                                 "conviction":  round(getattr(sig, "book_conviction", 0.0), 4)})
+            logger.info("ORDER [%s|%s]: BUY %d %s @ $%.2f  pattern=%s  conviction=%.3f",
+                        MODEL_ID, sig.trade_type, shares, sig.symbol,
+                        limit or sig.entry_price,
+                        getattr(sig, "pattern_signal", "") or "none",
+                        getattr(sig, "book_conviction", 0.0))
+            # ── Per-book trade log ────────────────────────────────────────────
+            _book_log = logging.getLogger(
+                "raptor.momentum" if sig.trade_type == "MOMENTUM" else "raptor.mean_reversion"
+            )
+            _book_log.info("ENTRY %s @ $%.2f  stop=$%.2f  tp=$%.2f  pattern=%s  conviction=%.3f  hold~%dd",
+                           sig.symbol, sig.entry_price, sig.stop_price, sig.take_profit,
+                           getattr(sig, "pattern_signal", "") or "none",
+                           getattr(sig, "book_conviction", 0.0), sig.hold_target_days)
         else:
             logger.error("FAILED: %s - %s", sig.symbol, result["error"])
 
