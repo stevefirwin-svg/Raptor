@@ -75,12 +75,13 @@ class Backtester:
     Each day: check exits on open positions → generate new signals → execute entries.
     """
 
-    def __init__(self, cfg: RaptorConfig):
+    def __init__(self, cfg: RaptorConfig, gap1_enabled: bool = True):
         self.cfg = cfg
         self.rcfg = cfg.risk
         self.bcfg = cfg.backtest
         self.engine = QuantSignalEngine(cfg)
         self.factors = Factors()
+        self.gap1_enabled = gap1_enabled  # --no-gap1 flag disables signal-quality trail modifier
 
     def _load_data(self, symbols: List[str], start: str, end: str) -> Dict[str, pd.DataFrame]:
         """Load historical bars via Alpaca. Cache to parquet."""
@@ -265,10 +266,11 @@ class Backtester:
                 # so signal-quality modifier defaults to neutral (0.0, 0.0) — same as pre-GAP1 behavior.
                 # When hold_history is integrated into backtest, pass real composite/health here.
                 if atr > 0:
-                    # GAP 1 ACTIVE: use entry composite_score as signal-quality proxy.
-                    # health not available historically — composite alone drives modifier.
+                    # GAP 1: use composite_score as signal-quality proxy when enabled.
+                    # --no-gap1 forces neutral modifier (0.0) — reproduces pre-GAP1 baseline.
+                    _comp = pos.composite_score if self.gap1_enabled else 0.0
                     trail_mult = _trail_mult(pos.days_held, profit_atr, self.rcfg,
-                                            composite=pos.composite_score, health=0.0)
+                                            composite=_comp, health=0.0)
                     new_trail = pos.high_water - trail_mult * atr
                     pos.trailing_stop = max(pos.trailing_stop, new_trail)
                     pos.stop_price = max(pos.stop_price, pos.trailing_stop)
@@ -591,6 +593,7 @@ class Backtester:
             "exit_quality": exit_quality,
             "hold_distribution": hold_dist,
             "regime_stats": regime_stats,
+            "gap1_enabled": self.gap1_enabled,
         }
 
     def print_report(self, results):
@@ -600,8 +603,9 @@ class Backtester:
             return
 
         r = []
+        gap1_label = "GAP 1 ACTIVE" if m.get("gap1_enabled", True) else "GAP 1 DISABLED (baseline)"
         r.append("=" * 65)
-        r.append(f"  RAPTOR v5.4 BACKTEST REPORT")
+        r.append(f"  RAPTOR v5.4 BACKTEST REPORT  [{gap1_label}]")
         r.append(f"  {self.bcfg.start_date} to {self.bcfg.end_date}")
         r.append("=" * 65)
         r.append("")
@@ -737,9 +741,11 @@ if __name__ == "__main__":
     # Suppress noisy factor logging during backtest
     logging.getLogger("raptor.signals").setLevel(logging.WARNING)
 
-    parser = argparse.ArgumentParser(description="Raptor v5.2 Backtester")
+    parser = argparse.ArgumentParser(description="Raptor v5.4 Backtester")
     parser.add_argument("--start", default=None, help="Start date YYYY-MM-DD")
     parser.add_argument("--end", default=None, help="End date YYYY-MM-DD")
+    parser.add_argument("--no-gap1", action="store_true",
+                        help="Disable GAP 1 signal-quality trail modifier (reproduces pre-GAP1 baseline)")
     args = parser.parse_args()
 
     cfg = CONFIG
@@ -749,7 +755,10 @@ if __name__ == "__main__":
         print(f"Config error: {e}")
         sys.exit(1)
 
-    bt = Backtester(cfg)
+    gap1 = not args.no_gap1
+    print(f"  GAP 1 modifier: {'ENABLED' if gap1 else 'DISABLED (baseline mode)'}\n")
+
+    bt = Backtester(cfg, gap1_enabled=gap1)
     results = bt.run(start=args.start, end=args.end)
 
     if results:
