@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-05-23T14:36:42.981580",
-  "n_total": 98,
+  "generated_at": "2026-05-23T14:41:18.356402",
+  "n_total": 73,
   "min_for_shadow": 10,
   "min_for_active": 100,
   "half_kelly": 0.5,
@@ -8,21 +8,22 @@
   "n_prior": 50,
   "books": {
     "MOMENTUM": {
-      "n_trades": 0,
-      "status": "COLLECTING_DATA",
+      "n_trades": 73,
+      "status": "OK",
       "mode": "SHADOW",
+      "mu": 0.0349,
+      "sigma": 0.259,
+      "win_rate": 0.479,
+      "sharpe": 0.135,
+      "f_empirical": 0.5201,
+      "f_bayesian": 0.3168,
+      "f_half_kelly": 0.1584,
+      "f_dd_constrained": 0.0365,
+      "f_recommended": 0.0365,
       "f_current_avg": null,
-      "f_empirical": null,
-      "f_bayesian": null,
-      "f_half_kelly": null,
-      "f_dd_constrained": null,
-      "f_recommended": null,
-      "win_rate": null,
-      "sharpe": null,
-      "mu": null,
-      "sigma": null,
-      "divergence": null,
-      "interpretation": "Need 10 trades to estimate. Have 0."
+      "divergence_pct": null,
+      "cap_applied": 0.12,
+      "interpretation": "Recommended: 3.65% per trade. SHADOW MODE (73/100 trades for active)."
     },
     "MEAN_REVERSION": {
       "n_trades": 0,
@@ -42,22 +43,22 @@
       "interpretation": "Need 10 trades to estimate. Have 0."
     },
     "ALL": {
-      "n_trades": 98,
+      "n_trades": 73,
       "status": "OK",
       "mode": "SHADOW",
-      "mu": 1.0077,
-      "sigma": 9.2607,
-      "win_rate": 0.48,
-      "sharpe": 0.109,
-      "f_empirical": 0.0118,
-      "f_bayesian": 0.0145,
-      "f_half_kelly": 0.0073,
-      "f_dd_constrained": 0.001,
-      "f_recommended": 0.01,
+      "mu": 0.0349,
+      "sigma": 0.259,
+      "win_rate": 0.479,
+      "sharpe": 0.135,
+      "f_empirical": 0.5201,
+      "f_bayesian": 0.3168,
+      "f_half_kelly": 0.1584,
+      "f_dd_constrained": 0.0365,
+      "f_recommended": 0.0365,
       "f_current_avg": null,
       "divergence_pct": null,
       "cap_applied": 0.12,
-      "interpretation": "Recommended: 1.00% per trade. SHADOW MODE (98/100 trades for active)."
+      "interpretation": "Recommended: 3.65% per trade. SHADOW MODE (73/100 trades for active)."
     }
   }
 }
