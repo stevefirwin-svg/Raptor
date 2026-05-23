@@ -100,9 +100,18 @@ def load_outcome_observations() -> List[Dict]:
         if pnl is None:
             continue
 
-        sym          = t.get("symbol", "")
+        sym = t.get("symbol", "")
+        # Exclude crypto — different system, different distribution
+        if "/" in sym:
+            continue
+        # Exclude zero-hold artifacts
+        if (t.get("hold_days") or 0) == 0:
+            continue
+        # Normalize pnl: values >1 are percentages (e.g. 5.2 = 5.2%), convert to decimal
+        pnl = pnl / 100.0 if abs(pnl) > 1.0 else pnl
+
         regime       = t.get("regime", "NEUTRAL") if isinstance(t.get("regime"), str) else "NEUTRAL"
-        trade_type   = t.get("trade_type", "UNKNOWN")
+        trade_type   = t.get("trade_type") or "MOMENTUM"
         entry_date   = t.get("entry_date", "")
         hold_days    = t.get("hold_days", 0) or 1
 
@@ -183,7 +192,7 @@ def load_history_observations() -> List[Dict]:
             observations.append({
                 "symbol":        sym,
                 "factor_scores": factor_scores,
-                "return":        float(ret),
+                "return":        float(ret) / 100.0 if abs(float(ret)) > 1.0 else float(ret),
                 "hold_days":     snap.get("days_held", 0),
                 "regime":        regime,
                 "trade_type":    snap.get("trade_type", "UNKNOWN"),

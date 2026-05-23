@@ -64,14 +64,43 @@ MAX_DD_TOLERANCE = 0.15  # 15% max portfolio drawdown
 
 
 def load_outcomes() -> List[Dict]:
-    """Load clean outcome records with realized returns."""
+    """
+    Load clean equity outcome records with realized returns.
+
+    Filters applied:
+    - Crypto symbols (contain '/') excluded — different system, different distribution
+    - Zero hold_days excluded — fill/cancel artifacts, not real trades
+    - 'unknown' exit_path included — legacy records before exit_path tracking
+    - pnl_pct normalization: values stored as % (e.g. 5.2 = 5.2%) converted to decimal
+    - Pre-v5.5 records (trade_type=None) assigned 'MOMENTUM' as conservative default
+    """
     if not os.path.exists(OUTCOME_LOG):
         return []
     with open(OUTCOME_LOG) as f:
         data = json.load(f)
-    clean = [t for t in data
-             if t.get("actual_pnl_pct") is not None
-             and t.get("actual_exit_path") not in [None, ""]]
+
+    clean = []
+    for t in data:
+        pnl = t.get("actual_pnl_pct")
+        if pnl is None:
+            continue
+        # Exclude crypto
+        sym = t.get("symbol", "")
+        if "/" in sym:
+            continue
+        # Exclude zero-day holds (order artifacts)
+        if (t.get("hold_days") or 0) == 0:
+            continue
+        # Normalize pnl to decimal fraction
+        # Values like 5.2 mean 5.2% → convert to 0.052
+        # Values already in decimal range (-1 to 1) left as-is
+        pnl_norm = pnl / 100.0 if abs(pnl) > 1.0 else pnl
+
+        # Assign trade_type for pre-v5.5 records
+        trade_type = t.get("trade_type") or "MOMENTUM"
+
+        clean.append({**t, "actual_pnl_pct": pnl_norm, "trade_type": trade_type})
+
     return clean
 
 
