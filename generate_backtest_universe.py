@@ -1,13 +1,13 @@
 """
 generate_backtest_universe.py
-─────────────────────────────
-Generates backtest_universe.txt — a fixed, broad symbol list for
+-----------------------------
+Generates backtest_universe.txt -- a fixed, broad symbol list for
 reproducible backtesting. Run this ONCE and commit the result.
 
 Design rationale:
 - The backtest must use a stable universe that does not shift with
   live market conditions. Using today's live screen produces different
-  results every run — making calibration and regression testing
+  results every run -- making calibration and regression testing
   meaningless.
 - The list is drawn from S&P 500 + NASDAQ 100 constituents plus
   historically liquid mid-caps. This approximates the opportunity set
@@ -15,11 +15,11 @@ Design rationale:
 - Survivorship bias is partially mitigated by including stocks that
   were large in 2020 but may have since declined (e.g. PYPL, NFLX,
   SNAP). A truly bias-free universe would use point-in-time index
-  membership — that requires a commercial data provider.
+  membership -- that requires a commercial data provider.
 
 Usage:
     python generate_backtest_universe.py
-    # Then commit backtest_universe.txt to GitHub — never delete it.
+    # Then commit backtest_universe.txt to GitHub -- never delete it.
 
 Re-run only when:
     - You want to expand/contract the opportunity set deliberately
@@ -30,7 +30,7 @@ Re-run only when:
 import os
 import datetime
 
-# ── BROAD HISTORICALLY-REPRESENTATIVE UNIVERSE ────────────────────────────────
+# -- BROAD HISTORICALLY-REPRESENTATIVE UNIVERSE --------------------------------
 # ~150 symbols covering: mega-cap tech, financials, healthcare, industrials,
 # consumer, energy, semis, biotech, growth mid-caps.
 # Chosen for consistent liquidity 2020-2025 (>$10M ADV throughout).
@@ -96,7 +96,7 @@ UNIVERSE = sorted(UNIVERSE)
 
 OUTPUT_FILE = os.path.join(os.path.dirname(__file__), "backtest_universe.txt")
 
-header = f"""# Raptor Backtest Universe — LOCKED
+header = f"""# Raptor Backtest Universe -- LOCKED
 # Generated: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M')}
 # Symbols: {len(UNIVERSE)}
 #
@@ -105,10 +105,10 @@ header = f"""# Raptor Backtest Universe — LOCKED
 #
 # Coverage: S&P 500 / NASDAQ 100 core + historically liquid mid-caps
 # Period designed for: 2020-01-01 to 2025-12-31
-# ─────────────────────────────────────────────────────────────────────
+# ---------------------------------------------------------------------
 """
 
-with open(OUTPUT_FILE, "w") as f:
+with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
     f.write(header)
     for sym in UNIVERSE:
         f.write(sym + "\n")

@@ -1,3 +1,108 @@
 {
-  "error": "No trades"
+  "total_return_pct": 57.67,
+  "cagr_pct": 8.78,
+  "benchmark_return_pct": 112.5,
+  "alpha_pct": -54.83,
+  "sharpe": 0.473,
+  "sortino": 1.808,
+  "calmar": 0.852,
+  "max_drawdown_pct": -10.31,
+  "annual_vol_pct": 7.87,
+  "total_trades": 1646,
+  "winners": 734,
+  "losers": 912,
+  "win_rate_pct": 44.6,
+  "avg_win_pct": 7.61,
+  "avg_loss_pct": -4.58,
+  "expectancy_pct": 0.858,
+  "profit_factor": 1.34,
+  "avg_hold_days": 7.6,
+  "median_hold_days": 7.0,
+  "exit_reasons": {
+    "trail_loss": 899,
+    "profit_target": 116,
+    "trail_profit": 598,
+    "momentum_break": 20,
+    "time_stop": 13
+  },
+  "net_pnl": 56788.77,
+  "final_equity": 157670.47,
+  "initial_capital": 100000.0,
+  "gap1_stats": {
+    "Strong": {
+      "n": 1646,
+      "win_rate": 44.6,
+      "avg_pnl": 0.858,
+      "median_pnl": -0.785,
+      "std_pnl": 8.846,
+      "avg_win": 7.61,
+      "avg_loss": -4.575,
+      "avg_hold": 7.6,
+      "median_hold": 7.0,
+      "avg_composite": 0.778,
+      "trail_modifier": 1.3,
+      "exit_breakdown": {
+        "trail_loss": 899,
+        "profit_target": 116,
+        "trail_profit": 598,
+        "momentum_break": 20,
+        "time_stop": 13
+      }
+    },
+    "Neutral": {},
+    "Weak": {}
+  },
+  "gap1_delta": 0.858,
+  "exit_quality": {
+    "time_stop": {
+      "n": 13,
+      "win_rate": 0.0,
+      "avg_pnl": -0.1,
+      "avg_hold": 30.0
+    },
+    "momentum_break": {
+      "n": 20,
+      "win_rate": 100.0,
+      "avg_pnl": 1.93,
+      "avg_hold": 7.2
+    },
+    "trail_loss": {
+      "n": 899,
+      "win_rate": 0.0,
+      "avg_pnl": -4.64,
+      "avg_hold": 5.7
+    },
+    "trail_profit": {
+      "n": 598,
+      "win_rate": 100.0,
+      "avg_pnl": 6.101,
+      "avg_hold": 9.2
+    },
+    "profit_target": {
+      "n": 116,
+      "win_rate": 100.0,
+      "avg_pnl": 16.366,
+      "avg_hold": 11.7
+    }
+  },
+  "hold_distribution": {
+    "p25": 4.0,
+    "p50": 7.0,
+    "p75": 10.0,
+    "p90": 14.0,
+    "max": 30.0
+  },
+  "regime_stats": {
+    "NEUTRAL/TRENDING": {
+      "n": 1452,
+      "win_rate": 43.0,
+      "avg_pnl": 0.778
+    },
+    "NEUTRAL/MIXED": {
+      "n": 194,
+      "win_rate": 56.7,
+      "avg_pnl": 1.459
+    }
+  },
+  "gap1_enabled": false
 }
