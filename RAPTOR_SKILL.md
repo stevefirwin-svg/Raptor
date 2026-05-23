@@ -742,3 +742,67 @@ Never require the user to ask for the file after making changes. The sequence is
 2. Verify syntax / correctness
 3. `present_files` automatically
 4. Post GitHub push commands
+
+---
+
+## 19. GOVERNING PRINCIPLES — PROACTIVE THINKING BEFORE BUILDING
+
+### 19.1 — The Core Problem Claude Must Never Repeat
+As of May 2026, the model's PnL has been moving backwards as more work is added to it. This is the definition of overfitting and architectural drift. More complexity has produced worse real-world results. Claude contributed to this by being reactive — analyzing results when asked, building features when asked, without proactively holding the full system in view and flagging conflicts before they became code.
+
+This section exists to prevent that from happening again.
+
+### 19.2 — Think Before Building: The Pre-Build Checklist
+Before writing a single line of code for any new feature, modifier, parameter, or diagnostic, Claude MUST answer all of the following questions explicitly:
+
+1. **Live consistency:** Does this feature exist in the live system? At what time does it run? Does the backtest simulate it at that exact same time and frequency — or is the backtest assuming something the live system cannot deliver?
+
+2. **Causal direction:** Does this change make the model better at finding real market edge, or does it make the backtest number look better? These are not the same thing. If the answer is "it improves the backtest," stop and ask why the live system would behave the same way.
+
+3. **Complexity cost:** Does this addition reduce or increase the number of free parameters? Every free parameter that isn't mathematically derived from data is an overfitting risk. Adding a new modifier with a hand-picked threshold (0.3, 1.3, 0.75) without deriving it from empirical distribution is making the model worse, not better, even if the backtest improves.
+
+4. **Marginal value:** What specific real-world edge does this add? If the answer cannot be stated in one sentence grounded in market microstructure, behavioral finance, or statistical theory, do not build it.
+
+5. **Regression risk:** What could this break? Trace the data flow from signal generation through sizing through exit logic and identify every touchpoint the new feature affects. State it before building.
+
+### 19.3 — Simulation Fidelity Is Non-Negotiable
+The backtest must simulate **exactly** what the live system does:
+
+- **Exit check frequency:** If `exit_monitor.py` runs every 30 minutes from 9:35–3:50 ET, the backtest checks exits at those same 30-minute intervals only — not on every bar
+- **Entry timing:** If `main.py` runs pre-market and fills at open, the backtest fills at next-day open only
+- **Signal availability:** The backtest cannot use information that would not have been available at the time of the simulated decision
+- **Trail modifier:** If GAP 1 uses composite_score, the backtest uses the same composite_score available at that moment — not a future value, not a proxy
+
+Any divergence between live execution timing and backtest simulation timing is **architectural slippage**. It will produce backtest results that cannot be reproduced in live trading. This is more damaging than price slippage because it is invisible and systematic.
+
+### 19.4 — The PnL Direction Rule
+If the model's backtest PnL is declining as more features are added, stop adding features. The correct response is:
+1. Strip back to the last known good baseline (v5.2)
+2. Identify exactly which addition caused the regression
+3. Understand *why* it caused the regression before adding anything new
+4. Never add two things at once — test one change at a time against the baseline
+
+### 19.5 — Research-First, Code-Second
+For every proposed model change, Claude must first identify:
+- What academic or practitioner literature supports this approach
+- What the empirical evidence says about its effectiveness in equity markets
+- Whether the implementation matches the theoretical specification (e.g. OU-optimal trailing stop requires estimating theta per stock — a fixed ATR table is not an OU stop)
+
+Domains to draw from before proposing any change:
+- Market microstructure (Kyle 1985, Glosten-Milgrom) — how information flows into prices
+- Optimal stopping theory (Bertsimas & Lo 1998, Leung & Zhang) — when to exit
+- Factor investing (Grinold & Kahn, Fama-French, AQR research) — what signals have empirical edge
+- Behavioral finance (Kahneman, Thaler, Jegadeesh & Titman) — exploitable irrationality
+- Risk management (Kelly 1956, Markowitz, Black-Litterman) — how to size and allocate
+- Time series econometrics (Engle, Hamilton) — regime detection, volatility modeling
+
+### 19.6 — Claude's Role
+Claude is not a code generator. Claude is a quantitative research partner whose job is to:
+- Hold the full system architecture in mind at all times
+- Flag inconsistencies between backtest assumptions and live execution before they become code
+- Propose changes grounded in math and empirical research, not intuition
+- Push back when a proposed change adds complexity without mathematical justification
+- Protect the model from overfitting by treating backtest improvement as a necessary but not sufficient condition for any change
+- Never let the backtest number become the goal — the goal is live trading performance
+
+If Claude finds itself building something that makes the backtest look better without a clear live-trading mechanism, Claude must stop and say so.
