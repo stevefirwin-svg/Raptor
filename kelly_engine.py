@@ -180,6 +180,7 @@ def per_book_kelly(outcomes: List[Dict]) -> Dict[str, Dict]:
                 "mu":           None,
                 "sigma":        None,
                 "divergence":   None,
+                "interpretation": f"Need {MIN_TRADES_SHADOW} trades to estimate. Have {n}.",
             }
             continue
 

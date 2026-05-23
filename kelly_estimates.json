@@ -1,0 +1,61 @@
+{
+  "generated_at": "2026-05-23T14:35:05.190038",
+  "n_total": 98,
+  "min_for_shadow": 10,
+  "min_for_active": 100,
+  "half_kelly": 0.5,
+  "f_prior": 0.02,
+  "n_prior": 50,
+  "books": {
+    "MOMENTUM": {
+      "n_trades": 0,
+      "status": "COLLECTING_DATA",
+      "mode": "SHADOW",
+      "f_current_avg": null,
+      "f_empirical": null,
+      "f_bayesian": null,
+      "f_half_kelly": null,
+      "f_dd_constrained": null,
+      "f_recommended": null,
+      "win_rate": null,
+      "sharpe": null,
+      "mu": null,
+      "sigma": null,
+      "divergence": null
+    },
+    "MEAN_REVERSION": {
+      "n_trades": 0,
+      "status": "COLLECTING_DATA",
+      "mode": "SHADOW",
+      "f_current_avg": null,
+      "f_empirical": null,
+      "f_bayesian": null,
+      "f_half_kelly": null,
+      "f_dd_constrained": null,
+      "f_recommended": null,
+      "win_rate": null,
+      "sharpe": null,
+      "mu": null,
+      "sigma": null,
+      "divergence": null
+    },
+    "ALL": {
+      "n_trades": 98,
+      "status": "OK",
+      "mode": "SHADOW",
+      "mu": 1.0077,
+      "sigma": 9.2607,
+      "win_rate": 0.48,
+      "sharpe": 0.109,
+      "f_empirical": 0.0118,
+      "f_bayesian": 0.0145,
+      "f_half_kelly": 0.0073,
+      "f_dd_constrained": 0.001,
+      "f_recommended": 0.01,
+      "f_current_avg": null,
+      "divergence_pct": null,
+      "cap_applied": 0.12,
+      "interpretation": "Recommended: 1.00% per trade. SHADOW MODE (98/100 trades for active)."
+    }
+  }
+}
