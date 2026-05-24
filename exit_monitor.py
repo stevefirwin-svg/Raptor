@@ -146,7 +146,11 @@ def run_exit_monitor(dry_run=False):
     scores.update({sym: full_map[sym].composite_score for sym in held if sym in full_map})
     for sym in held:
         if sym not in scores:
-            scores[sym] = -1.0  # Genuinely not scored — thesis weak
+            scores[sym] = 0.0   # Not scored today — unknown, not weak.
+                                    # Entry gates may have filtered this symbol
+                                    # (extended, pulling back, not a fresh entry).
+                                    # 0.0 = neutral; real decay shows in hold_monitor
+                                    # health score over multiple days, not a single miss.
 
     # Portfolio drawdown
     total_pnl = sum(p.get("unrealized_pnl", 0) for p in positions)

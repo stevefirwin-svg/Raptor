@@ -522,7 +522,7 @@ def _score_shannon_entropy(snapshots: List[Dict]) -> Tuple[float, str]:
         counts, _ = np.histogram(rocs, bins=5)
         probs = counts / counts.sum()
         # Shannon entropy H = -sum(p * log(p)), ignore zeros
-        H = -float(np.sum(p * np.log(p) for p in probs if p > 0))
+        H = -float(sum(p * np.log(p) for p in probs if p > 0))
         H_max = np.log(5)  # maximum entropy for 5 bins
         H_norm = H / H_max if H_max > 0 else 0.5
 
@@ -535,7 +535,7 @@ def _score_shannon_entropy(snapshots: List[Dict]) -> Tuple[float, str]:
             for window in recent_rocs:
                 c, _ = np.histogram(rocs[:-3] + window, bins=5)
                 p = c / (c.sum() + 1e-10)
-                h = -float(np.sum(x * np.log(x) for x in p if x > 0))
+                h = -float(sum(x * np.log(x) for x in p if x > 0))
                 entropies.append(h)
             entropy_trend = entropies[-1] - entropies[0]   # positive = rising disorder
             trend_penalty = float(np.clip(-entropy_trend / H_max, -0.3, 0.0))

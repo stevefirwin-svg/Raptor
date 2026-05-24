@@ -1221,7 +1221,46 @@ class QuantSignalEngine:
             signals.append(sig)
 
         # ── Store full signal map for hold_monitor / exit_monitor ─────────────
+        # CRITICAL: store ALL symbols that were scored (not just gate-passers).
+        # Held positions that fail entry gates today (extended, pulling back)
+        # still need a real composite score for health assessment.
+        # Entry gates should only gate NEW entries, not ongoing hold decisions.
         self._last_full_signals = {s.symbol: s for s in signals}
+
+        # Also store lightweight composite scores for every scored symbol
+        # so exit_monitor can find held positions that didn't make the signal list.
+        # Uses the raw momentum composite (sum of z-scores × equal weight) as proxy.
+        for sym in syms:
+            if sym not in self._last_full_signals:
+                z = zmat_mom.get(sym, zmat.get(sym, {}))
+                if not z:
+                    continue
+                active = {fn: z[fn] for fn in MOMENTUM_FACTORS if fn in z}
+                if not active:
+                    continue
+                comp_proxy = sum(active.values()) / len(active)
+                factors_pos = sum(1 for v in active.values() if v > 0)
+                # Build a minimal Signal so exit_monitor/hold_monitor can use it
+                try:
+                    price = float(bars_dict[sym]["close"].iloc[-1])
+                    atr_p = raw[sym].get("_atr", 0.0)
+                except Exception:
+                    continue
+                self._last_full_signals[sym] = Signal(
+                    symbol=sym, side="BUY", trade_type=MOMENTUM,
+                    composite_score=round(comp_proxy, 4),
+                    book_conviction=0.0, composite_percentile=0.0,
+                    t_statistic=0.0,
+                    factor_scores={fn: round(z.get(fn, 0.0), 4) for fn in FACTOR_NAMES},
+                    factor_contributions={fn: 0.0 for fn in FACTOR_NAMES},
+                    factors_positive=factors_pos,
+                    regime=f"{regime}/MIXED", pattern_signal="",
+                    sentiment_score=0.0, atr=round(atr_p, 4),
+                    entry_price=price, stop_price=0.0, take_profit=0.0,
+                    kelly_fraction=0.0, hold_target_days=15,
+                    leverage_qualified=False, confirmation_type="hold_monitor_proxy",
+                    timestamp="",
+                )
 
         # Cap at max_orders_per_scan
         signals = signals[:self.cfg.execution.max_orders_per_scan]
