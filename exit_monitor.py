@@ -610,7 +610,10 @@ def run_exit_monitor(dry_run=False):
                         "agent_conf":     _agent_dec.get("confidence", None),
                         "agent_reasoning":_agent_dec.get("reasoning", ""),
                     })
-                _tlog_path.write_text(_tjson.dumps(_tlog, indent=2))
+                _tlog_tmp = str(_tlog_path) + ".tmp"
+                with open(_tlog_tmp, "w") as _tf:
+                    _tjson.dump(_tlog, _tf, indent=2)
+                import os as _os; _os.replace(_tlog_tmp, _tlog_path)
                 logger.info("[TrimLog] Logged %d trim(s) → trim_log.json", len(_trim_exits))
         except Exception as _tle:
             logger.warning("[TrimLog] Non-fatal error: %s", _tle)
@@ -667,7 +670,10 @@ def run_exit_monitor(dry_run=False):
                 else:
                     _hh[sym]["afternoon_flag"] = "STABLE"
 
-            _hh_path.write_text(_rj.dumps(_hh, indent=2))
+            _hh_tmp = str(_hh_path) + ".tmp"
+            with open(_hh_tmp, "w") as _hf:
+                _rj.dump(_hh, _hf, indent=2)
+            import os as _rhOS; _rhOS.replace(_hh_tmp, _hh_path)
             if _rescore_log:
                 logger.warning("GAP9: %d position(s) with meaningful composite decay: %s",
                                len(_rescore_log), [r["symbol"] for r in _rescore_log])

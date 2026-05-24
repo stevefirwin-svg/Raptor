@@ -93,8 +93,10 @@ def load_history() -> Dict:
 
 
 def save_history(history: Dict):
-    with open(HISTORY_FILE, "w") as f:
+    tmp = HISTORY_FILE + ".tmp"
+    with open(tmp, "w") as f:
         json.dump(history, f, indent=2, default=str)
+    os.replace(tmp, HISTORY_FILE)
 
 
 def load_health() -> Dict:
@@ -108,8 +110,10 @@ def load_health() -> Dict:
 
 
 def save_health(health: Dict):
-    with open(HEALTH_FILE, "w") as f:
+    tmp = HEALTH_FILE + ".tmp"
+    with open(tmp, "w") as f:
         json.dump(health, f, indent=2, default=str)
+    os.replace(tmp, HEALTH_FILE)
 
 
 def load_ledger() -> Dict:

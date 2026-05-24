@@ -21,7 +21,8 @@
     "hold_flags": [],
     "hold_timestamp": null,
     "hold_trim_pct": null,
-    "tagged_at": "2026-05-13T20:13:32.657783+00:00"
+    "tagged_at": "2026-05-13T20:13:32.657783+00:00",
+    "trade_type": "MOMENTUM"
   },
   {
     "symbol": "NVDA",
@@ -45,7 +46,8 @@
     "hold_flags": [],
     "hold_timestamp": null,
     "hold_trim_pct": null,
-    "tagged_at": "2026-05-13T20:13:33.169736+00:00"
+    "tagged_at": "2026-05-13T20:13:33.169736+00:00",
+    "trade_type": "MOMENTUM"
   },
   {
     "symbol": "TSLA",
@@ -56,7 +58,7 @@
     "exit_price": 376.37224,
     "qty": 125.0,
     "actual_pnl_pct": 2.7534,
-    "actual_exit_path": "unknown",
+    "actual_exit_path": "math_trim",
     "sell_order_id": "eee0657b-4874-4e96-b247-4d5797631986",
     "entry_decision": null,
     "entry_confidence": null,
@@ -69,7 +71,9 @@
     "hold_flags": [],
     "hold_timestamp": null,
     "hold_trim_pct": null,
-    "tagged_at": "2026-05-13T20:13:33.681715+00:00"
+    "tagged_at": "2026-05-13T20:13:33.681715+00:00",
+    "trade_type": "MOMENTUM",
+    "regime_at_entry": "BACKFILL"
   },
   {
     "symbol": "C",
@@ -93,7 +97,8 @@
     "hold_flags": [],
     "hold_timestamp": null,
     "hold_trim_pct": null,
-    "tagged_at": "2026-05-13T20:13:34.123141+00:00"
+    "tagged_at": "2026-05-13T20:13:34.123141+00:00",
+    "trade_type": "MOMENTUM"
   },
   {
     "symbol": "CVX",
@@ -117,7 +122,8 @@
     "hold_flags": [],
     "hold_timestamp": null,
     "hold_trim_pct": null,
-    "tagged_at": "2026-05-13T20:13:34.634632+00:00"
+    "tagged_at": "2026-05-13T20:13:34.634632+00:00",
+    "trade_type": "MOMENTUM"
   },
   {
     "symbol": "DAL",
@@ -141,7 +147,8 @@
     "hold_flags": [],
     "hold_timestamp": null,
     "hold_trim_pct": null,
-    "tagged_at": "2026-05-13T20:13:35.103026+00:00"
+    "tagged_at": "2026-05-13T20:13:35.103026+00:00",
+    "trade_type": "MOMENTUM"
   },
   {
     "symbol": "EWJ",
@@ -165,7 +172,8 @@
     "hold_flags": [],
     "hold_timestamp": null,
     "hold_trim_pct": null,
-    "tagged_at": "2026-05-13T20:13:35.549264+00:00"
+    "tagged_at": "2026-05-13T20:13:35.549264+00:00",
+    "trade_type": "MOMENTUM"
   },
   {
     "symbol": "EXC",
@@ -189,7 +197,8 @@
     "hold_flags": [],
     "hold_timestamp": null,
     "hold_trim_pct": null,
-    "tagged_at": "2026-05-13T20:13:36.070317+00:00"
+    "tagged_at": "2026-05-13T20:13:36.070317+00:00",
+    "trade_type": "MOMENTUM"
   },
   {
     "symbol": "FCX",
@@ -213,7 +222,8 @@
     "hold_flags": [],
     "hold_timestamp": null,
     "hold_trim_pct": null,
-    "tagged_at": "2026-05-13T20:13:36.577027+00:00"
+    "tagged_at": "2026-05-13T20:13:36.577027+00:00",
+    "trade_type": "MOMENTUM"
   },
   {
     "symbol": "INTC",
@@ -224,7 +234,7 @@
     "exit_price": 60.95,
     "qty": 85.0,
     "actual_pnl_pct": 26.0339,
-    "actual_exit_path": "unknown",
+    "actual_exit_path": "math_trim",
     "sell_order_id": "41b2f2f6-1ca8-44af-83c5-ff9c6acaf25a",
     "entry_decision": null,
     "entry_confidence": null,
@@ -237,7 +247,9 @@
     "hold_flags": [],
     "hold_timestamp": null,
     "hold_trim_pct": null,
-    "tagged_at": "2026-05-13T20:13:37.081512+00:00"
+    "tagged_at": "2026-05-13T20:13:37.081512+00:00",
+    "trade_type": "MOMENTUM",
+    "regime_at_entry": "BACKFILL"
   },
   {
     "symbol": "KGC",
@@ -261,7 +273,8 @@
     "hold_flags": [],
     "hold_timestamp": null,
     "hold_trim_pct": null,
-    "tagged_at": "2026-05-13T20:13:37.482984+00:00"
+    "tagged_at": "2026-05-13T20:13:37.482984+00:00",
+    "trade_type": "MOMENTUM"
   },
   {
     "symbol": "NKE",
@@ -285,7 +298,8 @@
     "hold_flags": [],
     "hold_timestamp": null,
     "hold_trim_pct": null,
-    "tagged_at": "2026-05-13T20:13:38.494810+00:00"
+    "tagged_at": "2026-05-13T20:13:38.494810+00:00",
+    "trade_type": "MOMENTUM"
   },
   {
     "symbol": "NOW",
@@ -309,7 +323,8 @@
     "hold_flags": [],
     "hold_timestamp": null,
     "hold_trim_pct": null,
-    "tagged_at": "2026-05-13T20:13:38.897844+00:00"
+    "tagged_at": "2026-05-13T20:13:38.897844+00:00",
+    "trade_type": "MOMENTUM"
   },
   {
     "symbol": "SMCI",
@@ -320,7 +335,7 @@
     "exit_price": 23.88,
     "qty": 179.0,
     "actual_pnl_pct": 3.7528,
-    "actual_exit_path": "unknown",
+    "actual_exit_path": "math_trim",
     "sell_order_id": "4090ff50-4340-4b01-bd2d-804b92f7875d",
     "entry_decision": null,
     "entry_confidence": null,
@@ -333,7 +348,9 @@
     "hold_flags": [],
     "hold_timestamp": null,
     "hold_trim_pct": null,
-    "tagged_at": "2026-05-13T20:13:39.341418+00:00"
+    "tagged_at": "2026-05-13T20:13:39.341418+00:00",
+    "trade_type": "MOMENTUM",
+    "regime_at_entry": "BACKFILL"
   },
   {
     "symbol": "SOXS",
@@ -357,7 +374,8 @@
     "hold_flags": [],
     "hold_timestamp": null,
     "hold_trim_pct": null,
-    "tagged_at": "2026-05-13T20:13:39.856093+00:00"
+    "tagged_at": "2026-05-13T20:13:39.856093+00:00",
+    "trade_type": "MOMENTUM"
   },
   {
     "symbol": "XOM",
@@ -381,7 +399,8 @@
     "hold_flags": [],
     "hold_timestamp": null,
     "hold_trim_pct": null,
-    "tagged_at": "2026-05-13T20:13:40.765151+00:00"
+    "tagged_at": "2026-05-13T20:13:40.765151+00:00",
+    "trade_type": "MOMENTUM"
   },
   {
     "symbol": "NVDA",
@@ -405,7 +424,8 @@
     "hold_flags": [],
     "hold_timestamp": null,
     "hold_trim_pct": null,
-    "tagged_at": "2026-05-13T20:13:43.640695+00:00"
+    "tagged_at": "2026-05-13T20:13:43.640695+00:00",
+    "trade_type": "MOMENTUM"
   },
   {
     "symbol": "INTC",
@@ -416,7 +436,7 @@
     "exit_price": 64.2,
     "qty": 147.0,
     "actual_pnl_pct": 2.8022,
-    "actual_exit_path": "unknown",
+    "actual_exit_path": "math_trim",
     "sell_order_id": "5da4029a-14f2-4903-92c8-69b54b105f19",
     "entry_decision": null,
     "entry_confidence": null,
@@ -429,7 +449,9 @@
     "hold_flags": [],
     "hold_timestamp": null,
     "hold_trim_pct": null,
-    "tagged_at": "2026-05-13T20:13:44.046826+00:00"
+    "tagged_at": "2026-05-13T20:13:44.046826+00:00",
+    "trade_type": "MOMENTUM",
+    "regime_at_entry": "BACKFILL"
   },
   {
     "symbol": "WFC",
@@ -453,7 +475,8 @@
     "hold_flags": [],
     "hold_timestamp": null,
     "hold_trim_pct": null,
-    "tagged_at": "2026-05-13T20:13:44.456980+00:00"
+    "tagged_at": "2026-05-13T20:13:44.456980+00:00",
+    "trade_type": "MOMENTUM"
   },
   {
     "symbol": "SOXL",
@@ -477,7 +500,8 @@
     "hold_flags": [],
     "hold_timestamp": null,
     "hold_trim_pct": null,
-    "tagged_at": "2026-05-13T20:13:44.945940+00:00"
+    "tagged_at": "2026-05-13T20:13:44.945940+00:00",
+    "trade_type": "MOMENTUM"
   },
   {
     "symbol": "RSP",
@@ -501,7 +525,8 @@
     "hold_flags": [],
     "hold_timestamp": null,
     "hold_trim_pct": null,
-    "tagged_at": "2026-05-13T20:13:45.382733+00:00"
+    "tagged_at": "2026-05-13T20:13:45.382733+00:00",
+    "trade_type": "MOMENTUM"
   },
   {
     "symbol": "HOOD",
@@ -525,7 +550,8 @@
     "hold_flags": [],
     "hold_timestamp": null,
     "hold_trim_pct": null,
-    "tagged_at": "2026-05-13T20:13:49.515840+00:00"
+    "tagged_at": "2026-05-13T20:13:49.515840+00:00",
+    "trade_type": "MOMENTUM"
   },
   {
     "symbol": "MSFT",
@@ -549,7 +575,8 @@
     "hold_flags": [],
     "hold_timestamp": null,
     "hold_trim_pct": null,
-    "tagged_at": "2026-05-13T20:13:50.083950+00:00"
+    "tagged_at": "2026-05-13T20:13:50.083950+00:00",
+    "trade_type": "MOMENTUM"
   },
   {
     "symbol": "QBTS",
@@ -573,7 +600,8 @@
     "hold_flags": [],
     "hold_timestamp": null,
     "hold_trim_pct": null,
-    "tagged_at": "2026-05-13T20:13:50.698272+00:00"
+    "tagged_at": "2026-05-13T20:13:50.698272+00:00",
+    "trade_type": "MOMENTUM"
   },
   {
     "symbol": "AAL",
@@ -597,7 +625,8 @@
     "hold_flags": [],
     "hold_timestamp": null,
     "hold_trim_pct": null,
-    "tagged_at": "2026-05-13T20:13:51.193030+00:00"
+    "tagged_at": "2026-05-13T20:13:51.193030+00:00",
+    "trade_type": "MOMENTUM"
   },
   {
     "symbol": "RKT",
@@ -621,7 +650,8 @@
     "hold_flags": [],
     "hold_timestamp": null,
     "hold_trim_pct": null,
-    "tagged_at": "2026-05-13T20:13:52.115087+00:00"
+    "tagged_at": "2026-05-13T20:13:52.115087+00:00",
+    "trade_type": "MOMENTUM"
   },
   {
     "symbol": "IGV",
@@ -645,7 +675,8 @@
     "hold_flags": [],
     "hold_timestamp": null,
     "hold_trim_pct": null,
-    "tagged_at": "2026-05-13T20:13:52.550266+00:00"
+    "tagged_at": "2026-05-13T20:13:52.550266+00:00",
+    "trade_type": "MOMENTUM"
   },
   {
     "symbol": "IONQ",
@@ -669,7 +700,8 @@
     "hold_flags": [],
     "hold_timestamp": null,
     "hold_trim_pct": null,
-    "tagged_at": "2026-05-13T20:13:53.139597+00:00"
+    "tagged_at": "2026-05-13T20:13:53.139597+00:00",
+    "trade_type": "MOMENTUM"
   },
   {
     "symbol": "SMCI",
@@ -680,7 +712,7 @@
     "exit_price": 27.4,
     "qty": 368.0,
     "actual_pnl_pct": -6.9865,
-    "actual_exit_path": "unknown",
+    "actual_exit_path": "math_trim",
     "sell_order_id": "8494bdb9-dae4-412b-95c1-87b53aae94c9",
     "entry_decision": null,
     "entry_confidence": null,
@@ -693,7 +725,9 @@
     "hold_flags": [],
     "hold_timestamp": null,
     "hold_trim_pct": null,
-    "tagged_at": "2026-05-13T20:13:53.676289+00:00"
+    "tagged_at": "2026-05-13T20:13:53.676289+00:00",
+    "trade_type": "MOMENTUM",
+    "regime_at_entry": "BACKFILL"
   },
   {
     "symbol": "PLTR",
@@ -717,7 +751,8 @@
     "hold_flags": [],
     "hold_timestamp": null,
     "hold_trim_pct": null,
-    "tagged_at": "2026-05-13T20:13:54.194464+00:00"
+    "tagged_at": "2026-05-13T20:13:54.194464+00:00",
+    "trade_type": "MOMENTUM"
   },
   {
     "symbol": "CMCSA",
@@ -741,7 +776,8 @@
     "hold_flags": [],
     "hold_timestamp": null,
     "hold_trim_pct": null,
-    "tagged_at": "2026-05-13T20:13:54.701348+00:00"
+    "tagged_at": "2026-05-13T20:13:54.701348+00:00",
+    "trade_type": "MOMENTUM"
   },
   {
     "symbol": "SMCI",
@@ -752,7 +788,7 @@
     "exit_price": 27.02,
     "qty": 382.0,
     "actual_pnl_pct": -4.7532,
-    "actual_exit_path": "unknown",
+    "actual_exit_path": "math_trim",
     "sell_order_id": "1ece4913-4da7-4a06-b456-23bc20ddd25b",
     "entry_decision": null,
     "entry_confidence": null,
@@ -765,7 +801,9 @@
     "hold_flags": [],
     "hold_timestamp": null,
     "hold_trim_pct": null,
-    "tagged_at": "2026-05-13T20:13:55.212039+00:00"
+    "tagged_at": "2026-05-13T20:13:55.212039+00:00",
+    "trade_type": "MOMENTUM",
+    "regime_at_entry": "BACKFILL"
   },
   {
     "symbol": "HIMS",
@@ -789,7 +827,8 @@
     "hold_flags": [],
     "hold_timestamp": null,
     "hold_trim_pct": null,
-    "tagged_at": "2026-05-13T20:13:55.724269+00:00"
+    "tagged_at": "2026-05-13T20:13:55.724269+00:00",
+    "trade_type": "MOMENTUM"
   },
   {
     "symbol": "SOXL",
@@ -813,7 +852,8 @@
     "hold_flags": [],
     "hold_timestamp": null,
     "hold_trim_pct": null,
-    "tagged_at": "2026-05-13T20:13:56.130204+00:00"
+    "tagged_at": "2026-05-13T20:13:56.130204+00:00",
+    "trade_type": "MOMENTUM"
   },
   {
     "symbol": "NVDA",
@@ -837,7 +877,8 @@
     "hold_flags": [],
     "hold_timestamp": null,
     "hold_trim_pct": null,
-    "tagged_at": "2026-05-13T20:13:56.545107+00:00"
+    "tagged_at": "2026-05-13T20:13:56.545107+00:00",
+    "trade_type": "MOMENTUM"
   },
   {
     "symbol": "KO",
@@ -861,7 +902,8 @@
     "hold_flags": [],
     "hold_timestamp": null,
     "hold_trim_pct": null,
-    "tagged_at": "2026-05-13T20:13:57.133124+00:00"
+    "tagged_at": "2026-05-13T20:13:57.133124+00:00",
+    "trade_type": "MOMENTUM"
   },
   {
     "symbol": "PYPL",
@@ -885,7 +927,8 @@
     "hold_flags": [],
     "hold_timestamp": null,
     "hold_trim_pct": null,
-    "tagged_at": "2026-05-13T20:13:57.560885+00:00"
+    "tagged_at": "2026-05-13T20:13:57.560885+00:00",
+    "trade_type": "MOMENTUM"
   },
   {
     "symbol": "TFC",
@@ -909,7 +952,8 @@
     "hold_flags": [],
     "hold_timestamp": null,
     "hold_trim_pct": null,
-    "tagged_at": "2026-05-13T20:13:57.982761+00:00"
+    "tagged_at": "2026-05-13T20:13:57.982761+00:00",
+    "trade_type": "MOMENTUM"
   },
   {
     "symbol": "CTRA",
@@ -933,7 +977,8 @@
     "hold_flags": [],
     "hold_timestamp": null,
     "hold_trim_pct": null,
-    "tagged_at": "2026-05-13T20:13:58.487744+00:00"
+    "tagged_at": "2026-05-13T20:13:58.487744+00:00",
+    "trade_type": "MOMENTUM"
   },
   {
     "symbol": "DVN",
@@ -957,7 +1002,8 @@
     "hold_flags": [],
     "hold_timestamp": null,
     "hold_trim_pct": null,
-    "tagged_at": "2026-05-13T20:13:59.078025+00:00"
+    "tagged_at": "2026-05-13T20:13:59.078025+00:00",
+    "trade_type": "MOMENTUM"
   },
   {
     "symbol": "OXY",
@@ -981,7 +1027,8 @@
     "hold_flags": [],
     "hold_timestamp": null,
     "hold_trim_pct": null,
-    "tagged_at": "2026-05-13T20:13:59.510322+00:00"
+    "tagged_at": "2026-05-13T20:13:59.510322+00:00",
+    "trade_type": "MOMENTUM"
   },
   {
     "symbol": "XOM",
@@ -1005,6 +1052,7 @@
     "hold_flags": [],
     "hold_timestamp": null,
     "hold_trim_pct": null,
-    "tagged_at": "2026-05-13T20:14:00.103139+00:00"
+    "tagged_at": "2026-05-13T20:14:00.103139+00:00",
+    "trade_type": "MOMENTUM"
   }
 ]
