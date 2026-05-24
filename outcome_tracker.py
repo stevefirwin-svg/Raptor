@@ -148,8 +148,14 @@ def _build_ledger_maps() -> tuple:
 
 # ── Timestamp parse ───────────────────────────────────────────────────────────
 def parse_ts(ts: str) -> datetime:
-    ts = ts.replace("Z", "+00:00")
-    return datetime.fromisoformat(ts)
+    """Parse timestamp — always returns timezone-aware UTC datetime."""
+    ts = ts.strip()
+    if ts.endswith("Z"):
+        ts = ts[:-1] + "+00:00"
+    dt = datetime.fromisoformat(ts)
+    if dt.tzinfo is None:
+        dt = dt.replace(tzinfo=timezone.utc)
+    return dt
 
 
 # ── Decision matching ─────────────────────────────────────────────────────────
