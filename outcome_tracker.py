@@ -66,12 +66,22 @@ def load_json_dict(path) -> dict:
 
 
 # ── Alpaca API ────────────────────────────────────────────────────────────────
-def _alpaca_headers() -> dict:
+def _alpaca_headers() -> tuple:
+    """
+    Load Alpaca credentials. Supports both key naming conventions:
+      .env  → ALPACA_API_KEY / ALPACA_SECRET_KEY  (primary)
+      _env  → APCA_API_KEY_ID / APCA_API_SECRET_KEY (legacy)
+    """
     from dotenv import load_dotenv
-    load_dotenv(BASE_DIR / "_env")
-    key    = os.environ.get("APCA_API_KEY_ID", "")
-    secret = os.environ.get("APCA_API_SECRET_KEY", "")
-    base   = os.environ.get("APCA_API_BASE_URL", "https://paper-api.alpaca.markets")
+    for env_file in [BASE_DIR / ".env", BASE_DIR / "_env"]:
+        if env_file.exists():
+            load_dotenv(env_file, override=False)
+    key    = (os.environ.get("APCA_API_KEY_ID") or
+              os.environ.get("ALPACA_API_KEY") or "")
+    secret = (os.environ.get("APCA_API_SECRET_KEY") or
+              os.environ.get("ALPACA_SECRET_KEY") or "")
+    base   = (os.environ.get("APCA_API_BASE_URL") or
+              "https://paper-api.alpaca.markets")
     return {"APCA-API-KEY-ID": key, "APCA-API-SECRET-KEY": secret}, base
 
 
