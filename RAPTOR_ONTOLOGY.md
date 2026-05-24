@@ -1,6 +1,6 @@
 # Raptor v5.5 — Complete System Ontology
 *Full decision logic, mathematics, and feedback loops. No code.*
-*Last updated: 2026-05-23*
+*Last updated: 2026-05-24*
 
 ---
 
@@ -445,22 +445,28 @@ Symbol already in portfolio → blocked. Raptor never adds to a position.
 
 ### 5.2 Re-Entry Cooldown ✅
 
-After `hard_stop` or `trail_loss` exit: 5-day block.
+After `hard_stop` or `trail_loss` exit: 5-day block written to `cooldown_log.json`.
 `trail_profit` and `profit_target` exits: not blocked (thesis worked).
-Sources checked: `outcome_log.json` (exit_path), `position_ledger.json` (exit_reason).
+
+**Wired into main.py 2026-05-24:** `_cooldown_filter()` reads `cooldown_log.json` at scan time.
+Previously: cooldown_log was being written by exit_monitor but never read by main.py.
 
 *Target design (ATR-scaled cooldown — not yet implemented):*
 `cooldown_days = clip(3 + ATR_percentile × 12, 3, 15)`
 
 ### 5.3 Composite Velocity Gate ✅
 
-Tracks composite score trajectory in `hold_history.json`:
+Tracks composite score day-over-day in `composite_cache.json`:
 ```
-velocity = composite_today - composite_3d_ago
-kelly_modifier = clip(1.0 + velocity × 0.2, 0.80, 1.20)
-effective_kelly = kelly_fraction × kelly_modifier
+velocity = composite_today - composite_yesterday
+if velocity < -0.20: skip entry (composite decaying)
+else: allow entry
 ```
-Requires ≥ 3 days of history. Falls back to 1.0× for new symbols.
+
+**Wired into main.py 2026-05-24:** `_velocity_filter()` reads `composite_cache.json`.
+Previously: cache was being saved but never read by main.py.
+Cache is saved BEFORE held-symbol filter to capture full scored universe.
+Falls through for new symbols with no prior composite (no prior = allow).
 
 ### 5.4 Margin Guard ✅
 
@@ -502,14 +508,28 @@ kelly = f_min + (f_base - f_min) × book_conviction
 
 `book_conviction` is the within-book normalized [0,1] score from CompositeRanker. Top of book gets full Kelly. Bottom of entry threshold gets minimum Kelly.
 
-### 6.3 Target Design — Bayesian Kelly (GAP B, open)
+### 6.3 Bootstrap Kelly — kelly_engine.py (SHADOW mode) ✅
+
+Live implementation (2026-05-24). Replaces μ/σ² formula which assumes normal returns.
 
 ```
-f* = μ / σ²                     (empirical Kelly from outcome_log.json)
-f_posterior = (N×f* + n_prior×f_prior) / (N + n_prior)   (n_prior=50)
-f_half = f_posterior × 0.5      (half-Kelly discount)
-f_base = min(f_half, f_max_DD, 0.15)
+For each of 10,000 decay-weighted bootstrap resamples:
+  f* = μ_sample / σ²_sample             (empirical Kelly)
+  f_bayes = (N×f* + 50×0.02) / (N+50)  (Bayesian shrinkage)
+  f_half = f_bayes × 0.5                (half-Kelly)
+  f_dd = 0.15 / (σ × sqrt(252))         (drawdown constraint)
+  f_rec_sample = clip(min(f_half, f_dd), 0.01, 0.12)
+
+f_recommended = P25(f_rec_samples)       (conservative production estimate)
 ```
+
+Current result (73 trades): f_recommended = 3.89%, range 2.95%–5.32%.
+SHADOW mode — sizing unchanged until 100 trades.
+Active mode requires explicit config flag.
+
+Why bootstrap not μ/σ²: return kurtosis = 8.40, skewness = +0.23.
+Normal assumption invalid. 15.1% of raw f* resamples negative.
+Bootstrap P25 of the full pipeline gives honest confidence interval.
 
 ### 6.4 Stop Price by Trade Type
 
@@ -687,7 +707,14 @@ Action labels: TRIM_MINOR (<25%), TRIM_MODERATE (25–50%), TRIM_MAJOR (50–90%
 
 ### 9.1 Signal Engine Re-Run
 
-Exit monitor runs the full dual-book signal engine to get today's composite for all held symbols. Uses `_last_full_signals` — includes all scored symbols before top-N filter.
+Exit monitor runs the full dual-book signal engine to get today's composite for all held symbols.
+
+**_last_full_signals now includes ALL scored symbols (fixed 2026-05-24):**
+After building Signal objects for gate-passers, signals.py also builds lightweight proxy Signals for every symbol that was raw-scored but failed entry gates (extended, pulling back, not a fresh entry candidate). This ensures held positions always get a real composite score.
+
+Previously: held positions that failed entry gates got comp=-1.0 default → artificial FAR=0/16 → artificial DECAYING health → incorrect trim recommendations on winning positions.
+
+**Default composite: 0.0 not -1.0.** If a symbol is genuinely absent from the scored universe, it gets 0.0 (neutral/unknown). Not scored today ≠ failing thesis.
 
 ### 9.2 Exit Ruleset — MOMENTUM Positions
 
@@ -781,9 +808,18 @@ After evaluating all exit conditions, reads `hold_health.json`. Positions with t
 exit_monitor → ledger.record_exit() → outcome_tracker.run_tracker()
      ↓
 outcome_log.json: symbol, entry/exit dates and prices, realized PnL,
-                  exit_path, trade_type, pattern_signal, book_conviction,
+                  exit_path, trade_type, regime_at_entry,
+                  pattern_signal, book_conviction,
                   entry_decision (EntryAgent), hold_decision (HoldAgent)
 ```
+
+**Backfill logic (2026-05-24):** At start of each run, tracker retroactively fixes:
+- trade_type: None → MOMENTUM for all pre-v5.5 records
+- exit_path: unknown → resolved from ledger exit_reason where available
+- regime_at_entry: populated from ledger metadata
+
+**Key quality fix:** parse_ts() always returns timezone-aware UTC datetime.
+**Key auth fix:** Supports both ALPACA_API_KEY (.env) and APCA_API_KEY_ID (_env) naming.
 
 ### 10.2 Per-Book Learning
 
@@ -803,27 +839,32 @@ Each outcome record includes `trade_type`. This enables:
 
 ## 11. Adaptive Weight System
 
-**File:** `signals.py` → `AdaptiveWeights`
-**Storage:** `adaptive_weights.json`
+**File:** `signals.py` → `AdaptiveWeights`  
+**Storage:** `adaptive_weights_MOMENTUM.json` and `adaptive_weights_MEAN_REVERSION.json`
 
-### 11.1 Two Learning Layers
+### 11.1 Two Learning Layers (updated 2026-05-24)
 
-**Layer 1 — Ridge Regression (activates at 30+ trades)**
+**Layer 1 — Weighted Ridge Regression (activates at 30+ trades)**
 ```
-y = X @ beta + epsilon
-beta = solve(X.T @ X + λI, X.T @ y)   (λ = 1.0)
+W = diag(exp(-λ × days_since_trade))   (λ=0.005, half-life 139 days)
+beta = solve(X.T @ W @ X + λI, X.T @ W @ y)   (λ = 1.0)
 alpha = min(30%, 30% × (N-30)/60)
 final_weight = (1-alpha) × base + alpha × ridge_weight
 ```
+Exponential decay: recent trades weighted higher. Old regime data fades naturally.
 
-In v5.5, ridge weights are computed separately per book — MOMENTUM factors are trained only on MOMENTUM trade outcomes, and vice versa.
-
-**Layer 2 — IC Boost (activates at 20+ trades)**
+**Layer 2 — Spearman IC Boost (activates at 20+ trades)**
 ```
-IC[fn] = fraction of trades where sign(z[fn]) == sign(return) - 0.5
+IC[fn] = spearmanr(z_scores, realized_returns)   (Grinold & Kahn 1999)
 weight[fn] × (1 + IC[fn])
 ```
-Computed once per scan, cached. Per-book: MOM trades calibrate MOM factors; MR trades calibrate MR factors.
+Replaces binary sign-match IC which discarded magnitude.
+Computed once per scan with decay-weighted sample. Cached per (n_trades, book).
+
+**Per-book separation:** Each book has its own weight file and learning history.
+MOMENTUM factors trained only on MOMENTUM outcomes.
+MEAN_REVERSION factors trained only on MR outcomes.
+Prevents momentum bull-run data from contaminating MR reversal factor weights.
 
 ---
 

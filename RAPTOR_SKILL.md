@@ -1,5 +1,5 @@
 # Raptor Trading System — Master Skill & Architecture Ontology
-*Last updated: 2026-05-23 | Version: 5.5*
+*Last updated: 2026-05-24 | Version: 5.5*
 
 ---
 
@@ -281,61 +281,77 @@ Backtest exit checks must match live monitor frequency. If `exit_monitor.py` run
 ## 9. CRITICAL RULES
 
 1. **Dual-book architecture is the foundation.** Never blend MOM and MR factors into one composite.
-2. **MR book is SUSPENDED.** IC data shows all significant MR factors predict losses. Do not lift gate without IC evidence (ma_distance IC > 0.05, t > 1.5, n ≥ 60).
+2. **MR book is SUSPENDED.** IC data shows all significant MR factors predict losses in a momentum regime. Do not lift gate without IC evidence from actual MR trades (ma_distance IC > 0.05, t > 1.5, n ≥ 60 MR-only trades).
 3. **Backtest universe = backtest_universe.txt.** Never use live cache for analysis.
 4. **str_replace for edits, create_file for new files only.**
 5. **Backtest both books independently before combining** — validate each has edge on its own.
 6. **Ledger must match Alpaca.** Resync: `python backfill_ledger.py --write`
 7. **Exit path labels:** hard_stop, trail_profit, trail_loss, profit_target, momentum_break, thesis_invalid, portfolio_heat, time_decay, time_stop, math_exit, math_trim_X%
 8. **Clear pycache before every test:** `Remove-Item -Recurse -Force __pycache__`
-9. **Never use defaults in agent context.** Missing data → skip position entirely.
+9. **Real data or skip — never fabricate.** Missing stop price → None. Missing ATR → skip position. Missing days_held → use 1 (conservative). Log a warning. Never invent a number that looks real.
 10. **Math trim governs execution.** HoldAgent is advisory only.
-11. **signals.py must set self._last_full_signals** before top-N filter.
+11. **signals.py must populate _last_full_signals with ALL scored symbols** — not just gate-passers. Held positions that fail entry gates today still need a real composite for health scoring.
 12. **Use account["buying_power"] not account["cash"]** for capital checks.
 13. **exit_monitor never calls Ollama.** Reads hold_decisions.json advisory only.
 14. **Do NOT start Layer 3** until 30+ agent-tagged trades in outcome_log.json.
 15. **PowerShell only** (not CMD).
 16. **Read file + callers + shared utilities before any edit.**
+17. **Composite score defaults: 0.0 not -1.0.** Not scored today = unknown = neutral. Not scored ≠ failing thesis.
+18. **Momentum clustering is intentional alpha.** Do not add correlation gates that block same-sector entries during trending regimes. The hold monitor handles position-level decay independently.
+19. **Kelly engine is SHADOW until 100 trades.** get_recommended_kelly() returns None in shadow. Do not override sizing.
+20. **run outcome_tracker.py daily** after market close to keep learning layer fed.
 
 ---
 
-## 10. IC VALIDATION FINDINGS (2026-05-23, 94 observations)
+## 10. IC VALIDATION FINDINGS (2026-05-24, 86 observations)
 
 Factor IC measured via Spearman correlation against realized returns (hold_history + outcome_log, Option C weighted).
 
 **Momentum factors — keep:**
 | Factor | IC | t-stat | Status |
 |--------|----|--------|--------|
-| adx_dir | +0.44 | +4.68 | ✅ Strong |
-| ma_stack | +0.33 | +3.34 | ✅ Strong |
-| accum_dist | +0.20 | +1.94 | ✅ Marginal |
-| price_cloud | +0.19 | +1.83 | ✅ Marginal |
-| rel_strength | +0.09 | +0.86 | ⚠ Weak — watch |
-| obv_r2 | +0.06 | +0.61 | ⚠ Weak — watch |
-| vol_ratio | −0.05 | −0.45 | ⚠ Noise — watch |
+| ma_stack | +0.48 | +5.05 | ✅ Strong |
+| adx_dir | +0.38 | +3.81 | ✅ Strong |
+| price_cloud | +0.35 | +3.41 | ✅ Strong |
+| obv_r2 | +0.33 | +3.21 | ✅ Strong |
+| rel_strength | +0.31 | +2.99 | ✅ Now significant |
+| accum_dist | +0.20 | +1.88 | ✅ Marginal |
+| vol_ratio | −0.11 | −1.02 | ⚠ Noise — candidate for removal |
 
 **Momentum factors — removed:**
 | Factor | IC | t-stat | Action |
 |--------|----|--------|--------|
-| macd_accel | −0.34 | −3.42 | ❌ Removed — significant negative predictor |
+| macd_accel | −0.34 | −3.42 | ❌ Removed 2026-05-23 — significant negative predictor |
 
-**MR factors — all negative (book suspended):**
-| Factor | IC | t-stat | Note |
-|--------|----|--------|------|
-| ma_distance | −0.54 | −6.15 | Strongest signal — predicts losses |
-| atr_pctile | −0.44 | −4.70 | |
-| bb_squeeze | −0.39 | −3.74 | |
-| bollinger_z | −0.31 | −3.07 | |
-| rsi_mr | −0.00 | −0.02 | Not significant |
-| crowd_panic | +0.03 | +0.25 | Not significant |
-| rev_momentum | −0.05 | −0.46 | Not significant |
+**MR factors — IMPORTANT: IC measured against momentum trades only (contaminated sample).**  
+These numbers do NOT mean MR factors are bad — they mean MR factors correctly identify reversal setups which are continuation signals in a bull momentum regime. IC can only be validly measured against actual MR trade outcomes. MR book remains suspended pending first 20+ MR trades.
 
-**Factor covariance condition number: 271.8** — HIGH COLLINEARITY. Orthogonalization active and critical.
+| Factor | IC (vs momentum trades) | Note |
+|--------|------------------------|------|
+| ma_distance | −0.60 | Strongest signal — but measured on wrong outcomes |
+| atr_pctile | −0.44 | Same contamination issue |
+| bb_squeeze | −0.37 | Same contamination issue |
+| bollinger_z | −0.31 | Same contamination issue |
+| rsi_mr | −0.01 | Not significant |
+| crowd_panic | +0.03 | Not significant |
+| rev_momentum | +0.04 | Not significant |
 
-**Kelly Engine (shadow mode, 73 equity trades):**
-- μ = 3.49%, σ = 25.90%, Win rate = 47.9%, Sharpe = 0.135
-- DD-constrained Kelly recommendation: **3.65% per trade**
-- Active mode at 100 trades. Current sizing range 2–12% — positions above 5–6% are above data-supported levels.
+**Factor covariance condition number: 272.4** — HIGH COLLINEARITY. Orthogonalization active and critical.
+
+**Kelly Engine (bootstrap shadow mode, 73 equity trades, 2026-05-24):**
+- μ = 3.49%, σ = 25.90%, Win rate = 47.9%, Skew = +0.23, Kurt = 8.40
+- Bootstrap P25 of final-f: **3.89% per trade** (production recommendation)
+- Bootstrap range: 2.95% (P10) to 5.32% (P75)
+- 15.1% of raw f* resamples negative — bootstrap protection active
+- Active mode at 100 trades.
+
+**Exit path quality (98 trades, 2026-05-24):**
+| Exit path | n | Win% | Avg PnL |
+|-----------|---|------|---------|
+| math_trim | 33 | 70% | +5.59% |
+| trailing_stop | 5 | 20% | −5.35% |
+| math_exit | 1 | 0% | −0.90% |
+| unknown | 59 | 38% | −1.01% |
 
 ---
 
@@ -388,44 +404,51 @@ Every decision — buy, hold, trim, exit, size, weight — must be derived from 
 
 | Gap | File | Problem | Status |
 |-----|------|---------|--------|
-| GAP 2 | signals.py | Entry sizing ignores conviction gradient | Open |
-| GAP 3 | exit_monitor.py | Hard stop fixed, not volatility-regime aware | Open |
-| GAP 4 | exit_monitor.py | Thesis invalidation threshold static | Open |
-| GAP 5 | signals.py | No momentum acceleration on entry | Open |
-| GAP 6 | main.py | No re-entry cooldown after stop-out | Open |
-| GAP 7 | exit_monitor.py | Portfolio heat exit too blunt | Open |
-| GAP 9 | signals.py | Universe scored once/day only | Open |
-| SIM FIDELITY | backtest.py | Exit checks run every bar not every 30 min | **Next priority** |
-| MR EXIT RULES | exit_monitor.py | MR-specific tight trail + 5-day cap not yet split by trade_type | **Next priority** |
-| HOLD MONITOR | hold_monitor.py | Health scoring not yet split by trade_type | Pending |
+| GAP 2 | signals.py | Kelly not conviction-scaled (GAP 2) | Partially addressed via book_conviction |
+| GAP 3 | exit_monitor.py | Hard stop volatility-regime aware | ✅ DONE |
+| GAP 4 | exit_monitor.py | Thesis invalidation threshold regime-scaled | ✅ DONE |
+| GAP 5 | signals.py | Composite velocity gate on entry | ✅ DONE (wired 2026-05-24) |
+| GAP 6 | main.py | Re-entry cooldown after stop-out | ✅ DONE (wired 2026-05-24) |
+| GAP 7 | exit_monitor.py | Portfolio heat proportional trim | Open — MATH-4 |
+| GAP 9 | signals.py | Afternoon rescore | Partial — exit_monitor GAP9 rescore |
+| CRIT-6 | signals.py / exit_monitor.py | Held positions getting comp=-1.0 | ✅ DONE 2026-05-24 |
+| FABRICATION | multiple | Invented fallback values (days=7, atr=price*0.02, stop=entry*0.92) | ✅ DONE 2026-05-24 |
+| MATH-1 | signals.py | Regime-conditional IC buckets | Open |
+| MATH-2 | signals.py | Composite SNR ranking | Open |
+| MATH-3 | signals.py | Hurst DFA / ADX threshold | Open |
+| SIM FIDELITY | backtest.py | Exit checks run every bar not every 30 min | Open |
+| MR IC VALID | factor_lab.py | MR IC measured against wrong (momentum) trades | Open — need MR trades |
 
 ---
 
 ## 14. SESSION PROTOCOLS (MANDATORY)
 
-### Start of every conversation
-1. Read RAPTOR_SKILL.md via project_knowledge_search before any technical work
-2. Load userMemories for current state
-3. Never assume prior session context without searching
+**Full startup protocol is in RAPTOR_STARTUP.md — read that first every session.**
+
+### Summary (see RAPTOR_STARTUP.md for full detail)
+1. Clone fresh from GitHub: `git clone https://github.com/stevefirwin-svg/Raptor /home/claude/raptor`
+2. Read in order: RAPTOR_STARTUP.md → RAPTOR_MASTER_PLAN.md → RAPTOR_SKILL.md → RAPTOR_ONTOLOGY.md
+3. Run health check: `outcome_tracker.py --summary`, `kelly_engine.py`, `reconcile_positions.py`
+4. Verify invariants (Step 4 in RAPTOR_STARTUP.md) before writing any code
 
 ### After every file change (no prompting required)
-1. Verify syntax
+1. Verify syntax: `python -c "import ast; ast.parse(open('file.py').read())"`
 2. `present_files` automatically
-3. Post exact git commands:
-```bash
-git pull origin main
-git add -A
-git commit -m "describe what changed"
+3. Post exact git commands for Steve:
+```powershell
+git add filename.py
+git commit -m "what changed and why (date)"
 git push origin main
 ```
 
 ### GitHub reconciliation
-- GitHub is source of truth
+- GitHub is source of truth — always clone fresh, never work from snapshots
 - Every session ends with a push
-- Always `git pull origin main` before starting laptop work after a Claude session
+- Steve must `git pull origin main` before next trading day
 
 ### Ontology sync
-Any architectural change MUST be reflected in Section 2 of this file in the same session.
+Any architectural change MUST update RAPTOR_ONTOLOGY.md and RAPTOR_MASTER_PLAN.md in the same session.
+RAPTOR_STARTUP.md system state table must reflect current reality.
 
 ---
 
