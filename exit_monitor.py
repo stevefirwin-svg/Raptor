@@ -186,15 +186,24 @@ def run_exit_monitor(dry_run=False):
         bar_data = bars[sym]
         atr = _atr(bar_data, CONFIG.risk.atr_period)
         if atr <= 0:
-            atr = abs(price * 0.02)
+            # Cannot compute ATR from bar data — skip rather than fake
+            logger.warning("[ATR] %s: cannot compute ATR from bar data — skipping exit check", sym)
+            holds.append({"symbol": sym, "reason": "no_atr", "pnl_pct": pnl_pct})
+            continue
 
         # Days held from ledger entry_date; fallback 7 if missing
         _entry = _ledger_map.get(sym)
         try:
-            days_held = (_today - datetime.strptime(_entry["entry_date"], "%Y-%m-%d").date()).days \
-                        if _entry and "entry_date" in _entry else 7
+            days_held = (_today - datetime.strptime(_entry["entry_date"], "%Y-%m-%d").date()).days                         if _entry and "entry_date" in _entry else None
         except Exception:
-            days_held = 7
+            days_held = None
+
+        if days_held is None:
+            # Entry date unknown — use conservative assumption (day 1 = widest trail)
+            # Better to give too much room than to fake a mid-hold tighter trail
+            logger.warning("[DaysHeld] %s not in ledger — assuming day 1 (widest trail). "
+                           "Run backfill_ledger.py --write to fix.", sym)
+            days_held = 1
 
         high_water = max(price, entry)
         profit_atr = (high_water - entry) / atr if atr > 0 else 0

@@ -203,8 +203,21 @@ def build_snapshot(sym: str, signal, bars: pd.DataFrame,
         market_val  = float(position.get("market_value", price_now * qty))
         pnl_pct     = float(position.get("unrealized_pnl_pct", 0)) * 100
         meta        = (ledger_meta or {}).get("metadata", {})
-        stop_price  = float(meta.get("stop", entry_price * 0.92))
-        stop_dist_atr = (price_now - stop_price) / (atr_now + 1e-9)
+        raw_stop = meta.get("stop")
+        if raw_stop is not None:
+            stop_price = float(raw_stop)
+        else:
+            # Stop price not in ledger — position entered outside the bot or
+            # ledger not backfilled. Do NOT fabricate. Use None so stop_distance
+            # layer returns UNKNOWN rather than a fake score.
+            stop_price = None
+            logger.warning("[StopPrice] %s: no stop in ledger metadata — "
+                           "stop_distance layer disabled. Run backfill_ledger.py --write.", sym)
+
+        if stop_price is not None:
+            stop_dist_atr = (price_now - stop_price) / (atr_now + 1e-9)
+        else:
+            stop_dist_atr = None  # explicitly unknown — not fabricated
 
         entry_date_str = (ledger_meta or {}).get("entry_date", str(date.today()))
         try:
@@ -220,11 +233,12 @@ def build_snapshot(sym: str, signal, bars: pd.DataFrame,
             "qty":           qty,
             "market_value":  market_val,
             "pnl_pct":       pnl_pct,
-            "stop_price":    stop_price,
-            "stop_dist_atr": round(stop_dist_atr, 3),
+            "stop_price":    stop_price,          # None if not in ledger
+            "stop_dist_atr": round(stop_dist_atr, 3) if stop_dist_atr is not None else None,
             "days_held":     days_held,
             "hold_target":   hold_target,
             "hold_ratio":    round(days_held / max(hold_target, 1), 3),
+            "stop_known":    stop_price is not None,  # explicit quality flag
         }
 
     return {
@@ -272,7 +286,10 @@ def _score_factor_agreement(snapshots: List[Dict]) -> Tuple[float, str]:
     """Layer 2: FAR breadth + trend. <6/16 = strong sell (Frazzini & Pedersen 2014)."""
     latest    = snapshots[-1]
     far       = latest.get("factor_agreement", 0.5)
-    n_pos     = latest.get("factors_positive", 8)
+    n_pos     = latest.get("factors_positive", None)
+    if n_pos is None:
+        # No factor data in snapshot — return neutral, explicitly flagged
+        return 0.0, "FAR=no_data (neutral default)"
     far_trend = (snapshots[-1]["factor_agreement"] - snapshots[-3]["factor_agreement"]
                  if len(snapshots) >= 3 else 0.0)
     base      = (far - 0.5) * 2.0
