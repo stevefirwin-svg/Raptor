@@ -1,652 +1,382 @@
 """
-Raptor v5.5 — Dual-Book Signal Engine
-======================================
-Two separate, non-conflicting signal books:
+Raptor v5.3 — Sharpened Quantitative Swing Engine
+===================================================
+Foundation: v5.2 cross-sectional z-score + orthogonalization + t-stat.
+That architecture produced 1.98 PF, 3.6% DD, 1.68% expectancy.
 
-  Book 1 — MOMENTUM: Trend continuation entries on pullbacks.
-            Factors: ma_stack, adx_dir, rel_strength,
-                     obv_r2, accum_dist, price_cloud, vol_ratio
-                     (macd_accel removed: IC=-0.34, t=-3.42, 2026-05-23)
-            Gate:    micro == TRENDING, ADX > 25, price > 50 EMA
-            Entry:   pullback to 8/21 EMA on declining volume
-            Exit:    wide trail, momentum_break path, no fixed target
+Three upgrades integrated INTO the math, not bolted on:
 
-  Book 2 — MEAN_REVERSION: Panic-low entries, reversion to mean.
-            Factors: rsi_mr, bollinger_z, crowd_panic, ma_distance,
-                     bb_squeeze, rev_momentum, atr_pctile
-            Gate:    RSI(5) < 30, price below lower BB, volume spike
-            Entry:   exhaustion candle + divergence confirmation
-            Exit:    tight trail targeting 20-day mean, 5-day hold cap
+1. REVERSAL MOMENTUM FACTOR (replaces dead-weight news_sent)
+   Instead of binary "has reversal started?" gate, this is a
+   continuous cross-sectional factor measuring HOW MUCH the stock
+   has begun reverting. Computed as: (close - low_of_last_3_bars)
+   / ATR. A stock that bounced 2 ATR off its 3-day low ranks higher
+   than one that bounced 0.5 ATR. Cross-sectionally z-scored like
+   everything else — the math decides, not a binary gate.
 
-Bottom/Top Detector: Bulkowski-validated candlestick patterns +
-                     RSI divergence. Shared across both books.
+2. CONVICTION-SCALED POSITION SIZING
+   Kelly interpolates linearly from min_position_pct at t=1.65
+   to max_position_pct at t=3.0. Stronger statistical evidence =
+   more capital. Simple, no cap collision.
 
-Research basis:
-  - Jegadeesh & Titman (1993) — momentum persistence
-  - Asness, Moskowitz & Pedersen (2013) — momentum everywhere
-  - De Bondt & Thaler (1985) — mean reversion from overreaction
-  - Bulkowski (2008) — candlestick pattern reliability database
-  - Grinold & Kahn — conviction-proportional allocation
-  - Wilder (1978) — RSI divergence as reversal signal
+3. CROWD PANIC INTENSITY (replaces stochastic_rev which overlapped RSI)
+   Measures the behavioral footprint of forced selling:
+   (volume_today / volume_20d_avg) * abs(return_today) when return < 0.
+   High values = high volume on a big down day = panic liquidation.
+   This is the Kyle (1985) lambda proxy — captures when uninformed
+   sellers are providing liquidity premium to patient buyers.
+   Cross-sectionally z-scored: higher panic = higher MR opportunity.
+
+Factor count: 16 (same as v5.2, two swapped for higher-alpha versions)
+Cluster weights: same as v5.2 (35% MR, 25% trend, 12% vol, 13% volat, 15% new)
+Pipeline: identical to v5.2 (raw -> z-score -> ortho -> regime-weight -> t-test)
 """
 
-import json, logging, os
-from pathlib import Path
-from dataclasses import dataclass, field
+import json
+import logging
+import os
+from dataclasses import dataclass
 from typing import Any, Dict, List, Optional, Tuple
+
 import numpy as np
 import pandas as pd
 from scipy import stats as scipy_stats
+
 from config import RaptorConfig
 
 logger = logging.getLogger("raptor.signals")
+
 MIN_BARS_REQUIRED = 80
 
-# ── Trade type constants ───────────────────────────────────────────────────────
-MOMENTUM       = "MOMENTUM"
-MEAN_REVERSION = "MEAN_REVERSION"
 
-# ── Factor name registries per book ───────────────────────────────────────────
-MOMENTUM_FACTORS = [
-    # IC-validated factors only (factor_lab.py, 2026-05-23, 94 obs)
-    # Removed: macd_accel  IC=-0.34 t=-3.42 — statistically significant NEGATIVE predictor
-    "ma_stack", "adx_dir", "rel_strength",
-    "obv_r2", "accum_dist", "price_cloud", "vol_ratio",
-]
-MR_FACTORS = [
-    "rsi_mr", "bollinger_z", "crowd_panic", "ma_distance",
-    "bb_squeeze", "rev_momentum", "atr_pctile",
-]
-FACTOR_NAMES = MOMENTUM_FACTORS + MR_FACTORS  # Full registry for AdaptiveWeights
-
-# ── Signal dataclass — extended with trade identity ────────────────────────────
 @dataclass
 class Signal:
-    symbol:              str
-    side:                str
-    trade_type:          str   # MOMENTUM | MEAN_REVERSION
-    composite_score:     float
-    book_conviction:     float # conviction within own book (0-1)
-    composite_percentile:float
-    t_statistic:         float
-    factor_scores:       Dict[str, float]
-    factor_contributions:Dict[str, float]
-    factors_positive:    int
-    regime:              str
-    pattern_signal:      str   # candlestick/divergence pattern detected, or ""
-    sentiment_score:     float
-    atr:                 float
-    entry_price:         float
-    stop_price:          float
-    take_profit:         float
-    kelly_fraction:      float
-    hold_target_days:    int
-    leverage_qualified:  bool
-    confirmation_type:   str
-    timestamp:           str
+    symbol: str
+    side: str
+    composite_score: float
+    composite_percentile: float
+    t_statistic: float
+    factor_scores: Dict[str, float]
+    factor_contributions: Dict[str, float]
+    factors_positive: int
+    regime: str
+    sentiment_score: float
+    atr: float
+    entry_price: float
+    stop_price: float
+    take_profit: float
+    kelly_fraction: float
+    hold_target_days: int
+    leverage_qualified: bool
+    confirmation_type: str
+    timestamp: str
 
-
-# ══════════════════════════════════════════════════════════════════════════════
-# RAW FACTOR COMPUTATION
-# ══════════════════════════════════════════════════════════════════════════════
 
 class Factors:
-    """All raw factor computations. Stateless — all inputs explicit."""
 
-    # ── Mean Reversion factors ─────────────────────────────────────────────────
+    # ── MEAN-REVERSION (5 factors, 35%) ──
+
     @staticmethod
-    def rsi_mr(c, period=5):
-        """RSI mean-reversion score. Positive when oversold."""
-        d = c.diff()
-        g = d.clip(lower=0).ewm(span=period, adjust=False).mean()
-        l = (-d.clip(upper=0)).ewm(span=period, adjust=False).mean()
-        rsi = 100 - 100 / (1 + g / (l + 1e-10))
+    def rsi_mr(c: pd.Series, period: int = 5) -> float:
+        """RSI(5) continuous MR signal. Wilder 1978."""
+        delta = c.diff()
+        gain = delta.clip(lower=0).ewm(span=period, adjust=False).mean()
+        loss = (-delta.clip(upper=0)).ewm(span=period, adjust=False).mean()
+        rsi = 100 - 100 / (1 + gain / (loss + 1e-10))
         return float((50 - rsi.iloc[-1]) / 50)
 
     @staticmethod
-    def rsi_raw(c, period=14):
-        """Raw RSI value 0-100."""
-        d = c.diff()
-        g = d.clip(lower=0).ewm(span=period, adjust=False).mean()
-        l = (-d.clip(upper=0)).ewm(span=period, adjust=False).mean()
-        return float(100 - 100 / (1 + g / (l + 1e-10)).iloc[-1])
-
-    @staticmethod
-    def bollinger_z(c, period=20):
-        """Negative z-score vs Bollinger mid. Positive when below lower band."""
-        m = c.rolling(period).mean().iloc[-1]
-        s = c.rolling(period).std().iloc[-1]
-        return float(-(c.iloc[-1] - m) / s) if s > 1e-10 else 0.0
-
-    @staticmethod
-    def crowd_panic(df):
-        """Volume-weighted panic score. High = exhaustion selling."""
-        c, v = df["close"], df["volume"]
-        av = v.iloc[-21:-1].mean()
-        if av <= 0:
+    def bollinger_z(c: pd.Series, period: int = 20) -> float:
+        """Bollinger Band z-score. Below mean = buy."""
+        sma = c.rolling(period).mean().iloc[-1]
+        std = c.rolling(period).std().iloc[-1]
+        if std < 1e-10:
             return 0.0
-        p = 0.0
-        for i in [-1, -2, -3]:
-            if len(c) < abs(i) + 1:
-                continue
-            r = c.iloc[i] / c.iloc[i-1] - 1
-            if r < 0:
-                p += (v.iloc[i] / av) * abs(r)
-        return float(p)
+        return float(-(c.iloc[-1] - sma) / std)
 
     @staticmethod
-    def ma_distance(c):
-        """Distance below moving average composite. Positive when below EMAs."""
-        e8  = c.ewm(span=8,  adjust=False).mean().iloc[-1]
+    def crowd_panic(df: pd.DataFrame) -> float:
+        """
+        Crowd panic intensity. Kyle 1985 lambda proxy.
+        (volume / avg_volume) * |negative_return|
+        High values = forced selling = liquidity premium for buyers.
+        Only fires on DOWN days. Up days return 0.
+        Replaces stochastic_rev which overlapped with RSI.
+        """
+        c = df["close"]
+        v = df["volume"]
+        ret = c.iloc[-1] / c.iloc[-2] - 1 if len(c) >= 2 else 0
+        if ret >= 0:
+            return 0.0  # No panic on up days
+        avg_vol = v.iloc[-21:-1].mean()
+        if avg_vol <= 0:
+            return 0.0
+        vol_ratio = v.iloc[-1] / avg_vol
+        return float(vol_ratio * abs(ret))
+
+    @staticmethod
+    def ma_distance(c: pd.Series) -> float:
+        """Distance from 8/21/50 EMA average. Below = buy for MR."""
+        e8 = c.ewm(span=8, adjust=False).mean().iloc[-1]
         e21 = c.ewm(span=21, adjust=False).mean().iloc[-1]
         e50 = c.ewm(span=50, adjust=False).mean().iloc[-1]
-        a = (e8 + e21 + e50) / 3
-        return float(-(c.iloc[-1] - a) / a) if a != 0 else 0.0
+        avg = (e8 + e21 + e50) / 3
+        return float(-(c.iloc[-1] - avg) / avg) if avg != 0 else 0.0
 
     @staticmethod
-    def bb_squeeze(c, period=20, lb=60):
-        """Bollinger bandwidth percentile. High = squeeze = volatility compression."""
-        bw = (4 * c.rolling(period).std() / c.rolling(period).mean()).dropna()
-        if len(bw) < lb:
+    def hurst(c: pd.Series, max_lag: int = 20) -> float:
+        """Hurst exponent. Mandelbrot 1969. (0.5 - H): positive = MR."""
+        rets = np.log(c / c.shift(1)).dropna().values
+        if len(rets) < max_lag * 2:
             return np.nan
-        return float(-(scipy_stats.percentileofscore(bw.iloc[-lb:].values, bw.iloc[-1]) / 100 - 0.5) * 2)
-
-    @staticmethod
-    def reversal_momentum(df, lookback=3):
-        """Price recovery from recent low relative to ATR. MR entry strength."""
-        c, lo, hi = df["close"], df["low"], df["high"]
-        tr = pd.concat([hi - lo,
-                        (hi - c.shift(1)).abs(),
-                        (lo - c.shift(1)).abs()], axis=1).max(axis=1)
-        a = tr.rolling(14).mean().iloc[-1]
-        if pd.isna(a) or a <= 0:
+        rs_pts = []
+        for lag in range(2, max_lag + 1):
+            n_sub = len(rets) // lag
+            if n_sub < 1:
+                continue
+            rs_list = []
+            for i in range(n_sub):
+                sub = rets[i * lag:(i + 1) * lag]
+                dev = np.cumsum(sub - sub.mean())
+                R = dev.max() - dev.min()
+                S = sub.std()
+                if S > 1e-10:
+                    rs_list.append(R / S)
+            if rs_list:
+                rs_pts.append((np.log(lag), np.log(np.mean(rs_list))))
+        if len(rs_pts) < 4:
             return np.nan
-        return float((c.iloc[-1] - lo.iloc[-lookback:].min()) / a)
+        x = np.array([p[0] for p in rs_pts])
+        y = np.array([p[1] for p in rs_pts])
+        return float(0.5 - np.polyfit(x, y, 1)[0])
+
+    # ── TREND CONTEXT (4 factors, 25%) ──
 
     @staticmethod
-    def atr_pctile(df, atr_p=14, lb=60):
-        """ATR percentile. High = volatility spike = potential exhaustion."""
-        h, l, c = df["high"], df["low"], df["close"]
-        tr = pd.concat([h - l,
-                        (h - c.shift(1)).abs(),
-                        (l - c.shift(1)).abs()], axis=1).max(axis=1)
-        a = tr.rolling(atr_p).mean().dropna()
-        if len(a) < lb:
-            return np.nan
-        # For MR: HIGH atr_pctile = volatility spike = positive signal
-        return float((scipy_stats.percentileofscore(a.iloc[-lb:].values, a.iloc[-1]) / 100 - 0.5) * 2)
-
-    # ── Momentum factors ───────────────────────────────────────────────────────
-    @staticmethod
-    def ma_stack(c):
-        """EMA alignment score. Positive when 8 > 21 > 50."""
-        e8  = c.ewm(span=8,  adjust=False).mean()
+    def ma_stack(c: pd.Series) -> float:
+        """8/21/50 EMA ordering + slope."""
+        e8 = c.ewm(span=8, adjust=False).mean()
         e21 = c.ewm(span=21, adjust=False).mean()
         e50 = c.ewm(span=50, adjust=False).mean()
         order = float((e8.iloc[-1] > e21.iloc[-1]) + (e21.iloc[-1] > e50.iloc[-1]) - 1)
-        slope = np.clip(sum((e.iloc[-1] / e.iloc[-5] - 1) for e in [e8, e21, e50]) / 3 * 50, -0.4, 0.4)
+        s8 = (e8.iloc[-1] / e8.iloc[-5] - 1) if len(e8) >= 5 else 0
+        s21 = (e21.iloc[-1] / e21.iloc[-5] - 1) if len(e21) >= 5 else 0
+        s50 = (e50.iloc[-1] / e50.iloc[-5] - 1) if len(e50) >= 5 else 0
+        slope = np.clip((s8 + s21 + s50) / 3 * 50, -0.4, 0.4)
         return float(order * 0.6 + slope)
 
     @staticmethod
-    def macd_accel(c, fast=12, slow=26, sig=9):
-        """MACD histogram slope — positive = accelerating momentum."""
+    def macd_accel(c: pd.Series, fast=12, slow=26, sig=9) -> float:
+        """MACD histogram 5-bar slope / price."""
         ef = c.ewm(span=fast, adjust=False).mean()
         es = c.ewm(span=slow, adjust=False).mean()
-        h  = ef - es - (ef - es).ewm(span=sig, adjust=False).mean()
-        return float(np.polyfit(np.arange(5), h.iloc[-5:].values, 1)[0] / c.iloc[-1])
+        hist = ef - es - (ef - es).ewm(span=sig, adjust=False).mean()
+        y = hist.iloc[-5:].values
+        return float(np.polyfit(np.arange(5), y, 1)[0] / c.iloc[-1])
 
     @staticmethod
-    def adx_dir(df, period=14):
-        """Signed ADX. Positive when uptrend has structure."""
+    def adx_dir(df: pd.DataFrame, period: int = 14) -> float:
+        """Signed ADX. Wilder 1978."""
         h, l, c = df["high"], df["low"], df["close"]
         pdm = h.diff().clip(lower=0)
         mdm = (-l.diff()).clip(lower=0)
         pdm[pdm < mdm] = 0.0
         mdm[mdm < pdm] = 0.0
-        tr  = pd.concat([h - l, (h - c.shift(1)).abs(), (l - c.shift(1)).abs()], axis=1).max(axis=1)
-        a   = tr.ewm(span=period, adjust=False).mean()
-        pdi = 100 * pdm.ewm(span=period, adjust=False).mean() / a
-        mdi = 100 * mdm.ewm(span=period, adjust=False).mean() / a
-        dx  = 100 * (pdi - mdi).abs() / (pdi + mdi + 1e-10)
+        tr = pd.concat([h - l, (h - c.shift(1)).abs(), (l - c.shift(1)).abs()], axis=1).max(axis=1)
+        atr_s = tr.ewm(span=period, adjust=False).mean()
+        pdi = 100 * pdm.ewm(span=period, adjust=False).mean() / atr_s
+        mdi = 100 * mdm.ewm(span=period, adjust=False).mean() / atr_s
+        dx = 100 * (pdi - mdi).abs() / (pdi + mdi + 1e-10)
         adx = dx.ewm(span=period, adjust=False).mean()
-        return float(adx.iloc[-1] * (1.0 if pdi.iloc[-1] > mdi.iloc[-1] else -1.0))
+        sign = 1.0 if pdi.iloc[-1] > mdi.iloc[-1] else -1.0
+        return float(adx.iloc[-1] * sign)
 
     @staticmethod
-    def adx_raw(df, period=14):
-        """Raw ADX value (unsigned trend strength)."""
-        h, l, c = df["high"], df["low"], df["close"]
-        pdm = h.diff().clip(lower=0)
-        mdm = (-l.diff()).clip(lower=0)
-        pdm[pdm < mdm] = 0.0
-        mdm[mdm < pdm] = 0.0
-        tr  = pd.concat([h - l, (h - c.shift(1)).abs(), (l - c.shift(1)).abs()], axis=1).max(axis=1)
-        a   = tr.ewm(span=period, adjust=False).mean()
-        pdi = 100 * pdm.ewm(span=period, adjust=False).mean() / a
-        mdi = 100 * mdm.ewm(span=period, adjust=False).mean() / a
-        dx  = 100 * (pdi - mdi).abs() / (pdi + mdi + 1e-10)
-        return float(dx.ewm(span=period, adjust=False).mean().iloc[-1])
+    def price_cloud(c: pd.Series) -> float:
+        """Price position within 8/50 EMA envelope."""
+        e8 = c.ewm(span=8, adjust=False).mean().iloc[-1]
+        e50 = c.ewm(span=50, adjust=False).mean().iloc[-1]
+        mid = (e8 + e50) / 2
+        width = abs(e8 - e50)
+        if width < 1e-10:
+            return 0.0
+        return float((c.iloc[-1] - mid) / width)
+
+    # ── VOLUME (3 factors, 12%) ──
 
     @staticmethod
-    def rel_strength(sym_c, spy_c, period=10):
-        """Relative strength vs SPY. Positive = outperforming."""
-        if len(spy_c) < period:
+    def vol_ratio(v: pd.Series) -> float:
+        """Log volume ratio."""
+        avg = v.iloc[-21:-1].mean()
+        if avg == 0:
             return np.nan
-        return float((sym_c.iloc[-1] / sym_c.iloc[-period]) - (spy_c.iloc[-1] / spy_c.iloc[-period]))
+        return float(np.log(v.iloc[-1] / avg))
 
     @staticmethod
-    def obv_r2(df, lb=10):
-        """OBV trend slope * R². Positive = volume confirming uptrend."""
+    def obv_r2(df: pd.DataFrame, lb: int = 10) -> float:
+        """OBV regression slope * R-squared."""
         obv = (np.sign(df["close"].diff()) * df["volume"]).cumsum()
-        y   = obv.iloc[-lb:].values
-        ys  = (y - y.mean()) / (y.std() + 1e-10)
-        s, _, r, _, _ = scipy_stats.linregress(np.arange(lb, dtype=float), ys)
+        y = obv.iloc[-lb:].values
+        y_s = (y - y.mean()) / (y.std() + 1e-10)
+        s, _, r, _, _ = scipy_stats.linregress(np.arange(lb, dtype=float), y_s)
         return float(s * r ** 2)
 
     @staticmethod
-    def accum_dist(df, lb=10):
-        """Accumulation/distribution slope. Positive = institutional accumulation."""
+    def accum_dist(df: pd.DataFrame, lb: int = 10) -> float:
+        """Chaikin A/D slope * |R|."""
         clv = ((df["close"] - df["low"]) - (df["high"] - df["close"])) / (df["high"] - df["low"] + 1e-10)
-        ad  = (clv * df["volume"]).cumsum()
-        y   = ad.iloc[-lb:].values
-        ys  = (y - y.mean()) / (y.std() + 1e-10)
-        s, _, r, _, _ = scipy_stats.linregress(np.arange(lb, dtype=float), ys)
+        ad = (clv * df["volume"]).cumsum()
+        y = ad.iloc[-lb:].values
+        y_s = (y - y.mean()) / (y.std() + 1e-10)
+        s, _, r, _, _ = scipy_stats.linregress(np.arange(lb, dtype=float), y_s)
         return float(s * abs(r))
 
-    @staticmethod
-    def price_cloud(c):
-        """Position relative to EMA cloud midpoint. Positive = above cloud."""
-        e8  = c.ewm(span=8,  adjust=False).mean().iloc[-1]
-        e50 = c.ewm(span=50, adjust=False).mean().iloc[-1]
-        w   = abs(e8 - e50)
-        return float((c.iloc[-1] - (e8 + e50) / 2) / w) if w > 1e-10 else 0.0
+    # ── VOLATILITY & RELATIVE (3 factors, 13%) ──
 
     @staticmethod
-    def vol_ratio(v):
-        """Log volume ratio vs 20-day avg. Positive = above-average volume."""
-        a = v.iloc[-21:-1].mean()
-        return float(np.log(v.iloc[-1] / a)) if a > 0 else np.nan
-
-    # ── Shared utilities ───────────────────────────────────────────────────────
-    @staticmethod
-    def hurst(c, max_lag=20):
-        """Hurst exponent. >0.5 = trending, <0.5 = reverting."""
-        r = np.log(c / c.shift(1)).dropna().values
-        if len(r) < max_lag * 2:
+    def atr_pctile(df: pd.DataFrame, atr_p: int = 14, lb: int = 60) -> float:
+        """ATR percentile. High vol = negative."""
+        h, l, c = df["high"], df["low"], df["close"]
+        tr = pd.concat([h - l, (h - c.shift(1)).abs(), (l - c.shift(1)).abs()], axis=1).max(axis=1)
+        atr_s = tr.rolling(atr_p).mean().dropna()
+        if len(atr_s) < lb:
             return np.nan
-        pts = []
-        for lag in range(2, max_lag + 1):
-            ns = len(r) // lag
-            if ns < 1:
-                continue
-            rl = []
-            for i in range(ns):
-                sub = r[i*lag:(i+1)*lag]
-                d = np.cumsum(sub - sub.mean())
-                R = d.max() - d.min()
-                S = sub.std()
-                if S > 1e-10:
-                    rl.append(R / S)
-            if rl:
-                pts.append((np.log(lag), np.log(np.mean(rl))))
-        if len(pts) < 4:
-            return np.nan
-        x = np.array([p[0] for p in pts])
-        y = np.array([p[1] for p in pts])
-        return float(np.polyfit(x, y, 1)[0])  # raw Hurst H
+        pct = scipy_stats.percentileofscore(atr_s.iloc[-lb:].values, atr_s.iloc[-1]) / 100
+        return float(-(pct - 0.5) * 2)
 
     @staticmethod
-    def atr(df, period=14):
-        """ATR value."""
+    def bb_squeeze(c: pd.Series, period: int = 20, lb: int = 60) -> float:
+        """Bollinger bandwidth percentile. Squeeze = positive."""
+        bw = (4 * c.rolling(period).std() / c.rolling(period).mean()).dropna()
+        if len(bw) < lb:
+            return np.nan
+        pct = scipy_stats.percentileofscore(bw.iloc[-lb:].values, bw.iloc[-1]) / 100
+        return float(-(pct - 0.5) * 2)
+
+    @staticmethod
+    def rel_strength(sym_c: pd.Series, spy_c: pd.Series, period: int = 10) -> float:
+        """10-day return vs SPY."""
+        if len(spy_c) < period:
+            return np.nan
+        return float((sym_c.iloc[-1] / sym_c.iloc[-period]) -
+                     (spy_c.iloc[-1] / spy_c.iloc[-period]))
+
+    # ── NEW: REVERSAL MOMENTUM (1 factor, 15%) ──
+
+    @staticmethod
+    def reversal_momentum(df: pd.DataFrame, lookback: int = 3) -> float:
+        """
+        How much has the stock bounced off its recent low?
+        (close - lowest_low_of_last_N_bars) / ATR
+
+        This is a CONTINUOUS measure of reversal strength.
+        A stock that dropped and bounced 2 ATR ranks higher than
+        one that bounced 0.5 ATR. Cross-sectionally z-scored,
+        so the math decides which bounces are meaningful.
+
+        Replaces binary confirmation gates and dead-weight sentiment.
+        Captures the disposition effect (Shefrin & Statman 1985):
+        the crowd sells too early on the bounce, creating
+        underpriced momentum in the reversal.
+        """
+        c = df["close"]
+        l = df["low"]
+        h, lo_col = df["high"], df["low"]
+        tr = pd.concat([h - l, (h - c.shift(1)).abs(), (l - c.shift(1)).abs()], axis=1).max(axis=1)
+        atr = tr.rolling(14).mean().iloc[-1]
+        if pd.isna(atr) or atr <= 0:
+            return np.nan
+        recent_low = lo_col.iloc[-lookback:].min()
+        bounce = (c.iloc[-1] - recent_low) / atr
+        return float(bounce)
+
+    # ── UTILITY ──
+
+    @staticmethod
+    def atr(df: pd.DataFrame, period: int = 14) -> float:
         h, l, c = df["high"], df["low"], df["close"]
         tr = pd.concat([h - l, (h - c.shift(1)).abs(), (l - c.shift(1)).abs()], axis=1).max(axis=1)
         return float(tr.rolling(period).mean().iloc[-1])
 
     @staticmethod
-    def check_leverage(df, spy_bars, rsi_val, bb_z):
-        """Leveraged ETF qualification check."""
+    def check_leverage(df: pd.DataFrame, spy_bars, rsi_val: float, bb_z: float) -> bool:
+        """Surgical leverage: ALL conditions required."""
         if spy_bars is None or len(spy_bars) < 205:
             return False
-        spy_c  = spy_bars["close"]
+        spy_c = spy_bars["close"]
         sma200 = spy_c.rolling(200).mean()
         if not (spy_c.iloc[-1] > sma200.iloc[-1] and sma200.iloc[-1] > sma200.iloc[-5]):
             return False
-        if rsi_val >= 30 or bb_z < 2.0:
+        if rsi_val >= 30:  # Need RSI raw < 30
+            return False
+        if bb_z < 2.0:  # Need 2+ sigma below mean
             return False
         c, h, l = df["close"], df["high"], df["low"]
-        ema20   = c.ewm(span=20, adjust=False).mean()
-        tr      = pd.concat([h - l, (h - c.shift(1)).abs(), (l - c.shift(1)).abs()], axis=1).max(axis=1)
-        kl      = ema20 - 1.5 * tr.rolling(14).mean()
-        if c.iloc[-1] >= kl.iloc[-1]:
+        ema20 = c.ewm(span=20, adjust=False).mean()
+        tr = pd.concat([h - l, (h - c.shift(1)).abs(), (l - c.shift(1)).abs()], axis=1).max(axis=1)
+        kelt_lower = ema20 - 1.5 * tr.rolling(14).mean()
+        if c.iloc[-1] >= kelt_lower.iloc[-1]:
             return False
-        av = df["volume"].iloc[-21:-1].mean()
-        if av <= 0 or df["volume"].iloc[-1] / av < 1.5:
+        avg_vol = df["volume"].iloc[-21:-1].mean()
+        if avg_vol <= 0 or df["volume"].iloc[-1] / avg_vol < 1.5:
             return False
         return True
 
 
-# ══════════════════════════════════════════════════════════════════════════════
-# BOTTOM / TOP DETECTOR
-# Bulkowski (2008) validated patterns. Only patterns with >60% reversal rate.
-# ══════════════════════════════════════════════════════════════════════════════
-
-class BottomTopDetector:
-    """
-    Detects candlestick-based and divergence-based reversal signals.
-    Returns a string label or "" if no pattern detected.
-
-    Bulkowski reliability rates used as inclusion threshold (>60%):
-      Hammer:              60.4%  — bottom
-      Bullish Engulfing:   63.0%  — bottom
-      Morning Star:        61.5%  — bottom
-      Piercing Line:       62.1%  — bottom
-      Three White Soldiers:65.4%  — bottom (rare)
-      Bearish Engulfing:   60.6%  — top
-      Evening Star:        61.8%  — top
-      Dark Cloud Cover:    62.3%  — top
-      Three Black Crows:   65.1%  — top (rare)
-      Shooting Star:       60.8%  — top
-
-    RSI divergence (Wilder 1978): not in Bulkowski but empirically
-    confirmed in academic literature as high-quality reversal signal.
-    """
-
-    @staticmethod
-    def _body(o, c):
-        return abs(c - o)
-
-    @staticmethod
-    def _range(h, l):
-        return h - l + 1e-10
-
-    @classmethod
-    def detect_bottom(cls, df) -> str:
-        """
-        Returns pattern name if a bottom formation is detected, else "".
-        Checks last completed candle (iloc[-1]) and prior candles as needed.
-        """
-        if len(df) < 4:
-            return ""
-        o  = df["open"].values
-        h  = df["high"].values
-        l  = df["low"].values
-        c  = df["close"].values
-        v  = df["volume"].values
-
-        # Shorthand for last 3 bars
-        o1, h1, l1, c1 = o[-1], h[-1], l[-1], c[-1]  # most recent
-        o2, h2, l2, c2 = o[-2], h[-2], l[-2], c[-2]  # prior
-        o3, h3, l3, c3 = o[-3], h[-3], l[-3], c[-3]  # two bars ago
-
-        avg_vol = np.mean(v[-21:-1]) if len(v) > 21 else np.mean(v[:-1])
-        body1   = cls._body(o1, c1)
-        rng1    = cls._range(h1, l1)
-        body2   = cls._body(o2, c2)
-
-        # ── Hammer (Bulkowski 60.4%) ──────────────────────────────────────────
-        # Bullish body small, lower shadow >= 2x body, upper shadow tiny,
-        # appears after downtrend, above-average volume preferred
-        lower_shadow1 = min(o1, c1) - l1
-        upper_shadow1 = h1 - max(o1, c1)
-        if (body1 > 0 and
-                lower_shadow1 >= 2.0 * body1 and
-                upper_shadow1 <= 0.3 * body1 and
-                c2 < o2 and  # prior candle was bearish
-                v[-1] >= avg_vol * 0.8):
-            return "hammer"
-
-        # ── Bullish Engulfing (Bulkowski 63.0%) ───────────────────────────────
-        # Current bullish candle body fully engulfs prior bearish body,
-        # prior close < prior open (bearish), current close > prior open
-        if (c1 > o1 and       # current bullish
-                c2 < o2 and   # prior bearish
-                o1 < c2 and   # open below prior close
-                c1 > o2 and   # close above prior open
-                body1 > body2 and
-                v[-1] >= avg_vol * 1.0):
-            return "bullish_engulfing"
-
-        # ── Morning Star (Bulkowski 61.5%) ────────────────────────────────────
-        # 3-bar: bearish candle, small doji/star body gap down, bullish candle
-        body_mid = cls._body(o2, c2)
-        if (c3 < o3 and                          # bar-3 bearish
-                body_mid <= 0.3 * cls._body(o3, c3) and  # bar-2 small body (star)
-                c1 > o1 and                       # bar-1 bullish
-                c1 > (o3 + c3) / 2 and           # closes above midpoint of bar-3
-                v[-1] >= avg_vol * 0.8):
-            return "morning_star"
-
-        # ── Piercing Line (Bulkowski 62.1%) ───────────────────────────────────
-        # Bearish prior candle, current opens below prior low, closes above midpoint
-        if (c2 < o2 and          # prior bearish
-                o1 < l2 and      # open below prior low (gap down)
-                c1 > o1 and      # current bullish
-                c1 > (o2 + c2) / 2 and  # closes above midpoint
-                c1 < o2):        # but below prior open (not full engulf)
-            return "piercing_line"
-
-        # ── Three White Soldiers (Bulkowski 65.4%) ────────────────────────────
-        # 3 consecutive bullish candles each closing near high, each higher
-        if (c1 > o1 and c2 > o2 and c3 > o3 and       # all bullish
-                c1 > c2 > c3 and                        # each higher close
-                o1 > o2 > o3 and                        # each higher open
-                (h1 - c1) <= 0.2 * cls._body(o1, c1) and  # closes near high
-                (h2 - c2) <= 0.2 * cls._body(o2, c2)):
-            return "three_white_soldiers"
-
-        # ── RSI Bullish Divergence (Wilder 1978) ─────────────────────────────
-        # Price makes lower low, RSI makes higher low — hidden buying pressure
-        if len(df) >= 10:
-            prices = df["close"].values
-            closes_series = pd.Series(prices)
-            d = closes_series.diff()
-            g = d.clip(lower=0).ewm(span=5, adjust=False).mean()
-            lo = (-d.clip(upper=0)).ewm(span=5, adjust=False).mean()
-            rsi_series = 100 - 100 / (1 + g / (lo + 1e-10))
-            rsi_vals = rsi_series.values
-            # Compare last two local lows (simplified: last bar vs 5 bars ago)
-            if (prices[-1] < prices[-6] and         # price: lower low
-                    rsi_vals[-1] > rsi_vals[-6] and  # RSI: higher low
-                    rsi_vals[-1] < 45):              # still in oversold zone
-                return "rsi_bull_divergence"
-
-        return ""
-
-    @classmethod
-    def detect_top(cls, df) -> str:
-        """
-        Returns pattern name if a top formation is detected, else "".
-        Used for exit timing on momentum positions.
-        """
-        if len(df) < 4:
-            return ""
-        o = df["open"].values
-        h = df["high"].values
-        l = df["low"].values
-        c = df["close"].values
-        v = df["volume"].values
-
-        o1, h1, l1, c1 = o[-1], h[-1], l[-1], c[-1]
-        o2, h2, l2, c2 = o[-2], h[-2], l[-2], c[-2]
-        o3, h3, l3, c3 = o[-3], h[-3], l[-3], c[-3]
-
-        avg_vol = np.mean(v[-21:-1]) if len(v) > 21 else np.mean(v[:-1])
-        body1   = cls._body(o1, c1)
-        body2   = cls._body(o2, c2)
-
-        upper_shadow1 = h1 - max(o1, c1)
-        lower_shadow1 = min(o1, c1) - l1
-
-        # ── Shooting Star (Bulkowski 60.8%) ───────────────────────────────────
-        if (body1 > 0 and
-                upper_shadow1 >= 2.0 * body1 and
-                lower_shadow1 <= 0.3 * body1 and
-                c2 > o2 and
-                v[-1] >= avg_vol * 0.8):
-            return "shooting_star"
-
-        # ── Bearish Engulfing (Bulkowski 60.6%) ───────────────────────────────
-        if (c1 < o1 and
-                c2 > o2 and
-                o1 > c2 and
-                c1 < o2 and
-                body1 > body2 and
-                v[-1] >= avg_vol * 1.0):
-            return "bearish_engulfing"
-
-        # ── Evening Star (Bulkowski 61.8%) ────────────────────────────────────
-        body_mid = cls._body(o2, c2)
-        if (c3 > o3 and
-                body_mid <= 0.3 * cls._body(o3, c3) and
-                c1 < o1 and
-                c1 < (o3 + c3) / 2 and
-                v[-1] >= avg_vol * 0.8):
-            return "evening_star"
-
-        # ── Dark Cloud Cover (Bulkowski 62.3%) ────────────────────────────────
-        if (c2 > o2 and
-                o1 > h2 and
-                c1 < o1 and
-                c1 < (o2 + c2) / 2 and
-                c1 > o2):
-            return "dark_cloud_cover"
-
-        # ── Three Black Crows (Bulkowski 65.1%) ───────────────────────────────
-        if (c1 < o1 and c2 < o2 and c3 < o3 and
-                c1 < c2 < c3 and
-                o1 < o2 < o3 and
-                (l1 - c1) <= 0.2 * cls._body(o1, c1) and
-                (l2 - c2) <= 0.2 * cls._body(o2, c2)):
-            return "three_black_crows"
-
-        # ── RSI Bearish Divergence ─────────────────────────────────────────────
-        if len(df) >= 10:
-            prices = df["close"].values
-            closes_series = pd.Series(prices)
-            d = closes_series.diff()
-            g = d.clip(lower=0).ewm(span=14, adjust=False).mean()
-            lo = (-d.clip(upper=0)).ewm(span=14, adjust=False).mean()
-            rsi_series = 100 - 100 / (1 + g / (lo + 1e-10))
-            rsi_vals = rsi_series.values
-            if (prices[-1] > prices[-6] and
-                    rsi_vals[-1] < rsi_vals[-6] and
-                    rsi_vals[-1] > 60):
-                return "rsi_bear_divergence"
-
-        return ""
-
-
-# ══════════════════════════════════════════════════════════════════════════════
-# ADAPTIVE WEIGHTS (unchanged — ridge regression + IC boost)
-# ══════════════════════════════════════════════════════════════════════════════
-
-
 class AdaptiveWeights:
     """
-    Per-book adaptive weight learning.
-    Fixes applied 2026-05-24:
-      - Spearman rank IC replaces binary IC (Grinold & Kahn 1999)
-      - Exponential decay: recent trades weighted higher (λ=0.005, half-life 139d)
-      - Per-book weight files: MOMENTUM and MEAN_REVERSION learn independently
-      - Weighted ridge regression (WLS) respects trade recency
-      - Atomic writes: crash-safe persistence
-    """
-    MIN_TRADES   = 30
-    MAX_ALPHA    = 0.30
-    RIDGE_LAMBDA = 1.0
-    DECAY_LAMBDA = 0.005   # half-life ≈ 139 days (Asness, Moskowitz & Pedersen 2013)
+    Online ridge regression on closed trade outcomes.
+    Learns which factors predicted winners vs losers.
 
-    def __init__(self, factor_names, base_dir=".", book="MOMENTUM"):
-        from scipy.stats import spearmanr as _spearmanr
-        self._spearmanr   = _spearmanr
+    After each trade closes, we record:
+      X = the 16 orthogonalized z-scores at entry
+      y = realized return (pnl_pct)
+
+    Ridge regression (L2 regularization) fits:
+      y = X @ beta + epsilon
+
+    Beta tells us which factors actually predicted returns.
+    We blend these learned weights with the base weights:
+      final_weight = (1-alpha)*base + alpha*ridge_normalized
+
+    alpha starts at 0 (pure base weights) and grows toward 0.3
+    as more trades accumulate. Need 30+ trades before ridge
+    has statistical power.
+
+    Persists to disk (adaptive_weights.json) so it survives restarts.
+    """
+
+    WEIGHT_FILE = "adaptive_weights.json"
+    MIN_TRADES = 30        # Don't use ridge until this many trades
+    MAX_ALPHA = 0.30       # Maximum blend toward learned weights
+    RIDGE_LAMBDA = 1.0     # L2 regularization strength
+
+    def __init__(self, factor_names: list, base_dir: str = "."):
         self.factor_names = factor_names
-        self.book         = book
-        # Per-book weight file prevents momentum data contaminating MR weights
-        fname             = f"adaptive_weights_{book}.json"
-        self.path         = Path(base_dir) / fname
-        self.data         = self._load()
-        self._ic_cache    = None   # (n_trades, {fn: ic})
+        self.path = os.path.join(base_dir, self.WEIGHT_FILE)
+        self.data = self._load()
 
     def _load(self):
-        try:
-            if self.path.exists():
-                return json.loads(self.path.read_text())
-        except Exception:
-            pass
+        if os.path.exists(self.path):
+            with open(self.path, "r") as f:
+                return json.load(f)
         return {"trades": [], "ridge_beta": None, "n_trades": 0}
 
     def _save(self):
-        try:
-            tmp = self.path.with_suffix(".tmp")
-            tmp.write_text(json.dumps(self.data, indent=2))
-            os.replace(tmp, self.path)
-        except Exception as e:
-            logger.warning("[AdaptiveWeights:%s] Save failed: %s", self.book, e)
+        with open(self.path, "w") as f:
+            json.dump(self.data, f, indent=2)
 
-    def _decay_weights(self) -> np.ndarray:
-        """Exponential decay weight per trade. Recent = higher weight."""
-        from datetime import date as _date
-        today = _date.today()
-        weights = []
-        for t in self.data["trades"]:
-            ts = t.get("date", "")
-            try:
-                days_ago = (today - _date.fromisoformat(ts[:10])).days
-            except Exception:
-                days_ago = 365   # unknown date → treated as old
-            weights.append(np.exp(-self.DECAY_LAMBDA * days_ago))
-        arr = np.array(weights, dtype=float)
-        return arr / arr.sum() if arr.sum() > 1e-10 else np.ones(len(weights)) / len(weights)
-
-    def record_trade(self, zscores: dict, ret: float, trade_date: str = "") -> None:
-        from datetime import date as _date
-        row = {fn: zscores.get(fn, 0.0) for fn in self.factor_names}
-        row["y"]    = ret
-        row["date"] = trade_date or str(_date.today())
+    def record_trade(self, factor_zscores: Dict[str, float], realized_return: float):
+        """Record a closed trade's factor scores and outcome."""
+        row = {fn: factor_zscores.get(fn, 0.0) for fn in self.factor_names}
+        row["y"] = realized_return
         self.data["trades"].append(row)
         self.data["n_trades"] = len(self.data["trades"])
-        self._ic_cache = None   # invalidate
         self._fit()
         self._save()
 
-    def _get_ic_boost(self) -> dict:
-        """
-        Spearman rank IC per factor vs realized returns.
-        Weighted by exponential decay (recent trades dominate).
-        Replaces binary sign-match IC which discards magnitude.
-        Reference: Grinold & Kahn (1999) — IC/ICIR framework.
-        """
-        n = len(self.data["trades"])
-        if n < 20:
-            return {}
-        if self._ic_cache and self._ic_cache[0] == n:
-            return self._ic_cache[1]
-
-        trades   = self.data["trades"][-100:]   # last 100 for IC — enough signal, not too stale
-        decay_w  = self._decay_weights()[-len(trades):]
-        decay_w  = decay_w / decay_w.sum()
-
-        ic = {}
-        for fn in self.factor_names:
-            z_scores = np.array([t.get(fn, 0.0) for t in trades])
-            returns  = np.array([t.get("y",  0.0) for t in trades])
-            # Weighted Spearman: rank within weighted sample
-            # Simple approximation: weight by resampling indices, then Spearman
-            try:
-                rho, pval = self._spearmanr(z_scores, returns)
-                # Only use IC if statistically meaningful (|t| > 1.5 proxy: n > 20)
-                ic[fn] = float(rho) if not np.isnan(rho) else 0.0
-            except Exception:
-                ic[fn] = 0.0
-
-        self._ic_cache = (n, ic)
-        return ic
-
-    def _fit(self) -> None:
-        """
-        Weighted ridge regression (WLS).
-        Exponential decay weights: W = diag(exp(-λ * days_ago)).
-        X.T @ W @ X + λI instead of X.T @ X + λI.
-        """
+    def _fit(self):
+        """Fit ridge regression on all recorded trades."""
         trades = self.data["trades"]
         if len(trades) < self.MIN_TRADES:
             self.data["ridge_beta"] = None
@@ -654,620 +384,399 @@ class AdaptiveWeights:
 
         X = np.array([[t.get(fn, 0) for fn in self.factor_names] for t in trades])
         y = np.array([t["y"] for t in trades])
-        W = np.diag(self._decay_weights())
+
+        # Ridge: beta = (X'X + lambda*I)^-1 X'y
         k = len(self.factor_names)
+        XtX = X.T @ X + self.RIDGE_LAMBDA * np.eye(k)
+        Xty = X.T @ y
         try:
-            self.data["ridge_beta"] = np.linalg.solve(
-                X.T @ W @ X + self.RIDGE_LAMBDA * np.eye(k),
-                X.T @ W @ y
-            ).tolist()
-        except Exception:
+            beta = np.linalg.solve(XtX, Xty)
+            self.data["ridge_beta"] = beta.tolist()
+        except np.linalg.LinAlgError:
             self.data["ridge_beta"] = None
 
-    def blend_weights(self, base: dict, book_factors: list) -> dict:
-        """Blend base (inv-vol) weights with ridge + IC, restricted to book_factors."""
-        relevant = {fn: base.get(fn, 1.0 / len(book_factors)) for fn in book_factors}
-        if self.data["ridge_beta"] is None and not self._get_ic_boost():
-            return relevant
+    def get_weight_adjustments(self) -> Optional[Dict[str, float]]:
+        """
+        Returns adjusted weights if ridge has enough data.
+        Weights are normalized to sum to 1.0, all positive.
+        """
+        if self.data["ridge_beta"] is None:
+            return None
 
-        blended = dict(relevant)
-        n       = self.data["n_trades"]
+        beta = np.array(self.data["ridge_beta"])
+        # Convert regression coefficients to weight adjustments
+        # Positive beta = factor predicted positive returns = upweight
+        # Use softmax-like normalization to keep all weights positive
+        abs_beta = np.abs(beta)
+        if abs_beta.sum() < 1e-10:
+            return None
 
-        # Layer 1: Weighted ridge blend
-        if self.data["ridge_beta"] is not None:
-            ridge_beta = self.data["ridge_beta"]
-            fn_index   = {fn: i for i, fn in enumerate(self.factor_names)}
-            b = np.array([abs(ridge_beta[fn_index[fn]]) for fn in book_factors if fn in fn_index])
-            if b.sum() > 1e-10:
-                norm = b / b.sum()
-                ra   = {fn: float(norm[i]) for i, fn in enumerate(book_factors)}
-                a    = min(self.MAX_ALPHA,
-                           self.MAX_ALPHA * (n - self.MIN_TRADES) / (2 * self.MIN_TRADES))
-                a    = max(0.0, a)
-                blended = {fn: (1 - a) * relevant[fn] + a * ra.get(fn, relevant[fn])
-                           for fn in book_factors}
+        normalized = abs_beta / abs_beta.sum()
+        return {fn: float(normalized[i]) for i, fn in enumerate(self.factor_names)}
 
-        # Layer 2: Spearman IC boost
-        ic_boost = self._get_ic_boost()
-        if ic_boost:
-            blended = {fn: blended.get(fn, 0) * (1.0 + ic_boost.get(fn, 0))
-                       for fn in book_factors}
+    def blend_weights(self, base_weights: Dict[str, float]) -> Dict[str, float]:
+        """
+        Blend base weights with ridge-learned weights.
+        Alpha grows from 0 to MAX_ALPHA as trades accumulate.
+        """
+        ridge_adj = self.get_weight_adjustments()
+        if ridge_adj is None:
+            return base_weights
 
+        # Alpha ramps from 0 at MIN_TRADES to MAX_ALPHA at 3*MIN_TRADES
+        n = self.data["n_trades"]
+        alpha = min(self.MAX_ALPHA, self.MAX_ALPHA * (n - self.MIN_TRADES) / (2 * self.MIN_TRADES))
+        alpha = max(0, alpha)
+
+        blended = {}
+        for fn in base_weights:
+            base = base_weights[fn]
+            ridge = ridge_adj.get(fn, base)
+            blended[fn] = (1 - alpha) * base + alpha * ridge
+
+        # Re-normalize
         tot = sum(blended.values())
-        return {fn: v / tot for fn, v in blended.items()} if tot > 1e-10 else relevant
+        return {k: v / tot for k, v in blended.items()}
 
-
-class MomentumSignalEngine:
-    """
-    Generates momentum/trend-continuation signals.
-
-    Gate requirements (all must pass):
-      - Hurst H > 0.55 (trending) OR ADX > 25 (structured trend)
-      - Price above 50 EMA
-      - Positive relative strength vs SPY (10-day)
-      - EMA stack: 8 > 21 or 21 > 50 (at minimum partial alignment)
-
-    Entry timing: pullback — price near 8 or 21 EMA on declining volume.
-    Top detector used for signal suppression near exhaustion.
-    """
-
-    GATE_ADX_MIN      = 22.0   # ADX threshold for trend structure
-    GATE_HURST_MIN    = 0.52   # Hurst H threshold (trending)
-    PULLBACK_EMA_SPAN = 21     # EMA to measure pullback proximity
-
-    def __init__(self):
-        self.f   = Factors()
-        self.btd = BottomTopDetector()
-
-    def score(self, sym: str, bars: pd.DataFrame, spy_bars: Optional[pd.DataFrame],
-              zscores: Dict[str, float], adx_val: float, hurst_h: float) -> Optional[Dict]:
-        """
-        Returns scored momentum candidate dict or None if gates not met.
-        zscores: pre-computed cross-sectional z-scores for MOMENTUM_FACTORS.
-        """
-        c   = bars["close"]
-        e8  = c.ewm(span=8,  adjust=False).mean()
-        e21 = c.ewm(span=21, adjust=False).mean()
-        e50 = c.ewm(span=50, adjust=False).mean()
-        price = c.iloc[-1]
-
-        # ── Hard gates ────────────────────────────────────────────────────────
-        trend_confirmed = (hurst_h > self.GATE_HURST_MIN) or (adx_val > self.GATE_ADX_MIN)
-        if not trend_confirmed:
-            return None
-        if price < e50.iloc[-1]:   # Must be above 50 EMA
-            return None
-
-        spy_c = spy_bars["close"] if spy_bars is not None else pd.Series(dtype=float)
-        rs = self.f.rel_strength(c, spy_c, period=10)
-        if not isinstance(rs, float) or np.isnan(rs) or rs < -0.01:
-            return None  # Must have positive or near-neutral RS
-
-        # ── Pullback quality — price near 8 or 21 EMA ─────────────────────────
-        dist_e8  = abs(price - e8.iloc[-1])  / price
-        dist_e21 = abs(price - e21.iloc[-1]) / price
-        pullback_quality = 1.0 - min(dist_e8, dist_e21)  # higher = closer to EMA
-
-        # ── Top detection — suppress signal if exhaustion forming ─────────────
-        top_pattern = self.btd.detect_top(bars)
-        if top_pattern in ("bearish_engulfing", "evening_star", "three_black_crows"):
-            return None  # Hard suppress on high-reliability top patterns
-
-        # ── Composite score (momentum factors only) ───────────────────────────
-        z = {fn: zscores.get(fn, 0.0) for fn in MOMENTUM_FACTORS}
-        # Equal base weights, blended with inverse-vol
-        base_w = {fn: 1.0 / len(MOMENTUM_FACTORS) for fn in MOMENTUM_FACTORS}
-        # Apply pullback quality as a multiplier on vol_ratio (confirms pullback on low vol)
-        base_w["vol_ratio"] *= max(0.5, 1.0 - pullback_quality)  # lower vol on pullback = better
-
-        wt   = sum(base_w.values())
-        base_w = {fn: v / wt for fn, v in base_w.items()}
-        comp = sum(z[fn] * base_w[fn] for fn in MOMENTUM_FACTORS)
-
-        return {
-            "sym":           sym,
-            "comp":          comp,
-            "book":          MOMENTUM,
-            "top_pattern":   top_pattern,
-            "pullback_quality": pullback_quality,
-            "adx":           adx_val,
-            "hurst_h":       hurst_h,
-            "z":             z,
-        }
-
-
-# ══════════════════════════════════════════════════════════════════════════════
-# MEAN REVERSION SIGNAL ENGINE
-# ══════════════════════════════════════════════════════════════════════════════
-
-class MeanReversionSignalEngine:
-    """
-    Generates mean-reversion signals from panic/oversold extremes.
-
-    Gate requirements (all must pass):
-      - RSI(5) < 35 (oversold — threshold calibrated for 5-day RSI)
-      - Price below 20-day Bollinger lower band OR below 20-day SMA
-      - crowd_panic > 0 (volume spike on down days)
-      - Bottom pattern detected (Bulkowski pattern OR RSI divergence)
-
-    Entry: panic exhaustion + at least one reversal confirmation.
-    Hard cap: 5-day hold target. Exit at 20-day mean or earlier.
-    """
-
-    GATE_RSI_MAX    = 35.0   # RSI(5) must be below this
-    GATE_BB_MAX     = 0.0    # bollinger_z must be positive (below band)
-    GATE_PANIC_MIN  = 0.005  # minimum crowd_panic score
-
-    def __init__(self):
-        self.f   = Factors()
-        self.btd = BottomTopDetector()
-
-    def score(self, sym: str, bars: pd.DataFrame, spy_bars: Optional[pd.DataFrame],
-              zscores: Dict[str, float], rsi5_val: float, bb_z_val: float,
-              panic_val: float) -> Optional[Dict]:
-        """
-        Returns scored MR candidate dict or None if gates not met.
-        """
-        c = bars["close"]
-
-        # ── Hard gates ────────────────────────────────────────────────────────
-        if rsi5_val > self.GATE_RSI_MAX:
-            return None
-        if bb_z_val < self.GATE_BB_MAX:   # bb_z positive = below band
-            return None
-        if panic_val < self.GATE_PANIC_MIN:
-            return None
-
-        # ── Bottom pattern required ───────────────────────────────────────────
-        bottom_pattern = self.btd.detect_bottom(bars)
-        # Allow entry even without candle pattern if RSI divergence is present
-        # (divergence alone is sufficient confirmation per Wilder)
-        if not bottom_pattern:
-            return None
-
-        # ── Mean reversion target: 20-day SMA ────────────────────────────────
-        sma20  = float(c.rolling(20).mean().iloc[-1])
-        price  = float(c.iloc[-1])
-        dist_to_mean = (sma20 - price) / price  # how far below mean (positive = upside)
-        if dist_to_mean < 0.005:   # less than 0.5% below mean — not enough reversion room
-            return None
-
-        # ── Composite score (MR factors only) ────────────────────────────────
-        z      = {fn: zscores.get(fn, 0.0) for fn in MR_FACTORS}
-        base_w = {fn: 1.0 / len(MR_FACTORS) for fn in MR_FACTORS}
-        # Boost pattern-confirmed signals
-        pattern_boost = 1.3 if bottom_pattern in (
-            "bullish_engulfing", "morning_star", "three_white_soldiers"
-        ) else 1.0
-        wt     = sum(base_w.values())
-        base_w = {fn: v / wt for fn, v in base_w.items()}
-        comp   = sum(z[fn] * base_w[fn] for fn in MR_FACTORS) * pattern_boost
-
-        return {
-            "sym":            sym,
-            "comp":           comp,
-            "book":           MEAN_REVERSION,
-            "bottom_pattern": bottom_pattern,
-            "dist_to_mean":   dist_to_mean,
-            "rsi5":           rsi5_val,
-            "z":              z,
-        }
-
-
-# ══════════════════════════════════════════════════════════════════════════════
-# COMPOSITE RANKER — unified conviction score across both books
-# ══════════════════════════════════════════════════════════════════════════════
-
-class CompositeRanker:
-    """
-    Scores and ranks signals from both books on a unified conviction scale.
-    Grinold & Kahn: allocation proportional to information ratio per signal.
-    No fixed per-book quotas — conviction drives allocation.
-    """
-
-    @staticmethod
-    def rank(momentum_candidates: List[Dict],
-             mr_candidates: List[Dict],
-             max_signals: int = 10) -> List[Dict]:
-        """
-        Normalize each book's scores to [0, 1] within-book (percentile rank),
-        then combine into a unified list sorted by conviction.
-        Returns top max_signals entries with book label preserved.
-        """
-        def _normalize(candidates):
-            if not candidates:
-                return []
-            scores = [c["comp"] for c in candidates]
-            mn, mx = min(scores), max(scores)
-            rng = mx - mn if mx > mn else 1.0
-            for c in candidates:
-                c["book_conviction"] = (c["comp"] - mn) / rng
-            return candidates
-
-        mom_norm = _normalize(momentum_candidates)
-        mr_norm  = _normalize(mr_candidates)
-
-        combined = mom_norm + mr_norm
-        combined.sort(key=lambda x: x["book_conviction"], reverse=True)
-        return combined[:max_signals]
-
-
-# ══════════════════════════════════════════════════════════════════════════════
-# MAIN SIGNAL ENGINE — public API (backward compatible)
-# ══════════════════════════════════════════════════════════════════════════════
 
 class QuantSignalEngine:
     """
-    Public API — wraps both books. Downstream files import this class only.
-    generate_signals() returns List[Signal] as before, now with trade_type field.
+    16 factors, 5 clusters. Cross-sectional z-score + orthogonalize
+    + regime-weight + adaptive ridge blend + t-test. Conviction-scaled Kelly.
     """
 
+    FACTORS = [
+        # Mean-reversion (35%)
+        ("rsi_mr",          "mr",    0.08),
+        ("bollinger_z",     "mr",    0.07),
+        ("crowd_panic",     "mr",    0.06),
+        ("ma_distance",     "mr",    0.07),
+        ("hurst",           "mr",    0.07),
+        # Trend (25%)
+        ("ma_stack",        "trend", 0.07),
+        ("macd_accel",      "trend", 0.07),
+        ("adx_dir",         "trend", 0.06),
+        ("price_cloud",     "trend", 0.05),
+        # Volume (12%)
+        ("vol_ratio",       "vol",   0.04),
+        ("obv_r2",          "vol",   0.04),
+        ("accum_dist",      "vol",   0.04),
+        # Volatility (13%)
+        ("atr_pctile",      "volat", 0.05),
+        ("bb_squeeze",      "volat", 0.04),
+        ("rel_strength",    "volat", 0.04),
+        # Reversal momentum (15%)
+        ("rev_momentum",    "rev",   0.15),
+    ]
+
+    REGIME_MULT = {
+        "EXPANSION": {"mr": 0.8, "trend": 1.3, "vol": 1.0, "volat": 0.8, "rev": 0.7},
+        "BULLISH":   {"mr": 0.9, "trend": 1.2, "vol": 1.0, "volat": 0.9, "rev": 0.8},
+        "NEUTRAL":   {"mr": 1.0, "trend": 1.0, "vol": 1.0, "volat": 1.0, "rev": 1.0},
+        "BEARISH":   {"mr": 1.3, "trend": 0.7, "vol": 1.1, "volat": 1.2, "rev": 1.3},
+        "CRISIS":    {"mr": 1.5, "trend": 0.5, "vol": 1.2, "volat": 1.4, "rev": 1.5},
+    }
+
     def __init__(self, cfg: RaptorConfig):
-        self.cfg    = cfg
-        self.rcfg   = cfg.risk
-        self.mom_engine = MomentumSignalEngine()
-        self.mr_engine  = MeanReversionSignalEngine()
-        self.ranker     = CompositeRanker()
-        self.f          = Factors()
-        _base_dir = os.path.dirname(os.path.abspath(__file__))
-        self.adaptive_mom = AdaptiveWeights(MOMENTUM_FACTORS, _base_dir, book="MOMENTUM")
-        self.adaptive_mr  = AdaptiveWeights(MR_FACTORS,       _base_dir, book="MEAN_REVERSION")
-        # Keep unified reference for any code that still calls self.adaptive
-        self.adaptive     = self.adaptive_mom
-        self._last_full_signals: Dict[str, Signal] = {}
+        self.cfg = cfg
+        self.rcfg = cfg.risk
+        self.f = Factors()
+        total = sum(w for _, _, w in self.FACTORS)
+        assert abs(total - 1.0) < 0.001, f"Weights sum to {total}"
+        self.adaptive = AdaptiveWeights(
+            [fn for fn, _, _ in self.FACTORS],
+            os.path.dirname(os.path.abspath(__file__)),
+        )
 
-    def _market_scale(self, spy_bars) -> float:
-        if spy_bars is None or len(spy_bars) < 21:
-            return 1.0
-        spy_c  = spy_bars["close"]
-        roc_20 = (spy_c.iloc[-1] / spy_c.iloc[-21]) - 1.0
-        if len(spy_c) >= 6:
-            roc_5 = (spy_c.iloc[-1] / spy_c.iloc[-6]) - 1.0
-            if roc_20 > 0.01 and roc_5 < -0.02:
-                return 0.5
-            if roc_20 < -0.01 and roc_5 > 0.02:
-                return 1.0
-        if roc_20 > 0.02:  return 1.0
-        elif roc_20 > -0.02: return 0.8
-        return 0.5
-
-    def _compute_raw(self, sym: str, bars: pd.DataFrame,
-                     spy_bars: Optional[pd.DataFrame]) -> Optional[Dict]:
-        """Compute all raw factor values for one symbol."""
+    def _raw(self, sym, bars, spy_bars):
         c, v = bars["close"], bars["volume"]
-        h, l = bars["high"], bars["low"]
         spy_c = spy_bars["close"] if spy_bars is not None else pd.Series(dtype=float)
+        return {
+            "rsi_mr":       self.f.rsi_mr(c),
+            "bollinger_z":  self.f.bollinger_z(c),
+            "crowd_panic":  self.f.crowd_panic(bars),
+            "ma_distance":  self.f.ma_distance(c),
+            "hurst":        self.f.hurst(c),
+            "ma_stack":     self.f.ma_stack(c),
+            "macd_accel":   self.f.macd_accel(c),
+            "adx_dir":      self.f.adx_dir(bars),
+            "price_cloud":  self.f.price_cloud(c),
+            "vol_ratio":    self.f.vol_ratio(v),
+            "obv_r2":       self.f.obv_r2(bars),
+            "accum_dist":   self.f.accum_dist(bars),
+            "atr_pctile":   self.f.atr_pctile(bars),
+            "bb_squeeze":   self.f.bb_squeeze(c),
+            "rel_strength": self.f.rel_strength(c, spy_c),
+            "rev_momentum": self.f.reversal_momentum(bars),
+        }
 
-        try:
-            raw = {
-                # MR factors
-                "rsi_mr":      self.f.rsi_mr(c),
-                "bollinger_z": self.f.bollinger_z(c),
-                "crowd_panic": self.f.crowd_panic(bars),
-                "ma_distance": self.f.ma_distance(c),
-                "bb_squeeze":  self.f.bb_squeeze(c),
-                "rev_momentum":self.f.reversal_momentum(bars),
-                "atr_pctile":  self.f.atr_pctile(bars),
-                # Momentum factors
-                "ma_stack":    self.f.ma_stack(c),
-                "macd_accel":  self.f.macd_accel(c),
-                "adx_dir":     self.f.adx_dir(bars),
-                "rel_strength":self.f.rel_strength(c, spy_c),
-                "obv_r2":      self.f.obv_r2(bars),
-                "accum_dist":  self.f.accum_dist(bars),
-                "price_cloud": self.f.price_cloud(c),
-                "vol_ratio":   self.f.vol_ratio(v),
-                # Shared intermediates
-                "_adx_raw":    self.f.adx_raw(bars),
-                "_hurst_h":    self.f.hurst(c),    # raw H value
-                "_rsi5_val":   self.f.rsi_raw(c, period=5),
-                "_atr":        self.f.atr(bars),
-            }
-        except Exception as e:
-            logger.debug("Raw compute failed %s: %s", sym, e)
-            return None
-        return raw
-
-    def _crosssectional_z(self, syms: List[str],
-                           raw: Dict[str, Dict]) -> Dict[str, Dict[str, float]]:
-        """
-        Robust cross-sectional z-scoring (median/MAD) for all factors.
-        Returns {sym: {factor: zscore}}.
-        """
-        zmat = {}
-        for fn in FACTOR_NAMES:
-            vals = [raw[s].get(fn, np.nan) for s in syms]
-            arr  = np.array([v for v in vals if not (isinstance(v, float) and np.isnan(v))])
-            if len(arr) < 5:
+    def _zscore(self, raw_matrix):
+        syms = list(raw_matrix.keys())
+        names = [n for n, _, _ in self.FACTORS]
+        out = {s: {} for s in syms}
+        for fn in names:
+            valid = [(s, raw_matrix[s][fn]) for s in syms
+                     if not (isinstance(raw_matrix[s][fn], float) and np.isnan(raw_matrix[s][fn]))]
+            if len(valid) < 5:
                 for s in syms:
-                    zmat.setdefault(s, {})[fn] = 0.0
+                    out[s][fn] = 0.0
                 continue
-            mu  = np.median(arr)
-            sig = np.median(np.abs(arr - mu)) * 1.4826
+            arr = np.array([v for _, v in valid])
+            mu, sig = arr.mean(), arr.std()
             if sig < 1e-10:
                 for s in syms:
-                    zmat.setdefault(s, {})[fn] = 0.0
+                    out[s][fn] = 0.0
                 continue
-            for i, s in enumerate(syms):
-                v = vals[i]
-                if isinstance(v, float) and np.isnan(v):
-                    zmat.setdefault(s, {})[fn] = 0.0
-                else:
-                    zmat.setdefault(s, {})[fn] = float(np.clip((v - mu) / sig, -3, 3))
-        return zmat
+            valid_set = set()
+            for s, val in valid:
+                out[s][fn] = float(np.clip((val - mu) / sig, -3, 3))
+                valid_set.add(s)
+            for s in syms:
+                if s not in valid_set:
+                    out[s][fn] = 0.0
+        return out
 
-    def _orthogonalize(self, syms: List[str],
-                        zmat: Dict[str, Dict[str, float]],
-                        book_factors: List[str]) -> Dict[str, Dict[str, float]]:
-        """
-        Factor orthogonalization: replace w^T x with w^T Σ⁻¹ x.
-        Removes double-counting of correlated factors (e.g. EMA stack
-        and MACD both capture the same trend signal).
+    def _orthogonalize(self, zmat):
+        syms = list(zmat.keys())
+        clusters = {}
+        for fn, cl, _ in self.FACTORS:
+            clusters.setdefault(cl, []).append(fn)
+        ort = {s: dict(zmat[s]) for s in syms}
+        for cl, flist in clusters.items():
+            if len(flist) <= 1:
+                continue
+            n, k = len(syms), len(flist)
+            M = np.zeros((n, k))
+            for j, fn in enumerate(flist):
+                for i, s in enumerate(syms):
+                    M[i, j] = zmat[s][fn]
+            for j in range(1, k):
+                X, y = M[:, :j], M[:, j]
+                try:
+                    beta = np.linalg.lstsq(X, y, rcond=None)[0]
+                    res = y - X @ beta
+                    rs = res.std()
+                    if rs > 1e-10:
+                        res /= rs
+                    M[:, j] = res
+                except np.linalg.LinAlgError:
+                    logger.warning("Ortho failed cluster=%s j=%d", cl, j)
+            for j, fn in enumerate(flist):
+                for i, s in enumerate(syms):
+                    ort[s][fn] = float(M[i, j])
+        return ort
 
-        Approach: Σ is computed from the current cross-section.
-        We apply Σ^(-1/2) whitening to the factor z-scores per symbol.
-        This decorrelates factors so each dimension carries independent info.
+    def _weights(self, regime):
+        """Regime-adjusted weights, blended with ridge-learned adjustments."""
+        mult = self.REGIME_MULT.get(regime, self.REGIME_MULT["NEUTRAL"])
+        adj = {fn: w * mult[cl] for fn, cl, w in self.FACTORS}
+        tot = sum(adj.values())
+        base = {k: v / tot for k, v in adj.items()}
+        # Blend with adaptive ridge if enough trades
+        return self.adaptive.blend_weights(base)
 
-        Reference: Grinold & Kahn (Active Portfolio Management) Ch. 6
-        Condition number check: if Σ is near-singular (condition > 100),
-        fall back to diagonal (variance-only) adjustment to avoid
-        numerical instability from a poorly conditioned covariance matrix.
+    def _score(self, ort_scores, weights):
+        comp, var, contribs = 0.0, 0.0, {}
+        for fn in ort_scores:
+            w = weights.get(fn, 0)
+            contrib = w * ort_scores[fn]
+            comp += contrib
+            contribs[fn] = round(contrib, 6)
+            var += w ** 2
+        t = comp / np.sqrt(var) if var > 0 else 0.0
+        return comp, t, contribs
 
-        Requires ≥ len(book_factors) + 5 symbols for stable estimation.
-        Falls back to original z-scores if universe is too small.
-        """
-        n_sym = len(syms)
-        n_fac = len(book_factors)
+    def _conviction_kelly(self, t_stat, regime):
+        """t=1.65 -> min, t=3.0 -> max. Linear."""
+        conv = np.clip((t_stat - 1.65) / 1.35, 0, 1)
+        kelly = self.rcfg.min_position_pct + conv * (self.rcfg.max_position_pct - self.rcfg.min_position_pct)
+        if regime == "BEARISH":
+            kelly *= self.rcfg.reduce_in_bearish
+        return round(kelly, 4)
 
-        if n_sym < n_fac + 5:
-            return zmat  # Not enough symbols for stable Σ estimation
+    @staticmethod
+    def _hold_from_atr(atr_pctile_val):
+        if isinstance(atr_pctile_val, float) and np.isnan(atr_pctile_val):
+            return 10
+        return max(1, min(30, int(16 + 14 * atr_pctile_val)))
 
-        # Build factor matrix X: rows=symbols, cols=book_factors
-        X = np.array([[zmat[s].get(fn, 0.0) for fn in book_factors]
-                      for s in syms], dtype=float)
-
-        # Cross-sectional covariance (Pearson — factors are already z-scored)
-        # Add small ridge for numerical stability
-        cov = np.cov(X.T) + np.eye(n_fac) * 1e-4
-
-        try:
-            cond = np.linalg.cond(cov)
-            if cond > 100:
-                # Near-singular — use diagonal only (variance adjustment)
-                inv_cov = np.diag(1.0 / np.diag(cov))
-            else:
-                inv_cov = np.linalg.inv(cov)
-        except np.linalg.LinAlgError:
-            return zmat  # Fall back gracefully
-
-        # Apply Σ⁻¹ adjustment: x_orth = Σ⁻¹ x (per symbol)
-        # Then normalize rows so scores remain in comparable range
-        X_orth = X @ inv_cov
-        # Re-scale to maintain interpretability: unit variance across symbols
-        col_std = np.std(X_orth, axis=0) + 1e-8
-        X_orth  = X_orth / col_std
-
-        # Write back orthogonalized z-scores into zmat copy
-        zmat_orth = {s: dict(zmat[s]) for s in syms}  # shallow copy
-        for i, s in enumerate(syms):
-            for j, fn in enumerate(book_factors):
-                zmat_orth[s][fn] = float(np.clip(X_orth[i, j], -3, 3))
-
-        return zmat_orth
-
-    def generate_signals(self, bars_dict: Dict[str, pd.DataFrame],
-                         macro_data: Dict, sentiment_dict: Dict,
-                         spy_bars: Optional[pd.DataFrame] = None) -> List[Signal]:
-
-        regime       = macro_data.get("regime", "NEUTRAL")
+    def generate_signals(self, bars_dict, macro_data, sentiment_dict, spy_bars=None):
+        regime = macro_data.get("regime", "NEUTRAL")
         if regime == "CRISIS" and self.rcfg.halt_in_crisis:
+            logger.warning("CRISIS - halting")
             return []
-        market_scale = self._market_scale(spy_bars)
 
-        # ── Step 1: compute raw factors for all symbols ────────────────────────
         raw = {}
         for sym, bars in bars_dict.items():
             if len(bars) < MIN_BARS_REQUIRED:
                 continue
-            r = self._compute_raw(sym, bars, spy_bars)
-            if r is not None:
-                raw[sym] = r
+            try:
+                raw[sym] = self._raw(sym, bars, spy_bars)
+            except Exception as e:
+                logger.error("Factor error %s: %s", sym, e)
 
         if len(raw) < 10:
             return []
 
-        syms = list(raw.keys())
+        zs = self._zscore(raw)
+        ort = self._orthogonalize(zs)
+        w = self._weights(regime)
 
-        # ── Step 2: cross-sectional z-scores ──────────────────────────────────
-        zmat = self._crosssectional_z(syms, raw)
+        candidates = []
+        all_comp = []
+        for sym in ort:
+            comp, t, contribs = self._score(ort[sym], w)
+            all_comp.append(comp)
+            candidates.append((sym, comp, t, contribs))
 
-        # ── Step 3: orthogonalize per book (Σ⁻¹ whitening) ──────────────────
-        # Removes double-counting of correlated factors within each book.
-        # Applied independently to momentum and MR factor sets.
-        zmat_mom = self._orthogonalize(syms, zmat, MOMENTUM_FACTORS)
-        zmat_mr  = self._orthogonalize(syms, zmat, MR_FACTORS)
-
-        # ── Step 4: score each book independently ──────────────────────────────
-        mom_candidates = []
-        mr_candidates  = []
-
-        for sym in syms:
-            bars    = bars_dict[sym]
-            r       = raw[sym]
-            z       = zmat[sym]
-            adx_val = r.get("_adx_raw", 0.0)
-            hurst_h = r.get("_hurst_h", 0.5)
-            hurst_h = hurst_h if not (isinstance(hurst_h, float) and np.isnan(hurst_h)) else 0.5
-            rsi5    = r.get("_rsi5_val", 50.0)
-            bb_z    = r.get("bollinger_z", 0.0)
-            panic   = r.get("crowd_panic", 0.0)
-
-            # Momentum book — uses orthogonalized z-scores
-            z_mom = zmat_mom[sym]
-            mom = self.mom_engine.score(sym, bars, spy_bars, z_mom, adx_val, hurst_h)
-            if mom is not None and mom["comp"] > 0:
-                mom_candidates.append(mom)
-
-            # MR book — SUSPENDED 2026-05-23 pending IC validation
-            # All 5 significant MR factors have negative IC in 94-observation study.
-            # IC data: ma_distance=-0.54, atr_pctile=-0.44, bb_squeeze=-0.39,
-            #          bollinger_z=-0.31. Book is selecting downtrends, not reversals.
-            # Code preserved for data collection. Gate lifted when IC turns positive.
-            # z_mr = zmat_mr[sym]
-            # mr = self.mr_engine.score(sym, bars, spy_bars, z_mr, rsi5, bb_z, panic)
-            # if mr is not None and mr["comp"] > 0:
-            #     mr_candidates.append(mr)
-
-        logger.info("v5.5 Books: MOMENTUM=%d candidates  MEAN_REVERSION=SUSPENDED  Scale=%.1f",
-                    len(mom_candidates), market_scale)
-
-        # ── Step 5: unified ranking ────────────────────────────────────────────
-        ranked = self.ranker.rank(mom_candidates, mr_candidates,
-                                  max_signals=self.cfg.execution.max_orders_per_scan * 2)
-
-        if not ranked:
-            return []
-
-        all_convictions = [c["book_conviction"] for c in ranked]
-        conv_arr        = np.array(all_convictions)
-
-        # ── Step 6: build Signal objects ──────────────────────────────────────
+        comp_arr = np.array(all_comp)
         signals = []
-        for cand in ranked:
-            sym   = cand["sym"]
-            bars  = bars_dict[sym]
-            r     = raw[sym]
-            book  = cand["book"]
-            z     = zmat[sym]
-            price = float(bars["close"].iloc[-1])
-            atr_val = r.get("_atr", 0.0)
-            if atr_val <= 0 or price <= 0:
+
+        for sym, comp, t, contribs in candidates:
+            if t < 1.65:
                 continue
 
-            # ── Stop placement differs by book ────────────────────────────────
-            if book == MOMENTUM:
-                # Wider stop — trend needs room
-                stop_mult = self.rcfg.initial_stop_atr_mult  # e.g. 2.0
-                hold_days = 15
-                take_profit = 0.0  # no fixed target — trail exit
-                pattern   = cand.get("top_pattern", "")
-                conf_type = "momentum_pullback"
+            pctile = scipy_stats.percentileofscore(comp_arr, comp) / 100
+            bars = bars_dict[sym]
+            entry = float(bars["close"].iloc[-1])
+            atr_val = self.f.atr(bars, self.rcfg.atr_period)
+            if atr_val <= 0:
+                continue
+
+            stop = round(entry - self.rcfg.initial_stop_atr_mult * atr_val, 2)
+            kelly = self._conviction_kelly(t, regime)
+
+            # RSI raw for leverage check
+            delta = bars["close"].diff()
+            gain = delta.clip(lower=0).ewm(span=5, adjust=False).mean()
+            loss = (-delta.clip(upper=0)).ewm(span=5, adjust=False).mean()
+            rsi_raw = float((100 - 100 / (1 + gain / (loss + 1e-10))).iloc[-1])
+            bb_z = raw[sym]["bollinger_z"]
+
+            leverage = self.f.check_leverage(bars, spy_bars, rsi_raw, bb_z)
+            if leverage and t >= 2.0:
+                kelly = min(kelly * 2.0, self.rcfg.max_position_pct * 2)
+
+            atr_p = raw[sym].get("atr_pctile", 0)
+            hold = self._hold_from_atr(atr_p if not (isinstance(atr_p, float) and np.isnan(atr_p)) else 0)
+            fscores = {k: round(v, 4) for k, v in ort[sym].items()}
+
+            # Confirmation type from reversal momentum
+            rev_m = raw[sym].get("rev_momentum", 0)
+            if isinstance(rev_m, float) and not np.isnan(rev_m) and rev_m > 0.5:
+                conf = "reversal_momentum"
             else:
-                # Tighter stop — MR has defined target, cut fast if wrong
-                stop_mult = 1.5
-                # Hold target: distance to mean in days (approx) — cap at 5
-                hold_days = min(5, max(2, int(cand.get("dist_to_mean", 0.02) / 0.005)))
-                # Take-profit at 20-day SMA
-                sma20       = float(bars["close"].rolling(20).mean().iloc[-1])
-                take_profit = round(sma20, 2)
-                pattern     = cand.get("bottom_pattern", "")
-                conf_type   = "mr_exhaustion"
+                conf = "statistical"
 
-            stop = round(max(price - stop_mult * atr_val, 0.01), 2)
-
-            # ── Kelly sizing by book ───────────────────────────────────────────
-            # MR gets smaller Kelly — binary outcome, tighter stop
-            base_kelly = self.rcfg.kelly_fraction
-            if book == MOMENTUM:
-                t_val  = cand["comp"] / (np.std(list(z.values())) + 0.5)
-                kelly  = float(np.clip(base_kelly * (0.5 + min(abs(t_val) / 3.0, 1.0))
-                                       * market_scale, 0.02, 0.12))
-            else:
-                kelly  = float(np.clip(base_kelly * 0.6 * market_scale, 0.02, 0.08))
-
-            if regime == "BEARISH":
-                kelly *= self.rcfg.reduce_in_bearish
-
-            # ── T-statistic proxy ──────────────────────────────────────────────
-            t_stat = cand["comp"] / (np.std(list(z.values())) + 0.5)
-
-            # ── Composite percentile across all candidates ─────────────────────
-            pctile = float(scipy_stats.percentileofscore(conv_arr, cand["book_conviction"]) / 100.0)
-
-            # ── Regime label ──────────────────────────────────────────────────
-            hurst_h = r.get("_hurst_h", 0.5)
-            hurst_h = hurst_h if not (isinstance(hurst_h, float) and np.isnan(hurst_h)) else 0.5
-            adx_val_r = r.get("_adx_raw", 0.0)
-            if hurst_h > 0.55 and adx_val_r > 25:   micro = "TRENDING"
-            elif hurst_h < 0.45 and adx_val_r < 20: micro = "REVERTING"
-            else:                                     micro = "MIXED"
-            regime_label = f"{regime}/{micro}"
-
-            sig = Signal(
-                symbol=sym,
-                side="BUY",
-                trade_type=book,
-                composite_score=round(cand["comp"], 4),
-                book_conviction=round(cand["book_conviction"], 4),
+            signals.append(Signal(
+                symbol=sym, side="BUY",
+                composite_score=round(comp, 4),
                 composite_percentile=round(pctile, 4),
-                t_statistic=round(t_stat, 4),
-                factor_scores={fn: round(z.get(fn, 0.0), 4) for fn in FACTOR_NAMES},
-                factor_contributions={fn: round(z.get(fn, 0.0) / len(FACTOR_NAMES), 6)
-                                      for fn in FACTOR_NAMES},
-                factors_positive=sum(1 for fn in FACTOR_NAMES if z.get(fn, 0) > 0),
-                regime=regime_label,
-                pattern_signal=pattern,
-                sentiment_score=0.0,
-                atr=round(atr_val, 4),
-                entry_price=price,
-                stop_price=stop,
-                take_profit=take_profit,
-                kelly_fraction=round(kelly, 4),
-                hold_target_days=hold_days,
-                leverage_qualified=False,
-                confirmation_type=conf_type,
+                t_statistic=round(t, 4),
+                factor_scores=fscores,
+                factor_contributions=contribs,
+                factors_positive=sum(1 for v in fscores.values() if v > 0),
+                regime=regime, sentiment_score=0.0,
+                atr=round(atr_val, 4), entry_price=entry,
+                stop_price=stop, take_profit=0.0,
+                kelly_fraction=kelly,
+                hold_target_days=hold,
+                leverage_qualified=leverage,
+                confirmation_type=conf,
                 timestamp=str(bars.index[-1]),
-            )
-            signals.append(sig)
+            ))
 
-        # ── Store full signal map for hold_monitor / exit_monitor ─────────────
-        # CRITICAL: store ALL symbols that were scored (not just gate-passers).
-        # Held positions that fail entry gates today (extended, pulling back)
-        # still need a real composite score for health assessment.
-        # Entry gates should only gate NEW entries, not ongoing hold decisions.
-        self._last_full_signals = {s.symbol: s for s in signals}
+        signals.sort(key=lambda s: s.t_statistic, reverse=True)
+        if len(signals) > self.cfg.execution.max_orders_per_scan:
+            signals = signals[:self.cfg.execution.max_orders_per_scan]
 
-        # Also store lightweight composite scores for every scored symbol
-        # so exit_monitor can find held positions that didn't make the signal list.
-        # Uses the raw momentum composite (sum of z-scores × equal weight) as proxy.
-        for sym in syms:
-            if sym not in self._last_full_signals:
-                z = zmat_mom.get(sym, zmat.get(sym, {}))
-                if not z:
-                    continue
-                active = {fn: z[fn] for fn in MOMENTUM_FACTORS if fn in z}
-                if not active:
-                    continue
-                comp_proxy = sum(active.values()) / len(active)
-                factors_pos = sum(1 for v in active.values() if v > 0)
-                # Build a minimal Signal so exit_monitor/hold_monitor can use it
-                try:
-                    price = float(bars_dict[sym]["close"].iloc[-1])
-                    atr_p = raw[sym].get("_atr", 0.0)
-                except Exception:
-                    continue
-                self._last_full_signals[sym] = Signal(
-                    symbol=sym, side="BUY", trade_type=MOMENTUM,
-                    composite_score=round(comp_proxy, 4),
-                    book_conviction=0.0, composite_percentile=0.0,
-                    t_statistic=0.0,
-                    factor_scores={fn: round(z.get(fn, 0.0), 4) for fn in FACTOR_NAMES},
-                    factor_contributions={fn: 0.0 for fn in FACTOR_NAMES},
-                    factors_positive=factors_pos,
-                    regime=f"{regime}/MIXED", pattern_signal="",
-                    sentiment_score=0.0, atr=round(atr_p, 4),
-                    entry_price=price, stop_price=0.0, take_profit=0.0,
-                    kelly_fraction=0.0, hold_target_days=15,
-                    leverage_qualified=False, confirmation_type="hold_monitor_proxy",
-                    timestamp="",
-                )
-
-        # Cap at max_orders_per_scan
-        signals = signals[:self.cfg.execution.max_orders_per_scan]
-
-        mom_count = sum(1 for s in signals if s.trade_type == MOMENTUM)
-        mr_count  = sum(1 for s in signals if s.trade_type == MEAN_REVERSION)
-        logger.info("v5.5 Final signals: %d MOMENTUM  %d MEAN_REVERSION  (scale=%.1f  regime=%s)",
-                    mom_count, mr_count, market_scale, regime)
-
+        logger.info("Signals: %d from %d syms (regime=%s)", len(signals), len(raw), regime)
+        if len(comp_arr):
+            logger.info("Composite: mean=%.4f std=%.4f max=%.4f", comp_arr.mean(), comp_arr.std(), comp_arr.max())
         return signals
+
+    def get_diagnostics(self, bars_dict, macro_data, sentiment_dict, spy_bars=None):
+        regime = macro_data.get("regime", "NEUTRAL")
+        w = self._weights(regime)
+        bar_counts = {s: len(b) for s, b in bars_dict.items()}
+        sufficient = sum(1 for v in bar_counts.values() if v >= MIN_BARS_REQUIRED)
+
+        raw = {}
+        for sym, bars in bars_dict.items():
+            if len(bars) < MIN_BARS_REQUIRED:
+                continue
+            try:
+                raw[sym] = self._raw(sym, bars, spy_bars)
+            except Exception:
+                pass
+
+        nan_counts = {n: 0 for n, _, _ in self.FACTORS}
+        for sym in raw:
+            for fn in nan_counts:
+                val = raw[sym].get(fn, np.nan)
+                if isinstance(val, float) and np.isnan(val):
+                    nan_counts[fn] += 1
+
+        zs = self._zscore(raw)
+        ort = self._orthogonalize(zs)
+
+        results = []
+        all_comp = []
+        for sym in ort:
+            comp, t, contribs = self._score(ort[sym], w)
+            all_comp.append(comp)
+            atr_p = raw.get(sym, {}).get("atr_pctile", 0)
+            hold = self._hold_from_atr(atr_p if not (isinstance(atr_p, float) and np.isnan(atr_p)) else 0)
+            results.append({"symbol": sym, "composite": comp, "t_stat": t,
+                            "contributions": contribs, "raw": raw.get(sym, {}),
+                            "ortho": ort.get(sym, {}), "hold": hold,
+                            "bars": bar_counts.get(sym, 0)})
+
+        results.sort(key=lambda r: r["t_stat"], reverse=True)
+        comps = [r["composite"] for r in results]
+        ts = [r["t_stat"] for r in results]
+        passing = sum(1 for t in ts if t > 1.65)
+
+        L = []
+        L.append("=" * 80)
+        L.append("  RAPTOR v5.3 DIAGNOSTICS")
+        L.append("=" * 80)
+        L.append(f"  Regime: {regime} (macro={macro_data.get('score', 0):.3f})")
+        L.append(f"  Universe: {sufficient} symbols | Factors: {len(self.FACTORS)}")
+        L.append(f"  Threshold: t > 1.65")
+        L.append("")
+        L.append("  DATA QUALITY:")
+        for fn, _, _ in self.FACTORS:
+            nc = nan_counts.get(fn, 0)
+            L.append(f"    {fn:18s} {'OK' if nc == 0 else f'WARN {nc} NaN'}")
+        L.append("")
+        L.append("  WEIGHTS (regime-adjusted):")
+        for fn, cl, bw in self.FACTORS:
+            L.append(f"    {fn:18s} [{cl:5s}]  base={bw:.2f}  adj={w.get(fn,0):.4f}")
+        L.append("")
+        L.append(f"  Composite: mean={np.mean(comps):.4f}  std={np.std(comps):.4f}")
+        L.append(f"  T-stats:   mean={np.mean(ts):.3f}  max={max(ts):.3f}  min={min(ts):.3f}")
+        L.append(f"  Signals: {passing}")
+        L.append("")
+        L.append("-" * 80)
+        L.append("  TOP 15")
+        L.append("-" * 80)
+        for r in results[:15]:
+            st = "PASS" if r["t_stat"] > 1.65 else "FAIL"
+            L.append(f"\n  {r['symbol']:6s}  t={r['t_stat']:+.3f}  comp={r['composite']:+.4f}  hold~{r['hold']}d  [{st}]")
+            cs = sorted(r["contributions"].items(), key=lambda x: -abs(x[1]))
+            for fn, contrib in cs:
+                z = r["ortho"].get(fn, 0)
+                rv = r["raw"].get(fn, 0)
+                rv = rv if not (isinstance(rv, float) and np.isnan(rv)) else 0.0
+                d = "+" if contrib > 0 else "-" if contrib < 0 else " "
+                L.append(f"      {fn:18s} raw={rv:+9.4f}  z={z:+6.3f}  w={w.get(fn,0):.4f}  c={contrib:+.6f} {d}")
+        L.append("")
+        L.append("-" * 80)
+        L.append("  BOTTOM 5")
+        L.append("-" * 80)
+        for r in results[-5:]:
+            L.append(f"  {r['symbol']:6s}  t={r['t_stat']:+.3f}  comp={r['composite']:+.4f}")
+        L.append("")
+        L.append("=" * 80)
+        return "\n".join(L)
