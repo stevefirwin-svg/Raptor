@@ -193,6 +193,12 @@ def run_exit_monitor(dry_run=False):
         if price <= hard_stop:
             reason = "hard_stop"
             logger.info("EXIT 1 [HARD STOP] %s $%.2f <= $%.2f", sym, price, hard_stop)
+            # Record cooldown — symbol blocked from re-entry for 5 trading days
+            try:
+                from main import _record_stopout_cooldown
+                _record_stopout_cooldown(sym)
+            except Exception as _ce:
+                logger.debug("Cooldown record failed: %s", _ce)
 
         # EXIT 2: TRAILING STOP
         if reason is None:
