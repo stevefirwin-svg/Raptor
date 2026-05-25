@@ -125,8 +125,11 @@ Pooled IC across regimes gives IC≈0 for factors that work in one regime but no
 Fix: ic_by_regime = {"BULLISH": {...}, "NEUTRAL": {...}, "RISK_OFF": {...}}
 
 ### MATH-2 — Composite Signal Uncertainty (SNR)
-**Status:** NOT BUILT  
-Fix: snr = composite_mean / (composite_std + 0.5) — use SNR for ranking.
+**Status:** LIVE (2026-05-25)
+Ledoit-Wolf shrinkage covariance estimated cross-sectionally each scan.
+SNR = comp / sqrt(w^T @ Sigma_LW @ w). Sorts and gates entries. Drives Kelly.
+Accounts for factor correlations — correlated factors add less uncertainty than independent ones.
+Fallback to comp/std when universe < 10 symbols.
 
 ### MATH-3 — Hurst DFA / ADX Threshold
 **Status:** NOT BUILT  

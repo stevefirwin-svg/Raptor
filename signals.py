@@ -566,9 +566,60 @@ class QuantSignalEngine:
                     ort[s][fn] = float(M[i, j])
         return ort
 
-    def _weights(self, regime):
-        """Regime-adjusted weights, blended with ridge-learned adjustments."""
-        mult = self.REGIME_MULT.get(regime, self.REGIME_MULT["NEUTRAL"])
+    # Anchor points for regime blend: macro_score [-1, 1] -> regime label
+    # CRISIS=-1.0, BEARISH=-0.5, NEUTRAL=0.0, BULLISH=0.5, EXPANSION=1.0
+    _REGIME_ANCHORS = {
+        "CRISIS":    -1.0,
+        "BEARISH":   -0.5,
+        "NEUTRAL":    0.0,
+        "BULLISH":    0.5,
+        "EXPANSION":  1.0,
+    }
+
+    def _regime_blend(self, macro_score: float) -> Dict[str, float]:
+        """
+        Gaussian softmax over macro_score to blend regime cluster multipliers.
+        Replaces hard threshold: score 0.14 vs 0.16 now produces smooth weight
+        difference instead of cliff-edge regime switch.
+
+        sigma=0.35 gives each regime cluster ~50% weight at midpoint to
+        its neighbour — wide enough to avoid whipsaw, narrow enough to
+        differentiate bull from bear clearly.
+        """
+        sigma = 0.35
+        anchors = self._REGIME_ANCHORS
+        # Gaussian weight for each regime given current macro_score
+        raw_w = {r: np.exp(-0.5 * ((macro_score - anchor) / sigma) ** 2)
+                 for r, anchor in anchors.items()}
+        total = sum(raw_w.values())
+        blend_w = {r: raw_w[r] / total for r in raw_w}
+
+        # Interpolate cluster multipliers as weighted average across regimes
+        cluster_names = set(cl for _, cl, _ in self.FACTORS)
+        blended_mult: Dict[str, float] = {}
+        for cl in cluster_names:
+            blended_mult[cl] = sum(
+                blend_w[r] * self.REGIME_MULT[r][cl] for r in blend_w
+            )
+
+        logger.debug(
+            "RegimeBlend score=%.3f dominant=%s weights=%s",
+            macro_score,
+            max(blend_w, key=blend_w.get),
+            {r: round(v, 3) for r, v in blend_w.items()},
+        )
+        return blended_mult
+
+    def _weights(self, regime: str, macro_score: float = 0.0) -> Dict[str, float]:
+        """
+        Regime-adjusted weights, blended with ridge-learned adjustments.
+        Uses continuous macro_score for smooth Gaussian blend when available;
+        falls back to hard regime label if macro_score is missing.
+        """
+        if macro_score != 0.0:
+            mult = self._regime_blend(macro_score)
+        else:
+            mult = self.REGIME_MULT.get(regime, self.REGIME_MULT["NEUTRAL"])
         adj = {fn: w * mult[cl] for fn, cl, w in self.FACTORS}
         tot = sum(adj.values())
         base = {k: v / tot for k, v in adj.items()}
@@ -576,19 +627,85 @@ class QuantSignalEngine:
         return self.adaptive.blend_weights(base)
 
     def _score(self, ort_scores, weights):
-        comp, var, contribs = 0.0, 0.0, {}
+        """Composite score and per-factor contributions. No t-stat — SNR computed
+        cross-sectionally in generate_signals() using Ledoit-Wolf covariance."""
+        comp, contribs = 0.0, {}
         for fn in ort_scores:
             w = weights.get(fn, 0)
             contrib = w * ort_scores[fn]
             comp += contrib
             contribs[fn] = round(contrib, 6)
-            var += w ** 2
-        t = comp / np.sqrt(var) if var > 0 else 0.0
-        return comp, t, contribs
+        return comp, contribs
 
-    def _conviction_kelly(self, t_stat, regime):
-        """t=1.65 -> min, t=3.0 -> max. Linear."""
-        conv = np.clip((t_stat - 1.65) / 1.35, 0, 1)
+    @staticmethod
+    def _compute_snr(ort: Dict[str, Dict[str, float]],
+                     weights: Dict[str, float]) -> Dict[str, float]:
+        """
+        Ledoit-Wolf SNR = comp / sqrt(w^T @ Sigma_shrunk @ w)
+
+        Sigma_shrunk: cross-sectional factor covariance estimated with
+        Ledoit-Wolf shrinkage toward scaled identity (sklearn).
+
+        Accounts for factor correlations — two correlated factors
+        (e.g. ma_stack + price_cloud both trending) add less uncertainty
+        than two independent factors. Pure weight-magnitude proxies miss this.
+
+        Returns per-symbol SNR. Fallback to comp / (std(comp)+0.5) if
+        fewer than 10 symbols (LW needs reasonable n).
+        """
+        from sklearn.covariance import LedoitWolf
+
+        syms = list(ort.keys())
+        factor_names = list(weights.keys())
+        n, k = len(syms), len(factor_names)
+
+        if n < 10 or k < 2:
+            # Fallback: universe too small for reliable covariance estimate
+            comps = np.array([sum(weights.get(fn, 0) * ort[s].get(fn, 0)
+                                  for fn in factor_names) for s in syms])
+            std = comps.std() + 0.5
+            return {s: float(comps[i] / std) for i, s in enumerate(syms)}
+
+        # Build cross-sectional factor matrix: rows=symbols, cols=factors
+        X = np.zeros((n, k))
+        for i, s in enumerate(syms):
+            for j, fn in enumerate(factor_names):
+                X[i, j] = ort[s].get(fn, 0.0)
+
+        # Ledoit-Wolf shrinkage toward scaled identity
+        try:
+            lw = LedoitWolf(assume_centered=True).fit(X)
+            Sigma = lw.covariance_          # (k, k)
+        except Exception:
+            # Fallback on numerical failure
+            Sigma = np.cov(X.T) + 1e-6 * np.eye(k)
+
+        # Weight vector aligned to factor_names order
+        w_vec = np.array([weights.get(fn, 0.0) for fn in factor_names])
+
+        # Portfolio variance of the composite: w^T @ Sigma @ w
+        port_var = float(w_vec @ Sigma @ w_vec)
+        port_std = np.sqrt(max(port_var, 1e-10))
+
+        snr_map = {}
+        for s in syms:
+            comp = sum(weights.get(fn, 0) * ort[s].get(fn, 0) for fn in factor_names)
+            snr_map[s] = float(comp / port_std)
+
+        logger.debug(
+            "LedoitWolf SNR: shrinkage=%.3f port_std=%.4f n_syms=%d",
+            lw.shrinkage_, port_std, n,
+        )
+        return snr_map
+
+    def _conviction_kelly(self, snr: float, regime: str) -> float:
+        """
+        SNR 1.65 -> min position, SNR 3.0 -> max position. Linear.
+        Previously used heuristic t-stat; now uses proper Ledoit-Wolf SNR —
+        same scale, same thresholds, but uncertainty is now correctly estimated
+        from the cross-sectional factor covariance rather than weight magnitude.
+        """
+        conv = np.clip((snr - 1.65) / 1.35, 0, 1)
         kelly = self.rcfg.min_position_pct + conv * (self.rcfg.max_position_pct - self.rcfg.min_position_pct)
         if regime == "BEARISH":
             kelly *= self.rcfg.reduce_in_bearish
@@ -620,20 +737,26 @@ class QuantSignalEngine:
 
         zs = self._zscore(raw)
         ort = self._orthogonalize(zs)
-        w = self._weights(regime)
+        macro_score = float(macro_data.get("macro_score", 0.0))
+        w = self._weights(regime, macro_score)
 
+        # Step 1: score all symbols (composite + contribs only, no heuristic t-stat)
         candidates = []
         all_comp = []
         for sym in ort:
-            comp, t, contribs = self._score(ort[sym], w)
+            comp, contribs = self._score(ort[sym], w)
             all_comp.append(comp)
-            candidates.append((sym, comp, t, contribs))
+            candidates.append((sym, comp, contribs))
 
         comp_arr = np.array(all_comp)
-        signals = []
 
-        for sym, comp, t, contribs in candidates:
-            if t < 1.65:
+        # Step 2: Ledoit-Wolf SNR — computed cross-sectionally once for the universe
+        snr_map = self._compute_snr(ort, w)
+
+        signals = []
+        for sym, comp, contribs in candidates:
+            snr = snr_map.get(sym, 0.0)
+            if snr < 1.65:
                 continue
 
             pctile = scipy_stats.percentileofscore(comp_arr, comp) / 100
@@ -644,7 +767,7 @@ class QuantSignalEngine:
                 continue
 
             stop = round(entry - self.rcfg.initial_stop_atr_mult * atr_val, 2)
-            kelly = self._conviction_kelly(t, regime)
+            kelly = self._conviction_kelly(snr, regime)
 
             # RSI raw for leverage check
             delta = bars["close"].diff()
@@ -654,14 +777,13 @@ class QuantSignalEngine:
             bb_z = raw[sym]["bollinger_z"]
 
             leverage = self.f.check_leverage(bars, spy_bars, rsi_raw, bb_z)
-            if leverage and t >= 2.0:
+            if leverage and snr >= 2.0:
                 kelly = min(kelly * 2.0, self.rcfg.max_position_pct * 2)
 
             atr_p = raw[sym].get("atr_pctile", 0)
             hold = self._hold_from_atr(atr_p if not (isinstance(atr_p, float) and np.isnan(atr_p)) else 0)
             fscores = {k: round(v, 4) for k, v in ort[sym].items()}
 
-            # Confirmation type from reversal momentum
             rev_m = raw[sym].get("rev_momentum", 0)
             if isinstance(rev_m, float) and not np.isnan(rev_m) and rev_m > 0.5:
                 conf = "reversal_momentum"
@@ -672,7 +794,7 @@ class QuantSignalEngine:
                 symbol=sym, side="BUY",
                 composite_score=round(comp, 4),
                 composite_percentile=round(pctile, 4),
-                t_statistic=round(t, 4),
+                t_statistic=round(snr, 4),   # SNR stored in t_statistic field
                 factor_scores=fscores,
                 factor_contributions=contribs,
                 factors_positive=sum(1 for v in fscores.values() if v > 0),
@@ -686,18 +808,23 @@ class QuantSignalEngine:
                 timestamp=str(bars.index[-1]),
             ))
 
+        # Sort by SNR descending — highest uncertainty-adjusted signal first
         signals.sort(key=lambda s: s.t_statistic, reverse=True)
         if len(signals) > self.cfg.execution.max_orders_per_scan:
             signals = signals[:self.cfg.execution.max_orders_per_scan]
 
         logger.info("Signals: %d from %d syms (regime=%s)", len(signals), len(raw), regime)
         if len(comp_arr):
-            logger.info("Composite: mean=%.4f std=%.4f max=%.4f", comp_arr.mean(), comp_arr.std(), comp_arr.max())
+            logger.info(
+                "Composite: mean=%.4f std=%.4f max=%.4f | SNR gate=1.65",
+                comp_arr.mean(), comp_arr.std(), comp_arr.max()
+            )
         return signals
 
     def get_diagnostics(self, bars_dict, macro_data, sentiment_dict, spy_bars=None):
         regime = macro_data.get("regime", "NEUTRAL")
-        w = self._weights(regime)
+        macro_score = float(macro_data.get("macro_score", 0.0))
+        w = self._weights(regime, macro_score)
         bar_counts = {s: len(b) for s, b in bars_dict.items()}
         sufficient = sum(1 for v in bar_counts.values() if v >= MIN_BARS_REQUIRED)
 
@@ -719,15 +846,16 @@ class QuantSignalEngine:
 
         zs = self._zscore(raw)
         ort = self._orthogonalize(zs)
+        snr_map = self._compute_snr(ort, w)
 
         results = []
         all_comp = []
         for sym in ort:
-            comp, t, contribs = self._score(ort[sym], w)
+            comp, contribs = self._score(ort[sym], w)
             all_comp.append(comp)
             atr_p = raw.get(sym, {}).get("atr_pctile", 0)
             hold = self._hold_from_atr(atr_p if not (isinstance(atr_p, float) and np.isnan(atr_p)) else 0)
-            results.append({"symbol": sym, "composite": comp, "t_stat": t,
+            results.append({"symbol": sym, "composite": comp, "t_stat": snr_map.get(sym, 0.0),
                             "contributions": contribs, "raw": raw.get(sym, {}),
                             "ortho": ort.get(sym, {}), "hold": hold,
                             "bars": bar_counts.get(sym, 0)})
