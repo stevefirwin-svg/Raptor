@@ -61,23 +61,14 @@ def _trail_mult(days_held, profit_atr, rcfg, composite=0.0, health=0.0):
 
     base = min(t, p)
 
-    # Signal-quality modifier — calibrated 2026-05-22 from backtest parameter sweep.
-    # 1565 trades, avg_hold=7.9d, trail exits: 561 profit / 834 loss.
-    #
-    # Sweep across 180 combinations found:
-    #   threshold 0.2 → 0.3: lower threshold captures more strong signals (42% vs 38%)
-    #   wide_mult  1.6 → 1.3: 1.6× gives meaningful room vs 1.3× marginal effect
-    #   tight_mult 0.80→ 0.75: 0.80 less aggressive tightening (losses already small)
-    #
-    # Expected effect: convert ~9 trail_loss → trail_profit per 1565 trades (+9.1% Sharpe)
-    # Net trail width vs baseline: 1.6×42% + 1.0×16% + 0.8×42% = 1.176× (was 1.019×)
-    #
-    # Previous values: threshold=0.3, wide=1.3, tight=0.75 (round numbers, uncalibrated)
+    # Signal-quality modifier — math drives trail width.
+    # Strong signal + healthy position = wider trail (let winners run).
+    # Weak signal + decaying health = tighter trail (protect profits faster).
     signal_strength = (composite + health) / 2.0
-    if signal_strength > 0.2:
-        modifier = 1.6   # Strong — give significant room (calibrated from backtest)
-    elif signal_strength < -0.2:
-        modifier = 0.80  # Weak — tighten trail (calibrated from backtest)
+    if signal_strength > 0.3:
+        modifier = 1.3   # Strong — give room
+    elif signal_strength < -0.3:
+        modifier = 0.75  # Weak — tighten
     else:
         modifier = 1.0   # Neutral — no change
 
@@ -146,11 +137,7 @@ def run_exit_monitor(dry_run=False):
     scores.update({sym: full_map[sym].composite_score for sym in held if sym in full_map})
     for sym in held:
         if sym not in scores:
-            scores[sym] = 0.0   # Not scored today — unknown, not weak.
-                                    # Entry gates may have filtered this symbol
-                                    # (extended, pulling back, not a fresh entry).
-                                    # 0.0 = neutral; real decay shows in hold_monitor
-                                    # health score over multiple days, not a single miss.
+            scores[sym] = -1.0  # Genuinely not scored — thesis weak
 
     # Portfolio drawdown
     total_pnl = sum(p.get("unrealized_pnl", 0) for p in positions)
@@ -186,60 +173,26 @@ def run_exit_monitor(dry_run=False):
         bar_data = bars[sym]
         atr = _atr(bar_data, CONFIG.risk.atr_period)
         if atr <= 0:
-            # Cannot compute ATR from bar data — skip rather than fake
-            logger.warning("[ATR] %s: cannot compute ATR from bar data — skipping exit check", sym)
-            holds.append({"symbol": sym, "reason": "no_atr", "pnl_pct": pnl_pct})
-            continue
+            atr = abs(price * 0.02)
 
         # Days held from ledger entry_date; fallback 7 if missing
         _entry = _ledger_map.get(sym)
         try:
-            days_held = (_today - datetime.strptime(_entry["entry_date"], "%Y-%m-%d").date()).days                         if _entry and "entry_date" in _entry else None
+            days_held = (_today - datetime.strptime(_entry["entry_date"], "%Y-%m-%d").date()).days \
+                        if _entry and "entry_date" in _entry else 7
         except Exception:
-            days_held = None
-
-        if days_held is None:
-            # Entry date unknown — use conservative assumption (day 1 = widest trail)
-            # Better to give too much room than to fake a mid-hold tighter trail
-            logger.warning("[DaysHeld] %s not in ledger — assuming day 1 (widest trail). "
-                           "Run backfill_ledger.py --write to fix.", sym)
-            days_held = 1
+            days_held = 7
 
         high_water = max(price, entry)
         profit_atr = (high_water - entry) / atr if atr > 0 else 0
 
         reason = None
 
-        # EXIT 1: HARD STOP — volatility-regime aware (GAP 3)
-        # Fixed 3.0×ATR regardless of vol regime causes two failure modes:
-        #   Low vol: 3 ATR is too wide — takes excessive loss before stopping out.
-        #   High vol: 3 ATR is too tight — whipsaws out of valid positions on noise.
-        # ATR percentile (rolling 60d) scales the multiplier:
-        #   Low vol  (ATR < 25th pctile) → 2.5× ATR — tighter, less room for loss
-        #   Normal   (25th–75th pctile)  → 3.0× ATR — unchanged baseline
-        #   High vol (ATR > 75th pctile) → 3.5× ATR — wider, survives normal noise
-        atr_pctile = 0.5  # neutral default if we can't compute
-        try:
-            if len(bar_data) >= 60:
-                rolling_atr = bar_data["close"].diff().abs().rolling(14).mean()
-                valid_atrs = rolling_atr.dropna().tail(60)
-                if len(valid_atrs) >= 20:
-                    atr_pctile = float((valid_atrs < atr).mean())
-        except Exception:
-            pass
-
-        if atr_pctile < 0.25:
-            stop_atr_mult = 2.5   # low vol — tighter stop
-        elif atr_pctile > 0.75:
-            stop_atr_mult = 3.5   # high vol — wider stop, avoid whipsaw
-        else:
-            stop_atr_mult = CONFIG.risk.initial_stop_atr_mult  # normal — baseline
-
-        hard_stop = entry - stop_atr_mult * atr
+        # EXIT 1: HARD STOP
+        hard_stop = entry - CONFIG.risk.initial_stop_atr_mult * atr
         if price <= hard_stop:
             reason = "hard_stop"
-            logger.info("EXIT 1 [HARD STOP] %s $%.2f <= $%.2f (%.1fx ATR, vol_pctile=%.2f)",
-                       sym, price, hard_stop, stop_atr_mult, atr_pctile)
+            logger.info("EXIT 1 [HARD STOP] %s $%.2f <= $%.2f", sym, price, hard_stop)
 
         # EXIT 2: TRAILING STOP
         if reason is None:
@@ -252,40 +205,16 @@ def run_exit_monitor(dry_run=False):
                 logger.info("EXIT 2 [TRAIL] %s $%.2f <= $%.2f (%.1fx ATR) comp=%.2f health=%.2f",
                            sym, price, trail, mult, _comp, _hlth)
 
-        # EXIT 3: THESIS INVALIDATION — regime-scaled threshold (GAP 4)
-        # Fixed -1.5 composite fails in two directions:
-        #   BULLISH regime: -1.5 is genuinely weak — threshold is appropriate.
-        #   RISK_OFF regime: universe compresses, median composite drops. A -1.5
-        #     composite may be average weakness, not thesis failure — mass exits
-        #     occur exactly when regime-wide drawdown is already happening.
-        # Threshold scales with regime to prevent panic exits during drawdowns.
+        # EXIT 3: THESIS INVALIDATION
+        # Only exit if composite is genuinely negative (not just out of top-N)
+        # AND position is meaningfully losing. Threshold -1.5 requires real
+        # cross-sectional weakness, not just rank dropout.
         if reason is None:
-            comp = scores.get(sym, 0.0)
-            _macro_regime = _pre_health.get(sym, {}).get("regime", "") or ""
-            # Read macro regime from macro_context.json if available
-            _mc_regime = "NEUTRAL"
-            try:
-                import json as _mj
-                from pathlib import Path as _mp
-                _mcf = _mp("macro_context.json")
-                if _mcf.exists():
-                    _mc_regime = _mj.loads(_mcf.read_text()).get("macro_regime", "NEUTRAL")
-            except Exception:
-                pass
-
-            thesis_threshold = {
-                "RISK_ON":  -2.0,   # generous — strong market, give more room
-                "NEUTRAL":  -1.5,   # baseline — unchanged from prior behavior
-                "RISK_OFF": -2.0,   # universe compressed — require stronger signal to exit
-                "CRISIS":   -2.5,   # extreme compression — only exit truly broken positions
-            }.get(_mc_regime, -1.5)
-
-            if comp < thesis_threshold and pnl_pct < -0.05:
+            comp = scores.get(sym, 0.0)  # Default 0.0 not -1.0 — unknown != weak
+            if comp < -1.5 and pnl_pct < -0.05:
                 reason = "thesis_invalid"
-                logger.info(
-                    "EXIT 3 [THESIS] %s composite=%.4f < %.1f (regime=%s) pnl=%.1f%%",
-                    sym, comp, thesis_threshold, _mc_regime, pnl_pct * 100
-                )
+                logger.info("EXIT 3 [THESIS] %s composite=%.4f pnl=%.1f%% (confirmed weak thesis + losing)",
+                           sym, comp, pnl_pct * 100)
 
         # EXIT 4B: LEVERAGED ETF HOLD CAP
         # 3x ETFs: max 3 days. 2x ETFs: max 10 days. Volatility decay kills multi-day holds.
@@ -345,91 +274,49 @@ def run_exit_monitor(dry_run=False):
                 "reason": "hold",
             })
 
-    # EXIT 4: PORTFOLIO HEAT — proportional trim-all (GAP 7) ──────────────────
-    # Previous behavior: find weakest composite, full exit. Binary and blunt.
-    #   Problem 1: Fully exits one position — arbitrary concentration of pain.
-    #   Problem 2: Same response to -8.1% dd and -15% dd — doesn't scale.
-    #   Problem 3: Exits the WEAKEST composite, but a health<0 position that's
-    #              down 15% may have higher composite than a position down 3%.
-    #
-    # New behavior: trim ALL positions with health<0 by a percentage that
-    # scales continuously with the excess drawdown beyond the threshold.
-    #
-    # heat_trim_pct = clip(excess_dd / threshold, 0.10, 0.50)
-    #   excess_dd = |portfolio_dd| - threshold
-    #   threshold = max_portfolio_drawdown (config)
-    #
-    # Examples:
-    #   portfolio_dd=-8.1%, threshold=8% → excess=0.1% → trim 1.25% of health<0 positions (floor 10%)
-    #   portfolio_dd=-10%,  threshold=8% → excess=2.0% → trim 25% of health<0 positions
-    #   portfolio_dd=-16%,  threshold=8% → excess=8.0% → trim 100%... capped at 50%
-    #
-    # Only health<0 positions are trimmed — strengthening positions are untouched.
-    # Each trim: min(heat_trim_shares, qty-1) — never a full exit via this path.
-    # Full exits only happen via the mechanical exit conditions (EXIT 1-5) or math trim EXIT.
+    # EXIT 4: PORTFOLIO HEAT — proportional trim across deteriorating positions
+    # Old: fully exit single weakest composite position (too blunt — kills one position
+    # while leaving others untouched, may exit a position that was about to recover).
+    # New: trim ALL held positions where health < 0 by 25%, spreading risk reduction
+    # proportionally. Preserves exposure to recovering positions, reduces exposure to
+    # confirmed deteriorators. Math-consistent: health < 0 means the hold_monitor's
+    # 10-layer score has confirmed thesis decay, not just rank dropout.
     if portfolio_dd < -CONFIG.risk.max_portfolio_drawdown and holds:
-        threshold   = CONFIG.risk.max_portfolio_drawdown  # e.g. 0.08
-        excess_dd   = abs(portfolio_dd) - threshold       # how far beyond threshold
-        heat_trim_pct = float(np.clip(excess_dd / threshold, 0.10, 0.50))
+        heat_targets = [
+            h for h in holds
+            if _pre_health.get(h["symbol"], {}).get("health", 0.0) < 0.0
+        ]
+        if not heat_targets:
+            # Fallback: if no position has negative health, trim the single weakest composite
+            heat_targets = [min(holds, key=lambda h: h.get("composite", 0))]
 
-        # Load health scores to identify health<0 positions
-        heat_trimmed = []
-        try:
-            import json as _jheat
-            from pathlib import Path as _Pheat
-            _hf = _Pheat("hold_health.json")
-            _health_scores = _jheat.loads(_hf.read_text()) if _hf.exists() else {}
-        except Exception:
-            _health_scores = {}
-
-        for h in holds:
-            sym = h["symbol"]
-            if sym in {e["symbol"] for e in exits}:
-                continue  # already being exited this run
-
-            # Only trim positions with negative health
-            health_rec  = _health_scores.get(sym, {})
-            health_score = float(health_rec.get("health_score", 0.0))
-            if health_score >= 0:
-                continue  # strengthening/stable — leave it alone
-
+        trimmed_syms = set()
+        for _ht in heat_targets:
+            sym = _ht["symbol"]
             alp = next((p for p in positions if p["symbol"] == sym), None)
-            if not alp:
+            if not alp or sym in trimmed_syms:
                 continue
-
-            qty = int(float(alp.get("qty", 0)))
-            if qty <= 1:
+            full_qty = float(alp["qty"])
+            trim_shares = max(1, int(full_qty * 0.25))  # 25% trim
+            trim_shares = min(trim_shares, int(full_qty) - 1)  # keep at least 1 share
+            if trim_shares <= 0:
                 continue
-
-            heat_shares = max(1, int(qty * heat_trim_pct))
-            heat_shares = min(heat_shares, qty - 1)  # never full exit via heat path
-
+            _hlth = _pre_health.get(sym, {}).get("health", 0.0)
             exits.append({
-                "symbol":      sym,
-                "qty":         heat_shares,
-                "price":       alp["current_price"],
-                "entry":       alp["avg_entry"],
-                "pnl_pct":     alp.get("unrealized_pnl_pct", 0),
-                "reason":      "portfolio_heat",
-                "trim_pct":    round(heat_trim_pct * 100, 1),
-                "health_score": health_score,
-                "composite":   h.get("composite", 0),
+                "symbol": sym, "qty": trim_shares,
+                "price": alp["current_price"], "entry": alp["avg_entry"],
+                "pnl_pct": alp.get("unrealized_pnl_pct", 0),
+                "reason": "portfolio_heat",
+                "composite": _ht.get("composite", 0),
             })
-            heat_trimmed.append(sym)
+            trimmed_syms.add(sym)
+            holds = [h for h in holds if h["symbol"] != sym]
+            logger.info("EXIT 4 [HEAT TRIM 25%%] %s health=%.3f comp=%.4f — %d of %d shares",
+                       sym, _hlth, _ht.get("composite", 0), trim_shares, int(full_qty))
 
-        if heat_trimmed:
-            logger.info(
-                "EXIT 4 [HEAT] portfolio_dd=%.2f%% (%.2f%% excess) — trimming %.0f%% "
-                "of %d health<0 positions: %s",
-                portfolio_dd * 100, excess_dd * 100,
-                heat_trim_pct * 100, len(heat_trimmed), heat_trimmed
-            )
-        elif holds:
-            # All positions are health>=0 — log and skip (don't force-exit a healthy position)
-            logger.warning(
-                "EXIT 4 [HEAT] portfolio_dd=%.2f%% but all %d positions have health>=0 — no trim",
-                portfolio_dd * 100, len(holds)
-            )
+        if trimmed_syms:
+            logger.info("EXIT 4 [HEAT] portfolio_dd=%.2f%% — trimmed %d positions: %s",
+                       portfolio_dd * 100, len(trimmed_syms), sorted(trimmed_syms))
 
     # ── MATH TRIM EXECUTION — driven by hold_health.json 8-layer score ──────────
     # compute_trim() in hold_monitor produces a continuous trim% from:
@@ -623,77 +510,10 @@ def run_exit_monitor(dry_run=False):
                         "agent_conf":     _agent_dec.get("confidence", None),
                         "agent_reasoning":_agent_dec.get("reasoning", ""),
                     })
-                _tlog_tmp = str(_tlog_path) + ".tmp"
-                with open(_tlog_tmp, "w") as _tf:
-                    _tjson.dump(_tlog, _tf, indent=2)
-                import os as _os; _os.replace(_tlog_tmp, _tlog_path)
+                _tlog_path.write_text(_tjson.dumps(_tlog, indent=2))
                 logger.info("[TrimLog] Logged %d trim(s) → trim_log.json", len(_trim_exits))
         except Exception as _tle:
             logger.warning("[TrimLog] Non-fatal error: %s", _tle)
-    # ─────────────────────────────────────────────────────────────────────────
-
-    # ── GAP 9: AFTERNOON COMPOSITE RESCORE ────────────────────────────────────
-    # Signals computed once at 9:35 AM. By 3:50 PM they're 6+ hours stale.
-    # The signal engine already ran above to get current composites for exit checks.
-    # Use those fresh scores to:
-    #   1. Update composite field in hold_health.json for all held positions
-    #   2. Flag positions where composite decayed significantly since morning
-    #      (delta < -0.5 = notable deterioration) for next-morning exit priority
-    #   3. Log an actionable warning for positions approaching thesis invalidation
-    #
-    # Zero new API calls — uses full_map already computed above.
-    try:
-        import json as _rj
-        from pathlib import Path as _rp
-        _hh_path = _rp("hold_health.json")
-        if _hh_path.exists() and full_map:
-            _hh = _rj.loads(_hh_path.read_text())
-            _rescore_log = []
-
-            for sym in held:
-                if sym not in full_map:
-                    continue
-                fresh_comp = full_map[sym].composite_score
-                if sym not in _hh:
-                    continue
-
-                morning_comp = float(_hh[sym].get("composite", fresh_comp))
-                comp_delta   = fresh_comp - morning_comp
-
-                # Update composite to afternoon value
-                _hh[sym]["composite"]           = round(fresh_comp, 4)
-                _hh[sym]["composite_morning"]   = round(morning_comp, 4)
-                _hh[sym]["composite_delta"]     = round(comp_delta, 4)
-                _hh[sym]["rescore_timestamp"]   = datetime.now().isoformat()
-
-                # Flag meaningful decay — thesis deteriorating intraday
-                if comp_delta < -0.5:
-                    _hh[sym]["afternoon_flag"] = "COMPOSITE_DECAY"
-                    logger.warning(
-                        "GAP9 [DECAY] %s composite %.3f → %.3f (Δ%.3f) — "
-                        "monitor for thesis invalidation at open tomorrow",
-                        sym, morning_comp, fresh_comp, comp_delta
-                    )
-                    _rescore_log.append({"symbol": sym, "morning": morning_comp,
-                                         "afternoon": fresh_comp, "delta": comp_delta})
-                elif comp_delta > 0.3:
-                    _hh[sym]["afternoon_flag"] = "COMPOSITE_STRENGTH"
-                    logger.info("GAP9 [STRENGTH] %s composite %.3f → %.3f (Δ+%.3f)",
-                                sym, morning_comp, fresh_comp, comp_delta)
-                else:
-                    _hh[sym]["afternoon_flag"] = "STABLE"
-
-            _hh_tmp = str(_hh_path) + ".tmp"
-            with open(_hh_tmp, "w") as _hf:
-                _rj.dump(_hh, _hf, indent=2)
-            import os as _rhOS; _rhOS.replace(_hh_tmp, _hh_path)
-            if _rescore_log:
-                logger.warning("GAP9: %d position(s) with meaningful composite decay: %s",
-                               len(_rescore_log), [r["symbol"] for r in _rescore_log])
-            else:
-                logger.info("GAP9: Afternoon rescore complete — all composites stable")
-    except Exception as _rse:
-        logger.warning("GAP9 rescore non-fatal error: %s", _rse)
     # ─────────────────────────────────────────────────────────────────────────
 
     # ── OUTCOME TAGGING — Layer 1 ──────────────────────────────────────────

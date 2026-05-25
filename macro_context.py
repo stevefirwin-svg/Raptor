@@ -123,103 +123,35 @@ def get_spy_trend() -> dict:
 
 
 def get_sector_breadth() -> dict:
-    """
-    % of sector ETFs trading above their 50, 150, and 200-day MAs.
-
-    Zweig (1986) breadth framework:
-      - 50MA: short-term trend — most sensitive, first to turn
-      - 150MA: intermediate trend — confirms persistence of move
-      - 200MA: long-term trend — structural bull/bear classification
-
-    Using all three gives a richer signal than 50MA alone:
-      - All three above = confirmed broad strength (structural bull)
-      - 50MA above but 200MA below = rally in downtrend (caution)
-      - All three below = confirmed broad weakness (structural bear)
-
-    Regime classification uses composite vote across all three MAs:
-      Total possible votes = 3 * n_sectors.
-      Breadth score = pct of votes that are bullish.
-    """
+    """% of sector ETFs trading above their 50-day MA."""
     try:
-        counts = {"50": {"above": 0, "total": 0},
-                  "150": {"above": 0, "total": 0},
-                  "200": {"above": 0, "total": 0}}
-
+        above = 0
+        total = 0
         for etf in SECTOR_ETFS:
-            # Need 1y+ of data for 200MA (≥200 trading days ≈ 10 months)
-            hist = yf.Ticker(etf).history(period="1y")
-            close = hist["Close"]
-            n = len(close)
-            price = float(close.iloc[-1]) if n > 0 else None
-            if price is None:
+            hist = yf.Ticker(etf).history(period="3mo")
+            if len(hist) < 50:
                 continue
-
-            for window, label in [(50, "50"), (150, "150"), (200, "200")]:
-                if n >= window:
-                    ma = float(close.rolling(window).mean().iloc[-1])
-                    counts[label]["total"] += 1
-                    if price > ma:
-                        counts[label]["above"] += 1
-
-        def pct(label):
-            t = counts[label]["total"]
-            return round(counts[label]["above"] / t * 100, 1) if t > 0 else None
-
-        pct50  = pct("50")
-        pct150 = pct("150")
-        pct200 = pct("200")
-
-        # Composite breadth score: weighted average of all three MAs.
-        # 50MA = 40% weight (most responsive), 150MA = 35%, 200MA = 25%.
-        # If a MA has no data for any sector it's excluded from composite.
-        weights = {"50": 0.40, "150": 0.35, "200": 0.25}
-        comp_num, comp_den = 0.0, 0.0
-        for label, w in weights.items():
-            p = pct(label)
-            if p is not None:
-                comp_num += p * w
-                comp_den += w
-        composite_pct = round(comp_num / comp_den, 1) if comp_den > 0 else None
-
-        # Regime: based on composite breadth score
-        if composite_pct is None:
+            close = hist["Close"]
+            price = float(close.iloc[-1])
+            ma50  = float(close.rolling(50).mean().iloc[-1])
+            total += 1
+            if price > ma50:
+                above += 1
+        pct = round(above / total * 100, 1) if total > 0 else None
+        if pct is None:
             regime = "UNKNOWN"
-        elif composite_pct >= 70:
+        elif pct >= 70:
             regime = "BROAD_STRENGTH"
-        elif composite_pct >= 50:
+        elif pct >= 50:
             regime = "MIXED"
-        elif composite_pct >= 30:
+        elif pct >= 30:
             regime = "WEAKENING"
         else:
             regime = "BROAD_WEAKNESS"
-
-        # Structural classification from 200MA breadth specifically
-        if pct200 is not None:
-            if pct200 >= 70:
-                structural = "BULL_MARKET"
-            elif pct200 >= 50:
-                structural = "NEUTRAL"
-            else:
-                structural = "BEAR_MARKET"
-        else:
-            structural = "UNKNOWN"
-
-        return {
-            "pct_above_50ma":  pct50,
-            "pct_above_150ma": pct150,
-            "pct_above_200ma": pct200,
-            "composite_pct":   composite_pct,
-            "sectors_checked": counts["50"]["total"],
-            "structural":      structural,
-            "regime":          regime,
-        }
+        return {"pct_above_50ma": pct, "sectors_checked": total, "regime": regime}
     except Exception as e:
         print(f"  [BREADTH] WARNING: {e}")
-        return {
-            "pct_above_50ma": None, "pct_above_150ma": None,
-            "pct_above_200ma": None, "composite_pct": None,
-            "sectors_checked": 0, "structural": "UNKNOWN", "regime": "UNKNOWN",
-        }
+        return {"pct_above_50ma": None, "sectors_checked": 0, "regime": "UNKNOWN"}
 
 
 def get_yield_curve() -> dict:
@@ -272,9 +204,10 @@ def get_fed_rate() -> dict:
 
 # ── Regime classifier ─────────────────────────────────────────────────────────
 
-def classify_macro(vix, spy, breadth, yield_curve, credit, fed) -> str:
+def classify_macro(vix, spy, breadth, yield_curve, credit, fed) -> tuple:
     """
     Classify overall macro into: RISK_ON / NEUTRAL / RISK_OFF / CRISIS
+    Returns (regime_label: str, macro_score: float)
 
     Scoring approach:
       Each signal votes +1 (bullish), 0 (neutral), or -1 (bearish).
@@ -286,6 +219,10 @@ def classify_macro(vix, spy, breadth, yield_curve, credit, fed) -> str:
     Hard overrides:
       VIX CRISIS                    -> CRISIS regardless
       Credit STRESS + VIX ELEVATED  -> RISK_OFF minimum
+
+    macro_score: raw integer score normalized to [-1, 1] (max possible ±8).
+    Written to macro_context.json so signals.py can use continuous probability
+    weighting instead of hard regime threshold switches.
     """
     score = 0
 
@@ -307,24 +244,14 @@ def classify_macro(vix, spy, breadth, yield_curve, credit, fed) -> str:
     elif spy_reg == "BEARISH":
         score -= 2
 
-    # Sector breadth — composite vote across 50/150/200MA (Zweig 1986)
-    # Uses composite_pct (weighted blend) for sensitivity, plus structural
-    # classification from 200MA to catch bull/bear market context.
+    # Sector breadth
     br_reg = breadth.get("regime", "UNKNOWN")
-    structural = breadth.get("structural", "UNKNOWN")
-
     if br_reg == "BROAD_STRENGTH":
         score += 1
     elif br_reg == "WEAKENING":
         score -= 1
     elif br_reg == "BROAD_WEAKNESS":
         score -= 2
-
-    # Extra vote from structural (200MA breadth) — long-term trend confirmation
-    if structural == "BULL_MARKET":
-        score += 1
-    elif structural == "BEAR_MARKET":
-        score -= 1
 
     # Yield curve
     yc_reg = yield_curve.get("regime", "UNKNOWN")
@@ -353,18 +280,20 @@ def classify_macro(vix, spy, breadth, yield_curve, credit, fed) -> str:
 
     # Hard overrides
     if vix_reg == "CRISIS":
-        return "CRISIS"
+        return "CRISIS", float(np.clip(score / 8.0, -1.0, 1.0))
     if cr_reg == "STRESS" and vix_reg in ("ELEVATED", "CRISIS"):
-        return "RISK_OFF"
+        return "RISK_OFF", float(np.clip(score / 8.0, -1.0, 1.0))
 
     if score >= 3:
-        return "RISK_ON"
+        label = "RISK_ON"
     elif score >= 0:
-        return "NEUTRAL"
+        label = "NEUTRAL"
     elif score >= -2:
-        return "RISK_OFF"
+        label = "RISK_OFF"
     else:
-        return "CRISIS"
+        label = "CRISIS"
+
+    return label, float(np.clip(score / 8.0, -1.0, 1.0))
 
 # ── Main ──────────────────────────────────────────────────────────────────────
 
@@ -389,11 +318,12 @@ def build_macro_context() -> dict:
     print("  Fetching Fed funds rate (FRED FEDFUNDS)...")
     fed = get_fed_rate()
 
-    regime = classify_macro(vix, spy, breadth, yield_curve, credit, fed)
+    regime, macro_score = classify_macro(vix, spy, breadth, yield_curve, credit, fed)
 
     context = {
         "timestamp":    datetime.now(timezone.utc).isoformat(),
         "macro_regime": regime,
+        "macro_score":  macro_score,  # continuous [-1,1] for probability weighting in signals.py
         "signals": {
             "vix":          vix,
             "spy_trend":    spy,
@@ -408,7 +338,7 @@ def build_macro_context() -> dict:
     with open(MACRO_CONTEXT_PATH, "w") as f:
         json.dump(context, f, indent=2)
 
-    print(f"\n[MacroContext] Regime: {regime}")
+    print(f"\n[MacroContext] Regime: {regime}  Score: {macro_score:+.3f}")
     print(f"[MacroContext] Written → {MACRO_CONTEXT_PATH}")
     return context
 
@@ -423,10 +353,7 @@ def build_agent_summary(regime, vix, spy, breadth, yield_curve, credit, fed) -> 
         f"VIX: {vix.get('value', 'N/A')} ({vix.get('regime', 'N/A')})",
         f"SPY: {spy.get('trend_20d', 'N/A')}% 20d trend, "
         f"{'above' if spy.get('above_200ma') else 'below'} 200MA ({spy.get('regime', 'N/A')})",
-        f"Sector breadth: {breadth.get('pct_above_50ma', 'N/A')}% above 50MA, "
-        f"{breadth.get('pct_above_150ma', 'N/A')}% above 150MA, "
-        f"{breadth.get('pct_above_200ma', 'N/A')}% above 200MA "
-        f"[{breadth.get('regime', 'N/A')} / {breadth.get('structural', 'N/A')}]",
+        f"Sector breadth: {breadth.get('pct_above_50ma', 'N/A')}% above 50MA ({breadth.get('regime', 'N/A')})",
         f"Yield curve (T10Y2Y): {yield_curve.get('spread_pct', 'N/A')}% ({yield_curve.get('regime', 'N/A')})",
         f"Credit spread (BBB): {credit.get('spread_pct', 'N/A')}% ({credit.get('regime', 'N/A')})",
         f"Fed funds: {fed.get('rate', 'N/A')}% ({fed.get('direction', 'N/A')})",
