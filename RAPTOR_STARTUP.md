@@ -1,6 +1,6 @@
 # RAPTOR_STARTUP.md — Session Startup Skill
 *Every Claude session working on Raptor must follow this file.*
-*Last updated: 2026-05-24 | Version: 5.5*
+*Last updated: 2026-05-25 | Version: 5.5*
 
 ---
 
@@ -109,7 +109,7 @@ Spot-check before writing any code. These must never be violated.
 
 ```bash
 # 1. _last_full_signals stores ALL scored symbols (not just gate-passers)
-grep -n "hold_monitor_proxy" signals.py | head -3
+grep -n "_last_full_signals" signals.py | head -3
 
 # 2. Default composite is 0.0 not -1.0
 grep -n "0\.0.*Not scored" exit_monitor.py | head -3
@@ -160,7 +160,7 @@ If any check fails: restore from GitHub before proceeding.
 
 ---
 
-## SYSTEM STATE REFERENCE (2026-05-25)
+## SYSTEM STATE REFERENCE (2026-05-24)
 
 ### What is live and working
 
@@ -183,27 +183,31 @@ If any check fails: restore from GitHub before proceeding.
 | Atomic JSON writes | LIVE — all critical files |
 | All scored symbols in _last_full_signals | LIVE |
 | Composite default 0.0 not -1.0 | LIVE |
-| Ledoit-Wolf SNR ranking — replaces heuristic t-stat | LIVE |
-| Gaussian regime blend via continuous macro_score | LIVE |
 | No fabricated fallbacks | LIVE |
+| Ledoit-Wolf SNR entry ranking (signals.py) | LIVE — 2026-05-25 |
+| Regime probability blend — continuous macro_score (signals.py + macro_context.py) | LIVE — 2026-05-25 |
+| Portfolio heat proportional 25% trim (exit_monitor.py) | LIVE — 2026-05-25 |
 
 ### What is NOT live (claimed but not in code)
 
 | Claim | Reality |
 |-------|---------|
-| P1-1 Kalman macro | macro_context.py is vote-count — no Kalman. macro_score written and now consumed by Gaussian blend |
+| P1-1 Kalman macro | macro_context.py is vote-count — no Kalman |
 | P1-5 OU hold target | dist_to_mean formula for MR, hardcoded 15 for MOM |
 
 ### What is open (next to build)
 
 | Priority | Item | Gate |
 |----------|------|------|
+| ✅ CONFIRMED LIVE | MATH-3: ADX threshold already at 25 in _detect_micro — no change needed | — |
+| ✅ DONE 2026-05-25 | MATH-2: SNR ranking — Ledoit-Wolf factor cov, entry ranked by comp/sqrt(w^T Σ w), Kelly on real SNR | — |
+| ✅ DONE 2026-05-25 | MATH-4: Portfolio heat trims ALL health<0 positions 25% — no longer single full exit | — |
+| Next session | daily_recap.py bugs fixed (Sharpe, regime_score, stop dist, universe size) | DONE 2026-05-25 |
+| Next session | STARTUP invariant grep fixed (hold_monitor_proxy → _last_full_signals) | DONE 2026-05-25 |
 | Data gate | MATH-1: Regime-conditional IC | 10+ trades per regime |
 | Data gate | MATH-5: n_prior 50 to 20 | 60+ agent-tagged trades |
 | Data gate | ARCH-1: IC layer weights hold monitor | 60+ tagged trades |
 | Data gate | Kelly ACTIVE mode | 100 trades (coded, needs config flag) |
-| Future | IC shrinkage (Bayesian prior on factor weights) | ARCH-2 |
-| Future | Kalman macro classifier | ARCH-2 |
 
 ---
 
@@ -211,8 +215,8 @@ If any check fails: restore from GitHub before proceeding.
 
 ```
 Equity:          ~$106,000
-Trades tagged:   98 (outcome_log.json)
-Kelly f_rec:     3.89% bootstrap P25 (SHADOW mode, 73/100 trades)
+Trades tagged:   98+ (outcome_log.json) — verify current count
+Kelly f_rec:     3.89% bootstrap P25 (SHADOW mode, 73/100 trades) — verify current count
 Exit quality:    math_trim 70% win (+5.59%) | trailing_stop 20% win (-5.35%)
 IC condition:    272 (high — orthogonalization active)
 Top factors:     ma_stack +0.48 | adx_dir +0.38 | price_cloud +0.35

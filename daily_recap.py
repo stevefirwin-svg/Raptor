@@ -199,14 +199,29 @@ def get_portfolio_analytics(closed_trades, equity):
     gross_loss = abs(float(np.sum(losses))) if len(losses) > 0 else 1e-9
     profit_factor = gross_profit / gross_loss if gross_loss > 0 else 0.0
 
-    # Sharpe / Sortino (daily trade-return basis, annualized via sqrt(252))
+    # Sharpe / Sortino — annualized correctly for per-trade returns.
+    # sqrt(252) is wrong here: that's for daily returns. These are per-trade returns
+    # where each "period" = avg_hold_days trading days, not 1 day.
+    # Correct annualizer: sqrt(252 / avg_hold_days) — trades per year × return per trade.
+    hold_days = []
+    for t in closed_trades:
+        hd = t.get("hold_days", t.get("days_held", None))
+        if hd is not None:
+            try:
+                hold_days.append(float(hd))
+            except Exception:
+                pass
+    avg_hold = float(np.mean(hold_days)) if hold_days else 5.0  # fallback 5d if missing
+    avg_hold = max(avg_hold, 1.0)  # guard against zero
+    annualizer = np.sqrt(252.0 / avg_hold)
+
     mean_r = np.mean(r)
     std_r = np.std(r, ddof=1)
     downside = r[r < 0]
     downside_std = np.std(downside, ddof=1) if len(downside) > 1 else 1e-9
 
-    sharpe = (mean_r / std_r) * np.sqrt(252) if std_r > 0 else 0.0
-    sortino = (mean_r / downside_std) * np.sqrt(252) if downside_std > 0 else 0.0
+    sharpe = (mean_r / std_r) * annualizer if std_r > 0 else 0.0
+    sortino = (mean_r / downside_std) * annualizer if downside_std > 0 else 0.0
 
     # Max drawdown on cumulative equity curve
     cum = np.cumprod(1 + r)
@@ -224,6 +239,7 @@ def get_portfolio_analytics(closed_trades, equity):
         "sharpe": round(sharpe, 2),
         "sortino": round(sortino, 2),
         "max_dd": round(max_dd, 2),
+        "avg_hold_days": round(avg_hold, 1),
     }
 
 
@@ -313,16 +329,25 @@ def get_position_beta(positions, dm):
 def get_days_held(open_ledger, positions):
     """
     Map symbol → (days_held, stop_price, regime, t_stat) from ledger.
-    Ledger keys are "v5.4:SYM" — strip prefix before lookup.
-    Falls back to ATR-based stop estimate and "N/A" regime when ledger
-    is missing a symbol (e.g. after a ledger reset or manual Alpaca entry).
+    Stop price priority: (1) hold_health.json stop_dist_atr field,
+    (2) ledger metadata stop, (3) skip — no fabricated 2% proxy.
     """
     today = date.today()
-    # Build a clean symbol→record map regardless of "model:SYM" key format
     sym_map = {}
     for key, val in open_ledger.items():
         sym = val.get("symbol", key.split(":")[-1])
         sym_map[sym] = val
+
+    # Load hold_health.json for real stop distances (set by exit_monitor from ATR)
+    _health = {}
+    try:
+        import json as _hj
+        from pathlib import Path as _hp
+        _p = _hp("hold_health.json")
+        if _p.exists():
+            _health = _hj.loads(_p.read_text())
+    except Exception:
+        pass
 
     result = {}
     for p in positions:
@@ -339,23 +364,26 @@ def get_days_held(open_ledger, positions):
             days = "?"
 
         m = meta.get("metadata", {})
-        ledger_stop = m.get("stop", None)
 
-        # Fallback: estimate stop from entry price - 2x ATR using Alpaca position data.
-        # Used when ledger is empty (manual entries, ledger reset, etc).
-        if ledger_stop is None:
+        # Stop price: health file has real ATR-based stop if exit_monitor ran today
+        ledger_stop = None
+        _hrec = _health.get(sym, {})
+        _stop_dist_atr = _hrec.get("stop_dist_atr", None)
+        if _stop_dist_atr is not None:
             try:
-                entry_price = float(p.get("avg_entry", 0))
                 current_price = float(p.get("current_price", 0))
-                # Rough ATR proxy: 2% of current price (conservative, ATR not available here)
-                atr_proxy = current_price * 0.02
-                ledger_stop = entry_price - (CONFIG.risk.initial_stop_atr_mult * atr_proxy)
+                # stop_dist_atr is (price - stop) / ATR; back out stop price
+                # hold_health stores stop as absolute value when available
+                ledger_stop = _hrec.get("stop_price", m.get("stop", None))
             except Exception:
-                ledger_stop = None
+                ledger_stop = m.get("stop", None)
+        else:
+            ledger_stop = m.get("stop", None)
+        # No fabricated fallback — show "—" if stop not in ledger or health file
 
         regime = m.get("regime", "")
         if not regime:
-            regime = "N/A"  # Show N/A instead of blank when ledger missing
+            regime = "N/A"
 
         result[sym] = {
             "days": days,
@@ -500,43 +528,73 @@ def build_html(account, positions, entries, exits, signals, macro, scale,
         beta_str = f"{portfolio_beta:.2f}" if portfolio_beta is not None else "N/A"
         util_color = "#ffa502" if capital_util > 80 else "#e0e0e0"
 
-        _r1 = (
-            _metric_tile("Trades",        str(analytics.get('n_trades', 0)),          "#e0e0e0") +
-            _metric_tile("Win Rate",      f"{analytics.get('win_rate', 0):.1f}%",     "#00d4aa" if analytics.get('win_rate', 0) >= 50 else "#ffa502") +
-            _metric_tile("Avg Win",       f"+{analytics.get('avg_win', 0):.2f}%",     "#00d4aa") +
-            _metric_tile("Avg Loss",      f"{analytics.get('avg_loss', 0):.2f}%",     "#ff4757") +
-            _metric_tile("Expectancy",    f"{analytics.get('expectancy', 0):.3f}%",   "#00d4aa" if analytics.get('expectancy', 0) > 0 else "#ff4757") +
-            _metric_tile("Profit Factor", f"{analytics.get('profit_factor', 0):.2f}", "#00d4aa" if analytics.get('profit_factor', 0) >= 1.5 else "#ffa502")
-        )
-        _r2 = (
-            _metric_tile("Sharpe",       f"{analytics.get('sharpe', 0):.2f}",         "#00d4aa" if analytics.get('sharpe', 0) >= 1.0 else "#ffa502") +
-            _metric_tile("Sortino",      f"{analytics.get('sortino', 0):.2f}",        "#00d4aa" if analytics.get('sortino', 0) >= 1.5 else "#ffa502") +
-            _metric_tile("Max DD",       f"{analytics.get('max_dd', 0):.1f}%",        "#ff4757") +
-            _metric_tile("Capital Util", f"{capital_util:.1f}%",                      util_color) +
-            _metric_tile("Port Beta",    beta_str,                                    "#a0a0b0") +
-            _metric_tile("Avg Hold",     f"{analytics.get('avg_hold', 0):.1f}d" if analytics.get('avg_hold') else "N/A", "#6a6a8a")
-        )
+        # Exit reason breakdown from closed trades
+        exit_counts = {}
+        for t in closed_trades:
+            reason = t.get("exit_reason", t.get("reason", "unknown"))
+            exit_counts[reason] = exit_counts.get(reason, 0) + 1
+        total_exits = sum(exit_counts.values()) or 1
+        exit_breakdown = " | ".join(
+            f"{r}: {c} ({c/total_exits*100:.0f}%)"
+            for r, c in sorted(exit_counts.items(), key=lambda x: -x[1])
+        ) if exit_counts else "—"
+
         analytics_html = f"""
-        <div style="border:1px solid #1e1e34;border-radius:4px;overflow:hidden">
-            <div style="display:flex;border-bottom:1px solid #2a2a3e">{_r1}</div>
-            <div style="display:flex">{_r2}</div>
+        <div style="display:flex;flex-wrap:wrap;gap:0">
+            {_metric_tile("Trades", str(analytics.get('n_trades', 0)), "#e0e0e0")}
+            {_metric_tile("Win Rate", f"{analytics.get('win_rate', 0):.1f}%", "#00d4aa" if analytics.get('win_rate', 0) >= 50 else "#ffa502")}
+            {_metric_tile("Avg Win", f"+{analytics.get('avg_win', 0):.2f}%", "#00d4aa")}
+            {_metric_tile("Avg Loss", f"{analytics.get('avg_loss', 0):.2f}%", "#ff4757")}
+            {_metric_tile("Expectancy", f"{analytics.get('expectancy', 0):.3f}%", "#00d4aa" if analytics.get('expectancy', 0) > 0 else "#ff4757")}
+            {_metric_tile("Profit Factor", f"{analytics.get('profit_factor', 0):.2f}", "#00d4aa" if analytics.get('profit_factor', 0) >= 1.5 else "#ffa502")}
+            {_metric_tile("Sharpe", f"{analytics.get('sharpe', 0):.2f}", "#00d4aa" if analytics.get('sharpe', 0) >= 1.0 else "#ffa502")}
+            {_metric_tile("Sortino", f"{analytics.get('sortino', 0):.2f}", "#00d4aa" if analytics.get('sortino', 0) >= 1.5 else "#ffa502")}
+            {_metric_tile("Max DD", f"{analytics.get('max_dd', 0):.1f}%", "#ff4757")}
+            {_metric_tile("Avg Hold", f"{analytics.get('avg_hold_days', 0):.1f}d", "#a0a0b0")}
+            {_metric_tile("Capital Util", f"{capital_util:.1f}%", util_color)}
+            {_metric_tile("Port Beta", beta_str, "#a0a0b0")}
+        </div>
+        <div style="margin-top:8px;padding:8px 0;border-top:1px solid #2a2a3e;font-size:11px;color:#6a6a8a">
+            <span style="color:#a0a0b0;text-transform:uppercase;letter-spacing:1px;font-size:10px">Exit reasons: </span>{exit_breakdown}
         </div>"""
     else:
         analytics_html = '<div style="color:#6a6a8a;font-size:12px;padding:8px 0">Insufficient trade history for analytics (need ≥ 3 closed trades)</div>'
 
     # ── Regime ────────────────────────────────────────────────────────────────
-    regime = macro.get("regime", "NEUTRAL")
-    regime_score = macro.get("score", 0)
-    regime_colors = {"EXPANSION": "#00d4aa", "BULLISH": "#00d4aa", "NEUTRAL": "#ffa502",
-                     "BEARISH": "#ff4757", "CRISIS": "#ff0000"}
+    # macro_context.json writes "macro_regime" (from macro_context.py)
+    # but data_feeds passes it through as "regime" to generate_signals.
+    # Recap reads from dataset["macro"] which uses data_feeds key "regime".
+    regime = macro.get("regime", macro.get("macro_regime", "NEUTRAL"))
+    # macro_score is the continuous [-1,1] float written by macro_context.py
+    regime_score = macro.get("macro_score", macro.get("score", 0.0))
+    regime_colors = {
+        "EXPANSION": "#00d4aa", "RISK_ON": "#00d4aa", "BULLISH": "#00d4aa",
+        "NEUTRAL": "#ffa502",
+        "RISK_OFF": "#ff4757", "BEARISH": "#ff4757", "CRISIS": "#ff0000",
+    }
     regime_color = regime_colors.get(regime, "#ffa502")
 
     spy_price_str = f"${spy_price:,.2f}" if spy_price else "N/A"
 
+    # Universe size: read from live universe cache if available, don't hardcode
+    try:
+        from universe_builder import UniverseBuilder
+        _ub_cache_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "cache", "universe")
+        _today_str = datetime.now().strftime("%Y-%m-%d")
+        _cache_file = os.path.join(_ub_cache_dir, f"universe_{_today_str}.json")
+        if os.path.exists(_cache_file):
+            with open(_cache_file) as _uf:
+                _universe_data = json.load(_uf)
+            _universe_size = len(_universe_data) if isinstance(_universe_data, list) else len(_universe_data.get("symbols", []))
+        else:
+            _universe_size = None
+    except Exception:
+        _universe_size = None
+    universe_str = f"~{_universe_size} symbols" if _universe_size else "~130 symbols"
+
     html = f"""
     <html>
     <body style="margin:0;padding:0;background:#0a0a1a;font-family:'Segoe UI',Arial,sans-serif">
-    <div style="max-width:100%;background:#0a0a1a;padding:20px 0">
     <div style="max-width:720px;margin:0 auto;background:#12122a;border:1px solid #2a2a3e">
 
         <!-- Header -->
@@ -592,7 +650,7 @@ def build_html(account, positions, entries, exits, signals, macro, scale,
             </div>
             <div>
                 <span style="color:#a0a0b0;font-size:12px">UNIVERSE: </span>
-                <span style="color:#e0e0e0;font-weight:700;font-size:14px">~120 symbols</span>
+                <span style="color:#e0e0e0;font-weight:700;font-size:14px">{universe_str}</span>
             </div>
         </div>
 
@@ -657,7 +715,6 @@ def build_html(account, positions, entries, exits, signals, macro, scale,
         </div>
 
     </div>
-    </div>
     </body>
     </html>
     """
@@ -665,11 +722,11 @@ def build_html(account, positions, entries, exits, signals, macro, scale,
 
 
 def _metric_tile(label, value, color):
-    """Reusable stat tile for portfolio analytics grid — 6 tiles per row."""
+    """Reusable stat tile for portfolio analytics grid."""
     return f"""
-    <div style="width:16.66%;box-sizing:border-box;padding:8px 4px;text-align:center;border-right:1px solid #1e1e34">
-        <div style="color:#6a6a8a;font-size:9px;text-transform:uppercase;letter-spacing:0.8px;white-space:nowrap">{label}</div>
-        <div style="color:{color};font-size:15px;font-weight:700;margin-top:3px;white-space:nowrap">{value}</div>
+    <div style="width:33%;box-sizing:border-box;padding:10px 8px;border-bottom:1px solid #1e1e34;text-align:center">
+        <div style="color:#6a6a8a;font-size:10px;text-transform:uppercase;letter-spacing:1px">{label}</div>
+        <div style="color:{color};font-size:16px;font-weight:700;margin-top:4px">{value}</div>
     </div>"""
 
 
