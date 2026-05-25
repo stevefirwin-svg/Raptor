@@ -1,4 +1,4 @@
-# RAPTOR_STARTUP.md — Session Startup Skill
+﻿# RAPTOR_STARTUP.md â€” Session Startup Skill
 *Every Claude session working on Raptor must follow this file.*
 *Last updated: 2026-05-25 | Version: 5.5*
 
@@ -16,7 +16,7 @@ the live data was showing. This file breaks that loop.
 
 ---
 
-## STEP 1 — PULL FRESH FROM GITHUB (mandatory, do not skip)
+## STEP 1 â€” PULL FRESH FROM GITHUB (mandatory, do not skip)
 
 Claude must clone fresh at the start of every session.
 Project knowledge files are snapshots. GitHub is the source of truth.
@@ -36,7 +36,7 @@ Remove-Item -Recurse -Force __pycache__
 
 ---
 
-## STEP 2 — READ THESE FILES IN THIS ORDER
+## STEP 2 â€” READ THESE FILES IN THIS ORDER
 
 Read all four. Do not skip any. Each answers a different question.
 
@@ -54,7 +54,7 @@ Answers: How does the system actually work right now?
 
 ---
 
-## STEP 3 — RUN THE HEALTH CHECK
+## STEP 3 â€” RUN THE HEALTH CHECK
 
 Run these before writing any code. Paste output to Claude when starting a session.
 
@@ -67,7 +67,7 @@ python factor_lab.py
 ### What to look for
 
 outcome_tracker.py --summary:
-- IC-valid count (labeled exits only — pre_label and crypto excluded)
+- IC-valid count (labeled exits only â€” pre_label and crypto excluded)
 - IC-valid >= 60 unlocks MATH-5 and ARCH-1
 - math_trim win% should be above 60%
 - trailing_stop win% should be above 40%
@@ -79,14 +79,14 @@ kelly_engine.py:
 
 factor_lab.py:
 - ma_stack and adx_dir should remain significant (IC > 0.05, t > 1.5)
-- vol_ratio IC is marginal (-0.11) — candidate for removal if confirmed
+- vol_ratio IC is marginal (-0.11) â€” candidate for removal if confirmed
 - Condition number above 200 means high collinearity
-- Any factor with IC < 0.03 and t < 1.0 for 3+ consecutive weeks → remove
+- Any factor with IC < 0.03 and t < 1.0 for 3+ consecutive weeks â†’ remove
 - Any new factor must show IC > 0.05 and ICIR > 0.5 before adding to composite
 
 ---
 
-## STEP 4 — VERIFY CRITICAL INVARIANTS IN CODE
+## STEP 4 â€” VERIFY CRITICAL INVARIANTS IN CODE
 
 Spot-check before writing any code. These must never be violated.
 
@@ -120,7 +120,7 @@ If any check fails: restore from GitHub before proceeding.
 
 ---
 
-## STEP 5 — UNDERSTAND TODAY'S CONTEXT
+## STEP 5 â€” UNDERSTAND TODAY'S CONTEXT
 
 1. What positions are currently held? Run python check_account.py or paste portfolio.
 2. What did the hold monitor say last run? Check hold_health.json.
@@ -133,15 +133,15 @@ If any check fails: restore from GitHub before proceeding.
 
 | Time ET | Bat File | Scripts | What it does |
 |---------|----------|---------|--------------| 
-| 9:00 AM | — | macro_context.py | FRED + SPY regime → macro_context.json (macro_score field) |
-| 9:15 AM | — | market_agent.py | SCAN / REDUCE / STANDBY |
+| 9:00 AM | â€” | macro_context.py | FRED + SPY regime â†’ macro_context.json (macro_score field) |
+| 9:15 AM | â€” | market_agent.py | SCAN / REDUCE / STANDBY |
 | 9:28 AM | Start_PreMarket.bat | hold_monitor.py --pre | Pre-entry health check |
 | 9:35 AM | Start_Entry.bat | main.py | Signal engine + velocity gate + cooldown gate + BUY orders |
-| 9:35–3:50 | Start_Intraday_Monitor.bat | exit_monitor.py + hold_monitor.py | Loop every 30 min |
+| 9:35â€“3:50 | Start_Intraday_Monitor.bat | exit_monitor.py + hold_monitor.py | Loop every 30 min |
 | 3:50 PM | Start_Afternoon_Monitor.bat | exit_monitor.py + hold_monitor.py + daily_recap.py | Final exits + recap |
 | 4:30 PM | Start_Recap.bat | daily_recap.py | Recap at closing prices |
 | 5:00 PM | Start_Analysis_Lab.bat | factor_lab.py + kelly_engine.py | IC + Kelly update |
-| After close | — | outcome_tracker.py | Tag new closed trades |
+| After close | â€” | outcome_tracker.py | Tag new closed trades |
 | End of day | Daily_GitHub_Push.bat | git add/commit/push | Sync state to GitHub |
 
 ---
@@ -153,34 +153,34 @@ If any check fails: restore from GitHub before proceeding.
 | Component | Status |
 |-----------|--------|
 | Dual-book signal engine (MOMENTUM only, MR suspended) | LIVE |
-| Ledoit-Wolf SNR entry ranking | LIVE — 2026-05-25 |
-| Regime probability blend (continuous macro_score) | LIVE — 2026-05-25 |
-| Velocity gate (_velocity_filter in main.py) | LIVE — 2026-05-25 |
-| Cooldown gate (_cooldown_filter in main.py) | LIVE — 2026-05-25 |
-| Composite cache written after each scan | LIVE — 2026-05-25 |
+| Ledoit-Wolf SNR entry ranking | LIVE â€” 2026-05-25 |
+| Regime probability blend (continuous macro_score) | LIVE â€” 2026-05-25 |
+| Velocity gate (_velocity_filter in main.py) | LIVE â€” 2026-05-25 |
+| Cooldown gate (_cooldown_filter in main.py) | LIVE â€” 2026-05-25 |
+| Composite cache written after each scan | LIVE â€” 2026-05-25 |
 | Vol-regime hard stop (2.5/3.0/3.5x ATR) | LIVE |
-| Signal-aware trail — composite + health modifier | LIVE |
+| Signal-aware trail â€” composite + health modifier | LIVE |
 | Regime-relative thesis threshold | LIVE |
 | Multi-MA breadth (50/150/200) | LIVE |
 | Hold monitor 10-layer health scoring | LIVE |
 | Math trim executing from hold_health.json | LIVE |
-| Portfolio heat proportional 25% trim | LIVE — 2026-05-25 |
-| Bootstrap Kelly — SHADOW mode | LIVE |
+| Portfolio heat proportional 25% trim | LIVE â€” 2026-05-25 |
+| Bootstrap Kelly â€” SHADOW mode | LIVE |
 | Spearman IC + WLS + exponential decay | LIVE |
 | Per-book AdaptiveWeights (MOMENTUM + MR files) | LIVE |
-| Outcome tracker with --backfill and --relabel | LIVE — 2026-05-25 |
+| Outcome tracker with --backfill and --relabel | LIVE â€” 2026-05-25 |
 | Factor IC lab | LIVE |
-| Atomic JSON writes | LIVE — all critical files |
+| Atomic JSON writes | LIVE â€” all critical files |
 | All scored symbols in _last_full_signals | LIVE |
 | Composite default 0.0 not -1.0 | LIVE |
 | No fabricated fallbacks | LIVE |
-| daily_recap regime_score, Sharpe, stop dist fixed | LIVE — 2026-05-25 |
+| daily_recap regime_score, Sharpe, stop dist fixed | LIVE â€” 2026-05-25 |
 
 ### What is NOT live (claimed but not in code)
 
 | Claim | Reality |
 |-------|---------|
-| P1-1 Kalman macro | macro_context.py is vote-count — replaced by regime probability blend |
+| P1-1 Kalman macro | macro_context.py is vote-count â€” replaced by regime probability blend |
 | P1-5 OU hold target | dist_to_mean formula for MR, hardcoded 15 for MOM |
 
 ### What is open (next to build)
@@ -204,8 +204,8 @@ These exist in live code right now. Each needs to be replaced with an empiricall
 | signals.py:479 | Kelly clip `0.02 / 0.12` | Derived from EVT tail analysis on closed trade returns |
 | signals.py:267 | Regime blend sigma `0.25` | Derived from historical regime transition frequency |
 | signals.py:462 | hold_target_days `15` in _last_full_signals dummy | OU theta per stock (MR suspended) |
-| exit_monitor.py:184 | days_held fallback `= 7` | Read from ledger; if missing → skip position, warn |
-| exit_monitor.py:176 | ATR fallback `price * 0.02` | Read from hold_health.json ATR; if missing → skip |
+| exit_monitor.py:184 | days_held fallback `= 7` | Read from ledger; if missing â†’ skip position, warn |
+| exit_monitor.py:176 | ATR fallback `price * 0.02` | Read from hold_health.json ATR; if missing â†’ skip |
 | exit_monitor.py:246 | Flat threshold `< 0.02` (2%) | Derived from cross-sectional return distribution percentile |
 | hold_monitor.py:46-54 | LAYER_WEIGHTS hand-picked | IC-weighted (ARCH-1, gate: 60 IC-valid trades) |
 | hold_monitor.py:353 | Score `0.5 / -0.8` for stop distance | Derived from stop_dist_atr distribution in hold_history |
@@ -214,7 +214,7 @@ These exist in live code right now. Each needs to be replaced with an empiricall
 | config.py:80 | max_portfolio_drawdown `0.12` | EVT tail on portfolio return distribution |
 | main.py:478 | velocity min_velocity `-0.15` | Derived from IC of velocity vs forward return (need 60+ labeled entries) |
 | main.py:478 | cooldown SNR floor `0.8` | Derived from SNR distribution of re-entry success vs failure |
-| daily_recap.py:214 | avg_hold fallback `5.0` days | Skip Sharpe if no hold_days data — don't fabricate |
+| daily_recap.py:214 | avg_hold fallback `5.0` days | Skip Sharpe if no hold_days data â€” don't fabricate |
 
 ---
 
@@ -226,10 +226,10 @@ Trades tagged:   98 (outcome_log.json)
 IC-valid:        39 (pre_label=47, crypto=12, unknown=0)
 Kelly f_rec:     3.89% bootstrap P25 (SHADOW mode)
 Exit quality:    math_trim 70% win (+5.59%) | trailing_stop 20% win (-5.35%)
-IC condition:    272 (high — orthogonalization active)
+IC condition:    272 (high â€” orthogonalization active)
 Top factors:     ma_stack +0.48 | adx_dir +0.38 | price_cloud +0.35
-vol_ratio:       IC=-0.11 — WATCH, candidate for removal
-MR book:         SUSPENDED — need MR-only trade outcomes to validate IC
+vol_ratio:       IC=-0.11 â€” WATCH, candidate for removal
+MR book:         SUSPENDED â€” need MR-only trade outcomes to validate IC
 ```
 
 ---
@@ -252,7 +252,7 @@ MR book:         SUSPENDED — need MR-only trade outcomes to validate IC
 14. Never change code in the intraday window 9:35-3:50 PM ET without explicit intent.
 15. No factor is permanent. Every factor must earn its place via IC > 0.05 and ICIR > 0.5 over rolling 60-day window. Underperforming factors get removed. New factors must prove themselves before entering the composite. The model is not hardcoded.
 16. No default numbers. Every constant in the codebase must have a mathematical derivation or be explicitly flagged as TODO:DERIVE with the method noted. Round numbers without derivation are bugs.
-17. When a position cannot be evaluated (missing bars, missing health, missing ledger entry) → log a warning and skip. Never substitute a fabricated value.
+17. When a position cannot be evaluated (missing bars, missing health, missing ledger entry) â†’ log a warning and skip. Never substitute a fabricated value.
 
 ---
 
@@ -284,30 +284,31 @@ git -C "C:\Users\steve\OneDrive\Desktop\Raptor" push origin main
 
 ```
 Raptor/
-├── RAPTOR_STARTUP.md        THIS FILE — read first every session
-├── RAPTOR_MASTER_PLAN.md    Priority queue + verified status table
-├── RAPTOR_SKILL.md          Rules + IC findings + math gaps
-├── RAPTOR_ONTOLOGY.md       Full system logic — no code
-├── main.py                  Entry scanner + velocity + cooldown gates
-├── signals.py               Dual-book engine + SNR ranking + AdaptiveWeights
-├── exit_monitor.py          All exit and trim logic
-├── hold_monitor.py          10-layer health scoring
-├── outcome_tracker.py       Trade labeling + --backfill + --relabel
-├── kelly_engine.py          Bootstrap Kelly (shadow mode)
-├── factor_lab.py            IC validation (Spearman, regime breakdown)
-├── macro_context.py         Regime classifier → macro_score [-1,1]
-├── config.py                All parameters
-├── position_ledger.json     Open and closed positions
-├── outcome_log.json         Labeled trades (IC-valid=39, growing)
-├── kelly_estimates.json     Bootstrap Kelly output
-├── factor_ic_report.json    IC validation results
-├── hold_health.json         Current position health scores
-├── composite_cache.json     Today's composites (velocity gate input)
-├── cooldown_log.json        Active re-entry blocks (hard stop cooldowns)
-└── adaptive_weights_MOMENTUM.json   Per-book ridge weights
+â”œâ”€â”€ RAPTOR_STARTUP.md        THIS FILE â€” read first every session
+â”œâ”€â”€ RAPTOR_MASTER_PLAN.md    Priority queue + verified status table
+â”œâ”€â”€ RAPTOR_SKILL.md          Rules + IC findings + math gaps
+â”œâ”€â”€ RAPTOR_ONTOLOGY.md       Full system logic â€” no code
+â”œâ”€â”€ main.py                  Entry scanner + velocity + cooldown gates
+â”œâ”€â”€ signals.py               Dual-book engine + SNR ranking + AdaptiveWeights
+â”œâ”€â”€ exit_monitor.py          All exit and trim logic
+â”œâ”€â”€ hold_monitor.py          10-layer health scoring
+â”œâ”€â”€ outcome_tracker.py       Trade labeling + --backfill + --relabel
+â”œâ”€â”€ kelly_engine.py          Bootstrap Kelly (shadow mode)
+â”œâ”€â”€ factor_lab.py            IC validation (Spearman, regime breakdown)
+â”œâ”€â”€ macro_context.py         Regime classifier â†’ macro_score [-1,1]
+â”œâ”€â”€ config.py                All parameters
+â”œâ”€â”€ position_ledger.json     Open and closed positions
+â”œâ”€â”€ outcome_log.json         Labeled trades (IC-valid=39, growing)
+â”œâ”€â”€ kelly_estimates.json     Bootstrap Kelly output
+â”œâ”€â”€ factor_ic_report.json    IC validation results
+â”œâ”€â”€ hold_health.json         Current position health scores
+â”œâ”€â”€ composite_cache.json     Today's composites (velocity gate input)
+â”œâ”€â”€ cooldown_log.json        Active re-entry blocks (hard stop cooldowns)
+â””â”€â”€ adaptive_weights_MOMENTUM.json   Per-book ridge weights
 ```
 
 ---
 
 *This file is the first thing read in every session.*
 *If this file is out of date, update it before anything else.*
+
