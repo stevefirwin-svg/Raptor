@@ -490,17 +490,25 @@ def run_exit_monitor(dry_run=False):
             )
             if "error" not in result:
                 logger.info("  OK: %s", result.get("status", "submitted"))
-                # Update ledger — moves position to closed list for analytics
+                # Update ledger — route partial trims to record_trim, full exits to record_exit.
+                # Previously all paths called record_exit, which closed the full position in the
+                # ledger even when only a fraction of shares were sold. This caused 8 positions
+                # to disappear from the ledger while remaining open in Alpaca.
                 try:
                     from ledger import Ledger as _Ledger
                     _l = _Ledger()
-                    exit_price = float(ex.get("price", 0))
-                    _l.record_exit(
-                        "v5.4", ex["symbol"], exit_price,
-                        datetime.now().strftime("%Y-%m-%d"), ex["reason"]
-                    )
+                    _price  = float(ex.get("price", 0))
+                    _date   = datetime.now().strftime("%Y-%m-%d")
+                    _reason = ex["reason"]
+                    _qty    = int(ex.get("qty", 0))
+                    if "trim" in _reason:
+                        # Partial trim — keep position open, reduce share count
+                        _l.record_trim("v5.4", ex["symbol"], _qty, _price, _date, _reason)
+                    else:
+                        # Full exit — close position in ledger
+                        _l.record_exit("v5.4", ex["symbol"], _price, _date, _reason)
                 except Exception as _le:
-                    logger.warning("Ledger record_exit failed for %s: %s", ex["symbol"], _le)
+                    logger.warning("Ledger record failed for %s: %s", ex["symbol"], _le)
             else:
                 logger.error("  FAILED: %s", result["error"])
     elif dry_run and exits:

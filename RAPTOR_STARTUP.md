@@ -1,6 +1,6 @@
 # RAPTOR_STARTUP.md — Session Startup
 *Read first. Every session. No exceptions.*
-*Last updated: 2026-05-27 | Version: 5.6*
+*Last updated: 2026-05-27 | Version: 5.7*
 
 ---
 
@@ -16,8 +16,12 @@ Steve's machine before any session:
 ```powershell
 git -C "C:\Users\steve\OneDrive\Desktop\Raptor" pull origin main
 git -C "C:\Users\steve\OneDrive\Desktop\Raptor" log --oneline -3
-Remove-Item -Recurse -Force __pycache__
+Remove-Item -Recurse -Force __pycache__ -ErrorAction SilentlyContinue
 ```
+
+**Note the top commit hash from `log --oneline`.** Paste it to Claude at session start.
+Claude uses it as `LAST_STEVE_COMMIT` when generating the end-of-session patch.
+This ensures the patch contains exactly the delta between Steve's machine and Claude's work — nothing more.
 
 ---
 
@@ -196,23 +200,50 @@ adaptive_weights_MOMENTUM.json  Per-book ridge weights
 
 ## END OF SESSION CHECKLIST
 
+### Claude side (every session that touches code)
+
 ```bash
-# Syntax check all changed files
+# 1. Syntax check all changed files
 for f in main.py signals.py exit_monitor.py hold_monitor.py outcome_tracker.py kelly_engine.py daily_recap.py; do
     python3 -c "import ast; ast.parse(open('$f').read()); print('OK: $f')" 2>/dev/null
 done
 
+# 2. Commit locally
 git add -A
 git commit -m "Description: what changed and why (2026-MM-DD)"
 git log --oneline -3
+
+# 3. Generate patch against last known Steve commit (the hash shown in git log that Steve's machine is at)
+git diff LAST_STEVE_COMMIT HEAD > /tmp/session_fixes.patch
+cp /tmp/session_fixes.patch /mnt/user-data/outputs/session_fixes.patch
+# Then call present_files to surface the download link
 ```
 
-Steve's push:
+**Why patch instead of push:** Claude's cloud environment cannot authenticate to GitHub.
+Commits stay local here. The patch file is the canonical handoff every session.
+
+---
+
+### Steve's side (apply patch, commit, push)
+
 ```powershell
-git -C "C:\Users\steve\OneDrive\Desktop\Raptor" pull origin main
-git -C "C:\Users\steve\OneDrive\Desktop\Raptor" add -A
-git -C "C:\Users\steve\OneDrive\Desktop\Raptor" commit -m "same message"
-git -C "C:\Users\steve\OneDrive\Desktop\Raptor" push origin main
+cd "C:\Users\steve\OneDrive\Desktop\Raptor"
+
+# 1. Apply the downloaded patch
+git apply session_fixes.patch
+
+# 2. Verify it applied cleanly
+git diff --stat
+
+# 3. Commit and push
+git add -A
+git commit -m "same message as Claude commit"
+git push origin main
+git log --oneline -4
+
+# 4. Cleanup
+Remove-Item session_fixes.patch
+Remove-Item -Recurse -Force __pycache__ -ErrorAction SilentlyContinue
 ```
 
 ---
@@ -229,7 +260,7 @@ git -C "C:\Users\steve\OneDrive\Desktop\Raptor" push origin main
 8. Kelly is SHADOW until 100 trades.
 9. Syntax check before committing.
 10. Commit message must describe what changed and why.
-11. Every session ends with git push.
+11. Every session that touches code ends with a patch file handed to Steve. Claude cannot push to GitHub — patch is the canonical handoff. Never end a code session without generating the patch.
 12. Update ONTOLOGY same session as architecture changes.
 13. Run outcome_tracker.py after any session touching trade outcomes.
 14. Never change code intraday (9:35–3:50 ET) without explicit intent.
