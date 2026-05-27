@@ -26,6 +26,12 @@ from pathlib import Path
 
 # ── Setup ─────────────────────────────────────────────────────────────────────
 
+# Force UTF-8 on Windows — cp1252 terminal cannot encode diagnostic symbols
+import sys, io
+if sys.platform == "win32":
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
+    sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding="utf-8", errors="replace")
+
 os.makedirs("logs", exist_ok=True)
 LOG_FILE = f"logs/diagnostic_{datetime.now():%Y%m%d_%H%M%S}.log"
 
@@ -34,15 +40,15 @@ logging.basicConfig(
     format="%(message)s",
     handlers=[
         logging.StreamHandler(sys.stdout),
-        logging.FileHandler(LOG_FILE),
+        logging.FileHandler(LOG_FILE, encoding="utf-8"),
     ],
 )
 log = logging.getLogger("diagnostic")
 
-PASS  = "✓ PASS"
-FAIL  = "✗ FAIL"
-WARN  = "⚠ WARN"
-INFO  = "  INFO"
+PASS  = "[ PASS ]"
+FAIL  = "[ FAIL ]"
+WARN  = "[ WARN ]"
+INFO  = "[  INFO ]"
 
 results = []
 
@@ -56,9 +62,9 @@ def check(label, status, detail=""):
 
 def section(title):
     log.info("")
-    log.info(f"{'─'*60}")
+    log.info("-" * 60)
     log.info(f"  {title}")
-    log.info(f"{'─'*60}")
+    log.info("-" * 60)
 
 
 # ── 1. ENVIRONMENT ────────────────────────────────────────────────────────────
@@ -93,7 +99,7 @@ import ast
 syntax_errors = []
 for f in required:
     try:
-        ast.parse(open(f).read())
+        ast.parse(open(f, encoding="utf-8", errors="replace").read())
     except SyntaxError as e:
         syntax_errors.append(f"{f}:{e.lineno} — {e.msg}")
 if syntax_errors:
@@ -328,7 +334,7 @@ for bat_file, rules in bat_checks.items():
     if not Path(bat_file).exists():
         check(f"{bat_file}", "WARN", "File not found")
         continue
-    content = open(bat_file).read()
+    content = open(bat_file, encoding="utf-8", errors="replace").read()
     all_ok = True
     for first, second in rules["must_precede"]:
         if first not in content or second not in content:
@@ -615,7 +621,7 @@ except Exception as e:
 # No fabricated ATR proxy — skip comment lines (elimination comments say "0.92 was eliminated")
 try:
     for fname in ["exit_monitor.py", "hold_monitor.py", "daily_recap.py"]:
-        src = open(fname).read()
+        src = open(fname, encoding="utf-8", errors="replace").read()
         found_live = False
         for line in src.split("\n"):
             stripped = line.strip()
@@ -637,7 +643,7 @@ try:
     for fname, func in [("main.py", "os.replace"), ("outcome_tracker.py", "os.replace"),
                         ("hold_monitor.py", "os.replace"), ("exit_monitor.py", "os.replace"),
                         ("ledger.py", "os.replace")]:
-        src = open(fname).read()
+        src = open(fname, encoding="utf-8", errors="replace").read()
         if func in src:
             check(f"Atomic write in {fname}", "PASS")
         else:
