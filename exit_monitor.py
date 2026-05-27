@@ -206,13 +206,35 @@ def run_exit_monitor(dry_run=False):
             days_held = 1
             logger.warning("days_held missing for %s — using conservative fallback=1", sym)
 
-        high_water = max(price, entry)
+        # high_water persists across cycles via ledger metadata.
+        # Previously: high_water = max(price, entry) — computed fresh each cycle,
+        # so the trail could never accumulate above today's price. The stop also
+        # recomputed from entry every cycle, meaning it never trailed upward.
+        # Fix: read persisted high_water from ledger, update if price is higher,
+        # write back so each cycle builds on the last. Stop only moves up.
+        _meta          = (_entry or {}).get("metadata", {})
+        _stored_hw     = _meta.get("high_water")
+        high_water     = max(price, entry, float(_stored_hw) if _stored_hw else 0.0)
+
+        # Persist updated high_water back to ledger if it moved up
+        if _entry and high_water > float(_stored_hw or 0.0):
+            try:
+                _ledger.data["positions"][f"v5.4:{sym}"]["metadata"]["high_water"] = round(high_water, 4)
+                _ledger._save()
+            except Exception as _hwe:
+                logger.debug("high_water persist failed for %s: %s", sym, _hwe)
+
         profit_atr = (high_water - entry) / atr if atr > 0 else 0
 
         reason = None
 
         # EXIT 1: HARD STOP
-        hard_stop = entry - CONFIG.risk.initial_stop_atr_mult * atr
+        # Use the higher of: recomputed ATR-based stop OR the ledger stop.
+        # The ledger stop was set at entry and updated by trail ratcheting below.
+        # Never allow hard_stop to move DOWN — stops only ratchet upward.
+        _ledger_stop = _meta.get("stop")
+        _atr_stop    = entry - CONFIG.risk.initial_stop_atr_mult * atr
+        hard_stop    = max(_atr_stop, float(_ledger_stop) if _ledger_stop else _atr_stop)
         if price <= hard_stop:
             reason = "hard_stop"
             logger.info("EXIT 1 [HARD STOP] %s $%.2f <= $%.2f", sym, price, hard_stop)
@@ -233,6 +255,19 @@ def run_exit_monitor(dry_run=False):
                 reason = "trailing_stop"
                 logger.info("EXIT 2 [TRAIL] %s $%.2f <= $%.2f (%.1fx ATR) comp=%.2f health=%.2f",
                            sym, price, trail, mult, _comp, _hlth)
+            elif trail > hard_stop:
+                # Position survives — ratchet the stop floor up to current trail level.
+                # This is the core of trailing stop behavior: the floor only moves up.
+                # Without this write-back the stop stays at the original entry level forever.
+                _new_stop = round(trail, 4)
+                _cur_stop = float(_meta.get("stop") or 0.0)
+                if _new_stop > _cur_stop and _entry:
+                    try:
+                        _ledger.data["positions"][f"v5.4:{sym}"]["metadata"]["stop"] = _new_stop
+                        _ledger._save()
+                        logger.debug("Trail ratchet %s: stop $%.2f -> $%.2f", sym, _cur_stop, _new_stop)
+                    except Exception as _tre:
+                        logger.debug("Trail ratchet persist failed for %s: %s", sym, _tre)
 
         # EXIT 3: THESIS INVALIDATION
         # Only exit if composite is genuinely negative (not just out of top-N)
@@ -392,6 +427,20 @@ def run_exit_monitor(dry_run=False):
                 else:
                     alp = next((p for p in positions if p["symbol"] == _sym), None)
                     if alp and _sym not in {e["symbol"] for e in exits}:
+                        # Double-trim guard: skip if this symbol was trimmed within the last 30 min.
+                        # hold_health.json trim recommendation persists until hold_monitor re-runs.
+                        # Without this guard, exit_monitor could fire the same trim recommendation
+                        # twice in one cycle (or across two rapid cycles), selling more than intended.
+                        _trim_meta = _ledger_map.get(_sym, {}).get("metadata", {})
+                        _last_trim_ts = _trim_meta.get("last_trim_ts")
+                        if _last_trim_ts:
+                            try:
+                                _elapsed = (datetime.now() - datetime.fromisoformat(_last_trim_ts)).total_seconds()
+                                if _elapsed < 1800:  # 30 minutes
+                                    logger.info("DOUBLE-TRIM GUARD [skip] %s trimmed %.0f min ago — waiting for hold_monitor refresh", _sym, _elapsed/60)
+                                    continue
+                            except Exception:
+                                pass
                         full_qty = float(alp["qty"])
                         # Cap trim at full_qty-1 — full exits go through EXIT path
                         safe_trim = min(_trim_shares, int(full_qty) - 1) if full_qty > 1 else 0
@@ -504,6 +553,14 @@ def run_exit_monitor(dry_run=False):
                     if "trim" in _reason:
                         # Partial trim — keep position open, reduce share count
                         _l.record_trim("v5.4", ex["symbol"], _qty, _price, _date, _reason)
+                        # Write last_trim_ts to guard against double-trim within same cycle
+                        try:
+                            _tk = f"v5.4:{ex['symbol']}"
+                            if _tk in _l.data["positions"]:
+                                _l.data["positions"][_tk]["metadata"]["last_trim_ts"] = datetime.now().isoformat()
+                                _l._save()
+                        except Exception:
+                            pass
                     else:
                         # Full exit — close position in ledger
                         _l.record_exit("v5.4", ex["symbol"], _price, _date, _reason)
@@ -522,7 +579,7 @@ def run_exit_monitor(dry_run=False):
         try:
             import json as _tjson
             from pathlib import Path as _tPath
-            _trim_exits = [e for e in exits if "trim" in e.get("reason", "")]
+            _trim_exits = [e for e in exits if "trim" in e.get("reason", "") or "portfolio_heat" in e.get("reason", "")]
             if _trim_exits:
                 _tlog_path = _tPath("trim_log.json")
                 _tlog = []

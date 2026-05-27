@@ -616,6 +616,17 @@ def run_monitor(pre_entry_only: bool = False, debug: bool = False) -> Dict:
     positions = dm.alpaca.get_positions()
     held      = {p["symbol"] for p in positions}
 
+    # Clean ghost entries from hold_health.json — symbols no longer held in Alpaca.
+    # Exits don't clean hold_health themselves; this run is the cleanup point.
+    # Without this, closed positions linger in hold_health until the file is regenerated.
+    existing_health = load_health()
+    ghosts = [sym for sym in existing_health if sym not in held]
+    if ghosts:
+        for sym in ghosts:
+            del existing_health[sym]
+        save_health(existing_health)
+        logger.info("Cleaned %d ghost(s) from hold_health.json: %s", len(ghosts), ghosts)
+
     # Universe
     try:
         from universe_builder import UniverseBuilder

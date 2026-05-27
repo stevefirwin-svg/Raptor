@@ -35,8 +35,11 @@ class Ledger:
         return {"positions": {}, "closed": []}
 
     def _save(self):
-        with open(self.path, "w") as f:
+        # Atomic write — tmp file + os.replace prevents corruption on crash
+        tmp = self.path + ".tmp"
+        with open(tmp, "w") as f:
             json.dump(self.data, f, indent=2, default=str)
+        os.replace(tmp, self.path)
 
     def record_entry(self, model: str, symbol: str, shares: int,
                      entry_price: float, date: str, metadata: Dict = None):
