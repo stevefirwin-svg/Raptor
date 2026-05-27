@@ -22,4 +22,3 @@ echo [%time%] Kelly engine complete.
 echo.
 echo [%date% %time%] Analysis lab complete >> logs\auto_start.log
 echo Reports saved: factor_ic_report.json + kelly_estimates.json
-pause

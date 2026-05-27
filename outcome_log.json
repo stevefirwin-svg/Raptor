@@ -2868,5 +2868,29 @@
     "hold_timestamp": "2026-05-26T19:42:23.585173",
     "hold_trim_pct": null,
     "tagged_at": "2026-05-27T13:52:13.216046+00:00"
+  },
+  {
+    "symbol": "CVE",
+    "entry_date": "2026-04-30T13:53:12.078951Z",
+    "exit_date": "2026-05-27T19:50:31.050035Z",
+    "hold_days": 27,
+    "entry_price": 28.72,
+    "exit_price": 28.244146,
+    "qty": 41.0,
+    "actual_pnl_pct": -1.6569,
+    "actual_exit_path": "math_trim",
+    "sell_order_id": "a7ae3dbc-18c8-43bf-a982-75e4fdc4020b",
+    "entry_decision": null,
+    "entry_confidence": null,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "entry_timestamp": null,
+    "hold_decision": "HOLD",
+    "hold_confidence": 0.9,
+    "hold_reasoning": "insufficient history: 0 days",
+    "hold_flags": [],
+    "hold_timestamp": "2026-05-27T15:50:31.630271",
+    "hold_trim_pct": null,
+    "tagged_at": "2026-05-27T20:15:02.434359+00:00"
   }
 ]

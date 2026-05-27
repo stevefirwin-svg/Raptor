@@ -648,5 +648,18 @@
     "agent_decision": "HOLD",
     "agent_conf": 0.9,
     "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-05-27T15:50:20.102782",
+    "symbol": "CVE",
+    "trim_qty": 41,
+    "price": 28.245,
+    "pnl_pct": -1.65,
+    "reason": "math_trim_41%",
+    "composite": -0.6828,
+    "trim_detail": "severity=0.233 x stop_mult=1.25 x far_mult=1.17 x pnl_mult=1.20 + slope_adj=0.000 = 0.408 -> 40.8% (41 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
   }
 ]
