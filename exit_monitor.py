@@ -604,7 +604,10 @@ def run_exit_monitor(dry_run=False):
                         "agent_conf":     _agent_dec.get("confidence", None),
                         "agent_reasoning":_agent_dec.get("reasoning", ""),
                     })
-                _tlog_path.write_text(_tjson.dumps(_tlog, indent=2))
+                _tmp = str(_tlog_path) + ".tmp"
+                with open(_tmp, "w") as _tf:
+                    _tjson.dump(_tlog, _tf, indent=2)
+                os.replace(_tmp, str(_tlog_path))
                 logger.info("[TrimLog] Logged %d trim(s) → trim_log.json", len(_trim_exits))
         except Exception as _tle:
             logger.warning("[TrimLog] Non-fatal error: %s", _tle)

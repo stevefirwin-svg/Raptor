@@ -42,13 +42,13 @@ echo [%date% %time%] Intraday monitor loop started >> logs\auto_start.log
     echo ============================================================
     echo.
 
-    echo [%time%] Running exit monitor...
-    python exit_monitor.py
-    echo [%time%] Exit monitor complete.
-
     echo [%time%] Running hold monitor...
     python hold_monitor.py
     echo [%time%] Hold monitor complete.
+
+    echo [%time%] Running exit monitor...
+    python exit_monitor.py
+    echo [%time%] Exit monitor complete.
 
     echo [%date% %time%] Cycle complete >> logs\auto_start.log
 

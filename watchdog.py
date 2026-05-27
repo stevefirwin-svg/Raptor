@@ -141,8 +141,19 @@ def run_watchdog(dry_run: bool = False):
     else:
         logger.info("SPY: %.2f%% intraday (live=$%.2f)", spy_change * 100, spy_live)
 
-    # ── Load hold_health for ATR and high_water ───────────────────────────────
+    # ── Load hold_health for ATR ─────────────────────────────────────────────
     hold_health = _load_hold_health()
+
+    # ── Load ledger for high_water and stop (authoritative source) ────────────
+    # hold_health.json snapshot does not contain high_water — that field lives
+    # in ledger metadata["high_water"], updated by exit_monitor each cycle.
+    try:
+        from ledger import Ledger as _WLedger
+        _wledger = _WLedger()
+        _wledger_map = {v["symbol"]: v for v in _wledger.data["positions"].values()}
+    except Exception:
+        _wledger = None
+        _wledger_map = {}
 
     exits = []
     holds = []
@@ -176,14 +187,25 @@ def run_watchdog(dry_run: bool = False):
             atr = price * 0.02
             logger.debug("%s: ATR fallback to 2%% proxy ($%.4f)", sym, atr)
 
-        # ── High water mark: from hold_health.json ────────────────────────────
-        # Previous: high_water = max(price, entry) — only knows current price,
-        # misses intraday highs that occurred before this watchdog run.
-        # Fixed: hold_health.json accumulates the rolling high water across monitor runs.
-        health_rec = hold_health.get(sym, {})
-        stored_high_water = float(health_rec.get("high_water", 0) or 0)
+        # ── High water mark: from ledger metadata (authoritative) ────────────
+        # hold_health.json snapshot does NOT contain high_water — it lives in
+        # ledger metadata["high_water"], updated by exit_monitor each 30-min cycle.
+        # Reading from hold_health was always returning 0 (field missing), causing
+        # watchdog to trail from max(0, entry, price) = effectively entry every run.
+        _wentry = _wledger_map.get(sym, {})
+        _wmeta  = _wentry.get("metadata", {})
+        _stored_hw = _wmeta.get("high_water")
+        stored_high_water = float(_stored_hw) if _stored_hw else 0.0
         # Take max of stored, entry, and current (current may be new intraday high)
         high_water = max(stored_high_water, entry, price)
+
+        # Persist updated high_water back to ledger if price made a new high
+        if _wledger and high_water > stored_high_water and _wentry:
+            try:
+                _wledger.data["positions"][f"v5.4:{sym}"]["metadata"]["high_water"] = round(high_water, 4)
+                _wledger._save()
+            except Exception as _hwe:
+                logger.debug("watchdog high_water persist failed for %s: %s", sym, _hwe)
 
         profit_atr = (high_water - entry) / atr if atr > 0 else 0.0
 
@@ -270,8 +292,37 @@ def run_watchdog(dry_run: bool = False):
                     "  SOLD %-6s %d shares @ $%.2f [%s]",
                     ex["symbol"], int(ex["qty"]), ex["price"], ex["reason"]
                 )
+                # Write to ledger — watchdog exits are full closes (hard_stop or trail)
+                # Previously: ledger was never updated, position stayed OPEN after watchdog sold
+                try:
+                    if _wledger:
+                        _wledger.record_exit(
+                            "v5.4", ex["symbol"],
+                            float(ex["price"]),
+                            datetime.now().strftime("%Y-%m-%d"),
+                            ex["reason"]
+                        )
+                except Exception as _le:
+                    logger.warning("Ledger record_exit failed for %s: %s", ex["symbol"], _le)
+                # Add to cooldown if hard stop
+                if ex["reason"] == "hard_stop":
+                    try:
+                        from main import _record_stopout_cooldown
+                        _record_stopout_cooldown(ex["symbol"])
+                    except Exception as _ce:
+                        logger.debug("Cooldown record failed: %s", _ce)
             else:
                 logger.error("  FAILED %-6s: %s", ex["symbol"], result["error"])
+
+    # Tag closed trades in outcome_log via outcome_tracker
+    if exits and not dry_run:
+        try:
+            import outcome_tracker as _ot
+            n = _ot.run_tracker(verbose=False)
+            if n > 0:
+                logger.info("[OutcomeTracker] Tagged %d watchdog exit(s)", n)
+        except Exception as _ote:
+            logger.debug("OutcomeTracker failed: %s", _ote)
     elif dry_run and exits:
         for ex in exits:
             logger.info(
