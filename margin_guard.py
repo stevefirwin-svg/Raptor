@@ -30,10 +30,17 @@ from typing import Tuple
 
 logger = logging.getLogger("raptor.margin_guard")
 
-# Thresholds
-BLOCK_THRESHOLD  = 0.90   # >90% utilization: no new entries
-REDUCE_THRESHOLD = 0.85   # >85%: max 1 new position
-WARN_THRESHOLD   = 0.75   # >75%: log warning
+# Thresholds derived from position limits:
+# max_positions=10 × max_position_pct=0.08 = 80% theoretical max utilization
+# at full deployment. Thresholds set relative to that ceiling:
+#   WARN at 0.75: 5% below theoretical max — first signal of approaching limits
+#   REDUCE at 0.85: 5% above theoretical max — one oversized position or margin creep
+#   BLOCK at 0.90: 10% above theoretical max — clear breach, fail closed
+# TODO:DERIVE — WARN_THRESHOLD 0.75 should be calibrated from empirical margin
+# call distance analysis once sufficient equity curve data is available.
+BLOCK_THRESHOLD  = 0.90
+REDUCE_THRESHOLD = 0.85
+WARN_THRESHOLD   = 0.75
 
 # Sentinel for unlimited entries — large enough to never cap normal operation
 # but explicit rather than magic number 99.

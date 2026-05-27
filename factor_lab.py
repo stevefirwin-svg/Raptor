@@ -107,6 +107,13 @@ def load_outcome_observations() -> List[Dict]:
         # Exclude zero-hold artifacts
         if (t.get("hold_days") or 0) == 0:
             continue
+        # Exclude partial exits (math_trim) — pnl_pct reflects the mark at trim time,
+        # not the terminal realized return. IC computed against partial returns measures
+        # trim-timing accuracy, not factor directional predictive power.
+        # Only full terminal exits produce valid IC signal.
+        exit_path = t.get("actual_exit_path", "")
+        if exit_path == "math_trim":
+            continue
         # Normalize pnl: values >1 are percentages (e.g. 5.2 = 5.2%), convert to decimal
         pnl = pnl / 100.0 if abs(pnl) > 1.0 else pnl
 

@@ -1,11 +1,15 @@
 import smtplib
+import os
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from datetime import datetime
+from dotenv import load_dotenv
 
-EMAIL_SENDER   = "stevefirwin@gmail.com"
-EMAIL_PASSWORD = "trhy qqzo kylt jker"
-EMAIL_RECEIVER = "stevefirwin@gmail.com"
+load_dotenv()
+
+EMAIL_SENDER   = os.getenv("EMAIL_SENDER", "stevefirwin@gmail.com")
+EMAIL_PASSWORD = os.getenv("EMAIL_APP_PASSWORD", "")   # set EMAIL_APP_PASSWORD in .env — never hardcode
+EMAIL_RECEIVER = os.getenv("EMAIL_RECEIVER", "stevefirwin@gmail.com")
 
 html = """
 <html>

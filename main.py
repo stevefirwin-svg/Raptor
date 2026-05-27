@@ -201,17 +201,12 @@ def run_daily_scan():
         universe = ub.build(max_symbols=150)
         logger.info("Dynamic universe: %d symbols", len(universe))
     except Exception as e:
-        logger.warning("Universe builder failed (%s), using core list", e)
-        universe = [
-            "AAPL", "MSFT", "GOOGL", "AMZN", "NVDA", "META", "TSLA",
-            "AMD", "CRM", "NFLX", "ADBE", "PYPL", "SQ", "SHOP",
-            "UBER", "ABNB", "COIN", "SNOW", "DDOG", "NET",
-            "JPM", "BAC", "GS", "MS", "V", "MA",
-            "XOM", "CVX", "LLY", "UNH", "JNJ", "PFE",
-            "CAT", "DE", "BA", "RTX", "LMT", "GE",
-            "HD", "LOW", "TGT", "WMT", "COST", "NKE",
-            "DIS", "CMCSA",
-        ]
+        # No static fallback — a fabricated universe violates Rule 3.
+        # If universe_builder fails, the filter criteria are unknown; any
+        # signals generated would be from an uncalibrated symbol set.
+        # Abort and fix the underlying error.
+        logger.error("Universe builder failed (%s) — aborting scan. Fix universe_builder before next run.", e)
+        return
     if "SPY" not in universe:
         universe.append("SPY")
 

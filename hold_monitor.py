@@ -194,8 +194,17 @@ def build_snapshot(sym: str, signal, bars: pd.DataFrame,
         market_val  = float(position.get("market_value", price_now * qty))
         pnl_pct     = float(position.get("unrealized_pnl_pct", 0)) * 100
         meta        = (ledger_meta or {}).get("metadata", {})
-        stop_price  = float(meta.get("stop", entry_price * 0.92))
-        stop_dist_atr = (price_now - stop_price) / (atr_now + 1e-9)
+        _raw_stop   = meta.get("stop")
+        if _raw_stop is not None:
+            stop_price    = float(_raw_stop)
+            stop_dist_atr = (price_now - stop_price) / (atr_now + 1e-9)
+        else:
+            # No stop in ledger metadata — do not fabricate a price proxy.
+            # entry_price * 0.92 was eliminated: it invents a value with zero ATR basis.
+            # Layer 7 (_score_stop_distance) returns (0.0, "no_stop_data") when dist is None.
+            logger.warning("No stop in ledger metadata for %s — stop_dist_atr skipped", sym)
+            stop_price    = None
+            stop_dist_atr = None
 
         entry_date_str = (ledger_meta or {}).get("entry_date", str(date.today()))
         try:
@@ -212,7 +221,7 @@ def build_snapshot(sym: str, signal, bars: pd.DataFrame,
             "market_value":  market_val,
             "pnl_pct":       pnl_pct,
             "stop_price":    stop_price,
-            "stop_dist_atr": round(stop_dist_atr, 3),
+            "stop_dist_atr": round(stop_dist_atr, 3) if stop_dist_atr is not None else None,
             "days_held":     days_held,
             "hold_target":   hold_target,
             "hold_ratio":    round(days_held / max(hold_target, 1), 3),
@@ -317,8 +326,21 @@ def _score_volume(snapshots: List[Dict]) -> Tuple[float, str]:
     latest    = snapshots[-1]
     obv_slope = latest.get("obv_slope", 0.0)
     ud_ratio  = latest.get("ud_ratio", 1.0)
+
+    # Normalize OBV slope by rolling std across available snapshots.
+    # Previous: abs(obv_slope) / max(abs(obv_slope), 1000) — hardcoded 1000 floor
+    # produced cross-sectional bias: high-volume stocks (large OBV units) were
+    # systematically penalized vs low-volume stocks. Fix: normalize by the std
+    # of OBV slopes seen for this position, making the score self-relative.
+    # Fallback to abs value when fewer than 3 snapshots (std undefined).
+    all_slopes = [s.get("obv_slope", 0.0) for s in snapshots]
+    if len(all_slopes) >= 3:
+        slope_std = float(np.std(all_slopes)) or 1.0
+        mag = min(1.0, abs(obv_slope) / (slope_std + 1e-9))
+    else:
+        # Only 1-2 snapshots: can't compute std, use unit clip
+        mag = min(1.0, abs(obv_slope) / (abs(obv_slope) + 1e-9)) if obv_slope != 0 else 0.0
     sign      = np.sign(obv_slope)
-    mag       = min(1.0, abs(obv_slope) / max(abs(obv_slope), 1000))
     obv_score = float(sign * mag)
     if ud_ratio > 1.5:
         ud_score = min(1.0, (ud_ratio - 1.0) / 2.0)
@@ -473,10 +495,16 @@ def compute_trim(health_result: Dict, position: Dict) -> Dict:
                 1.00 if dist_atr < 2.0 else 0.75
 
     # Component 3: FAR penalty — low agreement amplifies trim
+    # TODO:DERIVE — 0.30 cap on far_mult amplification is a round number.
+    # Derive from sensitivity analysis: how much does FAR=0/16 vs 8/16 affect
+    # subsequent realized PnL? Should be calibrated from outcome data.
     far_score = layers.get("factor_agreement", {}).get("score", 0.0)
     far_mult  = float(1.0 + np.clip(-far_score * 0.30, 0.0, 0.30))
 
     # Component 4: Slope amplifier — rapid decay adds urgency
+    # TODO:DERIVE — 0.20 max slope contribution is a round number.
+    # Should be derived from relationship between composite slope rate and
+    # subsequent exit outcome quality in trim_log.json.
     slope_score = layers.get("composite_slope", {}).get("score", 0.0)
     slope_adj   = float(np.clip(-slope_score * 0.20, 0.0, 0.20))
 
@@ -631,11 +659,17 @@ def run_monitor(pre_entry_only: bool = False, debug: bool = False) -> Dict:
             continue
 
         if signal is None:
+            # Signal engine did not score this symbol (data gap or universe miss).
+            # composite_score = 0.0 (neutral/unknown) — NOT -1.0.
+            # Assigning -1.0 would poison Layer 1 composite slope and corrupt
+            # health scores on every cycle the engine can't reach the symbol.
+            # Unknown != weak. Score neutrally until real data is available.
             class _Dummy:
-                composite_score = -1.0; t_statistic = 0.0
+                composite_score = 0.0; t_statistic = 0.0
                 factor_scores = {}; factor_contributions = {}
                 factors_positive = 0; regime = "UNKNOWN"; hold_target_days = 15
             signal = _Dummy()
+            logger.warning("No signal for held %s — using neutral Dummy (comp=0.0)", sym)
 
         snapshot    = build_snapshot(sym, signal, bars, pos, ledger_meta)
         pos_history = history["positions"].setdefault(sym, {

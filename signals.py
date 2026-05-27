@@ -368,6 +368,9 @@ class QuantSignalEngine:
         if len(spy_c)>=6:
             roc_5=(spy_c.iloc[-1]/spy_c.iloc[-6])-1.0
             # Momentum divergence: short-term flipped against long-term
+            # TODO:DERIVE — all thresholds (0.01, 0.02) and scale values (0.5, 0.8, 1.0)
+            # are round numbers. Derivation: compute regime-conditional entry win rate
+            # across SPY ROC deciles in backtest; replace thresholds with empirical breaks.
             if roc_20>0.01 and roc_5<-0.02:  # Bull trend breaking
                 return 0.5
             if roc_20<-0.01 and roc_5>0.02:  # Bear trend reversing (opportunity)
@@ -504,7 +507,14 @@ class QuantSignalEngine:
             micro=s["micro"]
             stop_mult={"TRENDING":self.rcfg.initial_stop_atr_mult,"REVERTING":2.0,"MIXED":2.5}.get(micro,2.5)
             stop=round(max(entry-stop_mult*atr_val,0.01),2)
+            # TODO:DERIVE — t/3.0 normalization: scales kelly from 0.5x (t=0) to 1.0x (t>=3).
+            # 3.0 is a round number. Correct derivation: once 60+ IC-valid full exits exist,
+            # regress realized pnl_pct ~ t_statistic and replace 3.0 with the empirical SNR
+            # at which E[R] becomes meaningfully positive. Ref: Thorp 2006.
             base_kelly=self.rcfg.kelly_fraction*(0.5+min(abs(s["t"])/3.0,1.0))
+            # TODO:DERIVE — kelly caps (0.02 floor, 0.12 ceiling) are round numbers.
+            # Correct: max_f = f at max_DD_tolerance per Vince 1992. See kelly_engine.py
+            # MAX_DD=0.15 bootstrap P25 output — activate when Kelly ACTIVE at 100 trades.
             kelly=float(np.clip(base_kelly*market_scale,0.02,0.12))
             if regime=="BEARISH": kelly*=self.rcfg.reduce_in_bearish
             rsi_raw=float(50*(1-raw[sym]["rsi_mr"]))  # rsi_mr=(50-RSI)/50, already computed
@@ -513,6 +523,10 @@ class QuantSignalEngine:
             if lev and abs(s["t"])>=2.0: kelly=min(kelly*2.0,0.20)
             pctile=scipy_stats.percentileofscore(comp_arr,s["comp"])/100.0
             atr_p=raw[sym].get("atr_pctile",0)
+            # TODO:DERIVE — hold_target formula uses atr_pctile (volatility rank) as proxy
+            # for hold duration. This conflates volatility with OU reversion speed.
+            # Correct: hold_target = ln(2)/theta where theta is per-stock OU speed
+            # (Leung & Zhang 2019). Constants 16 and 14 are also round numbers.
             hold=max(1,min(30,int(16+14*(atr_p if not(isinstance(atr_p,float) and np.isnan(atr_p)) else 0))))
             rev_m=raw[sym].get("rev_momentum",0)
             conf="reversal" if(isinstance(rev_m,(int,float)) and not np.isnan(rev_m) and rev_m>0.5) else "adaptive"

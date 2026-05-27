@@ -199,18 +199,27 @@ def get_portfolio_analytics(closed_trades, equity):
     avg_loss = float(np.mean(losses) * 100) if len(losses) > 0 else 0.0
     expectancy = (win_rate / 100 * avg_win) + ((1 - win_rate / 100) * avg_loss)
 
+    # Avg hold days for annualization — derive from closed trade records
+    hold_days_list = [float(t.get("hold_days", 0)) for t in closed_trades if t.get("hold_days")]
+    avg_hold_days = float(np.mean(hold_days_list)) if hold_days_list else 1.0
+
     gross_profit = float(np.sum(wins))
     gross_loss = abs(float(np.sum(losses))) if len(losses) > 0 else 1e-9
     profit_factor = gross_profit / gross_loss if gross_loss > 0 else 0.0
 
-    # Sharpe / Sortino (daily trade-return basis, annualized via sqrt(252))
+    # Sharpe / Sortino — annualize correctly by trade frequency.
+    # Bug was: sqrt(252) treats each trade as one trading day.
+    # Fix: sqrt(252 / avg_hold_days) — each trade covers avg_hold_days days,
+    # so there are 252/avg_hold_days independent trade-periods per year.
+    # Ref: Lo (2002) "The Statistics of Sharpe Ratios".
     mean_r = np.mean(r)
     std_r = np.std(r, ddof=1)
     downside = r[r < 0]
     downside_std = np.std(downside, ddof=1) if len(downside) > 1 else 1e-9
+    ann_factor = np.sqrt(252.0 / max(avg_hold_days, 1.0))
 
-    sharpe = (mean_r / std_r) * np.sqrt(252) if std_r > 0 else 0.0
-    sortino = (mean_r / downside_std) * np.sqrt(252) if downside_std > 0 else 0.0
+    sharpe  = (mean_r / std_r)  * ann_factor if std_r > 0 else 0.0
+    sortino = (mean_r / downside_std) * ann_factor if downside_std > 0 else 0.0
 
     # Max drawdown on cumulative equity curve
     cum = np.cumprod(1 + r)
@@ -364,15 +373,11 @@ def get_days_held(open_ledger, positions):
         m = meta.get("metadata", {})
         ledger_stop = m.get("stop", None)
 
-        # Fallback: estimate stop from entry price - ATR proxy
+        # No stop in ledger — do not fabricate via price * 0.02.
+        # An invented ATR proxy produces a fake stop distance with no signal value.
+        # Leave ledger_stop as None; display layer handles missing stop gracefully.
         if ledger_stop is None:
-            try:
-                entry_price = float(p.get("avg_entry", 0))
-                current_price = float(p.get("current_price", 0))
-                atr_proxy = current_price * 0.02
-                ledger_stop = entry_price - (CONFIG.risk.initial_stop_atr_mult * atr_proxy)
-            except Exception:
-                ledger_stop = None
+            pass  # Skip — real data or nothing
 
         regime = m.get("regime", "")
         if not regime:
@@ -549,7 +554,7 @@ def build_html(account, positions, entries, exits, signals, macro, scale,
 
     # ── Regime ────────────────────────────────────────────────────────────────
     regime = macro.get("regime", "NEUTRAL")
-    regime_score = macro.get("score", 0)
+    regime_score = macro.get("macro_score", 0)  # key is macro_score, not score
     regime_colors = {"EXPANSION": "#00d4aa", "BULLISH": "#00d4aa", "NEUTRAL": "#ffa502",
                      "BEARISH": "#ff4757", "CRISIS": "#ff0000"}
     regime_color = regime_colors.get(regime, "#ffa502")

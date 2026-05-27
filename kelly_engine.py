@@ -87,6 +87,12 @@ def load_outcomes() -> List[Dict]:
             continue
         if (t.get("hold_days") or 0) == 0:
             continue
+        # Exclude math_trim (partial exits) — pnl_pct is mark-at-trim, not terminal return.
+        # Including partials biases Kelly toward trim-timing accuracy, not full-trade E[R].
+        # Only terminal exits (trailing_stop, math_exit, hard_stop, thesis_invalid,
+        # time_decay) represent the full realized outcome of a trade.
+        if t.get("actual_exit_path") == "math_trim":
+            continue
         pnl_norm   = pnl / 100.0 if abs(pnl) > 1.0 else pnl
         trade_type = t.get("trade_type") or "MOMENTUM"
         clean.append({**t, "actual_pnl_pct": pnl_norm, "trade_type": trade_type})

@@ -506,5 +506,50 @@
     "symbol": "NVTS",
     "timestamp": "2026-05-26T09:36:46.938393",
     "agent": "EntryAgent"
+  },
+  {
+    "decision": "PASS",
+    "confidence": 0.95,
+    "veto_reason": null,
+    "flags": [],
+    "symbol": "CCL",
+    "timestamp": "2026-05-27T09:35:37.453652",
+    "agent": "EntryAgent"
+  },
+  {
+    "decision": "PASS",
+    "confidence": 0.95,
+    "veto_reason": null,
+    "flags": [],
+    "symbol": "RDW",
+    "timestamp": "2026-05-27T09:35:55.248178",
+    "agent": "EntryAgent"
+  },
+  {
+    "decision": "PASS",
+    "confidence": 0.9,
+    "veto_reason": null,
+    "flags": [],
+    "symbol": "KRE",
+    "timestamp": "2026-05-27T09:36:12.426973",
+    "agent": "EntryAgent"
+  },
+  {
+    "decision": "PASS",
+    "confidence": 0.95,
+    "veto_reason": null,
+    "flags": [],
+    "symbol": "BAC",
+    "timestamp": "2026-05-27T09:36:29.374228",
+    "agent": "EntryAgent"
+  },
+  {
+    "decision": "PASS",
+    "confidence": 0.95,
+    "veto_reason": null,
+    "flags": [],
+    "symbol": "QBTS",
+    "timestamp": "2026-05-27T09:36:46.988512",
+    "agent": "EntryAgent"
   }
 ]

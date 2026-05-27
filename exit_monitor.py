@@ -64,6 +64,9 @@ def _trail_mult(days_held, profit_atr, rcfg, composite=0.0, health=0.0):
     # Signal-quality modifier — math drives trail width.
     # Strong signal + healthy position = wider trail (let winners run).
     # Weak signal + decaying health = tighter trail (protect profits faster).
+    # TODO:DERIVE — thresholds ±0.3 and modifiers 1.3/0.75 are round numbers.
+    # Derivation: backtest trail width sensitivity vs realized exit quality
+    # (Bertsimas & Lo 1998). Calibrate once 60+ full-exit outcomes are tagged.
     signal_strength = (composite + health) / 2.0
     if signal_strength > 0.3:
         modifier = 1.3   # Strong — give room
@@ -129,15 +132,21 @@ def run_exit_monitor(dry_run=False):
     # Run signal engine for thesis check (current composite scores)
     signals = engine.generate_signals(bars, macro, dataset["sentiment"], spy_bars)
     # Use _last_full_signals so held symbols that decayed out of the top-N
-    # get their real composite score instead of the -1.0 default.
+    # get their real composite score instead of missing entirely.
     # generate_signals() sets this attribute on the engine instance after scoring all symbols.
     full_map = getattr(engine, "_last_full_signals", {s.symbol: s for s in signals})
-    scores = {sym: full_map[sym].composite_score if sym in full_map else s.composite_score
-              for s in signals for sym in [s.symbol]}
-    scores.update({sym: full_map[sym].composite_score for sym in held if sym in full_map})
+
+    # Build scores for all held symbols from full_map (authoritative).
+    # Default = 0.0 (neutral/unknown), NOT -1.0.
+    # A data gap is not a thesis judgment. -1.0 would poison trail modifier
+    # and time-decay thesis checks on positions where we simply have no data.
+    scores = {}
     for sym in held:
-        if sym not in scores:
-            scores[sym] = -1.0  # Genuinely not scored — thesis weak
+        if sym in full_map:
+            scores[sym] = full_map[sym].composite_score
+        else:
+            scores[sym] = 0.0  # No score available — treat as neutral, not weak
+            logger.warning("No composite score for held %s — defaulting 0.0 (data gap, not thesis judgment)", sym)
 
     # Portfolio drawdown
     total_pnl = sum(p.get("unrealized_pnl", 0) for p in positions)

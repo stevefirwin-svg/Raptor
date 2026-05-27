@@ -284,6 +284,14 @@ def classify_macro(vix, spy, breadth, yield_curve, credit, fed) -> tuple:
     if cr_reg == "STRESS" and vix_reg in ("ELEVATED", "CRISIS"):
         return "RISK_OFF", float(np.clip(score / 8.0, -1.0, 1.0))
 
+    # TODO:DERIVE — vote boundaries (>=3 RISK_ON, >=0 NEUTRAL, >=-2 RISK_OFF)
+    # are round numbers on an arbitrary integer scale. SPY vote counts double;
+    # VIX CRISIS penalizes twice — weights without empirical basis.
+    # The continuous macro_score (score/8.0) mitigates this downstream in
+    # signals.py _regime_blend(). The label is still used in halt_in_crisis
+    # and STANDBY logic. Target: replace with ARCH-2 gate (HMM/Kalman).
+    # Max score theoretically ±8 but that requires all signals aligned;
+    # realistic range is approximately ±5. Normalization by 8 is conservative.
     if score >= 3:
         label = "RISK_ON"
     elif score >= 0:

@@ -2,8 +2,8 @@
   "decision": "SCAN",
   "risk_scalar": 1.0,
   "confidence": 0.8,
-  "reasoning": "Macro conditions are favorable with a calm VIX and broad sector strength.",
+  "reasoning": "Macro environment is conducive to risk-taking with no extreme signals present.",
   "source": "rule+llama3.2",
   "macro_regime": "RISK_ON",
-  "timestamp": "2026-05-26T13:15:28.561339+00:00"
+  "timestamp": "2026-05-27T13:15:28.535918+00:00"
 }
