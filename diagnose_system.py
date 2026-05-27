@@ -33,6 +33,27 @@ if sys.platform == "win32":
     sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding="utf-8", errors="replace")
 
 os.makedirs("logs", exist_ok=True)
+
+# ── Git state — print at top so Steve can paste commit hash to Claude ─────────
+print()
+print("=" * 60)
+print("  RAPTOR DIAGNOSTIC")
+print(f"  {__import__('datetime').datetime.now().strftime('%Y-%m-%d %H:%M ET')}")
+try:
+    import subprocess
+    _hash   = subprocess.check_output(["git","rev-parse","--short","HEAD"],
+                stderr=subprocess.DEVNULL).decode().strip()
+    _msg    = subprocess.check_output(["git","log","--oneline","-1"],
+                stderr=subprocess.DEVNULL).decode().strip()
+    _remote = subprocess.check_output(["git","rev-parse","--short","origin/main"],
+                stderr=subprocess.DEVNULL).decode().strip()
+    _in_sync = "(in sync with GitHub)" if _hash == _remote else f"(GitHub is at {_remote} -- DIVERGED)"
+    print(f"  Git: {_msg} {_in_sync}")
+    print(f"  Paste to Claude at session start: {_hash}")
+except Exception:
+    print("  Git: could not read commit hash")
+print("=" * 60)
+print()
 LOG_FILE = f"logs/diagnostic_{datetime.now():%Y%m%d_%H%M%S}.log"
 
 logging.basicConfig(
