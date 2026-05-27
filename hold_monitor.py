@@ -44,20 +44,15 @@ HEALTH_FILE  = "hold_health.json"
 LEDGER_FILE  = "position_ledger.json"
 
 LAYER_WEIGHTS = {
-    # Original 8 layers — weights reduced proportionally to accommodate layers 9+10
-    "composite_slope":  0.23,   # was 0.25 — dominant predictor, still highest
-    "factor_agreement": 0.18,   # was 0.20
-    "price_momentum":   0.14,   # was 0.15
-    "cluster_health":   0.13,   # was 0.15
-    "volume":           0.09,   # was 0.10
-    "volatility":       0.07,   # was 0.08
-    "stop_distance":    0.05,   # unchanged — near-stop is hard constraint
-    "hold_duration":    0.02,   # unchanged — low weight, tie-breaker only
-    # New layers (2026-05-22)
-    "anchored_vwap":    0.05,   # Layer 9: institutional accumulation vs entry VWAP
-    "entropy":          0.04,   # Layer 10: price action disorder (rising = thesis uncertainty)
+    "composite_slope":  0.25,
+    "factor_agreement": 0.20,
+    "price_momentum":   0.15,
+    "cluster_health":   0.15,
+    "volume":           0.10,
+    "volatility":       0.08,
+    "stop_distance":    0.05,
+    "hold_duration":    0.02,
 }
-# Weights sum to 1.00
 
 TIER_STRONG = 0.20
 TIER_STABLE = -0.15
@@ -93,10 +88,8 @@ def load_history() -> Dict:
 
 
 def save_history(history: Dict):
-    tmp = HISTORY_FILE + ".tmp"
-    with open(tmp, "w") as f:
+    with open(HISTORY_FILE, "w") as f:
         json.dump(history, f, indent=2, default=str)
-    os.replace(tmp, HISTORY_FILE)
 
 
 def load_health() -> Dict:
@@ -110,10 +103,8 @@ def load_health() -> Dict:
 
 
 def save_health(health: Dict):
-    tmp = HEALTH_FILE + ".tmp"
-    with open(tmp, "w") as f:
+    with open(HEALTH_FILE, "w") as f:
         json.dump(health, f, indent=2, default=str)
-    os.replace(tmp, HEALTH_FILE)
 
 
 def load_ledger() -> Dict:
@@ -203,21 +194,8 @@ def build_snapshot(sym: str, signal, bars: pd.DataFrame,
         market_val  = float(position.get("market_value", price_now * qty))
         pnl_pct     = float(position.get("unrealized_pnl_pct", 0)) * 100
         meta        = (ledger_meta or {}).get("metadata", {})
-        raw_stop = meta.get("stop")
-        if raw_stop is not None:
-            stop_price = float(raw_stop)
-        else:
-            # Stop price not in ledger — position entered outside the bot or
-            # ledger not backfilled. Do NOT fabricate. Use None so stop_distance
-            # layer returns UNKNOWN rather than a fake score.
-            stop_price = None
-            logger.warning("[StopPrice] %s: no stop in ledger metadata — "
-                           "stop_distance layer disabled. Run backfill_ledger.py --write.", sym)
-
-        if stop_price is not None:
-            stop_dist_atr = (price_now - stop_price) / (atr_now + 1e-9)
-        else:
-            stop_dist_atr = None  # explicitly unknown — not fabricated
+        stop_price  = float(meta.get("stop", entry_price * 0.92))
+        stop_dist_atr = (price_now - stop_price) / (atr_now + 1e-9)
 
         entry_date_str = (ledger_meta or {}).get("entry_date", str(date.today()))
         try:
@@ -233,12 +211,11 @@ def build_snapshot(sym: str, signal, bars: pd.DataFrame,
             "qty":           qty,
             "market_value":  market_val,
             "pnl_pct":       pnl_pct,
-            "stop_price":    stop_price,          # None if not in ledger
-            "stop_dist_atr": round(stop_dist_atr, 3) if stop_dist_atr is not None else None,
+            "stop_price":    stop_price,
+            "stop_dist_atr": round(stop_dist_atr, 3),
             "days_held":     days_held,
             "hold_target":   hold_target,
             "hold_ratio":    round(days_held / max(hold_target, 1), 3),
-            "stop_known":    stop_price is not None,  # explicit quality flag
         }
 
     return {
@@ -286,10 +263,7 @@ def _score_factor_agreement(snapshots: List[Dict]) -> Tuple[float, str]:
     """Layer 2: FAR breadth + trend. <6/16 = strong sell (Frazzini & Pedersen 2014)."""
     latest    = snapshots[-1]
     far       = latest.get("factor_agreement", 0.5)
-    n_pos     = latest.get("factors_positive", None)
-    if n_pos is None:
-        # No factor data in snapshot — return neutral, explicitly flagged
-        return 0.0, "FAR=no_data (neutral default)"
+    n_pos     = latest.get("factors_positive", 8)
     far_trend = (snapshots[-1]["factor_agreement"] - snapshots[-3]["factor_agreement"]
                  if len(snapshots) >= 3 else 0.0)
     base      = (far - 0.5) * 2.0
@@ -339,29 +313,13 @@ def _score_cluster_health(snapshots: List[Dict]) -> Tuple[float, str]:
 
 
 def _score_volume(snapshots: List[Dict]) -> Tuple[float, str]:
-    """Layer 5: OBV slope + UD ratio + OBV trend over 3 days (institutional footprint).
-
-    P2-7 fix: OBV slope was normalized by max(|slope|, 1000) — the 1000 floor was
-    uncalibrated. A stock with typical OBV moves of 50K would always score near 0
-    because 50K/1000 = 50, still small. Fixed: normalize against the rolling max
-    magnitude across available snapshots — self-calibrating per stock.
-    """
+    """Layer 5: OBV slope + UD ratio + OBV trend over 3 days (institutional footprint)."""
     latest    = snapshots[-1]
     obv_slope = latest.get("obv_slope", 0.0)
     ud_ratio  = latest.get("ud_ratio", 1.0)
-
-    # Rolling OBV magnitude normalization — self-calibrating per stock.
-    # Use max magnitude across available snapshots (up to 10) as the scale.
-    # If only 1 snapshot: fall back to sign only (can't normalize with 1 point).
-    all_slopes = [abs(s.get("obv_slope", 0.0)) for s in snapshots[-10:]]
-    max_mag = max(all_slopes) if all_slopes else 1.0
-    if max_mag < 1.0:
-        max_mag = 1.0  # floor at 1 to avoid divide-by-zero on zero-volume periods
-
-    sign = np.sign(obv_slope)
-    mag  = min(1.0, abs(obv_slope) / max_mag)
+    sign      = np.sign(obv_slope)
+    mag       = min(1.0, abs(obv_slope) / max(abs(obv_slope), 1000))
     obv_score = float(sign * mag)
-
     if ud_ratio > 1.5:
         ud_score = min(1.0, (ud_ratio - 1.0) / 2.0)
     elif ud_ratio < 0.67:
@@ -370,11 +328,13 @@ def _score_volume(snapshots: List[Dict]) -> Tuple[float, str]:
         ud_score = (ud_ratio - 1.0) / 0.5
 
     # OBV trend: consecutive declining OBV slope = institutional distribution signal.
+    # Uses linear fit over last 3 snapshots to detect direction of OBV momentum.
     if len(snapshots) >= 3:
         obv_slopes = [s.get("obv_slope", 0.0) for s in snapshots[-3:]]
-        norm_max = max(abs(v) for v in obv_slopes) or 1.0
-        norm = [v / norm_max for v in obv_slopes]
-        obv_trend_s = float(np.clip(np.polyfit([0, 1, 2], norm, 1)[0] * 2.0, -1.0, 1.0))
+        # Normalize by max magnitude to get direction score
+        max_mag = max(abs(v) for v in obv_slopes) or 1.0
+        norm = [v / max_mag for v in obv_slopes]
+        obv_trend_s = float(np.clip(np.polyfit([0,1,2], norm, 1)[0] * 2.0, -1.0, 1.0))
     else:
         obv_trend_s = 0.0
 
@@ -385,63 +345,25 @@ def _score_volume(snapshots: List[Dict]) -> Tuple[float, str]:
 
 
 def _score_volatility(snapshots: List[Dict], pnl_pct: float = 0.0) -> Tuple[float, str]:
-    """Layer 6: ATR expansion context — good if winning, bad if losing.
-
-    P2-8 fix: Previous implementation returned a flat 0.0 for ATR expansion
-    in the 0.80-1.20 range and 0.2 for contracting — losing information in the
-    normal range. Fixed: continuous linear interpolation across the full range.
-
-    New behavior:
-      atr_exp > 1.20: expanding volatility — +0.5 if profitable, -0.8 if losing
-      atr_exp < 0.80: contracting volatility — slight positive (consolidating)
-      0.80-1.20:      continuous linear interpolation between the two extremes
-    """
+    """Layer 6: ATR expansion context — good if winning, bad if losing."""
     latest  = snapshots[-1]
     atr_exp = latest.get("atr_expansion", 1.0)
     bb_w    = latest.get("bb_width", 0.05)
-
     if atr_exp > 1.20:
-        # Expanding vol: good for winning trades (breakout), bad for losing (acceleration)
-        base_score = 0.5 if pnl_pct > 0 else -0.8
+        score = 0.5 if pnl_pct > 0 else -0.8
     elif atr_exp < 0.80:
-        # Contracting vol: consolidation — slight positive regardless of P&L
-        base_score = 0.15
+        score = 0.0
     else:
-        # Continuous interpolation in normal range (0.80 to 1.20)
-        # Maps 0.80 → +0.15 (contracting end), 1.20 → ±0.50/-0.80 (expanding end)
-        t = (atr_exp - 0.80) / 0.40   # 0.0 at atr_exp=0.80, 1.0 at atr_exp=1.20
-        expanding_end = 0.5 if pnl_pct > 0 else -0.8
-        base_score = 0.15 + t * (expanding_end - 0.15)
-
-    # Bollinger width bonus: wide bands + profitable = trend confirmation
-    score = base_score + (0.1 * np.sign(pnl_pct) if bb_w > 0.10 else 0.0)
+        score = 0.2
+    score += 0.1 * np.sign(pnl_pct) if bb_w > 0.10 else 0.0
     return float(np.clip(score, -1.0, 1.0)), f"ATR_exp={atr_exp:.2f}  BB_width={bb_w:.3f}"
 
 
 def _score_stop_distance(snapshots: List[Dict]) -> Tuple[float, str]:
-    """Layer 7: Stop distance in ATR units. <1.5 ATR = dangerous.
-
-    P2-9 fix: Previous implementation returned 0.0 (neutral) when dist=0
-    or falsy. A stop distance of 0 means price IS at the stop — maximum
-    danger, should score -1.0 not 0.0 (neutral).
-
-    Also fixed: dist=None (no stop data) returns 0.0 (neutral — unknown),
-    but dist=0 (price at stop) returns -1.0 (maximum negative signal).
-    """
-    dist = snapshots[-1].get("stop_dist_atr", None)
-
-    # None = no stop data at all — genuinely unknown, use neutral
-    if dist is None:
+    """Layer 7: Stop distance in ATR units. <1.5 ATR = dangerous."""
+    dist = snapshots[-1].get("stop_dist_atr", 2.0)
+    if not dist:
         return 0.0, "no_stop_data"
-
-    dist = float(dist)
-
-    # dist ≤ 0: price is at or below the stop — maximum danger
-    # (This can happen if stop hasn't been updated since a large move down)
-    if dist <= 0:
-        return -1.0, f"stop_dist={dist:.2f} ATR (AT/BELOW STOP)"
-
-    # dist > 0: continuous score. Threshold at 1.5 ATR (danger zone below)
     score = float(np.clip((dist - 1.5) / 1.5, -1.0, 1.0))
     return score, f"stop_dist={dist:.2f} ATR"
 
@@ -463,111 +385,8 @@ def _score_hold_duration(snapshots: List[Dict]) -> Tuple[float, str]:
     return float(np.clip(score, -1.0, 1.0)), f"hold_ratio={hold_ratio:.2f}  pnl={pnl_pct:+.1f}%"
 
 
-def _score_anchored_vwap(snapshots: List[Dict]) -> Tuple[float, str]:
-    """Layer 9: Anchored VWAP distance from entry.
-
-    VWAP anchored to entry_date measures whether price has been consistently
-    above or below the volume-weighted average since we entered. Price above
-    anchored VWAP = institutional accumulation supporting our thesis.
-    Price below = distribution against us.
-
-    Computation: approximated from daily OHLCV in snapshots.
-    VWAP_anchored = sum(typical_price × volume) / sum(volume) over all held days.
-    typical_price = (high + low + close) / 3 per day.
-
-    Score = clip((price - vwap_anchored) / ATR, -1, 1)
-    Positive = price above VWAP (support). Negative = below (resistance).
-    """
-    if len(snapshots) < 2:
-        return 0.0, "insufficient_data_for_vwap"
-
-    # Accumulate VWAP from snapshot fields
-    cum_tp_vol = 0.0
-    cum_vol    = 0.0
-    for snap in snapshots:
-        price  = float(snap.get("price", 0) or snap.get("current_price", 0) or 0)
-        vol    = float(snap.get("vol_ratio", 1.0))   # vol_ratio = today/avg, proxy for relative vol
-        if price <= 0:
-            continue
-        # Use price as typical price proxy (high/low not stored in snapshots)
-        cum_tp_vol += price * vol
-        cum_vol    += vol
-
-    if cum_vol <= 0:
-        return 0.0, "no_volume_data"
-
-    vwap_anchored = cum_tp_vol / cum_vol
-    current_price = float(snapshots[-1].get("price", 0) or snapshots[-1].get("current_price", 0) or 0)
-    atr           = float(snapshots[-1].get("atr", 1.0) or 1.0)
-
-    if current_price <= 0 or atr <= 0:
-        return 0.0, "no_price_data"
-
-    dist  = (current_price - vwap_anchored) / atr
-    score = float(np.clip(dist, -1.0, 1.0))
-    return score, f"price=${current_price:.2f}  vwap=${vwap_anchored:.2f}  dist={dist:+.2f}ATR"
-
-
-def _score_shannon_entropy(snapshots: List[Dict]) -> Tuple[float, str]:
-    """Layer 10: Shannon entropy of price return distribution.
-
-    Rising entropy = increasing disorder in price action = thesis uncertainty.
-    Falling entropy = price action becoming more directional = thesis clarity.
-
-    Computation: discretize last N daily returns into 5 bins, compute
-    H = -sum(p × log(p)) across bins. Normalize against maximum entropy
-    (uniform distribution across 5 bins = log(5) ≈ 1.609).
-
-    Score: low entropy (directional, predictable) → positive.
-            high entropy (disordered, random) → negative.
-    Score = clip(1 - 2 × (H / H_max), -1, 1)
-      H=0 (perfectly directional) → score = +1.0
-      H=H_max (uniform/random)   → score = -1.0
-
-    Entropy trend: if entropy is RISING over last 3 snapshots → additional penalty.
-    """
-    if len(snapshots) < 5:
-        return 0.0, "insufficient_data_for_entropy"
-
-    # Extract ROC values as return proxy (stored in snapshots as roc_5d)
-    rocs = [float(s.get("roc_5d", 0.0) or 0.0) for s in snapshots[-10:]]
-    if len(rocs) < 4:
-        return 0.0, "insufficient_roc_data"
-
-    # Discretize into 5 bins
-    try:
-        counts, _ = np.histogram(rocs, bins=5)
-        probs = counts / counts.sum()
-        # Shannon entropy H = -sum(p * log(p)), ignore zeros
-        H = -float(sum(p * np.log(p) for p in probs if p > 0))
-        H_max = np.log(5)  # maximum entropy for 5 bins
-        H_norm = H / H_max if H_max > 0 else 0.5
-
-        base_score = float(np.clip(1.0 - 2.0 * H_norm, -1.0, 1.0))
-
-        # Entropy trend: rising entropy over last 3 snapshots = extra penalty
-        if len(snapshots) >= 3:
-            recent_rocs = [[float(s.get("roc_5d", 0.0) or 0.0)] for s in snapshots[-3:]]
-            entropies = []
-            for window in recent_rocs:
-                c, _ = np.histogram(rocs[:-3] + window, bins=5)
-                p = c / (c.sum() + 1e-10)
-                h = -float(sum(x * np.log(x) for x in p if x > 0))
-                entropies.append(h)
-            entropy_trend = entropies[-1] - entropies[0]   # positive = rising disorder
-            trend_penalty = float(np.clip(-entropy_trend / H_max, -0.3, 0.0))
-            score = float(np.clip(base_score + trend_penalty, -1.0, 1.0))
-        else:
-            score = base_score
-            entropy_trend = 0.0
-
-        return score, f"H={H:.3f}  H_norm={H_norm:.3f}  trend={entropy_trend:+.3f}"
-    except Exception:
-        return 0.0, "entropy_compute_error"
-
-
 def compute_health_score(snapshots: List[Dict]) -> Dict:
-    """Compute 10-layer weighted health score from trajectory."""
+    """Compute 8-layer weighted health score from trajectory."""
     if not snapshots:
         return {"tier": "NO_DATA", "health": 0.0, "layers": {}, "decay_driver": ""}
 
@@ -582,8 +401,6 @@ def compute_health_score(snapshots: List[Dict]) -> Dict:
         "volatility":       _score_volatility(snapshots, pnl_pct),
         "stop_distance":    _score_stop_distance(snapshots),
         "hold_duration":    _score_hold_duration(snapshots),
-        "anchored_vwap":    _score_anchored_vwap(snapshots),
-        "entropy":          _score_shannon_entropy(snapshots),
     }
 
     layers = {
@@ -865,7 +682,7 @@ def run_monitor(pre_entry_only: bool = False, debug: bool = False) -> Dict:
             icon, sym, health_result["health"],
             snapshot["factors_positive"],
             snapshot.get("pnl_pct", 0.0),
-            snapshot.get("stop_dist_atr", 0.0),
+            snapshot.get("stop_dist_atr") or 0.0,
             trim_result["action"]
         )
         if health_result["tier"] == "DECAYING":

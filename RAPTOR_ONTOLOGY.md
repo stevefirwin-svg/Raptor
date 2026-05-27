@@ -1,6 +1,6 @@
 # Raptor v5.5 — Complete System Ontology
 *Full decision logic, mathematics, and feedback loops. No code.*
-*Last updated: 2026-05-24*
+*Last updated: 2026-05-27 | accum_dist formula corrected (R² not |R|), composite soft shrinkage documented*
 
 ---
 
@@ -260,7 +260,9 @@ Volume confirming uptrend with confidence.
 **Accumulation/Distribution (`accum_dist`)**
 `CLV = ((close-low)-(high-close)) / (high-low)`
 `AD = cumsum(CLV × volume)`
-`accum_dist = slope × |R|` — institutional accumulation trend.
+`accum_dist = slope × R²` — institutional accumulation trend.
+R² is the quality weight: unsigned, symmetrically penalises noisy fits. Consistent with obv_r2.
+Using `|R|` (prior formula) underweighted clean trends and asymmetrically rewarded negative fits — corrected 2026-05-27.
 
 **Price Cloud (`price_cloud`)**
 `price_cloud = (price - (EMA8+EMA50)/2) / |EMA8-EMA50|`
@@ -332,8 +334,14 @@ All factors are normalized cross-sectionally in one pass:
 - Other top patterns → no suppression (informational only)
 
 **Composite:**
-`comp = Σ(z[fn] × w[fn]) for fn in MOMENTUM_FACTORS`
-Equal base weights adjusted by pullback_quality. `comp > 0` required.
+```
+z_soft[fn] = z[fn] × (|z[fn]| / (|z[fn]| + 0.10))   # soft shrinkage
+comp = Σ(z_soft[fn] × w[fn]) / Σ(w[fn]) for fn in MOMENTUM_FACTORS
+```
+Soft shrinkage replaces the prior hard `|z| > 0.10` inclusion filter (2026-05-27).
+Hard cutoff created score discontinuities: a factor at z=0.09 was fully excluded; at z=0.11 it received full weight.
+Soft shrinkage smoothly reduces small z-scores toward zero. At |z|=0.10: 50% retained. At |z|=0.50: 83%. At |z|=1.0: 91%.
+`comp > 0` required for entry.
 
 **Exit ruleset (exit_monitor.py):**
 - Wide trail stop (rcfg.initial_stop_atr_mult)

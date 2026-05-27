@@ -407,5 +407,104 @@
     "symbol": "F",
     "timestamp": "2026-05-23T09:35:29.096033",
     "agent": "EntryAgent"
+  },
+  {
+    "decision": "PASS",
+    "confidence": 0.95,
+    "veto_reason": null,
+    "flags": [],
+    "symbol": "AAPL",
+    "timestamp": "2026-05-24T09:35:41.498170",
+    "agent": "EntryAgent"
+  },
+  {
+    "decision": "PASS",
+    "confidence": 0.95,
+    "veto_reason": null,
+    "flags": [],
+    "symbol": "HPE",
+    "timestamp": "2026-05-24T09:35:58.816337",
+    "agent": "EntryAgent"
+  },
+  {
+    "decision": "PASS",
+    "confidence": 0.5,
+    "veto_reason": null,
+    "reasoning": "Agent unavailable \u2014 passthrough default",
+    "flags": [
+      "agent_error"
+    ],
+    "symbol": "BAC",
+    "timestamp": "2026-05-24T09:36:18.155253",
+    "agent": "EntryAgent"
+  },
+  {
+    "decision": "PASS",
+    "confidence": 0.9,
+    "veto_reason": null,
+    "flags": [],
+    "symbol": "F",
+    "timestamp": "2026-05-24T09:36:35.827506",
+    "agent": "EntryAgent"
+  },
+  {
+    "decision": "PASS",
+    "confidence": 0.5,
+    "veto_reason": null,
+    "reasoning": "Agent unavailable \u2014 passthrough default",
+    "flags": [
+      "agent_error"
+    ],
+    "symbol": "IONQ",
+    "timestamp": "2026-05-24T09:36:54.266178",
+    "agent": "EntryAgent"
+  },
+  {
+    "decision": "PASS",
+    "confidence": 0.95,
+    "veto_reason": null,
+    "flags": [],
+    "symbol": "KRE",
+    "timestamp": "2026-05-26T09:35:37.823227",
+    "agent": "EntryAgent"
+  },
+  {
+    "decision": "PASS",
+    "confidence": 0.5,
+    "veto_reason": null,
+    "reasoning": "Agent unavailable \u2014 passthrough default",
+    "flags": [
+      "agent_error"
+    ],
+    "symbol": "BAC",
+    "timestamp": "2026-05-26T09:35:56.548384",
+    "agent": "EntryAgent"
+  },
+  {
+    "decision": "PASS",
+    "confidence": 0.95,
+    "veto_reason": null,
+    "flags": [],
+    "symbol": "QBTS",
+    "timestamp": "2026-05-26T09:36:13.574046",
+    "agent": "EntryAgent"
+  },
+  {
+    "decision": "PASS",
+    "confidence": 0.85,
+    "veto_reason": null,
+    "flags": [],
+    "symbol": "RGTI",
+    "timestamp": "2026-05-26T09:36:30.120708",
+    "agent": "EntryAgent"
+  },
+  {
+    "decision": "PASS",
+    "confidence": 0.95,
+    "veto_reason": null,
+    "flags": [],
+    "symbol": "NVTS",
+    "timestamp": "2026-05-26T09:36:46.938393",
+    "agent": "EntryAgent"
   }
 ]

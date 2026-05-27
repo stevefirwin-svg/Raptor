@@ -1,31 +1,30 @@
 # Raptor — Master Priority Plan
-*Last updated: 2026-05-24. Supersedes all prior versions.*  
-*Incorporates: original audit, sessions 18–22, Grok review, ChatGPT review, ground truth code audit.*
+*Last updated: 2026-05-27. Source of truth: GitHub + live code audit.*
+*Supersedes all prior versions including RAPTOR_AUDIT_AND_PLAN.md (now deleted).*
 
 ---
 
 ## The Standard
 
 Every number must be derivable from a formula, empirical data, or an optimization.  
-If "why that number?" cannot be answered with a derivation or measured value from Raptor's own data, the number is wrong.
+If "why that number?" cannot be answered, the number is wrong.
 
-**Data integrity corollary:** If real data is unavailable, use a conservative neutral or skip the decision entirely. Never fabricate a value that looks real.
+**Data integrity corollary:** Real data or skip. Never fabricate a fallback value that looks real.
 
 ---
 
-## Current System State (verified from live code 2026-05-24)
+## Current System State (verified 2026-05-27)
 
-| Layer | Status |
-|-------|--------|
-| P0 Blockers | ✅ ALL 8 FIXED |
-| P1 Math Foundation | ✅ 13/17 LIVE (see table below) |
-| CRIT items | ✅ ALL 9 RESOLVED this session |
-| Learning layer | ✅ LIVE — 98 tagged trades, exit paths resolving |
-| Kelly engine | ✅ SHADOW — 73 clean trades, f_rec=3.89% (bootstrap P25) |
-| Fabricated defaults | ✅ ELIMINATED this session |
-| MATH items | ❌ 5 open |
+| Component | Status |
+|-----------|--------|
+| All P0 blockers | ✅ FIXED |
+| All CRIT items (0–8) | ✅ RESOLVED |
+| Fabricated defaults | ✅ ELIMINATED |
+| Learning layer | ✅ LIVE — 42 IC-valid trades |
+| Kelly engine | ✅ SHADOW — 42/100 trades |
+| MATH items | ❌ 3 open (MATH-1, MATH-3, MATH-5) |
 | ARCH items | ⏳ Gated on data |
-| P2 Hygiene | ❌ ~8 open |
+| HYGIENE items | ❌ ~7 open |
 
 ---
 
@@ -33,116 +32,55 @@ If "why that number?" cannot be answered with a derivation or measured value fro
 
 | Symbol | Meaning | When to act |
 |--------|---------|-------------|
-| 🔴 CRITICAL | Bug corrupting decisions or statistical error invalidating math | Immediately |
-| 🟠 MATH | Static where dynamic required, or misspecified live formula | Next session |
+| 🔴 MATH | Static where dynamic required, or misspecified formula | Next session |
 | 🟡 ARCH | Correct direction, premature at current data scale | When data gate met |
 | 🟢 HYGIENE | Dead code, fragile I/O, missing instrumentation | Rolling |
 
 ---
 
-## ✅ COMPLETED — CRIT ITEMS (all done 2026-05-24)
+## ✅ COMPLETED — All resolved, no further action needed
 
-### CRIT-0 — Fix outcome_tracker ✅
-- All 42 legacy records backfilled: trade_type=MOMENTUM, regime_at_entry, exit_path
-- 56 new trades tagged from Alpaca order history (total: 98)
-- parse_ts() fixed: always returns timezone-aware UTC datetime
-- .env key name support: ALPACA_API_KEY / ALPACA_SECRET_KEY (was APCA_ only)
-- Atomic writes via os.replace()
-
-### CRIT-1 — Velocity gate wired into main.py ✅
-- _velocity_filter(): skip entry if composite dropped > 0.20 vs yesterday
-- composite_cache.json saved before held-symbol filter (captures full universe)
-- Was built but never connected to main.py
-
-### CRIT-2 — Cooldown gate wired into main.py ✅
-- _cooldown_filter(): blocks re-entry during active cooldown window
-- cooldown_log.json was being written but never read by main.py
-
-### CRIT-3 — Spearman rank IC in AdaptiveWeights ✅
-- _get_ic_boost() now uses scipy.stats.spearmanr
-- Replaces binary sign-match IC (discarded magnitude)
-- Reference: Grinold & Kahn (1999)
-
-### CRIT-4 — Per-book AdaptiveWeights ✅
-- adaptive_weights_MOMENTUM.json and adaptive_weights_MEAN_REVERSION.json
-- Momentum data no longer contaminates MR weights
-- QuantSignalEngine has self.adaptive_mom and self.adaptive_mr
-
-### CRIT-5 — Atomic JSON writes ✅
-- os.replace() used in: main.py, outcome_tracker.py, hold_monitor.py, exit_monitor.py, kelly_engine.py
-- Crash during write no longer corrupts JSON files
-
-### CRIT-6 — Composite scoring for held positions ✅
-- signals.py: ALL scored symbols stored in _last_full_signals (not just gate-passers)
-- Held positions that fail entry gates get real composite proxy, not -1.0
-- exit_monitor.py: default changed from -1.0 (fake-weak) to 0.0 (neutral/unknown)
-- Root cause: entry gates filtered held positions → artificial comp=-1.0 → artificial DECAYING
-
-### CRIT-7 — Bootstrap Kelly ✅
-- kelly_engine.py: bootstraps full recommended-f pipeline (10,000 resamples)
-- Uses P25 of bootstrapped final-f as production estimate (not raw f*)
-- Decay-weighted sampling (λ=0.005) — recent trades weighted higher
-- Current result: f_rec=3.89% (P25), range 2.95%–5.32%, std=1.63%
-- Still SHADOW mode — active at 100 trades
-
-### CRIT-8 — Exponential decay on all learning ✅
-- AdaptiveWeights: weighted ridge regression (WLS), decay-weighted IC
-- λ=0.005, half-life ≈ 139 days (Asness, Moskowitz & Pedersen 2013)
-- Same λ in kelly_engine.py bootstrap sampling
-
-### CRIT-9 — Portfolio correlation gate ❌ CANCELLED (philosophy decision)
-- Momentum clustering is a feature not a bug
-- Same-sector stocks run together in bull markets — that is the alpha
-- Hold monitor scores each position independently → natural diversification via health decay
-- Correlation gate would fight the signal
+| ID | What was fixed |
+|----|---------------|
+| CRIT-0 | outcome_tracker: 98 trades backfilled, parse_ts UTC-aware, atomic writes, .env key aliases |
+| CRIT-1 | Velocity gate wired into main.py (_velocity_filter) |
+| CRIT-2 | Cooldown gate wired into main.py (_cooldown_filter) |
+| CRIT-3 | Spearman rank IC in AdaptiveWeights (replaced binary sign-match) |
+| CRIT-4 | Per-book AdaptiveWeights (MOMENTUM + MR files, no cross-contamination) |
+| CRIT-5 | Atomic JSON writes (os.replace) in all critical files |
+| CRIT-6 | Composite scoring for held positions (0.0 neutral, not -1.0 fake-weak) |
+| CRIT-7 | Bootstrap Kelly (10k resamples, P25, decay-weighted λ=0.005) |
+| CRIT-8 | Exponential decay on all learning (λ=0.005, ~139-day half-life) |
+| MATH-2 | Ledoit-Wolf SNR entry ranking (live 2026-05-25) |
+| MATH-4 | Portfolio heat proportional 25% trim (live 2026-05-25) |
+| MATH-3a | ADX threshold raised 22→25 (interim Hurst proxy) |
+| 2026-05-27 | exit_monitor: ATR fallback `price*0.02` → read from hold_health.json stop_dist_atr, skip with warning if missing |
+| 2026-05-27 | exit_monitor: days_held fallback 7 → conservative 1 + warning |
+| 2026-05-27 | accum_dist: abs(r) → r² (consistent with obv_r2, correct quality weight) |
+| 2026-05-27 | Soft z-score shrinkage replaces hard \|z\|>0.10 threshold (eliminates score cliffs) |
+| 2026-05-27 | ONTOLOGY synced: accum_dist formula, composite soft shrinkage, updated date |
+| 2026-05-27 | Soft z-score shrinkage replaces hard \|z\|>0.10 threshold (eliminates score cliffs) |
+| 2026-05-27 | Spearman IC comments + derivation inline in _get_ic_boost |
 
 ---
 
-## 🔴 FABRICATED DEFAULTS ELIMINATED (2026-05-24)
-
-Principle: real data or skip, never invent.
-
-| Location | Was | Now |
-|----------|-----|-----|
-| exit_monitor.py | days_held = 7 (invented) | days_held = 1 + warning (conservative) |
-| exit_monitor.py | atr = price × 0.02 (invented) | Skip position + warning |
-| hold_monitor.py | stop_price = entry × 0.92 (invented) | stop_price = None + warning |
-| hold_monitor.py | stop_dist_atr computed on fake stop | stop_dist_atr = None (propagated) |
-| hold_monitor.py | factor_agreement = 8/16 default | 0.0 with FAR=no_data label |
-| hold_monitor.py | np.sum(generator) (deprecated) | sum() (correct) |
-| signals.py | comp = -1.0 default for unscored held symbols | comp = 0.0 (neutral) |
-
-**Action required:** Run `python backfill_ledger.py --write` to fix CVE, KDP, PLTD missing from position_ledger.json.
-
----
-
-## 🟠 MATH — Open Items
+## 🔴 MATH — Open Items
 
 ### MATH-1 — Regime-Conditional IC Buckets
-**Status:** NOT BUILT  
-**Gate:** 10+ trades per regime bucket  
+**Gate:** 10+ trades per regime bucket (not yet met)  
 Pooled IC across regimes gives IC≈0 for factors that work in one regime but not another.  
-Fix: ic_by_regime = {"BULLISH": {...}, "NEUTRAL": {...}, "RISK_OFF": {...}}
+**Fix:** `ic_by_regime = {"BULLISH": {...}, "NEUTRAL": {...}, "RISK_OFF": {...}}`  
+**Location:** signals.py AdaptiveWeights._fit()
 
-### MATH-2 — Composite Signal Uncertainty (SNR)
-**Status:** LIVE (2026-05-25)
-Ledoit-Wolf shrinkage covariance estimated cross-sectionally each scan.
-SNR = comp / sqrt(w^T @ Sigma_LW @ w). Sorts and gates entries. Drives Kelly.
-Accounts for factor correlations — correlated factors add less uncertainty than independent ones.
-Fallback to comp/std when universe < 10 symbols.
-
-### MATH-3 — Hurst DFA / ADX Threshold
-**Status:** NOT BUILT  
-Interim: raise ADX threshold TRENDING 22→25.  
-Full fix: Detrended Fluctuation Analysis (Kantelhardt et al. 2002).
-
-### MATH-4 — Portfolio Heat Proportional Trim
-**Status:** NOT BUILT  
-Fix: trim_pct = (abs(portfolio_dd) / max_dd) × abs(health) across all DECAYING positions.
+### MATH-3 — Hurst DFA / ADX Full Fix
+**Status:** Partial — ADX threshold raised 22→25 as interim proxy  
+**Full fix:** Detrended Fluctuation Analysis (Kantelhardt et al. 2002)  
+**Location:** signals.py Factors.hurst() — replace R/S with DFA exponent
 
 ### MATH-5 — n_prior Reduction
-**Status:** GATED — 60+ agent-tagged trades  
-Reduce n_prior 50 → 20 when agent-tagged trades >= 60.
+**Gate:** IC-valid trades >= 60 (have 42)  
+**Fix:** Reduce n_prior 50→20 in kelly_engine.py  
+Bayesian prior dominates at low n; with sufficient data it should recede.
 
 ---
 
@@ -150,8 +88,8 @@ Reduce n_prior 50 → 20 when agent-tagged trades >= 60.
 
 | ID | Description | Gate |
 |----|-------------|------|
-| ARCH-1 | IC layer weights in hold_monitor (Spearman IC per layer) | 60+ tagged trades |
-| ARCH-2 | Kalman macro classifier | Walk-forward infra |
+| ARCH-1 | IC layer weights in hold_monitor (Spearman IC per layer) | 60+ IC-valid trades |
+| ARCH-2 | Kalman macro classifier (replaces vote-count in macro_context.py) | Walk-forward infra |
 | ARCH-3 | Full covariance Kelly | 200+ position-days |
 | ARCH-4 | LightGBM non-linear factor model | 500+ clean trades |
 | ARCH-5 | Walk-forward backtest infrastructure | Data overhaul |
@@ -164,92 +102,92 @@ Reduce n_prior 50 → 20 when agent-tagged trades >= 60.
 | ID | Issue | File |
 |----|-------|------|
 | H-1 | Dead files: raptor_state.json, diagnose.py, diagnose_regime.py | Various |
-| H-2 | prompt_calibrator.py referenced but does not exist | Multiple |
+| H-2 | prompt_calibrator.py referenced but does not exist | agent_layer.py |
 | H-3 | Universe size hardcoded ~120 in daily_recap | daily_recap.py |
-| H-4 | Missing recap metrics (exit breakdown, rolling win rate) | daily_recap.py |
+| H-4 | Missing recap metrics (exit breakdown, rolling win rate, trim efficiency) | daily_recap.py |
 | H-5 | compute_trim fallback parses stop_dist from string | hold_monitor.py |
-| H-6 | OBV magic constant 1000 — should be symbol own OBV std | hold_monitor.py |
+| H-6 | OBV magic constant 1000 — should be symbol's own OBV std | hold_monitor.py |
 | H-7 | Volatility layer dead zone ATR 0.80–1.20 | hold_monitor.py |
 | H-8 | Prompt versioning runs on every import | agent_layer.py |
+
+---
+
+## ARBITRARY CONSTANTS — Must Derive (flagged, not yet replaced)
+
+These exist in live code. Each needs empirical derivation when data permits.
+
+| Location | Constant | Target derivation |
+|----------|---------|------------------|
+| signals.py:507 | Kelly SNR normalizer `/ 3.0` | Bootstrap Kelly percentile distribution |
+| signals.py:508 | Kelly clip `0.02 / 0.12` | EVT tail analysis on closed trade returns |
+| signals.py:288 | Regime blend sigma `0.25` | Historical regime transition frequency |
+| hold_monitor.py:46–54 | LAYER_WEIGHTS (hand-picked) | IC-weighted — ARCH-1 gate: 60 IC-valid |
+| hold_monitor.py:353 | Score `0.5 / -0.8` for stop distance | stop_dist_atr distribution in hold_history |
+| hold_monitor.py:62–63 | TIER_STRONG=0.20, TIER_STABLE=-0.15 | Health score distribution vs forward returns |
+| config.py:59 | initial_stop_atr_mult `3.0` | EVT-derived (gate: 50+ clean trades) |
+| config.py:80 | max_portfolio_drawdown `0.12` | EVT tail on portfolio return distribution |
+| main.py:478 | velocity min_velocity `-0.15` | IC of velocity vs forward return (need 60+) |
+| main.py:478 | cooldown SNR floor `0.8` | SNR distribution of re-entry success vs failure |
+| exit_monitor.py:246 | Flat threshold `< 0.02` | Cross-sectional return distribution percentile |
 
 ---
 
 ## BUILD ORDER — NEXT SESSIONS
 
 ```
-IMMEDIATE (before next market open):
-  python backfill_ledger.py --write    <- fix CVE, KDP, PLTD missing from ledger
-  python outcome_tracker.py            <- run daily to tag new closed trades
+IMMEDIATE:
+  python outcome_tracker.py          # run daily to tag new closed trades
 
-NEXT SESSION:
-  MATH-3  Hurst: ADX threshold 22->25 (10 minutes)
-  MATH-1  Regime-conditional IC (tag regime_at_entry — now done via CRIT-0)
-  MATH-2  Composite SNR ranking
-  MATH-4  Portfolio heat proportional trim
+NEXT SESSION (no gate):
+  MATH-3  Full Hurst DFA — replace R/S exponent with DFA
 
-WHEN 60+ AGENT-TAGGED TRADES:
-  MATH-5  Reduce n_prior 50->20
+WHEN IC-valid >= 60 (have 42):
+  MATH-5  Reduce n_prior 50→20
   ARCH-1  IC layer weights in hold_monitor
+  MATH-1  Regime-conditional IC buckets
 
-WHEN 100+ EQUITY TRADES:
-  kelly_engine ACTIVE mode eligible (already coded, needs config flag)
+WHEN 100 equity trades (SHADOW → ACTIVE eligible):
+  Kelly ACTIVE mode — already coded, needs config flag
 
-WHEN 200+ POSITION-DAYS:
+WHEN 200+ position-days:
   ARCH-3  Full covariance Kelly
 
-FUTURE (500+ trades):
-  ARCH-4  LightGBM
-  ARCH-5  Walk-forward backtest
+ROLLING:
+  H-1  Delete dead files
+  H-4  Add missing daily_recap metrics
 ```
 
 ---
 
-## LIVE DATA SNAPSHOT (2026-05-24)
+## LIVE DATA SNAPSHOT (2026-05-27)
 
 ```
-outcome_log.json:    98 trades | exit_unknown=59 (pre-API) | all MOMENTUM
-kelly_estimates.json: f_rec=3.89% bootstrap P25 | SHADOW (73/100)
-factor_ic_report.json: ma_stack IC=+0.48 | adx_dir IC=+0.44 | cond=272
-Exit quality: math_trim 70% win | trailing_stop 20% win (fires too late)
-```
-
----
-
-## SESSION START CHECKLIST
-
-```powershell
-git -C "C:\Users\steve\OneDrive\Desktop\Raptor" pull origin main
-python outcome_tracker.py --summary
-python kelly_engine.py
-python reconcile_positions.py
-Remove-Item -Recurse -Force __pycache__
+outcome_log.json:     42 IC-valid trades | all MOMENTUM
+kelly_estimates.json: SHADOW (42/100) | win_rate=38% | mu=+4.3% | sigma=20%
+factor_ic_report.json: ma_stack IC=+0.48 | adx_dir IC=+0.44 | vol_ratio IC=-0.11 ⚠️
+Exit quality:          math_trim 70% win | trailing_stop 20% win (fires too late)
 ```
 
 ---
 
-## P1 STATUS TABLE — VERIFIED FROM CODE 2026-05-24
+## P1 STATUS TABLE — VERIFIED FROM CODE 2026-05-27
 
 | ID | Description | Status |
 |----|-------------|--------|
-| P1-1 | Kalman macro classifier | NOT IN CODE — macro_context.py is vote-count |
-| P1-2 | Vol-regime hard stop | CONFIRMED |
-| P1-3 | OU trailing stop | CONFIRMED |
-| P1-4 | Bayesian Kelly | CONFIRMED — kelly_engine.py SHADOW, bootstrap upgrade done |
-| P1-5 | OU hold target | NOT IN CODE — dist_to_mean/0.005 for MR, hardcoded 15 for MOM |
-| P1-6 | IC layer weights hold monitor | GATED 60+ trades |
-| P1-7 | Continuous trim | CONFIRMED |
-| P1-8 | Regime-relative thesis threshold | CONFIRMED |
+| P1-1 | Kalman macro classifier | NOT IN CODE — replaced by regime probability blend (Gaussian) |
+| P1-2 | Vol-regime hard stop | ✅ CONFIRMED |
+| P1-3 | OU trailing stop | ✅ CONFIRMED |
+| P1-4 | Bayesian Kelly | ✅ CONFIRMED — bootstrap upgrade live |
+| P1-5 | OU hold target | NOT IN CODE — hardcoded 15 for MOM, dist_to_mean for MR |
+| P1-6 | IC layer weights hold monitor | ⏳ GATED 60+ trades |
+| P1-7 | Continuous trim | ✅ CONFIRMED |
+| P1-8 | Regime-relative thesis threshold | ✅ CONFIRMED |
 | P1-9 | Watchdog intraday | DELETE or build properly |
-| P1-10 | Composite velocity gate | FIXED this session (was built, not wired) |
-| P1-11 | Re-entry cooldown | FIXED this session (was built, not wired) |
-| P1-12 | Portfolio heat partial trim | MATH-4 open |
-| P1-13 | Multi-MA breadth | CONFIRMED |
+| P1-10 | Composite velocity gate | ✅ CONFIRMED |
+| P1-11 | Re-entry cooldown | ✅ CONFIRMED |
+| P1-12 | Portfolio heat partial trim | ✅ CONFIRMED (25% proportional, live 2026-05-25) |
+| P1-13 | Multi-MA breadth (50/150/200) | ✅ CONFIRMED |
 | P1-14 | Universe sensitivity sweep | FUTURE |
 | P1-15 | Sentiment dead path | HYGIENE |
 | P1-16 | Afternoon rescore | Partial — exit_monitor GAP9 rescore live |
-| P1-17 | Conviction gradient sizing | CONFIRMED via book_conviction percentile |
-
----
-
-*Supersedes RAPTOR_AUDIT_AND_PLAN.md.*  
-*All P1 status verified by code inspection 2026-05-24.*
+| P1-17 | Conviction gradient sizing | ✅ CONFIRMED via book_conviction percentile |

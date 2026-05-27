@@ -173,15 +173,29 @@ def run_exit_monitor(dry_run=False):
         bar_data = bars[sym]
         atr = _atr(bar_data, CONFIG.risk.atr_period)
         if atr <= 0:
-            atr = abs(price * 0.02)
+            # Read ATR from hold_health.json (stop_dist_atr is ATR in dollars).
+            # Never fabricate price * 0.02 — that invents a value that looks real.
+            _hh_atr = _pre_health.get(sym, {}).get("stop_dist_atr")
+            if _hh_atr and _hh_atr > 0:
+                atr = float(_hh_atr)
+                logger.warning("ATR from bars <= 0 for %s — using hold_health stop_dist_atr=%.4f", sym, atr)
+            else:
+                logger.warning("ATR unavailable for %s (bars=0, no hold_health entry) — skipping position", sym)
+                holds.append({"symbol": sym, "reason": "no_atr", "pnl_pct": pnl_pct})
+                continue
 
-        # Days held from ledger entry_date; fallback 7 if missing
+        # Days held from ledger entry_date. Conservative fallback = 1 (not 7).
+        # Using 7 could trigger tighter trail multiplier on a position that may be new.
+        # Using 1 errs toward giving the position more room — the safer direction.
         _entry = _ledger_map.get(sym)
         try:
             days_held = (_today - datetime.strptime(_entry["entry_date"], "%Y-%m-%d").date()).days \
-                        if _entry and "entry_date" in _entry else 7
+                        if _entry and "entry_date" in _entry else None
         except Exception:
-            days_held = 7
+            days_held = None
+        if days_held is None:
+            days_held = 1
+            logger.warning("days_held missing for %s — using conservative fallback=1", sym)
 
         high_water = max(price, entry)
         profit_atr = (high_water - entry) / atr if atr > 0 else 0
