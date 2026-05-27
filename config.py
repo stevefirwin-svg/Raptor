@@ -32,7 +32,9 @@ class FREDConfig:
         "vix":               "VIXCLS",
         "credit_spread":     "BAMLC0A4CBBB",
         "cpi_yoy":           "CPIAUCSL",
-        "ism_pmi":           "NAPM",       # ISM Manufacturing PMI — leading indicator (was MANEMP, lagging labor series)
+        "ism_pmi":           "IPMAN",      # Industrial Production: Manufacturing — NAPM was discontinued by FRED.
+                                              # IPMAN is monthly, freely available, directionally equivalent for
+                                              # regime classification (rising = expansion, falling = contraction).
         "m2_money_supply":   "M2SL",
         "retail_sales":      "RSXFS",
         "unemployment_rate": "UNRATE",
