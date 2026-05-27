@@ -91,6 +91,139 @@ index 867c105..43b4583 100644
  12. Update ONTOLOGY same session as architecture changes.
  13. Run outcome_tracker.py after any session touching trade outcomes.
  14. Never change code intraday (9:35–3:50 ET) without explicit intent.
+diff --git a/backfill_positions.py b/backfill_positions.py
+new file mode 100644
+index 0000000..41230af
+--- /dev/null
++++ b/backfill_positions.py
+@@ -0,0 +1,127 @@
++"""
++backfill_positions.py
++=====================
++One-time script to restore 8 positions that exist in Alpaca but were
++incorrectly removed from position_ledger.json by record_exit on math_trim.
++
++Run ONCE from your Raptor directory, then delete.
++Verifies against Alpaca before writing — will not overwrite existing entries.
++
++Usage:
++    python backfill_positions.py
++"""
++import json
++from datetime import datetime
++from data_feeds import DataManager, AlpacaDataFeed
++from config import CONFIG
++from ledger import Ledger
++
++# Symbols that need restoring — confirmed open in Alpaca, missing from ledger
++ORPHANS = ["AMD", "CSX", "CVE", "DKNG", "INTC", "KDP", "PLTD", "SMCI"]
++
++def main():
++    print("=== LEDGER BACKFILL ===")
++    print(f"Restoring {len(ORPHANS)} orphaned positions to ledger")
++    print()
++
++    # Load Alpaca ground truth
++    alpaca = AlpacaDataFeed(CONFIG)
++    positions = alpaca.get_positions()
++    alpaca_map = {p["symbol"]: p for p in positions}
++
++    # Load ledger history to recover original entry data from closed records
++    ledger = Ledger()
++    closed = ledger.data.get("closed", [])
++    current_open = {v["symbol"] for v in ledger.data.get("positions", {}).values()}
++
++    restored = 0
++    skipped  = 0
++
++    for sym in ORPHANS:
++        # Safety: don't overwrite if already in ledger open
++        if sym in current_open:
++            print(f"  SKIP {sym} — already in ledger open positions")
++            skipped += 1
++            continue
++
++        # Must be confirmed open in Alpaca
++        if sym not in alpaca_map:
++            print(f"  SKIP {sym} — not found in Alpaca (may have been closed today)")
++            skipped += 1
++            continue
++
++        alp = alpaca_map[sym]
++        current_qty = int(float(alp["qty"]))
++
++        # Recover original entry data from most recent ledger closed record
++        # These were incorrectly closed by math_trim calls to record_exit
++        closed_records = sorted(
++            [t for t in closed if t.get("symbol") == sym],
++            key=lambda x: x.get("exit_date", ""),
++            reverse=True
++        )
++
++        if closed_records:
++            # Use original entry price from the closed record (was correct when entered)
++            original = closed_records[0]
++            entry_price = float(original.get("entry_price", alp.get("avg_entry", 0)))
++            entry_date  = original.get("entry_date", "2026-05-01")
++            stop        = original.get("metadata", {}).get("stop")
++            regime      = original.get("metadata", {}).get("regime", "BACKFILL_RESTORED")
++        else:
++            # No closed history — use Alpaca avg_entry as best available
++            entry_price = float(alp.get("avg_entry", 0))
++            entry_date  = "2026-05-01"  # approximate
++            stop        = None
++            regime      = "BACKFILL_RESTORED"
++
++        # Compute stop if missing: use most recent closed record stop if available
++        # Do NOT fabricate via price * 0.02
++        metadata = {
++            "stop":              stop,
++            "regime":            regime,
++            "t_stat":            None,
++            "kelly_fraction":    None,
++            "composite_score":   None,
++            "note":              f"Restored by backfill_positions.py {datetime.now().strftime('%Y-%m-%d')} — "
++                                 f"position was incorrectly closed in ledger by math_trim routing bug",
++        }
++
++        # Write to ledger
++        ledger.record_entry(
++            model       = "v5.4",
++            symbol      = sym,
++            shares      = current_qty,
++            entry_price = entry_price,
++            date        = entry_date,
++            metadata    = metadata,
++        )
++
++        pnl = (float(alp["current_price"]) / entry_price - 1) * 100
++        print(f"  RESTORED {sym:6s}  qty={current_qty:4d}  "
++              f"entry=${entry_price:.2f}  current=${alp['current_price']:.2f}  "
++              f"pnl={pnl:+.1f}%  stop={stop}")
++        restored += 1
++
++    print()
++    print(f"Done. Restored: {restored}  Skipped: {skipped}")
++    print()
++
++    # Verify final state
++    ledger2 = Ledger()
++    open_syms = sorted(v["symbol"] for v in ledger2.data["positions"].values())
++    print(f"Ledger open positions ({len(open_syms)}): {open_syms}")
++
++    # Cross-check against Alpaca
++    alpaca_syms = sorted(alpaca_map.keys())
++    missing = set(alpaca_syms) - set(open_syms)
++    extra   = set(open_syms) - set(alpaca_syms)
++    if missing:
++        print(f"WARNING — still missing from ledger: {sorted(missing)}")
++    if extra:
++        print(f"WARNING — in ledger but not in Alpaca: {sorted(extra)}")
++    if not missing and not extra:
++        print("Ledger and Alpaca are now in sync.")
++
++if __name__ == "__main__":
++    main()
 diff --git a/composite_cache.json b/composite_cache.json
 index 34332e3..5ab392e 100644
 --- a/composite_cache.json
@@ -165,7 +298,7 @@ index 56dccbe..0662a98 100644
                       "BEARISH": "#ff4757", "CRISIS": "#ff0000"}
      regime_color = regime_colors.get(regime, "#ffa502")
 diff --git a/exit_monitor.py b/exit_monitor.py
-index 195948f..a4ce0b8 100644
+index 195948f..6528767 100644
 --- a/exit_monitor.py
 +++ b/exit_monitor.py
 @@ -64,6 +64,9 @@ def _trail_mult(days_held, profit_atr, rcfg, composite=0.0, health=0.0):
@@ -206,6 +339,39 @@ index 195948f..a4ce0b8 100644
  
      # Portfolio drawdown
      total_pnl = sum(p.get("unrealized_pnl", 0) for p in positions)
+@@ -481,17 +490,25 @@ def run_exit_monitor(dry_run=False):
+             )
+             if "error" not in result:
+                 logger.info("  OK: %s", result.get("status", "submitted"))
+-                # Update ledger — moves position to closed list for analytics
++                # Update ledger — route partial trims to record_trim, full exits to record_exit.
++                # Previously all paths called record_exit, which closed the full position in the
++                # ledger even when only a fraction of shares were sold. This caused 8 positions
++                # to disappear from the ledger while remaining open in Alpaca.
+                 try:
+                     from ledger import Ledger as _Ledger
+                     _l = _Ledger()
+-                    exit_price = float(ex.get("price", 0))
+-                    _l.record_exit(
+-                        "v5.4", ex["symbol"], exit_price,
+-                        datetime.now().strftime("%Y-%m-%d"), ex["reason"]
+-                    )
++                    _price  = float(ex.get("price", 0))
++                    _date   = datetime.now().strftime("%Y-%m-%d")
++                    _reason = ex["reason"]
++                    _qty    = int(ex.get("qty", 0))
++                    if "trim" in _reason:
++                        # Partial trim — keep position open, reduce share count
++                        _l.record_trim("v5.4", ex["symbol"], _qty, _price, _date, _reason)
++                    else:
++                        # Full exit — close position in ledger
++                        _l.record_exit("v5.4", ex["symbol"], _price, _date, _reason)
+                 except Exception as _le:
+-                    logger.warning("Ledger record_exit failed for %s: %s", ex["symbol"], _le)
++                    logger.warning("Ledger record failed for %s: %s", ex["symbol"], _le)
+             else:
+                 logger.error("  FAILED: %s", result["error"])
+     elif dry_run and exits:
 diff --git a/factor_ic_report.json b/factor_ic_report.json
 index 34d1134..d2f36c4 100644
 --- a/factor_ic_report.json
@@ -3350,6 +3516,91 @@ index f2f46c3..0ea7117 100644
      },
      "MEAN_REVERSION": {
        "n_trades": 0,
+diff --git a/ledger.py b/ledger.py
+index 58ac735..e8b4335 100644
+--- a/ledger.py
++++ b/ledger.py
+@@ -53,20 +53,75 @@ class Ledger:
+         self._save()
+ 
+     def record_exit(self, model: str, symbol: str, exit_price: float, date: str, reason: str):
+-        """Record a position exit and move to closed list."""
++        """Record a full position exit and move to closed list."""
+         key = f"{model}:{symbol}"
+         if key in self.data["positions"]:
+             pos = self.data["positions"].pop(key)
+-            pos["exit_price"] = exit_price
+-            pos["exit_date"] = date
++            pos["exit_price"]  = exit_price
++            pos["exit_date"]   = date
+             pos["exit_reason"] = reason
+-            pos["pnl"] = (exit_price - pos["entry_price"]) * pos["shares"]
+-            pos["pnl_pct"] = (exit_price / pos["entry_price"]) - 1
++            pos["exit_path"]   = reason  # mirror for outcome_tracker compatibility
++            pos["pnl"]         = (exit_price - pos["entry_price"]) * pos["shares"]
++            # pnl_pct as percentage (e.g. 5.2 = 5.2%), NOT raw decimal (0.052)
++            pos["pnl_pct"]     = ((exit_price / pos["entry_price"]) - 1) * 100
+             self.data["closed"].append(pos)
+             self._save()
+             return pos
+         return None
+ 
++    def record_trim(self, model: str, symbol: str, shares_sold: int,
++                    trim_price: float, date: str, reason: str):
++        """
++        Record a partial position trim — reduces shares held, keeps position open.
++
++        A math_trim sells a fraction of the position. The position stays in
++        ledger["positions"] with reduced share count. Only record_exit moves
++        a position to ledger["closed"]. Calling record_exit for a partial trim
++        was the root cause of 8 positions disappearing from the ledger while
++        remaining open in Alpaca.
++
++        Returns the updated position dict, or None if key not found.
++        """
++        key = f"{model}:{symbol}"
++        if key not in self.data["positions"]:
++            return None
++
++        pos = self.data["positions"][key]
++        shares_before = pos.get("shares", 0)
++        shares_after  = max(0, shares_before - shares_sold)
++
++        # pnl on the trimmed shares, as percentage
++        trim_pnl_pct = ((trim_price / pos["entry_price"]) - 1) * 100
++        trim_pnl_abs = (trim_price - pos["entry_price"]) * shares_sold
++
++        # Log the partial exit in trim history inside the position record
++        trim_record = {
++            "date":          date,
++            "reason":        reason,
++            "shares_sold":   shares_sold,
++            "trim_price":    trim_price,
++            "pnl_pct":       round(trim_pnl_pct, 4),
++            "pnl_abs":       round(trim_pnl_abs, 2),
++            "shares_before": shares_before,
++            "shares_after":  shares_after,
++        }
++        pos.setdefault("trims", []).append(trim_record)
++        pos["shares"] = shares_after
++
++        if shares_after == 0:
++            # All shares trimmed away — move to closed
++            pos["exit_price"]  = trim_price
++            pos["exit_date"]   = date
++            pos["exit_reason"] = reason
++            pos["exit_path"]   = reason
++            pos["pnl_pct"]     = round(trim_pnl_pct, 4)
++            pos["pnl"]         = round((trim_price - pos["entry_price"]) * shares_before, 2)
++            self.data["positions"].pop(key)
++            self.data["closed"].append(pos)
++
++        self._save()
++        return pos
++
+     def get_positions(self, model: str) -> List[Dict]:
+         """Get all open positions for a specific model."""
+         return [v for v in self.data["positions"].values() if v["model"] == model]
 diff --git a/macro_context.py b/macro_context.py
 index 40f22bb..4365a72 100644
 --- a/macro_context.py
