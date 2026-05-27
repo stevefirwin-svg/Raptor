@@ -30,6 +30,126 @@
         "composite_score": null,
         "note": "Backfilled from Alpaca \u2014 entry_date approximate"
       }
+    },
+    "v5.4:AMD": {
+      "model": "v5.4",
+      "symbol": "AMD",
+      "shares": 18,
+      "entry_price": 304.32,
+      "entry_date": "2026-05-22",
+      "metadata": {
+        "stop": 276.39,
+        "regime": "BACKFILL",
+        "t_stat": null,
+        "kelly_fraction": null,
+        "composite_score": null,
+        "note": "Restored by backfill_positions.py 2026-05-27 \u2014 position was incorrectly closed in ledger by math_trim routing bug"
+      }
+    },
+    "v5.4:CSX": {
+      "model": "v5.4",
+      "symbol": "CSX",
+      "shares": 186,
+      "entry_price": 45.419615,
+      "entry_date": "2026-05-15",
+      "metadata": {
+        "stop": 42.6707,
+        "regime": "BACKFILL",
+        "t_stat": null,
+        "kelly_fraction": null,
+        "composite_score": null,
+        "note": "Restored by backfill_positions.py 2026-05-27 \u2014 position was incorrectly closed in ledger by math_trim routing bug"
+      }
+    },
+    "v5.4:CVE": {
+      "model": "v5.4",
+      "symbol": "CVE",
+      "shares": 100,
+      "entry_price": 28.72,
+      "entry_date": "2026-05-24",
+      "metadata": {
+        "stop": 26.917,
+        "regime": "BACKFILL",
+        "t_stat": null,
+        "kelly_fraction": null,
+        "composite_score": null,
+        "note": "Restored by backfill_positions.py 2026-05-27 \u2014 position was incorrectly closed in ledger by math_trim routing bug"
+      }
+    },
+    "v5.4:DKNG": {
+      "model": "v5.4",
+      "symbol": "DKNG",
+      "shares": 58,
+      "entry_price": 25.053855,
+      "entry_date": "2026-05-22",
+      "metadata": {
+        "stop": 23.5467,
+        "regime": "BACKFILL",
+        "t_stat": null,
+        "kelly_fraction": null,
+        "composite_score": null,
+        "note": "Restored by backfill_positions.py 2026-05-27 \u2014 position was incorrectly closed in ledger by math_trim routing bug"
+      }
+    },
+    "v5.4:INTC": {
+      "model": "v5.4",
+      "symbol": "INTC",
+      "shares": 47,
+      "entry_price": 87.74,
+      "entry_date": "2026-05-22",
+      "metadata": {
+        "stop": 80.5916,
+        "regime": "BACKFILL",
+        "t_stat": null,
+        "kelly_fraction": null,
+        "composite_score": null,
+        "note": "Restored by backfill_positions.py 2026-05-27 \u2014 position was incorrectly closed in ledger by math_trim routing bug"
+      }
+    },
+    "v5.4:KDP": {
+      "model": "v5.4",
+      "symbol": "KDP",
+      "shares": 28,
+      "entry_price": 28.670593,
+      "entry_date": "2026-05-24",
+      "metadata": {
+        "stop": 26.9234,
+        "regime": "BACKFILL",
+        "t_stat": null,
+        "kelly_fraction": null,
+        "composite_score": null,
+        "note": "Restored by backfill_positions.py 2026-05-27 \u2014 position was incorrectly closed in ledger by math_trim routing bug"
+      }
+    },
+    "v5.4:PLTD": {
+      "model": "v5.4",
+      "symbol": "PLTD",
+      "shares": 152,
+      "entry_price": 7.74,
+      "entry_date": "2026-05-24",
+      "metadata": {
+        "stop": 7.2684,
+        "regime": "BACKFILL",
+        "t_stat": null,
+        "kelly_fraction": null,
+        "composite_score": null,
+        "note": "Restored by backfill_positions.py 2026-05-27 \u2014 position was incorrectly closed in ledger by math_trim routing bug"
+      }
+    },
+    "v5.4:SMCI": {
+      "model": "v5.4",
+      "symbol": "SMCI",
+      "shares": 43,
+      "entry_price": 34.096966,
+      "entry_date": "2026-05-22",
+      "metadata": {
+        "stop": 31.9783,
+        "regime": "BACKFILL",
+        "t_stat": null,
+        "kelly_fraction": null,
+        "composite_score": null,
+        "note": "Restored by backfill_positions.py 2026-05-27 \u2014 position was incorrectly closed in ledger by math_trim routing bug"
+      }
     }
   },
   "closed": [
