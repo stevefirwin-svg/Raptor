@@ -398,7 +398,7 @@
       "exit_date": "2026-05-20",
       "exit_reason": "math_trim_14%",
       "pnl": 62.819625000000286,
-      "pnl_pct": 0.3039
+      "pnl_pct": 30.39
     },
     {
       "model": "v5.4",
@@ -419,7 +419,7 @@
       "exit_date": "2026-05-21",
       "exit_reason": "math_trim_7%",
       "pnl": -22.10484099999993,
-      "pnl_pct": -0.2288
+      "pnl_pct": -22.88
     },
     {
       "model": "v5.4",
@@ -541,7 +541,7 @@
       "exit_date": "2026-05-24",
       "exit_reason": "math_trim_55%",
       "pnl": 41.76016000000118,
-      "pnl_pct": 0.221
+      "pnl_pct": 22.1
     },
     {
       "model": "v5.4",
@@ -561,7 +561,7 @@
       "exit_date": "2026-05-24",
       "exit_reason": "math_trim_77%",
       "pnl": 16.602395000000588,
-      "pnl_pct": 0.264
+      "pnl_pct": 26.4
     },
     {
       "model": "v5.4",
@@ -661,7 +661,7 @@
       "exit_date": "2026-05-26",
       "exit_reason": "math_trim_1%",
       "pnl": 52.065000000000076,
-      "pnl_pct": 0.679
+      "pnl_pct": 67.9
     }
   ]
 }

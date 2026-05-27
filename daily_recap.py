@@ -397,7 +397,8 @@ def get_days_held(open_ledger, positions):
 # ─────────────────────────────────────────────────────────────────────────────
 
 def build_html(account, positions, entries, exits, signals, macro, scale,
-               spy_price, spy_returns, spy_mas, analytics, open_ledger, portfolio_beta):
+               spy_price, spy_returns, spy_mas, analytics, open_ledger, portfolio_beta,
+               closed_trades=None):
 
     equity = float(account["equity"])
     cash = float(account["cash"])
@@ -463,6 +464,79 @@ def build_html(account, positions, entries, exits, signals, macro, scale,
         holdings_rows = '<tr><td colspan="9" style="padding:12px;color:#a0a0b0;text-align:center">No open positions</td></tr>'
 
     # ── Today's activity ──────────────────────────────────────────────────────
+    # ── Recent closed trades table ───────────────────────────────────────────
+    closed_trades_html = ""
+    if closed_trades:
+        # Sort by exit_date descending, show last 20
+        def _exit_sort(t):
+            d = t.get("exit_date") or t.get("exit_date", "")
+            return str(d)[:10] if d else ""
+        recent = sorted(closed_trades, key=_exit_sort, reverse=True)[:30]
+
+        ct_rows = ""
+        for t in recent:
+            sym       = t.get("symbol", "?")
+            pnl       = t.get("pnl_pct")
+            exit_d    = str(t.get("exit_date", "?"))[:10]
+            entry_d   = str(t.get("entry_date", "?"))[:10]
+            reason    = t.get("exit_reason") or t.get("exit_path") or "?"
+            hold_days = t.get("hold_days")
+            pnl_abs   = t.get("pnl") or t.get("pnl_dollar")
+
+            # pnl_pct should now be in % (e.g. 5.2 = 5.2%), convert if still decimal
+            if pnl is not None:
+                pnl_f = float(pnl)
+                # If abs < 1.5, was stored as decimal — convert
+                if abs(pnl_f) < 1.5:
+                    pnl_f = pnl_f * 100
+                pnl_color_t = "#00d4aa" if pnl_f >= 0 else "#ff4757"
+                pnl_str = f"{pnl_f:+.2f}%"
+            else:
+                pnl_color_t = "#a0a0b0"
+                pnl_str = "—"
+
+            # Hold days
+            if hold_days:
+                hold_str = f"{int(float(hold_days))}d"
+            elif entry_d and entry_d != "?" and exit_d and exit_d != "?":
+                try:
+                    from datetime import date as _date
+                    hold_str = f"{(_date.fromisoformat(exit_d) - _date.fromisoformat(entry_d)).days}d"
+                except Exception:
+                    hold_str = "—"
+            else:
+                hold_str = "—"
+
+            # Clean up reason display
+            reason_display = reason.replace("math_trim_", "trim ").replace("_", " ")
+
+            # pnl_abs
+            abs_str = f"${float(pnl_abs):+,.0f}" if pnl_abs is not None else "—"
+
+            ct_rows += f"""<tr style="border-bottom:1px solid #1e1e34">
+                <td style="padding:7px 10px;color:#e0e0e0;font-weight:500">{sym}</td>
+                <td style="padding:7px 10px;text-align:right;color:{pnl_color_t};font-weight:600">{pnl_str}</td>
+                <td style="padding:7px 10px;text-align:right;color:#e0e0e0">{abs_str}</td>
+                <td style="padding:7px 10px;text-align:right;color:#a0a0b0;font-size:12px">{reason_display}</td>
+                <td style="padding:7px 10px;text-align:right;color:#a0a0b0;font-size:12px">{hold_str}</td>
+                <td style="padding:7px 10px;text-align:right;color:#6a6a8a;font-size:11px">{exit_d}</td>
+            </tr>"""
+
+        _th = '<th style="padding:7px 10px;text-align:right;color:#00d4aa;font-size:11px;text-transform:uppercase">'
+        closed_trades_html = (
+            '<table style="width:100%;border-collapse:collapse;font-size:13px">'
+            '<tr style="border-bottom:2px solid #2a2a3e">'
+            '<th style="padding:7px 10px;text-align:left;color:#00d4aa;font-size:11px;text-transform:uppercase">Symbol</th>'
+            + _th + 'P&L %</th>'
+            + _th + 'P&L $</th>'
+            + _th + 'Exit Type</th>'
+            + _th + 'Hold</th>'
+            + _th + 'Exit Date</th>'
+            + '</tr>' + ct_rows + '</table>'
+        )
+    else:
+        closed_trades_html = '<div style="color:#6a6a8a;font-size:12px;padding:8px 0">No closed trades in ledger yet.</div>'
+
     activity_html = ""
     if entries:
         for e in entries:
@@ -638,9 +712,15 @@ def build_html(account, positions, entries, exits, signals, macro, scale,
             <div style="display:flex;justify-content:space-between">{perf_html}</div>
         </div>
 
+        <!-- Recent Closed Trades -->
+        <div style="padding:16px 28px;border-bottom:1px solid #2a2a3e">
+            <div style="color:#a0a0b0;font-size:11px;text-transform:uppercase;letter-spacing:2px;margin-bottom:8px">Recent Closed Trades (Last 30)</div>
+            {closed_trades_html}
+        </div>
+
         <!-- Portfolio Analytics -->
         <div style="padding:16px 28px;border-bottom:1px solid #2a2a3e">
-            <div style="color:#a0a0b0;font-size:11px;text-transform:uppercase;letter-spacing:2px;margin-bottom:10px">Portfolio Analytics (Closed Trades)</div>
+            <div style="color:#a0a0b0;font-size:11px;text-transform:uppercase;letter-spacing:2px;margin-bottom:10px">Portfolio Analytics (All Closed Trades)</div>
             {analytics_html}
         </div>
 
@@ -782,7 +862,8 @@ def main(preview=False):
 
         html = build_html(
             account, positions, entries, exits, signals, macro, scale,
-            spy_price, spy_returns, spy_mas, analytics, open_ledger, portfolio_beta
+            spy_price, spy_returns, spy_mas, analytics, open_ledger, portfolio_beta,
+            closed_trades=closed_trades
         )
 
         if preview:
