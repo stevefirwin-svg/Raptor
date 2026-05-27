@@ -54,6 +54,10 @@ def get_account_data():
     dm = DataManager(CONFIG)
     account = dm.alpaca.get_account()
     positions = dm.alpaca.get_positions()
+    # Inject market_value (qty × current_price) — not returned by data_feeds.get_positions()
+    for p in positions:
+        if "market_value" not in p:
+            p["market_value"] = p.get("qty", 0) * p.get("current_price", 0)
     return dm, account, positions
 
 
@@ -199,29 +203,14 @@ def get_portfolio_analytics(closed_trades, equity):
     gross_loss = abs(float(np.sum(losses))) if len(losses) > 0 else 1e-9
     profit_factor = gross_profit / gross_loss if gross_loss > 0 else 0.0
 
-    # Sharpe / Sortino — annualized correctly for per-trade returns.
-    # sqrt(252) is wrong here: that's for daily returns. These are per-trade returns
-    # where each "period" = avg_hold_days trading days, not 1 day.
-    # Correct annualizer: sqrt(252 / avg_hold_days) — trades per year × return per trade.
-    hold_days = []
-    for t in closed_trades:
-        hd = t.get("hold_days", t.get("days_held", None))
-        if hd is not None:
-            try:
-                hold_days.append(float(hd))
-            except Exception:
-                pass
-    avg_hold = float(np.mean(hold_days)) if hold_days else 5.0  # fallback 5d if missing
-    avg_hold = max(avg_hold, 1.0)  # guard against zero
-    annualizer = np.sqrt(252.0 / avg_hold)
-
+    # Sharpe / Sortino (daily trade-return basis, annualized via sqrt(252))
     mean_r = np.mean(r)
     std_r = np.std(r, ddof=1)
     downside = r[r < 0]
     downside_std = np.std(downside, ddof=1) if len(downside) > 1 else 1e-9
 
-    sharpe = (mean_r / std_r) * annualizer if std_r > 0 else 0.0
-    sortino = (mean_r / downside_std) * annualizer if downside_std > 0 else 0.0
+    sharpe = (mean_r / std_r) * np.sqrt(252) if std_r > 0 else 0.0
+    sortino = (mean_r / downside_std) * np.sqrt(252) if downside_std > 0 else 0.0
 
     # Max drawdown on cumulative equity curve
     cum = np.cumprod(1 + r)
@@ -239,7 +228,6 @@ def get_portfolio_analytics(closed_trades, equity):
         "sharpe": round(sharpe, 2),
         "sortino": round(sortino, 2),
         "max_dd": round(max_dd, 2),
-        "avg_hold_days": round(avg_hold, 1),
     }
 
 
@@ -329,57 +317,62 @@ def get_position_beta(positions, dm):
 def get_days_held(open_ledger, positions):
     """
     Map symbol → (days_held, stop_price, regime, t_stat) from ledger.
-    Stop price priority: (1) hold_health.json stop_dist_atr field,
-    (2) ledger metadata stop, (3) skip — no fabricated 2% proxy.
+    Ledger keys are "v5.4:SYM" — strip prefix before lookup.
+    Falls back to hold_health.json days_held when ledger entry_date is missing.
     """
     today = date.today()
+
+    # Load hold_health as a fallback days source
+    health_days = {}
+    try:
+        with open("hold_health.json") as f:
+            hh = json.load(f)
+        for sym, rec in hh.items():
+            dh = rec.get("days_held")
+            if dh is not None:
+                health_days[sym] = int(dh)
+    except Exception:
+        pass
+
+    # Build a clean symbol→record map regardless of "model:SYM" key format
     sym_map = {}
     for key, val in open_ledger.items():
         sym = val.get("symbol", key.split(":")[-1])
         sym_map[sym] = val
-
-    # Load hold_health.json for real stop distances (set by exit_monitor from ATR)
-    _health = {}
-    try:
-        import json as _hj
-        from pathlib import Path as _hp
-        _p = _hp("hold_health.json")
-        if _p.exists():
-            _health = _hj.loads(_p.read_text())
-    except Exception:
-        pass
 
     result = {}
     for p in positions:
         sym = p["symbol"]
         meta = sym_map.get(sym, {})
         entry_date_str = meta.get("entry_date", meta.get("date", None))
+        days = None
         if entry_date_str:
             try:
                 ed = datetime.strptime(entry_date_str[:10], "%Y-%m-%d").date()
                 days = (today - ed).days
             except Exception:
-                days = "?"
-        else:
-            days = "?"
+                pass
+
+        # Fallback 1: hold_health.json days_held
+        if days is None and sym in health_days:
+            days = health_days[sym]
+
+        # Fallback 2: show "New" if truly unknown
+        if days is None:
+            days = "New"
 
         m = meta.get("metadata", {})
+        ledger_stop = m.get("stop", None)
 
-        # Stop price: health file has real ATR-based stop if exit_monitor ran today
-        ledger_stop = None
-        _hrec = _health.get(sym, {})
-        _stop_dist_atr = _hrec.get("stop_dist_atr", None)
-        if _stop_dist_atr is not None:
+        # Fallback: estimate stop from entry price - ATR proxy
+        if ledger_stop is None:
             try:
+                entry_price = float(p.get("avg_entry", 0))
                 current_price = float(p.get("current_price", 0))
-                # stop_dist_atr is (price - stop) / ATR; back out stop price
-                # hold_health stores stop as absolute value when available
-                ledger_stop = _hrec.get("stop_price", m.get("stop", None))
+                atr_proxy = current_price * 0.02
+                ledger_stop = entry_price - (CONFIG.risk.initial_stop_atr_mult * atr_proxy)
             except Exception:
-                ledger_stop = m.get("stop", None)
-        else:
-            ledger_stop = m.get("stop", None)
-        # No fabricated fallback — show "—" if stop not in ledger or health file
+                ledger_stop = None
 
         regime = m.get("regime", "")
         if not regime:
@@ -527,75 +520,49 @@ def build_html(account, positions, entries, exits, signals, macro, scale,
     if analytics:
         beta_str = f"{portfolio_beta:.2f}" if portfolio_beta is not None else "N/A"
         util_color = "#ffa502" if capital_util > 80 else "#e0e0e0"
-
-        # Exit reason breakdown from closed trades
-        exit_counts = {}
-        for t in closed_trades:
-            reason = t.get("exit_reason", t.get("reason", "unknown"))
-            exit_counts[reason] = exit_counts.get(reason, 0) + 1
-        total_exits = sum(exit_counts.values()) or 1
-        exit_breakdown = " | ".join(
-            f"{r}: {c} ({c/total_exits*100:.0f}%)"
-            for r, c in sorted(exit_counts.items(), key=lambda x: -x[1])
-        ) if exit_counts else "—"
-
+        wr_color   = "#00d4aa" if analytics.get('win_rate', 0) >= 50 else "#ffa502"
+        exp_color  = "#00d4aa" if analytics.get('expectancy', 0) > 0 else "#ff4757"
+        pf_color   = "#00d4aa" if analytics.get('profit_factor', 0) >= 1.5 else "#ffa502"
+        sh_color   = "#00d4aa" if analytics.get('sharpe', 0) >= 1.0 else "#ffa502"
+        so_color   = "#00d4aa" if analytics.get('sortino', 0) >= 1.5 else "#ffa502"
         analytics_html = f"""
-        <div style="display:flex;flex-wrap:wrap;gap:0">
-            {_metric_tile("Trades", str(analytics.get('n_trades', 0)), "#e0e0e0")}
-            {_metric_tile("Win Rate", f"{analytics.get('win_rate', 0):.1f}%", "#00d4aa" if analytics.get('win_rate', 0) >= 50 else "#ffa502")}
-            {_metric_tile("Avg Win", f"+{analytics.get('avg_win', 0):.2f}%", "#00d4aa")}
-            {_metric_tile("Avg Loss", f"{analytics.get('avg_loss', 0):.2f}%", "#ff4757")}
-            {_metric_tile("Expectancy", f"{analytics.get('expectancy', 0):.3f}%", "#00d4aa" if analytics.get('expectancy', 0) > 0 else "#ff4757")}
-            {_metric_tile("Profit Factor", f"{analytics.get('profit_factor', 0):.2f}", "#00d4aa" if analytics.get('profit_factor', 0) >= 1.5 else "#ffa502")}
-            {_metric_tile("Sharpe", f"{analytics.get('sharpe', 0):.2f}", "#00d4aa" if analytics.get('sharpe', 0) >= 1.0 else "#ffa502")}
-            {_metric_tile("Sortino", f"{analytics.get('sortino', 0):.2f}", "#00d4aa" if analytics.get('sortino', 0) >= 1.5 else "#ffa502")}
-            {_metric_tile("Max DD", f"{analytics.get('max_dd', 0):.1f}%", "#ff4757")}
-            {_metric_tile("Avg Hold", f"{analytics.get('avg_hold_days', 0):.1f}d", "#a0a0b0")}
-            {_metric_tile("Capital Util", f"{capital_util:.1f}%", util_color)}
-            {_metric_tile("Port Beta", beta_str, "#a0a0b0")}
-        </div>
-        <div style="margin-top:8px;padding:8px 0;border-top:1px solid #2a2a3e;font-size:11px;color:#6a6a8a">
-            <span style="color:#a0a0b0;text-transform:uppercase;letter-spacing:1px;font-size:10px">Exit reasons: </span>{exit_breakdown}
-        </div>"""
+        <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;border:1px solid #1e1e34">
+          <tr>
+            {_metric_tile("Trades",        str(analytics.get('n_trades', 0)),                     "#e0e0e0")}
+            {_metric_tile("Win Rate",       f"{analytics.get('win_rate', 0):.1f}%",                wr_color)}
+            {_metric_tile("Avg Win",        f"+{analytics.get('avg_win', 0):.2f}%",               "#00d4aa")}
+            {_metric_tile("Avg Loss",       f"{analytics.get('avg_loss', 0):.2f}%",               "#ff4757")}
+            {_metric_tile("Expectancy",     f"{analytics.get('expectancy', 0):.3f}%",              exp_color)}
+            {_metric_tile("Profit Factor",  f"{analytics.get('profit_factor', 0):.2f}",            pf_color)}
+          </tr>
+          <tr>
+            {_metric_tile("Sharpe",         f"{analytics.get('sharpe', 0):.2f}",                   sh_color)}
+            {_metric_tile("Sortino",        f"{analytics.get('sortino', 0):.2f}",                  so_color)}
+            {_metric_tile("Max DD",         f"{analytics.get('max_dd', 0):.1f}%",                 "#ff4757")}
+            {_metric_tile("Capital Util",   f"{capital_util:.1f}%",                                util_color)}
+            {_metric_tile("Port Beta",      beta_str,                                              "#a0a0b0")}
+            <td bgcolor="#0e0e20" style="background-color:#0e0e20;border-bottom:1px solid #1e1e34"></td>
+          </tr>
+        </table>"""
     else:
         analytics_html = '<div style="color:#6a6a8a;font-size:12px;padding:8px 0">Insufficient trade history for analytics (need ≥ 3 closed trades)</div>'
 
     # ── Regime ────────────────────────────────────────────────────────────────
-    # macro_context.json writes "macro_regime" (from macro_context.py)
-    # but data_feeds passes it through as "regime" to generate_signals.
-    # Recap reads from dataset["macro"] which uses data_feeds key "regime".
-    regime = macro.get("regime", macro.get("macro_regime", "NEUTRAL"))
-    # macro_score is the continuous [-1,1] float written by macro_context.py
-    regime_score = macro.get("macro_score", macro.get("score", 0.0))
-    regime_colors = {
-        "EXPANSION": "#00d4aa", "RISK_ON": "#00d4aa", "BULLISH": "#00d4aa",
-        "NEUTRAL": "#ffa502",
-        "RISK_OFF": "#ff4757", "BEARISH": "#ff4757", "CRISIS": "#ff0000",
-    }
+    regime = macro.get("regime", "NEUTRAL")
+    regime_score = macro.get("score", 0)
+    regime_colors = {"EXPANSION": "#00d4aa", "BULLISH": "#00d4aa", "NEUTRAL": "#ffa502",
+                     "BEARISH": "#ff4757", "CRISIS": "#ff0000"}
     regime_color = regime_colors.get(regime, "#ffa502")
 
     spy_price_str = f"${spy_price:,.2f}" if spy_price else "N/A"
 
-    # Universe size: read from live universe cache if available, don't hardcode
-    try:
-        from universe_builder import UniverseBuilder
-        _ub_cache_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "cache", "universe")
-        _today_str = datetime.now().strftime("%Y-%m-%d")
-        _cache_file = os.path.join(_ub_cache_dir, f"universe_{_today_str}.json")
-        if os.path.exists(_cache_file):
-            with open(_cache_file) as _uf:
-                _universe_data = json.load(_uf)
-            _universe_size = len(_universe_data) if isinstance(_universe_data, list) else len(_universe_data.get("symbols", []))
-        else:
-            _universe_size = None
-    except Exception:
-        _universe_size = None
-    universe_str = f"~{_universe_size} symbols" if _universe_size else "~130 symbols"
-
     html = f"""
     <html>
-    <body style="margin:0;padding:0;background:#0a0a1a;font-family:'Segoe UI',Arial,sans-serif">
-    <div style="max-width:720px;margin:0 auto;background:#12122a;border:1px solid #2a2a3e">
+    <head><meta name="color-scheme" content="dark"><meta name="supported-color-schemes" content="dark"></head>
+    <body style="margin:0;padding:0;background-color:#0a0a1a;font-family:'Segoe UI',Arial,sans-serif" bgcolor="#0a0a1a">
+    <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#0a0a1a" style="background-color:#0a0a1a">
+    <tr><td align="center" style="padding:20px 0">
+    <table width="720" cellpadding="0" cellspacing="0" bgcolor="#12122a" style="max-width:720px;background-color:#12122a;border:1px solid #2a2a3e">
 
         <!-- Header -->
         <div style="background:linear-gradient(135deg,#1a1a3e,#0d0d2b);padding:24px 28px;border-bottom:2px solid #00d4aa">
@@ -650,7 +617,7 @@ def build_html(account, positions, entries, exits, signals, macro, scale,
             </div>
             <div>
                 <span style="color:#a0a0b0;font-size:12px">UNIVERSE: </span>
-                <span style="color:#e0e0e0;font-weight:700;font-size:14px">{universe_str}</span>
+                <span style="color:#e0e0e0;font-weight:700;font-size:14px">~120 symbols</span>
             </div>
         </div>
 
@@ -714,7 +681,9 @@ def build_html(account, positions, entries, exits, signals, macro, scale,
             <div style="color:#3a3a5e;font-size:10px;margin-top:4px">Paper Trading — Not Financial Advice</div>
         </div>
 
-    </div>
+    </table>
+    </td></tr>
+    </table>
     </body>
     </html>
     """
@@ -722,12 +691,11 @@ def build_html(account, positions, entries, exits, signals, macro, scale,
 
 
 def _metric_tile(label, value, color):
-    """Reusable stat tile for portfolio analytics grid."""
-    return f"""
-    <div style="width:33%;box-sizing:border-box;padding:10px 8px;border-bottom:1px solid #1e1e34;text-align:center">
-        <div style="color:#6a6a8a;font-size:10px;text-transform:uppercase;letter-spacing:1px">{label}</div>
-        <div style="color:{color};font-size:16px;font-weight:700;margin-top:4px">{value}</div>
-    </div>"""
+    """Reusable stat tile — renders as a <td> for email-safe table layout."""
+    return f"""<td bgcolor="#0e0e20" style="background-color:#0e0e20;padding:12px 8px;text-align:center;border-bottom:1px solid #1e1e34;border-right:1px solid #1e1e34">
+        <div style="color:#6a6a8a;font-size:10px;text-transform:uppercase;letter-spacing:1px;white-space:nowrap">{label}</div>
+        <div style="color:{color};font-size:16px;font-weight:700;margin-top:5px">{value}</div>
+    </td>"""
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -751,37 +719,83 @@ def send_email(html, positions):
             s.login(EMAIL_SENDER, EMAIL_PASSWORD)
             s.send_message(msg)
         print("Recap email sent.")
+        os.makedirs("logs", exist_ok=True)
+        with open("logs/recap_errors.log", "a", encoding="utf-8") as lf:
+            lf.write(f"[{datetime.now().isoformat()}] Recap email sent OK.\n")
     except Exception as e:
+        import traceback
+        tb = traceback.format_exc()
         print(f"Email failed: {e}")
+        os.makedirs("logs", exist_ok=True)
+        with open("logs/recap_errors.log", "a", encoding="utf-8") as lf:
+            lf.write(f"[{datetime.now().isoformat()}] send_email() FAILED: {e}\n{tb}\n")
 
 
 # ─────────────────────────────────────────────────────────────────────────────
 # MAIN
 # ─────────────────────────────────────────────────────────────────────────────
 
+def send_error_email(error_text):
+    """Send a plain-text fallback email if main() crashes before building the HTML."""
+    try:
+        msg = MIMEMultipart()
+        msg["From"] = EMAIL_SENDER
+        msg["To"] = EMAIL_RECEIVER
+        msg["Subject"] = f"RAPTOR Recap FAILED ({datetime.now().strftime('%Y-%m-%d %H:%M')})"
+        msg.attach(MIMEText(f"daily_recap.py crashed before sending the recap email.\n\nError:\n{error_text}", "plain"))
+        with smtplib.SMTP_SSL("smtp.gmail.com", 465) as s:
+            s.login(EMAIL_SENDER, EMAIL_PASSWORD)
+            s.send_message(msg)
+        print("Error notification email sent.")
+    except Exception as e2:
+        print(f"Could not send error email either: {e2}")
+
+
 def main(preview=False):
-    dm, account, positions = get_account_data()
-    entries, exits = get_todays_trades()
-    signals, macro, scale = get_signals(dm)
+    os.makedirs("logs", exist_ok=True)
+    log_path = os.path.join("logs", "recap_errors.log")
 
-    run_monitor()
-    spy_price, spy_returns, spy_mas = get_spy_data(dm)
-    closed_trades, open_ledger = get_ledger_data()
-    analytics = get_portfolio_analytics(closed_trades, float(account["equity"]))
-    portfolio_beta = get_position_beta(positions, dm)
+    try:
+        dm, account, positions = get_account_data()
+        entries, exits = get_todays_trades()
+        signals, macro, scale = get_signals(dm)
 
-    html = build_html(
-        account, positions, entries, exits, signals, macro, scale,
-        spy_price, spy_returns, spy_mas, analytics, open_ledger, portfolio_beta
-    )
+        # run_monitor is isolated — a failure here must not kill the email
+        try:
+            run_monitor()
+        except Exception as e:
+            import traceback
+            msg = f"[{datetime.now().isoformat()}] run_monitor() failed: {e}\n{traceback.format_exc()}\n"
+            print(msg)
+            with open(log_path, "a", encoding="utf-8") as lf:
+                lf.write(msg)
 
-    if preview:
-        os.makedirs("logs", exist_ok=True)
-        with open("logs/recap_preview.html", "w", encoding="utf-8") as f:
-            f.write(html)
-        print("Preview saved to logs/recap_preview.html")
-    else:
-        send_email(html, positions)
+        spy_price, spy_returns, spy_mas = get_spy_data(dm)
+        closed_trades, open_ledger = get_ledger_data()
+        analytics = get_portfolio_analytics(closed_trades, float(account["equity"]))
+        portfolio_beta = get_position_beta(positions, dm)
+
+        html = build_html(
+            account, positions, entries, exits, signals, macro, scale,
+            spy_price, spy_returns, spy_mas, analytics, open_ledger, portfolio_beta
+        )
+
+        if preview:
+            with open("logs/recap_preview.html", "w", encoding="utf-8") as f:
+                f.write(html)
+            print("Preview saved to logs/recap_preview.html")
+        else:
+            send_email(html, positions)
+
+    except Exception as e:
+        import traceback
+        tb = traceback.format_exc()
+        msg = f"[{datetime.now().isoformat()}] FATAL: daily_recap.py crashed\n{tb}\n"
+        print(msg)
+        with open(log_path, "a", encoding="utf-8") as lf:
+            lf.write(msg)
+        if not preview:
+            send_error_email(tb)
 
 
 if __name__ == "__main__":
