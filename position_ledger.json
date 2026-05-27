@@ -7,13 +7,13 @@
       "entry_price": 50.189944,
       "entry_date": "2026-05-15",
       "metadata": {
-        "stop": 46.4885,
+        "stop": 61.7693,
         "regime": "BACKFILL",
         "t_stat": null,
         "kelly_fraction": null,
         "composite_score": null,
         "note": "Backfilled from Alpaca \u2014 entry_date approximate",
-        "high_water": 62.39
+        "high_water": 68.37
       }
     },
     "v5.4:TSLA": {
@@ -23,12 +23,13 @@
       "entry_price": 391.11,
       "entry_date": "2026-05-22",
       "metadata": {
-        "stop": 365.6058,
+        "stop": 404.4364,
         "regime": "BACKFILL",
         "t_stat": null,
         "kelly_fraction": null,
         "composite_score": null,
-        "note": "Backfilled from Alpaca \u2014 entry_date approximate"
+        "note": "Backfilled from Alpaca \u2014 entry_date approximate",
+        "high_water": 439.35
       }
     },
     "v5.4:AMD": {
@@ -38,12 +39,13 @@
       "entry_price": 304.32,
       "entry_date": "2026-05-22",
       "metadata": {
-        "stop": 276.39,
+        "stop": 426.7887,
         "regime": "BACKFILL",
         "t_stat": null,
         "kelly_fraction": null,
         "composite_score": null,
-        "note": "Restored by backfill_positions.py 2026-05-27 \u2014 position was incorrectly closed in ledger by math_trim routing bug"
+        "note": "Restored by backfill_positions.py 2026-05-27 \u2014 position was incorrectly closed in ledger by math_trim routing bug",
+        "high_water": 499.87
       }
     },
     "v5.4:CSX": {
@@ -53,12 +55,13 @@
       "entry_price": 45.419615,
       "entry_date": "2026-05-15",
       "metadata": {
-        "stop": 42.6707,
+        "stop": 45.7667,
         "regime": "BACKFILL",
         "t_stat": null,
         "kelly_fraction": null,
         "composite_score": null,
-        "note": "Restored by backfill_positions.py 2026-05-27 \u2014 position was incorrectly closed in ledger by math_trim routing bug"
+        "note": "Restored by backfill_positions.py 2026-05-27 \u2014 position was incorrectly closed in ledger by math_trim routing bug",
+        "high_water": 46.965
       }
     },
     "v5.4:CVE": {
@@ -73,7 +76,8 @@
         "t_stat": null,
         "kelly_fraction": null,
         "composite_score": null,
-        "note": "Restored by backfill_positions.py 2026-05-27 \u2014 position was incorrectly closed in ledger by math_trim routing bug"
+        "note": "Restored by backfill_positions.py 2026-05-27 \u2014 position was incorrectly closed in ledger by math_trim routing bug",
+        "high_water": 28.72
       }
     },
     "v5.4:DKNG": {
@@ -88,7 +92,8 @@
         "t_stat": null,
         "kelly_fraction": null,
         "composite_score": null,
-        "note": "Restored by backfill_positions.py 2026-05-27 \u2014 position was incorrectly closed in ledger by math_trim routing bug"
+        "note": "Restored by backfill_positions.py 2026-05-27 \u2014 position was incorrectly closed in ledger by math_trim routing bug",
+        "high_water": 25.0539
       }
     },
     "v5.4:INTC": {
@@ -98,12 +103,13 @@
       "entry_price": 87.74,
       "entry_date": "2026-05-22",
       "metadata": {
-        "stop": 80.5916,
+        "stop": 100.1728,
         "regime": "BACKFILL",
         "t_stat": null,
         "kelly_fraction": null,
         "composite_score": null,
-        "note": "Restored by backfill_positions.py 2026-05-27 \u2014 position was incorrectly closed in ledger by math_trim routing bug"
+        "note": "Restored by backfill_positions.py 2026-05-27 \u2014 position was incorrectly closed in ledger by math_trim routing bug",
+        "high_water": 119.39
       }
     },
     "v5.4:KDP": {
@@ -113,12 +119,13 @@
       "entry_price": 28.670593,
       "entry_date": "2026-05-24",
       "metadata": {
-        "stop": 26.9234,
+        "stop": 28.1917,
         "regime": "BACKFILL",
         "t_stat": null,
         "kelly_fraction": null,
         "composite_score": null,
-        "note": "Restored by backfill_positions.py 2026-05-27 \u2014 position was incorrectly closed in ledger by math_trim routing bug"
+        "note": "Restored by backfill_positions.py 2026-05-27 \u2014 position was incorrectly closed in ledger by math_trim routing bug",
+        "high_water": 29.79
       }
     },
     "v5.4:PLTD": {
@@ -128,12 +135,13 @@
       "entry_price": 7.74,
       "entry_date": "2026-05-24",
       "metadata": {
-        "stop": 7.2684,
+        "stop": 7.4342,
         "regime": "BACKFILL",
         "t_stat": null,
         "kelly_fraction": null,
         "composite_score": null,
-        "note": "Restored by backfill_positions.py 2026-05-27 \u2014 position was incorrectly closed in ledger by math_trim routing bug"
+        "note": "Restored by backfill_positions.py 2026-05-27 \u2014 position was incorrectly closed in ledger by math_trim routing bug",
+        "high_water": 8.12
       }
     },
     "v5.4:SMCI": {
@@ -148,7 +156,8 @@
         "t_stat": null,
         "kelly_fraction": null,
         "composite_score": null,
-        "note": "Restored by backfill_positions.py 2026-05-27 \u2014 position was incorrectly closed in ledger by math_trim routing bug"
+        "note": "Restored by backfill_positions.py 2026-05-27 \u2014 position was incorrectly closed in ledger by math_trim routing bug",
+        "high_water": 37.78
       }
     }
   },
