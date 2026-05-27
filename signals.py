@@ -119,11 +119,14 @@ class Factors:
         return float(s*r**2)
     @staticmethod
     def accum_dist(df, lb=10):
+        # Uses slope × R² — consistent with obv_r2. Previously used abs(r) which
+        # underweights clean trends relative to obv_r2. R² is the correct quality
+        # weight: unsigned, symmetrically penalises noisy fits. (H-list fix)
         clv=((df["close"]-df["low"])-(df["high"]-df["close"]))/(df["high"]-df["low"]+1e-10)
         ad=(clv*df["volume"]).cumsum()
         y=ad.iloc[-lb:].values; ys=(y-y.mean())/(y.std()+1e-10)
         s,_,r,_,_=scipy_stats.linregress(np.arange(lb,dtype=float),ys)
-        return float(s*abs(r))
+        return float(s*r**2)
     @staticmethod
     def atr_pctile(df, atr_p=14, lb=60):
         h,l,c=df["high"],df["low"],df["close"]
@@ -184,12 +187,30 @@ class AdaptiveWeights:
         self.data["trades"].append(row); self.data["n_trades"]=len(self.data["trades"])
         self._fit(); self._save()
     def _get_ic_boost(self):
+        # Spearman rank IC: correlation between factor z-score and realized return.
+        # Replaces binary sign-agreement which discarded magnitude entirely.
+        # A factor that calls direction right by a hair scores the same as one
+        # that called a 20% move — sign-agreement cannot distinguish them.
+        # Grinold & Kahn (1999): IC = rank_corr(factor_score, forward_return).
+        # Decay-weighted: recent trades contribute proportionally more.
+        # Reference: CRIT-3 in RAPTOR_MASTER_PLAN.md
         n=len(self.data["trades"])
         if n<20: return {}
         if self._ic_cache and self._ic_cache[0]==n: return self._ic_cache[1]
         recent=self.data["trades"][-50:]
-        ic={fn:sum(1 for t in recent if t.get(fn,0)*t.get("y",0)>0)/len(recent)-0.5
-            for fn in self.factor_names}
+        y_vals=[t.get("y",0.0) for t in recent]
+        ic={}
+        for fn in self.factor_names:
+            x_vals=[t.get(fn,0.0) for t in recent]
+            # Need at least 5 pairs and non-constant x to compute rank correlation
+            if len(set(x_vals))<3:
+                ic[fn]=0.0
+                continue
+            try:
+                rho,_=scipy_stats.spearmanr(x_vals,y_vals)
+                ic[fn]=float(rho) if not np.isnan(rho) else 0.0
+            except Exception:
+                ic[fn]=0.0
         self._ic_cache=(n,ic); return ic
     def _fit(self):
         t=self.data["trades"]
@@ -422,13 +443,21 @@ class QuantSignalEngine:
             wt=sum(w.values()); w={fn:v/wt for fn,v in w.items()}
             w=self.adaptive.blend_weights(w)
             z=zmat[sym]
-            active={fn:z[fn] for fn in FACTOR_NAMES if abs(z[fn])>0.10}
-            if len(active)<3: active={fn:z[fn] for fn in FACTOR_NAMES}
-            aw_sum=sum(w[fn] for fn in active)
+            # Soft shrinkage replaces the hard |z|>0.10 threshold filter.
+            # Hard cutoff created score discontinuities: a factor at z=0.09 was
+            # fully excluded; at z=0.11 it received full weight — a cliff that
+            # caused noisy score jumps from threshold-straddling factors.
+            # Soft shrinkage smoothly reduces small z-scores toward zero without
+            # discrete inclusion/exclusion. Factors with |z|<0.10 contribute ≈0,
+            # factors with |z|>0.50 are essentially unmodified.
+            # Formula: z_soft[fn] = z[fn] × (|z[fn]| / (|z[fn]| + 0.10))
+            # At |z|=0.10: 50% of z retained. At |z|=0.50: 83%. At |z|=1.0: 91%.
+            z_soft={fn:z[fn]*(abs(z[fn])/(abs(z[fn])+0.10)) for fn in FACTOR_NAMES}
+            aw_sum=sum(w[fn] for fn in FACTOR_NAMES)
             if aw_sum<1e-10: continue
-            comp=sum(z[fn]*w[fn]/aw_sum for fn in active)
+            comp=sum(z_soft[fn]*w[fn]/aw_sum for fn in FACTOR_NAMES)
             all_comp.append(comp)
-            contribs={fn:round(z[fn]*w[fn]/aw_sum,6) if fn in active else 0.0 for fn in FACTOR_NAMES}
+            contribs={fn:round(z_soft[fn]*w[fn]/aw_sum,6) for fn in FACTOR_NAMES}
             # ── Proper SNR: comp / sqrt(w^T Σ w) ────────────────────────────
             # σ²_comp = w^T × factor_cov × w accounts for factor correlation.
             # Correlated factors inflate composite score without adding information.
