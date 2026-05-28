@@ -661,5 +661,44 @@
     "agent_decision": "HOLD",
     "agent_conf": 0.9,
     "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-05-28T09:52:16.445361",
+    "symbol": "CSX",
+    "trim_qty": 15,
+    "price": 45.9,
+    "pnl_pct": 1.06,
+    "reason": "math_trim_8%",
+    "composite": -0.1963,
+    "trim_detail": "severity=0.025 x stop_mult=1.50 x far_mult=1.13 x pnl_mult=1.00 + slope_adj=0.040 = 0.082 -> 8.2% (15 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-05-28T09:52:16.445431",
+    "symbol": "CVE",
+    "trim_qty": 38,
+    "price": 28.49,
+    "pnl_pct": -0.8,
+    "reason": "math_trim_65%",
+    "composite": -0.8428,
+    "trim_detail": "severity=0.358 x stop_mult=1.00 x far_mult=1.04 x pnl_mult=1.20 + slope_adj=0.200 = 0.646 -> 64.6% (38 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-05-28T15:50:21.752662",
+    "symbol": "DKNG",
+    "trim_qty": 36,
+    "price": 24.495,
+    "pnl_pct": -2.23,
+    "reason": "math_trim_61%",
+    "composite": -0.4007,
+    "trim_detail": "severity=0.214 x stop_mult=1.50 x far_mult=1.07 x pnl_mult=1.20 + slope_adj=0.200 = 0.614 -> 61.4% (36 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
   }
 ]

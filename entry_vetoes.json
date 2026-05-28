@@ -551,5 +551,50 @@
     "symbol": "QBTS",
     "timestamp": "2026-05-27T09:36:46.988512",
     "agent": "EntryAgent"
+  },
+  {
+    "decision": "PASS",
+    "confidence": 0.9,
+    "veto_reason": null,
+    "flags": [],
+    "symbol": "HPQ",
+    "timestamp": "2026-05-28T09:35:35.786078",
+    "agent": "EntryAgent"
+  },
+  {
+    "decision": "PASS",
+    "confidence": 0.95,
+    "veto_reason": null,
+    "flags": [],
+    "symbol": "RDW",
+    "timestamp": "2026-05-28T09:35:53.177231",
+    "agent": "EntryAgent"
+  },
+  {
+    "decision": "PASS",
+    "confidence": 0.9,
+    "veto_reason": null,
+    "flags": [],
+    "symbol": "CCL",
+    "timestamp": "2026-05-28T09:36:10.126466",
+    "agent": "EntryAgent"
+  },
+  {
+    "decision": "PASS",
+    "confidence": 0.95,
+    "veto_reason": null,
+    "flags": [],
+    "symbol": "RGTI",
+    "timestamp": "2026-05-28T09:36:27.347093",
+    "agent": "EntryAgent"
+  },
+  {
+    "decision": "PASS",
+    "confidence": 0.9,
+    "veto_reason": null,
+    "flags": [],
+    "symbol": "QBTS",
+    "timestamp": "2026-05-28T09:36:44.420357",
+    "agent": "EntryAgent"
   }
 ]
