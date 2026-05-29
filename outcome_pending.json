@@ -178,5 +178,35 @@
     "agent_confidence": 0.5,
     "agent_reasoning": "Agent unavailable \u2014 passthrough default",
     "submitted_at": "2026-05-22T15:50:23.055855"
+  },
+  "c050ffd8-dcf2-42ab-ba63-555696b78b93": {
+    "symbol": "CSX",
+    "exit_reason": "hard_stop",
+    "composite": -0.0,
+    "entry_decision": null,
+    "entry_confidence": null,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-05-29T09:52:15.767919"
+  },
+  "6260b373-ae1e-4416-88d6-7576a84a4864": {
+    "symbol": "DKNG",
+    "exit_reason": "math_exit",
+    "composite": -0.0,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-05-29T09:52:15.823362"
+  },
+  "24bd4502-e4db-432c-9528-075870ff1212": {
+    "symbol": "STM",
+    "exit_reason": "math_trim_22%",
+    "composite": 0.0,
+    "entry_decision": null,
+    "entry_confidence": null,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-05-29T09:52:15.881914"
   }
 }

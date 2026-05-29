@@ -596,5 +596,53 @@
     "symbol": "QBTS",
     "timestamp": "2026-05-28T09:36:44.420357",
     "agent": "EntryAgent"
+  },
+  {
+    "decision": "PASS",
+    "confidence": 0.5,
+    "veto_reason": null,
+    "flags": [],
+    "symbol": "PLTR",
+    "timestamp": "2026-05-29T09:35:37.628068",
+    "agent": "EntryAgent"
+  },
+  {
+    "decision": "PASS",
+    "confidence": 0.8,
+    "veto_reason": null,
+    "flags": [],
+    "symbol": "HPQ",
+    "timestamp": "2026-05-29T09:35:55.000286",
+    "agent": "EntryAgent"
+  },
+  {
+    "decision": "PASS",
+    "confidence": 0.8,
+    "veto_reason": null,
+    "flags": [],
+    "symbol": "HOOD",
+    "timestamp": "2026-05-29T09:36:12.508178",
+    "agent": "EntryAgent"
+  },
+  {
+    "decision": "PASS",
+    "confidence": 0.5,
+    "veto_reason": null,
+    "reasoning": "Agent unavailable \u2014 passthrough default",
+    "flags": [
+      "agent_error"
+    ],
+    "symbol": "SOXL",
+    "timestamp": "2026-05-29T09:36:31.208348",
+    "agent": "EntryAgent"
+  },
+  {
+    "decision": "PASS",
+    "confidence": 1.0,
+    "veto_reason": null,
+    "flags": [],
+    "symbol": "IREN",
+    "timestamp": "2026-05-29T09:36:48.142895",
+    "agent": "EntryAgent"
   }
 ]

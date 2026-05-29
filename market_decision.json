@@ -1,9 +1,9 @@
 {
   "decision": "SCAN",
   "risk_scalar": 1.0,
-  "confidence": null,
-  "reasoning": "Macro regime is RISK_ON with a calm VIX and broad strength in sector breadth.",
+  "confidence": 0.8,
+  "reasoning": "Macro environment is conducive to risk-taking with no extreme signals present.",
   "source": "rule+llama3.2",
   "macro_regime": "RISK_ON",
-  "timestamp": "2026-05-28T13:15:30.166386+00:00"
+  "timestamp": "2026-05-29T13:15:31.467204+00:00"
 }

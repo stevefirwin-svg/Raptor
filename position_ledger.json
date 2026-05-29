@@ -3,18 +3,31 @@
     "v5.4:STM": {
       "model": "v5.4",
       "symbol": "STM",
-      "shares": 177,
+      "shares": 139,
       "entry_price": 50.189944,
       "entry_date": "2026-05-15",
       "metadata": {
-        "stop": 66.1132,
+        "stop": 67.4754,
         "regime": "BACKFILL",
         "t_stat": null,
         "kelly_fraction": null,
         "composite_score": null,
         "note": "Backfilled from Alpaca \u2014 entry_date approximate",
-        "high_water": 69.61
-      }
+        "high_water": 70.825,
+        "last_trim_ts": "2026-05-29T09:52:15.899559"
+      },
+      "trims": [
+        {
+          "date": "2026-05-29",
+          "reason": "math_trim_22%",
+          "shares_sold": 38,
+          "trim_price": 70.825,
+          "pnl_pct": 41.1139,
+          "pnl_abs": 784.13,
+          "shares_before": 177,
+          "shares_after": 139
+        }
+      ]
     },
     "v5.4:TSLA": {
       "model": "v5.4",
@@ -23,7 +36,7 @@
       "entry_price": 391.11,
       "entry_date": "2026-05-22",
       "metadata": {
-        "stop": 418.0063,
+        "stop": 419.5143,
         "regime": "BACKFILL",
         "t_stat": null,
         "kelly_fraction": null,
@@ -39,72 +52,14 @@
       "entry_price": 304.32,
       "entry_date": "2026-05-22",
       "metadata": {
-        "stop": 489.8975,
+        "stop": 493.335,
         "regime": "BACKFILL",
         "t_stat": null,
         "kelly_fraction": null,
         "composite_score": null,
         "note": "Restored by backfill_positions.py 2026-05-27 \u2014 position was incorrectly closed in ledger by math_trim routing bug",
-        "high_water": 519.18
+        "high_water": 519.5996
       }
-    },
-    "v5.4:CSX": {
-      "model": "v5.4",
-      "symbol": "CSX",
-      "shares": 171,
-      "entry_price": 45.419615,
-      "entry_date": "2026-05-15",
-      "metadata": {
-        "stop": 45.8786,
-        "regime": "BACKFILL",
-        "t_stat": null,
-        "kelly_fraction": null,
-        "composite_score": null,
-        "note": "Restored by backfill_positions.py 2026-05-27 \u2014 position was incorrectly closed in ledger by math_trim routing bug",
-        "high_water": 47.085,
-        "last_trim_ts": "2026-05-28T09:52:16.376247"
-      },
-      "trims": [
-        {
-          "date": "2026-05-28",
-          "reason": "math_trim_8%",
-          "shares_sold": 15,
-          "trim_price": 45.9,
-          "pnl_pct": 1.0577,
-          "pnl_abs": 7.21,
-          "shares_before": 186,
-          "shares_after": 171
-        }
-      ]
-    },
-    "v5.4:DKNG": {
-      "model": "v5.4",
-      "symbol": "DKNG",
-      "shares": 22,
-      "entry_price": 25.053855,
-      "entry_date": "2026-05-22",
-      "metadata": {
-        "stop": 23.5467,
-        "regime": "BACKFILL",
-        "t_stat": null,
-        "kelly_fraction": null,
-        "composite_score": null,
-        "note": "Restored by backfill_positions.py 2026-05-27 \u2014 position was incorrectly closed in ledger by math_trim routing bug",
-        "high_water": 25.24,
-        "last_trim_ts": "2026-05-28T15:50:21.739763"
-      },
-      "trims": [
-        {
-          "date": "2026-05-28",
-          "reason": "math_trim_61%",
-          "shares_sold": 36,
-          "trim_price": 24.495,
-          "pnl_pct": -2.2306,
-          "pnl_abs": -20.12,
-          "shares_before": 58,
-          "shares_after": 22
-        }
-      ]
     },
     "v5.4:INTC": {
       "model": "v5.4",
@@ -113,13 +68,13 @@
       "entry_price": 87.74,
       "entry_date": "2026-05-22",
       "metadata": {
-        "stop": 106.2477,
+        "stop": 108.7121,
         "regime": "BACKFILL",
         "t_stat": null,
         "kelly_fraction": null,
         "composite_score": null,
         "note": "Restored by backfill_positions.py 2026-05-27 \u2014 position was incorrectly closed in ledger by math_trim routing bug",
-        "high_water": 120.81
+        "high_water": 121.655
       }
     },
     "v5.4:KDP": {
@@ -129,7 +84,7 @@
       "entry_price": 28.670593,
       "entry_date": "2026-05-24",
       "metadata": {
-        "stop": 29.2902,
+        "stop": 29.3277,
         "regime": "BACKFILL",
         "t_stat": null,
         "kelly_fraction": null,
@@ -145,13 +100,46 @@
       "entry_price": 34.096966,
       "entry_date": "2026-05-22",
       "metadata": {
-        "stop": 36.7101,
+        "stop": 44.9825,
         "regime": "BACKFILL",
         "t_stat": null,
         "kelly_fraction": null,
         "composite_score": null,
         "note": "Restored by backfill_positions.py 2026-05-27 \u2014 position was incorrectly closed in ledger by math_trim routing bug",
-        "high_water": 41.7
+        "high_water": 47.785
+      }
+    },
+    "v5.4:PLTR": {
+      "model": "v5.4",
+      "symbol": "PLTR",
+      "shares": 43,
+      "entry_price": 148.845,
+      "entry_date": "2026-05-29",
+      "metadata": {
+        "t_stat": 0.0,
+        "stop": 135.7,
+        "tp": 0.0,
+        "regime": "RISK_ON/MIXED",
+        "kelly_fraction": 0.06,
+        "composite_score": 0.0,
+        "velocity": 0.0
+      }
+    },
+    "v5.4:HPQ": {
+      "model": "v5.4",
+      "symbol": "HPQ",
+      "shares": 238,
+      "entry_price": 27.255,
+      "entry_date": "2026-05-29",
+      "metadata": {
+        "t_stat": 0.0,
+        "stop": 24.07,
+        "tp": 0.0,
+        "regime": "RISK_ON/MIXED",
+        "kelly_fraction": 0.06,
+        "composite_score": 0.0,
+        "velocity": 0.0,
+        "high_water": 27.095
       }
     }
   },
@@ -710,6 +698,76 @@
       "exit_path": "math_exit",
       "pnl": -14.699999999999985,
       "pnl_pct": -2.4373259052924756
+    },
+    {
+      "model": "v5.4",
+      "symbol": "CSX",
+      "shares": 171,
+      "entry_price": 45.419615,
+      "entry_date": "2026-05-15",
+      "metadata": {
+        "stop": 45.8786,
+        "regime": "BACKFILL",
+        "t_stat": null,
+        "kelly_fraction": null,
+        "composite_score": null,
+        "note": "Restored by backfill_positions.py 2026-05-27 \u2014 position was incorrectly closed in ledger by math_trim routing bug",
+        "high_water": 47.085,
+        "last_trim_ts": "2026-05-28T09:52:16.376247"
+      },
+      "trims": [
+        {
+          "date": "2026-05-28",
+          "reason": "math_trim_8%",
+          "shares_sold": 15,
+          "trim_price": 45.9,
+          "pnl_pct": 1.0577,
+          "pnl_abs": 7.21,
+          "shares_before": 186,
+          "shares_after": 171
+        }
+      ],
+      "exit_price": 45.365,
+      "exit_date": "2026-05-29",
+      "exit_reason": "hard_stop",
+      "exit_path": "hard_stop",
+      "pnl": -9.33916499999971,
+      "pnl_pct": -0.12024540498636327
+    },
+    {
+      "model": "v5.4",
+      "symbol": "DKNG",
+      "shares": 22,
+      "entry_price": 25.053855,
+      "entry_date": "2026-05-22",
+      "metadata": {
+        "stop": 23.5467,
+        "regime": "BACKFILL",
+        "t_stat": null,
+        "kelly_fraction": null,
+        "composite_score": null,
+        "note": "Restored by backfill_positions.py 2026-05-27 \u2014 position was incorrectly closed in ledger by math_trim routing bug",
+        "high_water": 25.24,
+        "last_trim_ts": "2026-05-28T15:50:21.739763"
+      },
+      "trims": [
+        {
+          "date": "2026-05-28",
+          "reason": "math_trim_61%",
+          "shares_sold": 36,
+          "trim_price": 24.495,
+          "pnl_pct": -2.2306,
+          "pnl_abs": -20.12,
+          "shares_before": 58,
+          "shares_after": 22
+        }
+      ],
+      "exit_price": 23.795,
+      "exit_date": "2026-05-29",
+      "exit_reason": "math_exit",
+      "exit_path": "math_exit",
+      "pnl": -27.694809999999933,
+      "pnl_pct": -5.024596015263905
     }
   ]
 }

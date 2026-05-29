@@ -8357,5 +8357,77 @@
     "symbol": "TSLA",
     "timestamp": "2026-05-28T16:30:12.591865",
     "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "AMD",
+    "timestamp": "2026-05-29T09:52:09.312882",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "CSX",
+    "timestamp": "2026-05-29T09:52:09.312909",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "DKNG",
+    "timestamp": "2026-05-29T09:52:09.312915",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "HPQ",
+    "timestamp": "2026-05-29T09:52:09.312919",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "INTC",
+    "timestamp": "2026-05-29T09:52:09.312923",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "KDP",
+    "timestamp": "2026-05-29T09:52:09.312927",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "SMCI",
+    "timestamp": "2026-05-29T09:52:09.312930",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "STM",
+    "timestamp": "2026-05-29T09:52:09.312934",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "TSLA",
+    "timestamp": "2026-05-29T09:52:09.312937",
+    "agent": "HoldAgent"
   }
 ]
