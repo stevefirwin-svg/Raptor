@@ -7,10 +7,12 @@ Usage:
   python exit_monitor.py --dry-run # Show what would exit
 """
 
+import json
 import logging
 import os
 import sys
 from datetime import datetime
+from pathlib import Path
 from typing import Dict, List, Optional
 
 import numpy as np
@@ -30,6 +32,45 @@ logging.basicConfig(
     ],
 )
 logger = logging.getLogger("raptor.exits")
+
+_OUTCOME_PENDING_PATH = Path(__file__).parent / "outcome_pending.json"
+
+
+def _write_outcome_pending(order_id: str, symbol: str, reason: str,
+                            composite: float, entry_veto: dict) -> None:
+    """
+    Write one sidecar record keyed by Alpaca order ID immediately after a
+    successful sell. outcome_tracker reads this to populate entry_decision
+    without relying on timestamp matching against entry_vetoes.json.
+    P0-1 fix — makes every future closed trade fully labeled.
+    Atomic write — safe on crash.
+    """
+    try:
+        existing = {}
+        if _OUTCOME_PENDING_PATH.exists():
+            try:
+                existing = json.loads(_OUTCOME_PENDING_PATH.read_text())
+            except Exception:
+                existing = {}
+
+        existing[order_id] = {
+            "symbol":           symbol,
+            "exit_reason":      reason,
+            "composite":        round(float(composite), 4),
+            "entry_decision":   entry_veto.get("decision")   if entry_veto else None,
+            "entry_confidence": entry_veto.get("confidence") if entry_veto else None,
+            "entry_reasoning":  (entry_veto.get("reasoning") or
+                                 entry_veto.get("veto_reason")) if entry_veto else None,
+            "entry_flags":      entry_veto.get("flags", [])  if entry_veto else [],
+            "submitted_at":     datetime.now().isoformat(),
+        }
+
+        tmp = _OUTCOME_PENDING_PATH.with_suffix(".tmp")
+        tmp.write_text(json.dumps(existing, indent=2))
+        os.replace(tmp, _OUTCOME_PENDING_PATH)
+        logger.debug("outcome_pending: %s → %s [%s]", order_id[:8], symbol, reason)
+    except Exception as e:
+        logger.warning("outcome_pending write failed for %s: %s", symbol, e)
 
 
 def _atr(bars, period=14):
@@ -539,6 +580,30 @@ def run_exit_monitor(dry_run=False):
             )
             if "error" not in result:
                 logger.info("  OK: %s", result.get("status", "submitted"))
+                # P0-1: Write outcome_pending sidecar — keyed by Alpaca order ID.
+                # outcome_tracker reads this to populate entry_decision on new records
+                # without relying on fragile timestamp matching against entry_vetoes.
+                try:
+                    _order_id  = result.get("id", "")
+                    _ev_all    = []
+                    import json as _ev_json
+                    from pathlib import Path as _ev_path
+                    _ev_file   = _ev_path("entry_vetoes.json")
+                    if _ev_file.exists():
+                        _ev_all = _ev_json.loads(_ev_file.read_text())
+                    # Most recent entry veto for this symbol
+                    _ev_match  = None
+                    for _ev in reversed(_ev_all):
+                        if _ev.get("symbol") == ex["symbol"]:
+                            _ev_match = _ev
+                            break
+                    if _order_id:
+                        _write_outcome_pending(
+                            _order_id, ex["symbol"], ex["reason"],
+                            ex.get("composite", 0.0), _ev_match
+                        )
+                except Exception as _pe:
+                    logger.warning("outcome_pending write failed for %s: %s", ex["symbol"], _pe)
                 # Update ledger — route partial trims to record_trim, full exits to record_exit.
                 # Previously all paths called record_exit, which closed the full position in the
                 # ledger even when only a fraction of shares were sold. This caused 8 positions

@@ -27,9 +27,10 @@ ALPACA_KEY    = os.getenv("ALPACA_API_KEY")
 ALPACA_SECRET = os.getenv("ALPACA_SECRET_KEY")
 BASE_URL      = os.getenv("ALPACA_BASE_URL", "https://paper-api.alpaca.markets")
 
-ENTRY_VETOES_PATH   = "entry_vetoes.json"
-HOLD_DECISIONS_PATH = "hold_decisions.json"
-OUTCOME_LOG_PATH    = "outcome_log.json"
+ENTRY_VETOES_PATH    = "entry_vetoes.json"
+HOLD_DECISIONS_PATH  = "hold_decisions.json"
+OUTCOME_LOG_PATH     = "outcome_log.json"
+OUTCOME_PENDING_PATH = "outcome_pending.json"
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -308,15 +309,35 @@ def backfill_unknowns(verbose: bool = True) -> int:
     return fixed
 
 
+def _load_outcome_pending() -> dict:
+    """
+    Load the sidecar written by exit_monitor after every successful sell.
+    Keyed by Alpaca order ID. Contains entry_decision, exit_reason, composite.
+    This is the P0-1 fix — direct order-ID join replaces fragile timestamp match.
+    """
+    if not os.path.exists(OUTCOME_PENDING_PATH):
+        return {}
+    try:
+        with open(OUTCOME_PENDING_PATH) as f:
+            data = json.load(f)
+        return data if isinstance(data, dict) else {}
+    except Exception:
+        return {}
+
+
 def run_tracker(verbose: bool = True) -> int:
-    existing  = load_json_list(OUTCOME_LOG_PATH)
+    existing   = load_json_list(OUTCOME_LOG_PATH)
     tagged_ids = {r["sell_order_id"] for r in existing if r.get("sell_order_id")}
 
+    # P0-1: Load sidecar for direct order-ID → entry_decision join.
+    # Falls back to timestamp-match (last_decision_before) for older records.
+    pending        = _load_outcome_pending()
     entry_vetoes   = load_json_list(ENTRY_VETOES_PATH)
     hold_decisions = load_json_list(HOLD_DECISIONS_PATH)
 
     if verbose:
         print(f"[OutcomeTracker] Existing tagged trades : {len(existing)}")
+        print(f"[OutcomeTracker] Pending sidecar records: {len(pending)}")
         print(f"[OutcomeTracker] Entry veto records     : {len(entry_vetoes)}")
         print(f"[OutcomeTracker] Hold decision records  : {len(hold_decisions)}")
 
@@ -346,7 +367,19 @@ def run_tracker(verbose: bool = True) -> int:
             print(f"[OutcomeTracker] WARNING: Could not fetch buy for {symbol}: {e}")
             buy = None
 
-        entry_dec = last_decision_before(entry_vetoes,   symbol, exit_ts)
+        # P0-1: use sidecar if available (exact order-ID match), else timestamp search
+        _pending_rec = pending.get(order_id)
+        if _pending_rec:
+            entry_dec = {
+                "decision":   _pending_rec.get("entry_decision"),
+                "confidence": _pending_rec.get("entry_confidence"),
+                "reasoning":  _pending_rec.get("entry_reasoning"),
+                "flags":      _pending_rec.get("entry_flags", []),
+                "timestamp":  _pending_rec.get("submitted_at"),
+                "symbol":     symbol,
+            }
+        else:
+            entry_dec = last_decision_before(entry_vetoes, symbol, exit_ts)
         hold_dec  = last_decision_before(hold_decisions, symbol, exit_ts)
         record    = build_outcome_record(sell, buy, entry_dec, hold_dec)
         new_records.append(record)
