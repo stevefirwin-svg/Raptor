@@ -208,5 +208,15 @@
     "entry_reasoning": null,
     "entry_flags": [],
     "submitted_at": "2026-05-29T09:52:15.881914"
+  },
+  "6620229d-b556-4032-ac71-724d0fcf1928": {
+    "symbol": "STM",
+    "exit_reason": "math_trim_30%",
+    "composite": 0.0,
+    "entry_decision": null,
+    "entry_confidence": null,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-05-29T15:50:24.120793"
   }
 }

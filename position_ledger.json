@@ -3,7 +3,7 @@
     "v5.4:STM": {
       "model": "v5.4",
       "symbol": "STM",
-      "shares": 139,
+      "shares": 98,
       "entry_price": 50.189944,
       "entry_date": "2026-05-15",
       "metadata": {
@@ -14,7 +14,7 @@
         "composite_score": null,
         "note": "Backfilled from Alpaca \u2014 entry_date approximate",
         "high_water": 70.825,
-        "last_trim_ts": "2026-05-29T09:52:15.899559"
+        "last_trim_ts": "2026-05-29T15:50:24.136926"
       },
       "trims": [
         {
@@ -26,6 +26,16 @@
           "pnl_abs": 784.13,
           "shares_before": 177,
           "shares_after": 139
+        },
+        {
+          "date": "2026-05-29",
+          "reason": "math_trim_30%",
+          "shares_sold": 41,
+          "trim_price": 69.29,
+          "pnl_pct": 38.0555,
+          "pnl_abs": 783.1,
+          "shares_before": 139,
+          "shares_after": 98
         }
       ]
     },
@@ -139,7 +149,7 @@
         "kelly_fraction": 0.06,
         "composite_score": 0.0,
         "velocity": 0.0,
-        "high_water": 27.095
+        "high_water": 27.235
       }
     }
   },

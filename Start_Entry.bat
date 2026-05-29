@@ -6,3 +6,4 @@ echo [%date% %time%] Entry scan starting >> logs\auto_start.log
 echo Running entry scanner...
 python main.py
 echo [%date% %time%] Entry scan complete >> logs\auto_start.log
+python morning_scanner_email.py

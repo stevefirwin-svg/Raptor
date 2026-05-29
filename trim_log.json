@@ -713,5 +713,18 @@
     "agent_decision": "HOLD",
     "agent_conf": 0.9,
     "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-05-29T15:50:24.141490",
+    "symbol": "STM",
+    "trim_qty": 41,
+    "price": 69.29,
+    "pnl_pct": 38.06,
+    "reason": "math_trim_30%",
+    "composite": 0.0,
+    "trim_detail": "severity=0.105 x stop_mult=1.50 x far_mult=1.02 x pnl_mult=0.60 + slope_adj=0.200 = 0.296 -> 29.6% (41 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
   }
 ]
