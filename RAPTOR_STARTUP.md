@@ -1,6 +1,6 @@
 # RAPTOR_STARTUP.md — Session Startup
 *Read first. Every session. No exceptions.*
-*Last updated: 2026-05-27 | Version: 5.7*
+*Last updated: 2026-05-29 | Version: 5.8*
 
 ---
 
@@ -47,13 +47,13 @@ python factor_lab.py
 **What to look for:**
 
 `outcome_tracker.py --summary`:
-- IC-valid count — goal: 60 (unlocks MATH-5, ARCH-1)
+- IC-valid count — goal: 60 (unlocks MATH-5, ARCH-1). Currently 8 (not 42 — prior docs wrong)
 - math_trim win% should be > 60%
 - trailing_stop win% should be > 40% (currently underperforming)
 
 `kelly_engine.py`:
 - mode = SHADOW until 100 trades. Sizing unchanged.
-- f_recommended = bootstrap P25. Should be 3–5%.
+- f_recommended = bootstrap P25. Currently 1% (win_rate 27.9% on terminal exits).
 
 `factor_lab.py`:
 - ma_stack and adx_dir should stay IC > 0.05, t > 1.5
@@ -158,15 +158,22 @@ If any check fails: restore from GitHub before proceeding.
 | P1-1 Kalman macro | macro_context.py is vote-count; replaced by Gaussian blend in signals.py |
 | P1-5 OU hold target | hardcoded 15 days MOM; dist_to_mean formula for MR |
 
+### Fixed this session (2026-05-29)
+
+| Item | Files changed |
+|------|--------------|
+| P0-1: outcome_pending sidecar | exit_monitor.py, outcome_tracker.py |
+| P0-8: regime override from macro_context.json | main.py, exit_monitor.py |
+
 ### Open (next to build)
 
 | Priority | Item | Gate |
 |----------|------|------|
 | Next session | MATH-3 Full Hurst DFA | No gate |
-| IC-valid >= 60 | MATH-5: n_prior 50→20 | Have 42 |
-| IC-valid >= 60 | ARCH-1: IC layer weights hold monitor | Have 42 |
-| IC-valid >= 60 | MATH-1: Regime-conditional IC | Have 42 |
-| 100 equity trades | Kelly ACTIVE mode | Have 42 |
+| IC-valid >= 60 | MATH-5: n_prior 50→20 | Have 8 |
+| IC-valid >= 60 | ARCH-1: IC layer weights hold monitor | Have 8 |
+| IC-valid >= 60 | MATH-1: Regime-conditional IC | Have 8 |
+| 100 equity trades | Kelly ACTIVE mode | Have 8 |
 | After MR resumes | P1-5: OU hold target per stock | MR needs outcomes |
 
 ---

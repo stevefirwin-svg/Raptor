@@ -214,6 +214,22 @@ def run_daily_scan():
     bars, macro, sentiment = dataset["bars"], dataset["macro"], dataset["sentiment"]
     spy_bars = bars.get("SPY")
 
+    # P0-8: override macro["regime"] with canonical {RISK_ON,NEUTRAL,RISK_OFF,CRISIS}
+    # label from macro_context.json. data_feeds.compute_regime_score uses a different
+    # taxonomy (BULLISH/BEARISH) — without this override the EntryAgent veto rules
+    # for RISK_OFF/CRISIS can never fire.
+    try:
+        import json as _mcj
+        _mc = _mcj.loads(open("macro_context.json").read())
+        _label = _mc.get("macro_regime") or _mc.get("regime")
+        if _label in ("RISK_ON", "NEUTRAL", "RISK_OFF", "CRISIS"):
+            macro["regime"] = _label
+            logger.info("[MacroOverride] regime → %s (from macro_context.json)", _label)
+        else:
+            logger.warning("[MacroOverride] macro_context.json has unrecognised label %r — keeping data_feeds value", _label)
+    except Exception as _mce:
+        logger.warning("[MacroOverride] Could not load macro_context.json (%s) — using data_feeds regime", _mce)
+
     logger.info("Data: %d symbols | Macro: %s (%.3f)",
                 len(bars), macro.get("regime","?"),
                 macro.get("macro_score", macro.get("score", 0.0)))

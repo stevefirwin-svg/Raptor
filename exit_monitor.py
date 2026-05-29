@@ -170,6 +170,19 @@ def run_exit_monitor(dry_run=False):
     macro = dataset["macro"]
     spy_bars = bars.get("SPY")
 
+    # P0-8: override macro["regime"] with canonical {RISK_ON,NEUTRAL,RISK_OFF,CRISIS}
+    # label from macro_context.json — same fix as main.py.
+    try:
+        _mc = json.loads(open("macro_context.json").read())
+        _label = _mc.get("macro_regime") or _mc.get("regime")
+        if _label in ("RISK_ON", "NEUTRAL", "RISK_OFF", "CRISIS"):
+            macro["regime"] = _label
+            logger.info("[MacroOverride] regime → %s (from macro_context.json)", _label)
+        else:
+            logger.warning("[MacroOverride] macro_context.json unrecognised label %r — keeping data_feeds value", _label)
+    except Exception as _mce:
+        logger.warning("[MacroOverride] Could not load macro_context.json (%s) — using data_feeds regime", _mce)
+
     # Run signal engine for thesis check (current composite scores)
     signals = engine.generate_signals(bars, macro, dataset["sentiment"], spy_bars)
     # Use _last_full_signals so held symbols that decayed out of the top-N
