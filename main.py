@@ -8,7 +8,6 @@ from ledger import Ledger
 from margin_guard import check_margin_safety
 
 MODEL_ID = "v5.4"
-EQUITY_ALLOCATION = 1.00
 
 COMPOSITE_CACHE_PATH = "composite_cache.json"
 COOLDOWN_LOG_PATH    = "cooldown_log.json"
@@ -161,7 +160,7 @@ def run_daily_scan():
     # Source of truth is Alpaca, not ledger
     all_held = {p["symbol"] for p in positions}
     current_position_count = len(positions)
-    my_equity = account["equity"] * EQUITY_ALLOCATION
+    my_equity = account["equity"]  # H-7: EQUITY_ALLOCATION=1.00 removed — was a no-op dead variable
 
     logger.info("Account: equity=$%.2f  my_allocation=$%.2f  positions=%d",
                 account["equity"], my_equity, current_position_count)

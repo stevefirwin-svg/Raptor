@@ -319,7 +319,7 @@ All factors are normalized cross-sectionally in one pass:
 *Active book. 7 IC-validated factors. macd_accel removed 2026-05-23 (IC=−0.34).*
 
 **Hard gates (ALL must pass):**
-1. Trend confirmed: Hurst H > 0.52 OR ADX_raw > 22
+1. Trend confirmed: Hurst H > 0.52 OR ADX_raw > 22  *(H from DFA-1, Kantelhardt 2002 — replaces R/S)*
 2. Price above 50 EMA
 3. Relative strength ≥ -0.01 (not underperforming SPY badly)
 
@@ -996,6 +996,13 @@ Factor covariance condition number: **271.8** — HIGH COLLINEARITY. Orthogonali
 | ✅ ORTHOGONALIZATION | signals.py — w^TΣ⁻¹x replaces w^Tx, condition number 271.8 confirmed |
 | ✅ macd_accel REMOVED | IC=−0.34, t=−3.42 — confirmed negative predictor removed 2026-05-23 |
 | ✅ MR SUSPENDED | All significant MR factors negative IC — gated pending regime conditioning |
+| ✅ MATH-3 | Hurst DFA full fix — R/S replaced with DFA-1 (Kantelhardt et al. 2002). Log-spaced windows, linear detrending, same output sign convention. signals.py Factors.hurst() |
+| ✅ H-1 | Dead files deleted: raptor_state.json, diagnose.py, diagnose_regime.py, Start_Raptor_Recap.bat |
+| ✅ H-3 | Universe size dynamic in daily_recap — hardcoded ~120 replaced with live count |
+| ✅ H-4 | Recap metrics added: exit reason breakdown, rolling 10-trade WR, loss streak, trim efficiency, capital efficiency |
+| ✅ H-5 | compute_trim reads stop_dist_atr_raw float from health_result — no longer parses string detail field |
+| ✅ H-7 | EQUITY_ALLOCATION=1.00 dead variable removed from main.py |
+| ✅ H-8 | config.py kelly_fraction aligned to 0.12 (actual clip ceiling in signals.py) |
 
 ### 14.2 Queued — Next Session
 
@@ -1046,10 +1053,11 @@ The backtest must simulate exactly what the live system does. Any divergence is 
 | Exits checked every 30 min | Exits checked every bar | ❌ Not fixed |
 | Entry fills at next-day open | Entry fills at next-day open | ✅ |
 | MR exits use tight trail + 5d cap | All exits use momentum ruleset | ❌ Not fixed |
-| Universe = live screen (~120–150 sym) | Universe = backtest_universe.txt (181) | ✅ |
+| Universe = live screen (dynamic count) | Universe = backtest_universe.txt (181) | ✅ |
 | GAP1 uses real composite + health | GAP1 uses entry composite_score (proxy) | ⚠ Acceptable proxy |
 
 ---
 
-*This document describes Raptor v5.5 as of 2026-05-23. Authoritative implementation: github.com/stevefirwin-svg/Raptor*
+*This document describes Raptor v5.5 as of 2026-05-29. Authoritative implementation: github.com/stevefirwin-svg/Raptor*
 *Sections marked ⚠ describe intended architecture. Sections marked ✅ are implemented. No marker = matches code exactly.*
+*Last session: 2026-05-29 — MATH-3 DFA hurst + all hygiene items closed.*

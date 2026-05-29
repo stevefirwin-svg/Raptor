@@ -454,13 +454,18 @@ def compute_health_score(snapshots: List[Dict]) -> Dict:
         worst = min(layers, key=lambda k: layers[k]["score"] * layers[k]["weight"])
         decay_driver = f"{worst}: {layers[worst]['detail']}"
 
+    # Pass raw stop_dist_atr float to compute_trim so it doesn't need to parse
+    # the string detail field (H-5). Read from latest snapshot in trajectory.
+    stop_dist_raw = snapshots[-1].get("stop_dist_atr")  # float or None
+
     return {
-        "tier":         tier,
-        "health":       round(health, 4),
-        "layers":       layers,
-        "decay_driver": decay_driver,
-        "pnl_pct":      round(pnl_pct, 2),
-        "days_history": len(snapshots),
+        "tier":              tier,
+        "health":            round(health, 4),
+        "layers":            layers,
+        "decay_driver":      decay_driver,
+        "pnl_pct":           round(pnl_pct, 2),
+        "days_history":      len(snapshots),
+        "stop_dist_atr_raw": stop_dist_raw,  # H-5: raw float for compute_trim
     }
 
 
@@ -487,12 +492,22 @@ def compute_trim(health_result: Dict, position: Dict) -> Dict:
     # Component 1: Severity — how far below TIER_STABLE
     severity = float(np.clip((TIER_STABLE - health) / (1.0 + TIER_STABLE), 0.0, 1.0))
 
-    # Component 2: Stop proximity multiplier
-    stop_detail = layers.get("stop_distance", {}).get("detail", "stop_dist=2.0 ATR")
-    try:
-        dist_atr = float(stop_detail.split("=")[1].split(" ")[0])
-    except Exception:
-        dist_atr = 2.0
+    # Component 2: Stop proximity multiplier (H-5 fix)
+    # Read stop_dist_atr directly from health_result["stop_dist_atr_raw"] — the
+    # raw float passed through from the snapshot — instead of parsing the string
+    # detail field ("stop_dist=X.XX ATR"), which was fragile and could silently
+    # return wrong values on format changes.
+    # compute_health_score now injects stop_dist_atr_raw; fall back gracefully if absent.
+    dist_atr = health_result.get("stop_dist_atr_raw")
+    if dist_atr is None:
+        layer7_detail = layers.get("stop_distance", {}).get("detail", "")
+        if layer7_detail == "no_stop_data":
+            dist_atr = 2.0   # unknown stop — treat as neutral, not dangerous
+        else:
+            # Infer from layer score: score = clip((dist-1.5)/1.5, -1, 1) → dist = score*1.5+1.5
+            layer7_score = layers.get("stop_distance", {}).get("score", 0.0)
+            dist_atr = float(layer7_score * 1.5 + 1.5)
+    dist_atr = max(0.0, float(dist_atr))
 
     stop_mult = 1.50 if dist_atr < 1.0 else \
                 1.25 if dist_atr < 1.5 else \

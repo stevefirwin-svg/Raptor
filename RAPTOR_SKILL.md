@@ -1,5 +1,5 @@
 # Raptor Trading System — Development Skill
-*Last updated: 2026-05-27*
+*Last updated: 2026-05-29*
 
 ---
 
@@ -23,8 +23,10 @@ kelly_engine.py     Bootstrap Kelly (shadow until 100 trades)
 factor_lab.py       Spearman IC validation per factor
 macro_context.py    Regime classifier → continuous macro_score [-1,1]
 backtest.py         Walk-forward backtester
-universe_builder.py Screens 6800 assets → ~120–181 symbols
+universe_builder.py Screens 6800 assets → dynamic count (~120–181 symbols)
 ```
+
+Dead files removed 2026-05-29: raptor_state.json, diagnose.py, diagnose_regime.py, Start_Raptor_Recap.bat
 
 ---
 
@@ -50,6 +52,8 @@ To remove a factor: delete from FACTOR_NAMES and FACTOR_CLUSTERS. AdaptiveWeight
 | rev | rev_momentum |
 
 **vol_ratio status:** IC = -0.11 — WATCH. Remove if IC < 0.03 and t < 1.0 for 3+ consecutive weeks.
+
+**hurst estimator:** DFA-1 (Kantelhardt et al. 2002) as of 2026-05-29 — replaces R/S. Same output convention: positive = mean-reverting, ~0 = random walk, negative = trending. Requires ≥ 60 bars.
 
 ---
 

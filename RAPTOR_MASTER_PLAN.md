@@ -1,5 +1,5 @@
 # Raptor — Master Priority Plan
-*Last updated: 2026-05-29. Source of truth: GitHub + live code audit.*
+*Last updated: 2026-05-29 (session 2). Source of truth: GitHub + live code audit.*
 *Supersedes all prior versions.*
 
 ---
@@ -26,9 +26,9 @@ session confirming it. Documented-but-unverified fixes are NOT done.
 | Fabricated defaults | ELIMINATED |
 | Learning layer | LIVE - 8 IC-valid terminal exits (see data note) |
 | Kelly engine | SHADOW - 43/100 trades |
-| MATH items | 3 open (MATH-1, MATH-3, MATH-5) |
+| MATH items | 2 open (MATH-1, MATH-5) |
 | ARCH items | Gated on data |
-| HYGIENE items | ~8 open |
+| HYGIENE items | 0 open (all closed 2026-05-29) |
 
 ---
 
@@ -68,6 +68,15 @@ session confirming it. Documented-but-unverified fixes are NOT done.
 | 2026-05-27 | portfolio_heat trims written to trim_log.json |
 | 2026-05-29 | P0-1: outcome_pending sidecar - exit_monitor writes order-ID keyed record after every sell; outcome_tracker reads it for entry_decision. Replaces broken timestamp matching. Files: exit_monitor.py, outcome_tracker.py |
 | 2026-05-29 | P0-8: regime override - main.py + exit_monitor load macro_context.json after get_full_dataset() and overwrite macro regime with canonical RISK_ON/NEUTRAL/RISK_OFF/CRISIS label. EntryAgent veto rules now live. Files: main.py, exit_monitor.py |
+| 2026-05-29 | MATH-3: Hurst DFA full fix — replaced R/S estimator with DFA-1 (Kantelhardt et al. 2002). Log-spaced windows, linear detrending per window, same output sign convention. Min 60 bars. File: signals.py Factors.hurst() |
+| 2026-05-29 | H-1: Deleted dead files: raptor_state.json, diagnose.py, diagnose_regime.py, Start_Raptor_Recap.bat. Removed reference from check_task_scheduler.py |
+| 2026-05-29 | H-2: No code change needed — prompt_calibrator references are comments only, no broken import |
+| 2026-05-29 | H-3: Universe size now dynamic in daily_recap.py — get_signals() returns len(universe), passed through build_html(), replaces hardcoded ~120 |
+| 2026-05-29 | H-4: Added to daily_recap.py: exit reason breakdown (% + avg hold days per reason), rolling 10-trade win rate, consecutive loss streak, trim efficiency, capital efficiency. New table row + exit breakdown line in email |
+| 2026-05-29 | H-5: compute_trim no longer parses stop_dist_atr from string detail field. compute_health_score now injects stop_dist_atr_raw (float) into return dict; compute_trim reads it directly. File: hold_monitor.py |
+| 2026-05-29 | H-6: No code change needed — prompt versioning already lazy-loaded (P2-12 was fixed in prior session) |
+| 2026-05-29 | H-7: Removed dead EQUITY_ALLOCATION=1.00 constant from main.py — was a no-op multiply |
+| 2026-05-29 | H-8: config.py kelly_fraction corrected 0.15 → 0.12 to match actual clip ceiling in signals.py. Both carry TODO:DERIVE |
 
 ---
 
@@ -106,13 +115,6 @@ macro_regime: RISK_ON (from macro_context.json - P0-8 now correctly propagated)
 ### MATH-1 - Regime-Conditional IC Buckets
 Gate: 10+ trades per regime bucket (currently 0 - P0-1 just fixed the data pipe)
 Fix: ic_by_regime split in signals.py AdaptiveWeights._fit()
-
-### MATH-3 - Hurst DFA Full Fix
-Status: Partial - ADX threshold 22 to 25 as interim proxy
-Full fix: Detrended Fluctuation Analysis (Kantelhardt et al. 2002)
-Location: signals.py Factors.hurst() - replace R/S with DFA exponent
-Gate: None. Build next session.
-
 ### MATH-5 - n_prior Reduction
 Gate: IC-valid trades >= 60 (currently 8)
 Fix: Reduce n_prior 50 to 20 in kelly_engine.py
@@ -134,16 +136,18 @@ Fix: Reduce n_prior 50 to 20 in kelly_engine.py
 
 ## HYGIENE - Open Items
 
-| ID | Issue | File |
-|----|-------|------|
-| H-1 | Delete dead files: raptor_state.json, diagnose.py, diagnose_regime.py, Start_Raptor_Recap.bat | Various |
-| H-2 | prompt_calibrator.py referenced but does not exist | agent_layer.py |
-| H-3 | Universe size hardcoded ~120 in daily_recap | daily_recap.py |
-| H-4 | Missing recap metrics: exit breakdown, rolling win rate, trim efficiency | daily_recap.py |
-| H-5 | compute_trim parses stop_dist from string detail field | hold_monitor.py |
-| H-6 | Prompt versioning runs on every import | agent_layer.py |
-| H-7 | EQUITY_ALLOCATION=1.00 dead variable | main.py |
-| H-8 | config.py kelly_fraction=0.15 never reaches 0.15 (clipped to 0.12) | config.py |
+All hygiene items closed 2026-05-29. See COMPLETED table for details.
+
+| ID | Issue | Status |
+|----|-------|--------|
+| H-1 | Delete dead files | DONE 2026-05-29 |
+| H-2 | prompt_calibrator.py reference | DONE — comments only, no broken import |
+| H-3 | Universe size hardcoded ~120 | DONE 2026-05-29 |
+| H-4 | Missing recap metrics | DONE 2026-05-29 |
+| H-5 | compute_trim string parse | DONE 2026-05-29 |
+| H-6 | Prompt versioning on import | DONE — already fixed in prior session |
+| H-7 | EQUITY_ALLOCATION dead variable | DONE 2026-05-29 |
+| H-8 | kelly_fraction=0.15 mismatch | DONE 2026-05-29 |
 
 ---
 
@@ -168,7 +172,6 @@ Fix: Reduce n_prior 50 to 20 in kelly_engine.py
 
 NOW (no gate):
   Run outcome_tracker.py daily after close - IC-valid count grows one trade at a time
-  MATH-3: Full Hurst DFA - replace R/S exponent with DFA (no gate, next session)
 
 WHEN IC-valid >= 60 (currently 8, need 52 more terminal exits):
   MATH-5: Reduce n_prior 50 to 20 in kelly_engine.py
@@ -182,8 +185,7 @@ WHEN 200+ position-days:
   ARCH-3: Full covariance Kelly
 
 ROLLING HYGIENE:
-  H-1: Delete dead files
-  H-4: Add missing daily_recap metrics
+  All H items closed. Next hygiene pass triggered by new incidents or new dead code.
 
 ---
 

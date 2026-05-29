@@ -1,6 +1,6 @@
 # RAPTOR_STARTUP.md — Session Startup
 *Read first. Every session. No exceptions.*
-*Last updated: 2026-05-29 | Version: 5.8*
+*Last updated: 2026-05-29 | Version: 5.9*
 
 ---
 
@@ -47,9 +47,10 @@ python factor_lab.py
 **What to look for:**
 
 `outcome_tracker.py --summary`:
-- IC-valid count — goal: 60 (unlocks MATH-5, ARCH-1). Currently 8 (not 42 — prior docs wrong)
+- IC-valid count — goal: 60 (unlocks MATH-5, ARCH-1). Currently 8
 - math_trim win% should be > 60%
 - trailing_stop win% should be > 40% (currently underperforming)
+- entry_decision field: populating from next exit onwards (P0-1 fixed 2026-05-29)
 
 `kelly_engine.py`:
 - mode = SHADOW until 100 trades. Sizing unchanged.
@@ -91,6 +92,17 @@ grep -n "z_soft\|z\[fn\]\*(abs" signals.py | head -3
 ```
 
 If any check fails: restore from GitHub before proceeding.
+
+---
+
+## NOTES — Last session (2026-05-29 session 2)
+
+- MATH-3 DFA hurst complete — R/S replaced with DFA-1 (Kantelhardt 2002)
+- All H-1 through H-8 hygiene items closed
+- daily_recap now shows dynamic universe size and 5 new metrics (roll WR, streak, exit breakdown, trim efficiency, cap efficiency)
+- hold_monitor compute_trim reads stop_dist_atr as float, not parsed string
+- Dead files gone: raptor_state.json, diagnose.py, diagnose_regime.py, Start_Raptor_Recap.bat
+- MATH items remaining: MATH-1, MATH-5 (both data-gated)
 
 ---
 

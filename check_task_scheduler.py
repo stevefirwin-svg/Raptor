@@ -27,7 +27,6 @@ KNOWN_TASKS = [
     "Start_Morning_Monitor",
     "Start_Afternoon_Monitor",
     "Start_Recap",
-    "Start_Raptor_Recap",
     "Start_Watchdog",
     "Start_Viper",
     "Start_Crypto",

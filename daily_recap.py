@@ -227,6 +227,65 @@ def get_portfolio_analytics(closed_trades, equity):
     dd = (cum - peak) / peak
     max_dd = float(np.min(dd) * 100)
 
+    # ── H-4: Exit reason breakdown ───────────────────────────────────────────
+    exit_reasons = {}
+    hold_by_reason = {}
+    for t in closed_trades:
+        reason = (t.get("exit_reason") or t.get("exit_path") or "unknown").lower()
+        exit_reasons[reason] = exit_reasons.get(reason, 0) + 1
+        hd = float(t.get("hold_days", 0))
+        hold_by_reason.setdefault(reason, []).append(hd)
+    avg_hold_by_reason = {k: round(float(np.mean(v)), 1) for k, v in hold_by_reason.items()}
+    n = len(closed_trades)
+    exit_pct = {k: round(v / n * 100, 1) for k, v in exit_reasons.items()}
+
+    # ── H-4: Rolling 10-trade win rate ────────────────────────────────────────
+    last10 = r[-10:] if len(r) >= 10 else r
+    roll10_wr = round(float(np.sum(last10 > 0) / len(last10) * 100), 1)
+
+    # ── H-4: Trim efficiency from trim_log.json ───────────────────────────────
+    # trim_efficiency = % of trims where position continued to decay after trim
+    # (i.e. trim was correct). Loaded here from file; graceful if missing.
+    trim_efficiency = None
+    try:
+        import json, os
+        if os.path.exists("trim_log.json"):
+            tl = json.load(open("trim_log.json"))
+            if tl:
+                # A trim is "efficient" if the position was eventually stopped or
+                # thesis-exited after the trim (not a full re-add). Best proxy
+                # available without cross-referencing: count trims followed by
+                # a hard_stop/trail exit in outcome_log for the same symbol.
+                # Simple version: ratio of TRIM_MAJOR+EXIT vs TRIM_MINOR actions
+                # (more aggressive trims on decaying positions = higher confidence)
+                major = sum(1 for x in tl if x.get("action","") in ("TRIM_MAJOR","EXIT"))
+                trim_efficiency = round(major / len(tl) * 100, 1) if tl else None
+    except Exception:
+        pass
+
+    # ── H-4: Consecutive loss streak ─────────────────────────────────────────
+    max_consec_loss = 0
+    cur_consec = 0
+    for ret in r:
+        if ret < 0:
+            cur_consec += 1
+            max_consec_loss = max(max_consec_loss, cur_consec)
+        else:
+            cur_consec = 0
+    current_streak = cur_consec  # still ongoing if last trade was a loss
+
+    # ── H-4: Capital efficiency (realized PnL / max capital deployed) ─────────
+    # Approximated from closed trades: sum of abs(pnl_pct * position_size) where
+    # position_size is available, else fallback to mean equity assumption.
+    cap_eff = None
+    realized_pnl_sum = sum(float(t.get("pnl_usd", t.get("pnl", 0) or 0)) for t in closed_trades)
+    cap_deployed = sum(
+        abs(float(t.get("entry_value", t.get("market_value", 0) or 0)))
+        for t in closed_trades
+    )
+    if cap_deployed > 0:
+        cap_eff = round(realized_pnl_sum / cap_deployed * 100, 2)
+
     return {
         "n_trades": len(r),
         "win_rate": round(win_rate, 1),
@@ -237,6 +296,14 @@ def get_portfolio_analytics(closed_trades, equity):
         "sharpe": round(sharpe, 2),
         "sortino": round(sortino, 2),
         "max_dd": round(max_dd, 2),
+        # H-4 additions
+        "exit_pct": exit_pct,
+        "avg_hold_by_reason": avg_hold_by_reason,
+        "roll10_wr": roll10_wr,
+        "trim_efficiency": trim_efficiency,
+        "max_consec_loss": max_consec_loss,
+        "current_streak": current_streak,
+        "cap_efficiency": cap_eff,
     }
 
 
@@ -258,7 +325,7 @@ def get_signals(dm):
                                        dataset["sentiment"], dataset["bars"].get("SPY"))
     macro = dataset["macro"]
     scale = engine._market_scale(dataset["bars"].get("SPY"))
-    return signals, macro, scale
+    return signals, macro, scale, len(universe)
 
 
 def get_capital_utilization(positions, equity):
@@ -398,7 +465,7 @@ def get_days_held(open_ledger, positions):
 
 def build_html(account, positions, entries, exits, signals, macro, scale,
                spy_price, spy_returns, spy_mas, analytics, open_ledger, portfolio_beta,
-               closed_trades=None):
+               closed_trades=None, universe_size=None):
 
     equity = float(account["equity"])
     cash = float(account["cash"])
@@ -604,6 +671,24 @@ def build_html(account, positions, entries, exits, signals, macro, scale,
         pf_color   = "#00d4aa" if analytics.get('profit_factor', 0) >= 1.5 else "#ffa502"
         sh_color   = "#00d4aa" if analytics.get('sharpe', 0) >= 1.0 else "#ffa502"
         so_color   = "#00d4aa" if analytics.get('sortino', 0) >= 1.5 else "#ffa502"
+        # H-4: exit reason breakdown string
+        ep = analytics.get("exit_pct", {})
+        ahr = analytics.get("avg_hold_by_reason", {})
+        exit_reason_parts = []
+        for reason, pct in sorted(ep.items(), key=lambda x: -x[1]):
+            avg_h = ahr.get(reason, 0)
+            exit_reason_parts.append(f"{reason}: {pct:.0f}% ({avg_h:.0f}d avg)")
+        exit_breakdown_str = " | ".join(exit_reason_parts) if exit_reason_parts else "—"
+
+        roll10_wr = analytics.get("roll10_wr", 0)
+        roll10_color = "#00d4aa" if roll10_wr >= 50 else "#ffa502" if roll10_wr >= 35 else "#ff4757"
+        streak = analytics.get("current_streak", 0)
+        streak_color = "#ff4757" if streak >= 3 else "#ffa502" if streak >= 2 else "#e0e0e0"
+        te = analytics.get("trim_efficiency")
+        te_str = f"{te:.0f}%" if te is not None else "N/A"
+        ce = analytics.get("cap_efficiency")
+        ce_str = f"{ce:.2f}%" if ce is not None else "N/A"
+
         analytics_html = f"""
         <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;border:1px solid #1e1e34">
           <tr>
@@ -622,7 +707,17 @@ def build_html(account, positions, entries, exits, signals, macro, scale,
             {_metric_tile("Port Beta",      beta_str,                                              "#a0a0b0")}
             <td bgcolor="#0e0e20" style="background-color:#0e0e20;border-bottom:1px solid #1e1e34"></td>
           </tr>
-        </table>"""
+          <tr>
+            {_metric_tile("Roll10 WR",      f"{roll10_wr:.1f}%",                                   roll10_color)}
+            {_metric_tile("Loss Streak",    f"{streak} trades",                                    streak_color)}
+            {_metric_tile("Trim Effic.",    te_str,                                                "#a0a0b0")}
+            {_metric_tile("Cap Effic.",     ce_str,                                                "#a0a0b0")}
+            <td colspan="2" bgcolor="#0e0e20" style="background-color:#0e0e20;border-bottom:1px solid #1e1e34"></td>
+          </tr>
+        </table>
+        <div style="padding:6px 0 2px 2px;font-size:11px;color:#6a6a8a">
+          Exit breakdown: {exit_breakdown_str}
+        </div>"""
     else:
         analytics_html = '<div style="color:#6a6a8a;font-size:12px;padding:8px 0">Insufficient trade history for analytics (need ≥ 3 closed trades)</div>'
 
@@ -634,6 +729,7 @@ def build_html(account, positions, entries, exits, signals, macro, scale,
     regime_color = regime_colors.get(regime, "#ffa502")
 
     spy_price_str = f"${spy_price:,.2f}" if spy_price else "N/A"
+    universe_size_str = str(universe_size) if universe_size else "~150"
 
     html = f"""
     <html>
@@ -696,7 +792,7 @@ def build_html(account, positions, entries, exits, signals, macro, scale,
             </div>
             <div>
                 <span style="color:#a0a0b0;font-size:12px">UNIVERSE: </span>
-                <span style="color:#e0e0e0;font-weight:700;font-size:14px">~120 symbols</span>
+                <span style="color:#e0e0e0;font-weight:700;font-size:14px">{universe_size_str} symbols</span>
             </div>
         </div>
 
@@ -843,7 +939,7 @@ def main(preview=False):
     try:
         dm, account, positions = get_account_data()
         entries, exits = get_todays_trades()
-        signals, macro, scale = get_signals(dm)
+        signals, macro, scale, universe_size = get_signals(dm)
 
         # run_monitor is isolated — a failure here must not kill the email
         try:
@@ -863,7 +959,7 @@ def main(preview=False):
         html = build_html(
             account, positions, entries, exits, signals, macro, scale,
             spy_price, spy_returns, spy_mas, analytics, open_ledger, portfolio_beta,
-            closed_trades=closed_trades
+            closed_trades=closed_trades, universe_size=universe_size
         )
 
         if preview:

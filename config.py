@@ -52,7 +52,7 @@ class SignalConfig:
 
 @dataclass
 class RiskConfig:
-    kelly_fraction: float = 0.15  # Base fraction — signals.py clips final kelly to 0.02-0.12 after t_stat scaling
+    kelly_fraction: float = 0.12  # H-8: was 0.15 but signals.py hard-clips to 0.12 ceiling — aligning config to actual cap. TODO:DERIVE both via EVT tail on closed trade returns.
     max_position_pct: float = 0.08
     min_position_pct: float = 0.02
     max_positions: int = 10  # Reduced from 15 — 15 positions requires margin by design at $105K equity

@@ -49,22 +49,48 @@ class Factors:
         a=(e8+e21+e50)/3
         return float(-(c.iloc[-1]-a)/a) if a!=0 else 0.0
     @staticmethod
-    def hurst(c, max_lag=20):
-        r=np.log(c/c.shift(1)).dropna().values
-        if len(r)<max_lag*2: return np.nan
-        pts=[]
-        for lag in range(2,max_lag+1):
-            ns=len(r)//lag
-            if ns<1: continue
-            rl=[]
-            for i in range(ns):
-                sub=r[i*lag:(i+1)*lag]; d=np.cumsum(sub-sub.mean())
-                R=d.max()-d.min(); S=sub.std()
-                if S>1e-10: rl.append(R/S)
-            if rl: pts.append((np.log(lag),np.log(np.mean(rl))))
-        if len(pts)<4: return np.nan
-        x=np.array([p[0] for p in pts]); y=np.array([p[1] for p in pts])
-        return float(0.5-np.polyfit(x,y,1)[0])
+    def hurst(c, min_window=8, max_window=40):
+        """
+        DFA (Detrended Fluctuation Analysis) Hurst exponent.
+        Kantelhardt et al. 2002 — more robust than R/S for financial series:
+          - R/S is biased by short-range autocorrelation and non-stationarity
+          - DFA detrends within each window before measuring fluctuation
+          - Returns 0.5 - H so sign convention matches R/S version:
+              positive  = mean-reverting (H < 0.5)
+              ~0        = random walk   (H ≈ 0.5)
+              negative  = trending      (H > 0.5)
+        Minimum 60 bars required (supports max_window=40 with 1.5x safety margin).
+        """
+        r = np.log(c / c.shift(1)).dropna().values
+        n = len(r)
+        if n < 60: return np.nan
+        x = np.cumsum(r - r.mean())  # profile (integrated, demeaned series)
+        # Window sizes: log-spaced integers between min_window and max_window
+        windows = np.unique(np.round(
+            np.exp(np.linspace(np.log(min_window), np.log(min(max_window, n // 4)), 12))
+        ).astype(int))
+        windows = windows[windows >= min_window]
+        if len(windows) < 4: return np.nan
+        pts = []
+        for w in windows:
+            segs = n // w
+            if segs < 2: continue
+            F2 = []
+            for i in range(segs):
+                seg = x[i * w:(i + 1) * w]
+                # Linear detrending within window (DFA-1)
+                t = np.arange(w)
+                coef = np.polyfit(t, seg, 1)
+                trend = np.polyval(coef, t)
+                F2.append(np.mean((seg - trend) ** 2))
+            F = np.sqrt(np.mean(F2))
+            if F > 1e-14:
+                pts.append((np.log(w), np.log(F)))
+        if len(pts) < 4: return np.nan
+        xs = np.array([p[0] for p in pts])
+        ys = np.array([p[1] for p in pts])
+        H = float(np.polyfit(xs, ys, 1)[0])   # DFA exponent
+        return float(0.5 - H)                  # same sign convention as prior R/S
     @staticmethod
     def ma_stack(c):
         e8=c.ewm(span=8,adjust=False).mean()
