@@ -1013,8 +1013,8 @@ Exit monitor runs every 30 minutes live. Backtest checks exits on every bar. Thi
 Add two hard gates: (1) macro regime = RISK_ON or BULLISH, (2) micro = REVERTING.
 Re-run `python factor_lab.py`. Lift suspension only when ma_distance IC > +0.05, t > 1.5, n ≥ 60.
 
-**📋 MR EXIT SPLIT — exit_monitor.py not yet split by trade_type**
-The MR-specific exit rules (1.5× ATR stop, 5-day time_stop, profit_target at 20d SMA) are designed but not yet implemented in exit_monitor.py. Currently all positions use momentum-style exit logic. This must be built and backtested independently.
+**✅ MR EXIT SPLIT — exit_monitor.py split by trade_type (2026-05-29)**
+MR positions now use: 1.5× ATR hard stop (Avellaneda & Lee 2010), profit target at 20d SMA (De Bondt & Thaler 1985 / OU mean proxy), 5-day time stop (Jegadeesh 1990; Lehmann 1990), thesis invalidation at comp < -1.5 AND pnl < -3%. Momentum positions unchanged. Trade_type read from ledger metadata. Default = MOMENTUM (safe fallback for pre-v5.5 records).
 
 **📋 HOLD MONITOR SPLIT — health scoring not book-aware**
 Hold monitor scores all positions identically. MR positions should score on MR factors (RSI recovery, distance to mean, panic subsiding). Momentum positions should score on momentum factors (EMA stack intact, RS holding, MACD not rolling over). Factor agreement (FAR) layer especially needs book-specific factor set.

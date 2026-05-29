@@ -282,98 +282,167 @@ def run_exit_monitor(dry_run=False):
 
         reason = None
 
-        # EXIT 1: HARD STOP
-        # Use the higher of: recomputed ATR-based stop OR the ledger stop.
-        # The ledger stop was set at entry and updated by trail ratcheting below.
-        # Never allow hard_stop to move DOWN — stops only ratchet upward.
-        _ledger_stop = _meta.get("stop")
-        _atr_stop    = entry - CONFIG.risk.initial_stop_atr_mult * atr
-        hard_stop    = max(_atr_stop, float(_ledger_stop) if _ledger_stop else _atr_stop)
-        if price <= hard_stop:
-            reason = "hard_stop"
-            logger.info("EXIT 1 [HARD STOP] %s $%.2f <= $%.2f", sym, price, hard_stop)
-            # Record cooldown — symbol blocked from re-entry for 5 trading days
-            try:
-                from main import _record_stopout_cooldown
-                _record_stopout_cooldown(sym)
-            except Exception as _ce:
-                logger.debug("Cooldown record failed: %s", _ce)
+        # Read trade_type from ledger metadata.
+        # MEAN_REVERSION exits differ structurally from MOMENTUM:
+        # - Tighter hard stop (1.5× ATR vs vol-regime 2.5–3.5×)
+        # - No trailing stop — thesis is binary (revert or fail)
+        # - Profit target at 20-day SMA (Ornstein-Uhlenbeck long-run mean proxy)
+        # - Hard time stop at 5 days (Jegadeesh 1990; Lehmann 1990: reversals
+        #   manifest within 1 week or not at all)
+        # - Tighter thesis invalidation (-3% vs -5%) — overreaction continuing
+        #   IS the thesis failure for MR
+        # Ref: Uhlenbeck & Ornstein (1930), Jegadeesh (1990), Lehmann (1990),
+        #      De Bondt & Thaler (1985), Avellaneda & Lee (2010)
+        _trade_type = _meta.get("trade_type", "MOMENTUM")
 
-        # EXIT 2: TRAILING STOP
-        if reason is None:
-            _comp  = scores.get(sym, 0.0)
-            _hlth  = _pre_health.get(sym, {}).get("health", 0.0)
-            mult = _trail_mult(days_held, profit_atr, CONFIG.risk, composite=_comp, health=_hlth)
-            trail = high_water - mult * atr
-            if trail > hard_stop and price <= trail:
-                reason = "trailing_stop"
-                logger.info("EXIT 2 [TRAIL] %s $%.2f <= $%.2f (%.1fx ATR) comp=%.2f health=%.2f",
-                           sym, price, trail, mult, _comp, _hlth)
-            elif trail > hard_stop:
-                # Position survives — ratchet the stop floor up to current trail level.
-                # This is the core of trailing stop behavior: the floor only moves up.
-                # Without this write-back the stop stays at the original entry level forever.
-                _new_stop = round(trail, 4)
-                _cur_stop = float(_meta.get("stop") or 0.0)
-                if _new_stop > _cur_stop and _entry:
-                    try:
-                        _ledger.data["positions"][f"v5.4:{sym}"]["metadata"]["stop"] = _new_stop
-                        _ledger._save()
-                        logger.debug("Trail ratchet %s: stop $%.2f -> $%.2f", sym, _cur_stop, _new_stop)
-                    except Exception as _tre:
-                        logger.debug("Trail ratchet persist failed for %s: %s", sym, _tre)
+        if _trade_type == "MEAN_REVERSION":
+            # ── MR EXIT BLOCK ─────────────────────────────────────────────────
+            # MR EXIT 1: HARD STOP — 1.5× ATR (tight; thesis is binary)
+            # Avellaneda & Lee (2010) pairs-trading OU model: stop at ~1.5–2× ATR
+            # equivalent. Tight stop is mathematically required — MR EV is positive
+            # only when losses are cut quickly on failed reversals.
+            _mr_hard_stop = entry - 1.5 * atr
+            if price <= _mr_hard_stop:
+                reason = "hard_stop"
+                logger.info("MR EXIT 1 [HARD STOP] %s $%.2f <= $%.2f (1.5× ATR)",
+                            sym, price, _mr_hard_stop)
+                try:
+                    from main import _record_stopout_cooldown
+                    _record_stopout_cooldown(sym)
+                except Exception as _ce:
+                    logger.debug("Cooldown record failed: %s", _ce)
 
-        # EXIT 3: THESIS INVALIDATION
-        # Only exit if composite is genuinely negative (not just out of top-N)
-        # AND position is meaningfully losing. Threshold -1.5 requires real
-        # cross-sectional weakness, not just rank dropout.
-        if reason is None:
-            comp = scores.get(sym, 0.0)  # Default 0.0 not -1.0 — unknown != weak
-            if comp < -1.5 and pnl_pct < -0.05:
-                reason = "thesis_invalid"
-                logger.info("EXIT 3 [THESIS] %s composite=%.4f pnl=%.1f%% (confirmed weak thesis + losing)",
-                           sym, comp, pnl_pct * 100)
+            # MR EXIT 2: PROFIT TARGET — price reaches 20-day SMA
+            # De Bondt & Thaler (1985): overreaction corrections complete at the
+            # prior mean. OU long-run mean (μ) empirically proxied by 20d SMA.
+            if reason is None:
+                _sma20 = float(bar_data["close"].rolling(20).mean().iloc[-1]) \
+                         if len(bar_data) >= 20 else None
+                if _sma20 and price >= _sma20:
+                    reason = "profit_target"
+                    logger.info("MR EXIT 2 [PROFIT TARGET] %s $%.2f >= 20d SMA $%.2f — reversion complete",
+                                sym, price, _sma20)
 
-        # EXIT 4B: LEVERAGED ETF HOLD CAP
-        # 3x ETFs: max 3 days. 2x ETFs: max 10 days. Volatility decay kills multi-day holds.
-        # Uses actual days_held from ledger — prior version used price proxy which fired daily.
-        if reason is None:
-            LEVERAGED_3X = {"SOXL","SOXS","TQQQ","SQQQ","SPXL","SPXS","UPRO","SPXU",
-                           "TECL","TECS","LABU","LABD","FNGU","FNGD","TNA","TZA","FAS","FAZ"}
-            LEVERAGED_2X = {"TSLL","TSLS","NVDL","NVDS","UDOW","SDOW","SSO","SDS","QLD","QID"}
-            if sym in LEVERAGED_3X and days_held > 3:
-                reason = "leveraged_3x_cap"
-                logger.info("EXIT 4B [LEV CAP] %s 3x ETF held %d days (max 3)", sym, days_held)
-            elif sym in LEVERAGED_2X and days_held > 10:
-                reason = "leveraged_2x_cap"
-                logger.info("EXIT 4B [LEV CAP] %s 2x ETF held %d days (max 10)", sym, days_held)
+            # MR EXIT 3: TIME STOP — 5 trading days
+            # Jegadeesh (1990) and Lehmann (1990): short-horizon reversals exhaust
+            # their statistical basis within 1 week. After 5 days without reversion
+            # the anomaly is spent — holding further converts an MR trade into a
+            # downtrend hold with no OU basis.
+            # TODO:DERIVE — 5 days is the Jegadeesh/Lehmann empirical half-life.
+            # Recalibrate against outcome_log once 30+ MR terminal exits are tagged.
+            if reason is None and days_held >= 5:
+                reason = "time_stop_mr"
+                logger.info("MR EXIT 3 [TIME STOP] %s held %d days — reversal window exhausted (Jegadeesh 1990)",
+                            sym, days_held)
 
-# EXIT 5: TIME DECAY
-        # Exit only when thesis is genuinely dead — not just flat.
-        # Flatness at support/accumulation with good signals is fine to hold.
-        # Requires: losing + held long enough + flat + signal deteriorating + health decaying.
-        if reason is None and pnl_pct < -0.01 and days_held >= 12:
-            ret_20d = (bar_data["close"].iloc[-1] / bar_data["close"].iloc[-20]) - 1 if len(bar_data) >= 20 else None
-            ret_5d  = (bar_data["close"].iloc[-1] / bar_data["close"].iloc[-5])  - 1 if len(bar_data) >= 5  else None
-            flat_20 = ret_20d is not None and abs(ret_20d) < 0.02
-            flat_5  = ret_5d  is not None and abs(ret_5d)  < 0.02
-            if flat_20 or flat_5:
-                # Check thesis — flat + losing is only an exit if signals are also deteriorating.
-                # If composite > 0 or health > 0, stock may be basing — give it room.
-                _hrec      = _pre_health.get(sym, {})
-                _composite = _hrec.get("composite", 0.0)
-                _health    = _hrec.get("health", 0.0)
-                if _composite < 0.0 and _health < 0.0:
-                    window  = "20d" if flat_20 else "5d"
-                    ret_ref = ret_20d if flat_20 else ret_5d
-                    reason  = "time_decay"
-                    logger.info(
-                        "EXIT 5 [TIME] %s flat (%s ret=%.1f%%) losing (%.1f%%) health=%.3f comp=%.3f after %d days",
-                        sym, window, ret_ref * 100, pnl_pct * 100, _health, _composite, days_held)
-                else:
-                    logger.info(
-                        "EXIT 5 [TIME] %s flat but thesis intact (health=%.3f comp=%.3f) — holding",
-                        sym, _health, _composite)
+            # MR EXIT 4: THESIS INVALIDATION — tighter than momentum
+            # Overreaction continuing (comp < -1.5) while losing (pnl < -3%) means
+            # the stock is in a genuine downtrend, not a temporary panic.
+            # -3% threshold vs momentum's -5%: MR has a defined mean-reversion
+            # target; no statistical basis for holding a larger loss.
+            if reason is None:
+                _comp = scores.get(sym, 0.0)
+                if _comp < -1.5 and pnl_pct < -0.03:
+                    reason = "thesis_invalid"
+                    logger.info("MR EXIT 4 [THESIS] %s composite=%.4f pnl=%.1f%% — overreaction continuing",
+                                sym, _comp, pnl_pct * 100)
+            # ─────────────────────────────────────────────────────────────────
+
+        else:
+            # ── MOMENTUM EXIT BLOCK ───────────────────────────────────────────
+            # EXIT 1: HARD STOP
+            # Use the higher of: recomputed ATR-based stop OR the ledger stop.
+            # The ledger stop was set at entry and updated by trail ratcheting below.
+            # Never allow hard_stop to move DOWN — stops only ratchet upward.
+            _ledger_stop = _meta.get("stop")
+            _atr_stop    = entry - CONFIG.risk.initial_stop_atr_mult * atr
+            hard_stop    = max(_atr_stop, float(_ledger_stop) if _ledger_stop else _atr_stop)
+            if price <= hard_stop:
+                reason = "hard_stop"
+                logger.info("EXIT 1 [HARD STOP] %s $%.2f <= $%.2f", sym, price, hard_stop)
+                # Record cooldown — symbol blocked from re-entry for 5 trading days
+                try:
+                    from main import _record_stopout_cooldown
+                    _record_stopout_cooldown(sym)
+                except Exception as _ce:
+                    logger.debug("Cooldown record failed: %s", _ce)
+
+            # EXIT 2: TRAILING STOP
+            if reason is None:
+                _comp  = scores.get(sym, 0.0)
+                _hlth  = _pre_health.get(sym, {}).get("health", 0.0)
+                mult = _trail_mult(days_held, profit_atr, CONFIG.risk, composite=_comp, health=_hlth)
+                trail = high_water - mult * atr
+                if trail > hard_stop and price <= trail:
+                    reason = "trailing_stop"
+                    logger.info("EXIT 2 [TRAIL] %s $%.2f <= $%.2f (%.1fx ATR) comp=%.2f health=%.2f",
+                               sym, price, trail, mult, _comp, _hlth)
+                elif trail > hard_stop:
+                    # Position survives — ratchet the stop floor up to current trail level.
+                    # This is the core of trailing stop behavior: the floor only moves up.
+                    # Without this write-back the stop stays at the original entry level forever.
+                    _new_stop = round(trail, 4)
+                    _cur_stop = float(_meta.get("stop") or 0.0)
+                    if _new_stop > _cur_stop and _entry:
+                        try:
+                            _ledger.data["positions"][f"v5.4:{sym}"]["metadata"]["stop"] = _new_stop
+                            _ledger._save()
+                            logger.debug("Trail ratchet %s: stop $%.2f -> $%.2f", sym, _cur_stop, _new_stop)
+                        except Exception as _tre:
+                            logger.debug("Trail ratchet persist failed for %s: %s", sym, _tre)
+
+            # EXIT 3: THESIS INVALIDATION
+            # Only exit if composite is genuinely negative (not just out of top-N)
+            # AND position is meaningfully losing. Threshold -1.5 requires real
+            # cross-sectional weakness, not just rank dropout.
+            if reason is None:
+                comp = scores.get(sym, 0.0)  # Default 0.0 not -1.0 — unknown != weak
+                if comp < -1.5 and pnl_pct < -0.05:
+                    reason = "thesis_invalid"
+                    logger.info("EXIT 3 [THESIS] %s composite=%.4f pnl=%.1f%% (confirmed weak thesis + losing)",
+                               sym, comp, pnl_pct * 100)
+
+            # EXIT 4B: LEVERAGED ETF HOLD CAP (momentum only — MR time_stop fires first)
+            # 3x ETFs: max 3 days. 2x ETFs: max 10 days. Volatility decay kills multi-day holds.
+            # Uses actual days_held from ledger — prior version used price proxy which fired daily.
+            if reason is None:
+                LEVERAGED_3X = {"SOXL","SOXS","TQQQ","SQQQ","SPXL","SPXS","UPRO","SPXU",
+                               "TECL","TECS","LABU","LABD","FNGU","FNGD","TNA","TZA","FAS","FAZ"}
+                LEVERAGED_2X = {"TSLL","TSLS","NVDL","NVDS","UDOW","SDOW","SSO","SDS","QLD","QID"}
+                if sym in LEVERAGED_3X and days_held > 3:
+                    reason = "leveraged_3x_cap"
+                    logger.info("EXIT 4B [LEV CAP] %s 3x ETF held %d days (max 3)", sym, days_held)
+                elif sym in LEVERAGED_2X and days_held > 10:
+                    reason = "leveraged_2x_cap"
+                    logger.info("EXIT 4B [LEV CAP] %s 2x ETF held %d days (max 10)", sym, days_held)
+
+            # EXIT 5: TIME DECAY (momentum only — MR uses time_stop_mr above)
+            # Exit only when thesis is genuinely dead — not just flat.
+            # Flatness at support/accumulation with good signals is fine to hold.
+            # Requires: losing + held long enough + flat + signal deteriorating + health decaying.
+            if reason is None and pnl_pct < -0.01 and days_held >= 12:
+                ret_20d = (bar_data["close"].iloc[-1] / bar_data["close"].iloc[-20]) - 1 if len(bar_data) >= 20 else None
+                ret_5d  = (bar_data["close"].iloc[-1] / bar_data["close"].iloc[-5])  - 1 if len(bar_data) >= 5  else None
+                flat_20 = ret_20d is not None and abs(ret_20d) < 0.02
+                flat_5  = ret_5d  is not None and abs(ret_5d)  < 0.02
+                if flat_20 or flat_5:
+                    # Check thesis — flat + losing is only an exit if signals are also deteriorating.
+                    # If composite > 0 or health > 0, stock may be basing — give it room.
+                    _hrec      = _pre_health.get(sym, {})
+                    _composite = _hrec.get("composite", 0.0)
+                    _health    = _hrec.get("health", 0.0)
+                    if _composite < 0.0 and _health < 0.0:
+                        window  = "20d" if flat_20 else "5d"
+                        ret_ref = ret_20d if flat_20 else ret_5d
+                        reason  = "time_decay"
+                        logger.info(
+                            "EXIT 5 [TIME] %s flat (%s ret=%.1f%%) losing (%.1f%%) health=%.3f comp=%.3f after %d days",
+                            sym, window, ret_ref * 100, pnl_pct * 100, _health, _composite, days_held)
+                    else:
+                        logger.info(
+                            "EXIT 5 [TIME] %s flat but thesis intact (health=%.3f comp=%.3f) — holding",
+                            sym, _health, _composite)
+            # ─────────────────────────────────────────────────────────────────
 
         if reason:
             exits.append({
