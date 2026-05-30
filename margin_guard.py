@@ -7,10 +7,13 @@ before placing any new entry orders.
 Also runnable standalone for a quick account health snapshot.
 
 Rules:
-  - Cash negative (on margin): REDUCE — cap new positions at 1
-  - Utilization > 90%: BLOCK all new entries
+  - Market value >= equity_cap (only if a finite cap is set): BLOCK (hard cap)
+  - Cash negative (on margin) AND margin disabled: BLOCK all new entries
+  - Cash negative (on margin) AND margin allowed: REDUCE — cap at 1
+  - Utilization (vs base = equity, or min(equity,cap) if capped) > 90%: BLOCK
   - Utilization > 85%: REDUCE — scale max new positions to 1
   - Utilization <= 85%: ALLOW normal operation
+  Default config: equity_cap=None (compound) + allow_margin=False (cash only).
 
 Fail-safe: API errors return BLOCKED (fail closed, not open).
 Any exception during the check blocks entries to protect capital.
@@ -68,14 +71,22 @@ def check_margin_safety(dm) -> Tuple[bool, int, str]:
             logger.warning("MARGIN GUARD: capping new entries at %d — %s", max_new, reason)
     """
     try:
+        from config import CONFIG
         account   = dm.alpaca.get_account()
         positions = dm.alpaca.get_positions()
 
         equity = float(account.get("equity", 0))
         cash   = float(account.get("cash", 0))
-        # portfolio_value intentionally not used — equity (net liquidation value)
-        # is the correct denominator for utilization. portfolio_value == equity
-        # in paper trading; keeping equity for consistency with live semantics.
+
+        cap          = getattr(CONFIG.risk, "equity_cap", None)
+        allow_margin = bool(getattr(CONFIG.risk, "allow_margin", True))
+        # Deployable base for utilization. Uncapped (cap=None) → compound: measure
+        # against full equity. Capped → measure against min(equity, cap).
+        if cap is None:
+            base = equity
+        else:
+            cap = float(cap)
+            base = min(equity, cap) if cap > 0 else equity
 
         if equity <= 0:
             return False, 0, "equity is zero or negative — blocking all entries"
@@ -85,13 +96,14 @@ def check_margin_safety(dm) -> Tuple[bool, int, str]:
             abs(float(p.get("qty", 0))) * float(p.get("current_price", 0))
             for p in positions
         )
-        util      = total_mv / equity
+        util      = total_mv / base if base > 0 else 1.0
         on_margin = cash < 0
         margin_pct = abs(cash) / equity if on_margin else 0.0
 
+        cap_str = "none (compound)" if cap is None else f"${cap:,.0f}"
         status_lines = [
-            f"equity=${equity:,.0f}  cash=${cash:,.0f}  positions={len(positions)}",
-            f"market_value=${total_mv:,.0f}  utilization={util:.1%}  margin={'YES' if on_margin else 'NO'}"
+            f"equity=${equity:,.0f}  cap={cap_str}  cash=${cash:,.0f}  positions={len(positions)}",
+            f"market_value=${total_mv:,.0f}  utilization={util:.1%} of base  margin={'YES' if on_margin else 'NO'}"
         ]
         if on_margin:
             status_lines.append(f"margin_usage={margin_pct:.1%} of equity")
@@ -99,15 +111,23 @@ def check_margin_safety(dm) -> Tuple[bool, int, str]:
         for line in status_lines:
             logger.info("MARGIN GUARD: %s", line)
 
-        # ── Hard block ────────────────────────────────────────────────────────
-        if util > BLOCK_THRESHOLD:
-            return False, 0, f"utilization {util:.1%} > {BLOCK_THRESHOLD:.0%} — blocking new entries"
+        # ── Hard equity cap (only when a finite cap is configured) ────────────
+        if cap is not None and total_mv >= cap:
+            return False, 0, f"market value ${total_mv:,.0f} >= equity cap ${cap:,.0f} — blocking new entries"
 
-        # ── Reduce: over threshold OR on margin ───────────────────────────────
-        # On-margin means Alpaca is lending capital — adding positions increases
-        # leverage. Cap at 1 new position the same as the REDUCE threshold.
+        # ── No margin ─────────────────────────────────────────────────────────
+        # When margin is disallowed, negative cash means Alpaca is already lending.
+        # Hard block, not a reduce — no new entries until cash >= 0.
+        if on_margin and not allow_margin:
+            return False, 0, f"on margin (${abs(cash):,.0f}, {margin_pct:.1%} of equity) and margin disabled — blocking new entries"
+
+        # ── Hard block (utilization) ──────────────────────────────────────────
+        if util > BLOCK_THRESHOLD:
+            return False, 0, f"utilization {util:.1%} of base > {BLOCK_THRESHOLD:.0%} — blocking new entries"
+
+        # ── Reduce: over threshold OR on margin (margin allowed case) ─────────
         if util > REDUCE_THRESHOLD:
-            return True, 1, f"utilization {util:.1%} > {REDUCE_THRESHOLD:.0%} — capping at 1 new entry"
+            return True, 1, f"utilization {util:.1%} of base > {REDUCE_THRESHOLD:.0%} — capping at 1 new entry"
 
         if on_margin:
             logger.warning(
@@ -118,9 +138,9 @@ def check_margin_safety(dm) -> Tuple[bool, int, str]:
 
         # ── Warning only ──────────────────────────────────────────────────────
         if util > WARN_THRESHOLD:
-            logger.warning("MARGIN GUARD: WARNING — utilization %s", f"{util:.1%}")
+            logger.warning("MARGIN GUARD: WARNING — utilization %s of base", f"{util:.1%}")
 
-        return True, _UNLIMITED, f"utilization {util:.1%} — normal operation"
+        return True, _UNLIMITED, f"utilization {util:.1%} of base — normal operation"
 
     except Exception as e:
         # Fail CLOSED — if we can't verify capital state, don't risk new entries.
@@ -141,18 +161,27 @@ def print_snapshot():
     equity   = float(account.get("equity", 0))
     cash     = float(account.get("cash", 0))
     bp       = float(account.get("buying_power", 0))
+    cap      = getattr(CONFIG.risk, "equity_cap", None)
+    if cap is None:
+        base = equity
+    else:
+        cap = float(cap)
+        base = min(equity, cap) if cap > 0 else equity
     total_mv = sum(abs(float(p.get("qty", 0))) * float(p.get("current_price", 0)) for p in positions)
-    util     = total_mv / equity if equity > 0 else 0
+    util     = total_mv / base if base > 0 else 0
     on_margin = cash < 0
 
     print(f"\n{'='*55}")
     print(f"  RAPTOR CAPITAL UTILIZATION SNAPSHOT")
     print(f"{'='*55}")
     print(f"  Equity:          ${equity:>12,.2f}")
+    print(f"  Equity Cap:      {'  none (compound)' if cap is None else f'${cap:>12,.2f}'}")
     print(f"  Cash:            ${cash:>12,.2f}  {'⚠ ON MARGIN' if on_margin else '✓'}")
     print(f"  Buying Power:    ${bp:>12,.2f}")
     print(f"  Market Value:    ${total_mv:>12,.2f}")
-    print(f"  Utilization:     {util:>11.1%}  ", end="")
+    _headroom = max(0.0, (cap if cap is not None else equity) - total_mv)
+    print(f"  Headroom:        ${_headroom:>12,.2f}  ({'cap' if cap is not None else 'no-margin'})")
+    print(f"  Utilization:     {util:>11.1%}  (of {'cap' if cap is not None else 'equity'})  ", end="")
 
     if util > BLOCK_THRESHOLD:
         print("🔴 BLOCKED — no new entries")

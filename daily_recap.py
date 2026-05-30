@@ -2,12 +2,13 @@
 Raptor Daily Recap — Bloomberg-Style Email Report
 ===================================================
 Sends a daily HTML email with:
-  - Account summary (equity, cash, P&L)
+  - Account summary (equity vs cap, cash, unrealized + realized P&L, headroom)
+  - Raptor P&L by period: 1W / 1M / 6M / YTD / All-time (total from broker equity
+    curve = realized + unrealized, plus ledger realized-only), vs SPY
   - Today's trades (entries + exits)
   - Current holdings with P&L + days held
   - Signal diagnostics (top candidates)
-  - Cumulative P&L: 1-week, 1-month, 6-month, YTD vs SPY
-  - SPY 20/50/200 MA status + price trend
+  - SPY 20/50/200 MA status + price trend + benchmark returns
   - Portfolio analytics: Sharpe, Sortino, Win Rate, Expectancy, Max DD
   - Capital utilization, beta exposure
   - Regime status, market scale, factor weights
@@ -170,6 +171,105 @@ def get_ledger_data():
     closed = ledger.get("closed", [])
     open_pos = ledger.get("positions", {})
     return closed, open_pos
+
+
+def get_realized_total(closed_trades):
+    """All-time realized PnL from the Raptor ledger (sum of closed-trade $ PnL)."""
+    tot = 0.0
+    for t in closed_trades or []:
+        pnl = t.get("pnl", t.get("pnl_dollar"))
+        if pnl is not None:
+            try:
+                tot += float(pnl)
+            except Exception:
+                pass
+    return round(tot, 2)
+
+
+def get_pnl_windows(dm, closed_trades):
+    """
+    Windowed PnL over 1W / 1M / 6M / YTD / All-time.
+
+    Two complementary views, both returned:
+      total    — change in account equity over each window, from Alpaca's
+                 portfolio history. This is realized + unrealized combined and
+                 already reflects positions that have been sold (broker truth).
+      realized — sum of ledger closed-trade $ PnL whose exit_date falls inside
+                 each window. This is the Raptor book's realized-only view.
+
+    Each value is a (dollars, pct) tuple for `total`; realized is dollars only.
+    Returns {"total": {...}, "realized": {...}, "source": "alpaca"|None}.
+    Skips gracefully (source=None, empty total) if portfolio history is missing.
+    """
+    # ── Total PnL from the equity curve ───────────────────────────────────────
+    hist = dm.alpaca.get_portfolio_history(period="5A", timeframe="1D")
+    if hist is None:
+        hist = dm.alpaca.get_portfolio_history(period="1A", timeframe="1D")
+
+    total = {}
+    source = None
+    if hist:
+        source = "alpaca"
+        eq = hist["equity"]
+        dates = hist["dates"]
+        latest = eq[-1]
+
+        def back(n):
+            base = eq[-(n + 1)] if len(eq) > n else eq[0]
+            d = latest - base
+            pct = ((latest / base) - 1) * 100 if base else 0.0
+            return (round(d, 2), round(pct, 2))
+
+        total["1W"] = back(5)
+        total["1M"] = back(21)
+        total["6M"] = back(126)
+
+        # YTD — first equity point of the current calendar year
+        yr = datetime.now().year
+        ytd_base = next((e for d, e in zip(dates, eq) if d.year == yr), eq[0])
+        total["YTD"] = (round(latest - ytd_base, 2),
+                        round(((latest / ytd_base) - 1) * 100, 2) if ytd_base else 0.0)
+
+        # All-time — earliest available point (inception for a paper account)
+        base0 = eq[0]
+        total["ALL"] = (round(latest - base0, 2),
+                        round(((latest / base0) - 1) * 100, 2) if base0 else 0.0)
+
+    # ── Realized PnL from the ledger, by exit_date window ─────────────────────
+    today = date.today()
+    cutoffs = {
+        "1W":  today - timedelta(days=7),
+        "1M":  today - timedelta(days=30),
+        "6M":  today - timedelta(days=182),
+        "YTD": date(today.year, 1, 1),
+        "ALL": None,
+    }
+    realized = {}
+    for label, cut in cutoffs.items():
+        tot = 0.0
+        for t in closed_trades or []:
+            pnl = t.get("pnl", t.get("pnl_dollar"))
+            if pnl is None:
+                continue
+            if cut is None:
+                try:
+                    tot += float(pnl)
+                except Exception:
+                    pass
+                continue
+            ed = str(t.get("exit_date", ""))[:10]
+            try:
+                edd = date.fromisoformat(ed)
+            except Exception:
+                continue
+            if edd >= cut:
+                try:
+                    tot += float(pnl)
+                except Exception:
+                    pass
+        realized[label] = round(tot, 2)
+
+    return {"total": total, "realized": realized, "source": source}
 
 
 def get_portfolio_analytics(closed_trades, equity):
@@ -465,16 +565,30 @@ def get_days_held(open_ledger, positions):
 
 def build_html(account, positions, entries, exits, signals, macro, scale,
                spy_price, spy_returns, spy_mas, analytics, open_ledger, portfolio_beta,
-               closed_trades=None, universe_size=None):
+               closed_trades=None, universe_size=None, pnl_windows=None, realized_total=0.0):
 
     equity = float(account["equity"])
     cash = float(account["cash"])
+    _cap_cfg = getattr(CONFIG.risk, "equity_cap", None)
     date_str = datetime.now().strftime("%B %d, %Y")
     time_str = datetime.now().strftime("%I:%M %p ET")
 
-    # Portfolio P&L
+    # Portfolio P&L (open positions only — this is UNREALIZED)
     total_pnl = sum(float(p.get("unrealized_pnl", 0)) for p in positions)
     pnl_color = "#00d4aa" if total_pnl >= 0 else "#ff4757"
+    realized_color = "#00d4aa" if (realized_total or 0) >= 0 else "#ff4757"
+    # Market value of open positions, and the relevant ceiling label/headroom.
+    # Uncapped (compound) → ceiling is equity (no margin); headroom ≈ deployable cash.
+    # Capped → ceiling is the fixed cap; headroom = cap − market value.
+    total_mv = sum(abs(float(p.get("qty", 0))) * float(p.get("current_price", 0)) for p in positions)
+    if _cap_cfg is None:
+        cap_label = "no cap · compound"
+        margin_label = "no margin"
+        cap_headroom = max(0.0, equity - total_mv)
+    else:
+        cap_label = f"cap ${float(_cap_cfg):,.0f}"
+        margin_label = "no margin"
+        cap_headroom = max(0.0, float(_cap_cfg) - total_mv)
 
     capital_util = get_capital_utilization(positions, equity)
 
@@ -662,6 +776,47 @@ def build_html(account, positions, entries, exits, signals, macro, scale,
     else:
         spy_ma_html = '<span style="color:#a0a0b0">SPY MA data unavailable</span>'
 
+    # ── Raptor P&L by period ──────────────────────────────────────────────────
+    # total  = account equity change over the window (realized + unrealized),
+    #          from Alpaca portfolio history — includes positions already sold.
+    # real   = ledger realized-only $ PnL with exit_date inside the window.
+    # SPY    = benchmark % over the comparable window.
+    pnl_period_html = ""
+    if pnl_windows and pnl_windows.get("total"):
+        tot = pnl_windows["total"]
+        rea = pnl_windows.get("realized", {})
+        win_labels = [("1W", "1 Week"), ("1M", "1 Month"), ("6M", "6 Month"),
+                      ("YTD", "YTD"), ("ALL", "All-Time")]
+        spy_days_map = {"1W": 5, "1M": 21, "6M": 126, "YTD": 252, "ALL": None}
+        cells = ""
+        for key, label in win_labels:
+            dp = tot.get(key)
+            if dp is None:
+                continue
+            d_val, pct = dp
+            c = "#00d4aa" if pct >= 0 else "#ff4757"
+            r_val = rea.get(key)
+            r_str = f"${r_val:+,.0f}" if r_val is not None else "—"
+            sd = spy_days_map.get(key)
+            spy_v = spy_returns.get(sd) if sd else None
+            spy_str = f"SPY {spy_v:+.1f}%" if (sd and spy_v is not None) else "SPY —"
+            cells += f"""<td bgcolor="#0e0e20" style="background-color:#0e0e20;padding:12px 8px;text-align:center;border-bottom:1px solid #1e1e34;border-right:1px solid #1e1e34">
+                <div style="color:#6a6a8a;font-size:10px;text-transform:uppercase;letter-spacing:1px">{label}</div>
+                <div style="color:{c};font-size:17px;font-weight:700;margin-top:5px">${d_val:+,.0f}</div>
+                <div style="color:{c};font-size:12px;margin-top:1px">{pct:+.1f}%</div>
+                <div style="color:#6a6a8a;font-size:10px;margin-top:4px">real {r_str}</div>
+                <div style="color:#6a6a8a;font-size:10px;margin-top:1px">{spy_str}</div>
+            </td>"""
+        pnl_period_html = f"""
+        <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;border:1px solid #1e1e34">
+          <tr>{cells}</tr>
+        </table>
+        <div style="padding:6px 0 0 2px;font-size:10px;color:#6a6a8a">
+          Total = account equity change (realized + unrealized, incl. sold positions). Real = ledger realized-only over window.
+        </div>"""
+    else:
+        pnl_period_html = '<div style="color:#6a6a8a;font-size:12px;padding:8px 0">Portfolio history unavailable — windowed P&amp;L will populate once Alpaca portfolio history is reachable.</div>'
+
     # ── Portfolio analytics ───────────────────────────────────────────────────
     if analytics:
         beta_str = f"{portfolio_beta:.2f}" if portfolio_beta is not None else "N/A"
@@ -758,21 +913,41 @@ def build_html(account, positions, entries, exits, signals, macro, scale,
             <div style="display:flex;justify-content:space-between">
                 <div style="text-align:center;flex:1">
                     <div style="color:#a0a0b0;font-size:11px;text-transform:uppercase;letter-spacing:1px">Equity</div>
-                    <div style="color:#e0e0e0;font-size:24px;font-weight:700">${equity:,.2f}</div>
+                    <div style="color:#e0e0e0;font-size:22px;font-weight:700">${equity:,.2f}</div>
+                    <div style="color:#6a6a8a;font-size:10px;margin-top:2px">{cap_label}</div>
                 </div>
                 <div style="text-align:center;flex:1">
                     <div style="color:#a0a0b0;font-size:11px;text-transform:uppercase;letter-spacing:1px">Cash</div>
-                    <div style="color:#e0e0e0;font-size:24px;font-weight:700">${cash:,.2f}</div>
+                    <div style="color:#e0e0e0;font-size:22px;font-weight:700">${cash:,.2f}</div>
+                    <div style="color:#6a6a8a;font-size:10px;margin-top:2px">{margin_label}</div>
                 </div>
                 <div style="text-align:center;flex:1">
                     <div style="color:#a0a0b0;font-size:11px;text-transform:uppercase;letter-spacing:1px">Unrealized P&L</div>
-                    <div style="color:{pnl_color};font-size:24px;font-weight:700">${total_pnl:+,.2f}</div>
+                    <div style="color:{pnl_color};font-size:22px;font-weight:700">${total_pnl:+,.2f}</div>
+                    <div style="color:#6a6a8a;font-size:10px;margin-top:2px">open positions</div>
+                </div>
+                <div style="text-align:center;flex:1">
+                    <div style="color:#a0a0b0;font-size:11px;text-transform:uppercase;letter-spacing:1px">Realized P&L</div>
+                    <div style="color:{realized_color};font-size:22px;font-weight:700">${realized_total:+,.2f}</div>
+                    <div style="color:#6a6a8a;font-size:10px;margin-top:2px">all-time, ledger</div>
                 </div>
                 <div style="text-align:center;flex:1">
                     <div style="color:#a0a0b0;font-size:11px;text-transform:uppercase;letter-spacing:1px">Positions</div>
-                    <div style="color:#e0e0e0;font-size:24px;font-weight:700">{len(positions)}</div>
+                    <div style="color:#e0e0e0;font-size:22px;font-weight:700">{len(positions)}</div>
+                    <div style="color:#6a6a8a;font-size:10px;margin-top:2px">headroom ${cap_headroom:,.0f}</div>
                 </div>
             </div>
+            <div style="margin-top:12px;color:#6a6a8a;font-size:10px;line-height:1.5">
+                Equity &amp; Cash are live Alpaca balances and already reflect every sold position.
+                Unrealized P&amp;L is open positions only; Realized P&amp;L is the ledger's closed-trade total.
+                Per-period totals below combine both from the broker equity curve.
+            </div>
+        </div>
+
+        <!-- Raptor P&L by Period -->
+        <div style="padding:16px 28px;border-bottom:1px solid #2a2a3e">
+            <div style="color:#a0a0b0;font-size:11px;text-transform:uppercase;letter-spacing:2px;margin-bottom:8px">Raptor P&amp;L by Period</div>
+            {pnl_period_html}
         </div>
 
         <!-- Regime & Scale -->
@@ -955,11 +1130,14 @@ def main(preview=False):
         closed_trades, open_ledger = get_ledger_data()
         analytics = get_portfolio_analytics(closed_trades, float(account["equity"]))
         portfolio_beta = get_position_beta(positions, dm)
+        pnl_windows = get_pnl_windows(dm, closed_trades)
+        realized_total = get_realized_total(closed_trades)
 
         html = build_html(
             account, positions, entries, exits, signals, macro, scale,
             spy_price, spy_returns, spy_mas, analytics, open_ledger, portfolio_beta,
-            closed_trades=closed_trades, universe_size=universe_size
+            closed_trades=closed_trades, universe_size=universe_size,
+            pnl_windows=pnl_windows, realized_total=realized_total,
         )
 
         if preview:

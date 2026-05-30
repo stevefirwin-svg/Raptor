@@ -160,10 +160,16 @@ def run_daily_scan():
     # Source of truth is Alpaca, not ledger
     all_held = {p["symbol"] for p in positions}
     current_position_count = len(positions)
-    my_equity = account["equity"]  # H-7: EQUITY_ALLOCATION=1.00 removed — was a no-op dead variable
+    # Sizing base. With equity_cap=None (default) the account compounds: Kelly
+    # sizes off the full, growing equity. With a finite cap, sizing is bounded
+    # by min(equity, cap) and excess equity sits idle.
+    _cap = CONFIG.risk.equity_cap
+    my_equity = account["equity"] if _cap is None else min(account["equity"], _cap)
 
-    logger.info("Account: equity=$%.2f  my_allocation=$%.2f  positions=%d",
-                account["equity"], my_equity, current_position_count)
+    logger.info("Account: equity=$%.2f  cap=%s  sizing_base=$%.2f  positions=%d",
+                account["equity"],
+                "none (compound)" if _cap is None else f"${_cap:,.0f}",
+                my_equity, current_position_count)
 
     # ── Market Agent gate — Layer 4 ───────────────────────────────────────────
     try:
@@ -298,10 +304,30 @@ def run_daily_scan():
     # ─────────────────────────────────────────────────────────────────────────
 
     max_my_positions = CONFIG.risk.max_positions  # Full slots — v6 removed
-    # Use buying_power not cash — cash is negative when on margin but buying_power
-    # reflects actual Alpaca-enforced available capital including margin limits.
-    # Cap available_bp at 95% to preserve a 5% buffer.
-    available_bp = float(account.get("buying_power", 0)) * 0.95
+    # No-margin deployment: spend CASH only. In a cash account equity = cash +
+    # market_value, so the cash buffer alone keeps market value <= equity (no
+    # leverage). If a finite cap is set, also keep market value under the cap.
+    # buying_power is deliberately NOT used when allow_margin is False — it
+    # reflects broker margin (often ~2-4x equity) and would permit leverage.
+    _cash     = float(account.get("cash", 0))
+    _total_mv = sum(abs(float(p.get("qty", 0))) * float(p.get("current_price", 0)) for p in positions)
+    _cash_avail = max(0.0, _cash * 0.95)
+    if CONFIG.risk.allow_margin:
+        available_capital = float(account.get("buying_power", 0)) * 0.95
+        _headroom_log = available_capital
+    elif _cap is None:
+        available_capital = _cash_avail            # no margin, no cap → cash-bounded
+        _headroom_log = available_capital
+    else:
+        _cap_headroom = max(0.0, _cap - _total_mv)  # no margin + finite cap
+        available_capital = min(_cash_avail, _cap_headroom)
+        _headroom_log = _cap_headroom
+    logger.info(
+        "Deployable: cap=%s  market_value=$%.0f  cash=$%.0f  headroom=$%.0f  available=$%.0f  (margin=%s)",
+        "none" if _cap is None else f"${_cap:,.0f}",
+        _total_mv, _cash, _headroom_log, available_capital,
+        "ON" if CONFIG.risk.allow_margin else "OFF",
+    )
     placed = 0
     for sig in signals:
         if current_position_count + placed >= max_my_positions:
@@ -313,10 +339,11 @@ def run_daily_scan():
         shares = int((my_equity * sig.kelly_fraction) / sig.entry_price)
         if shares < 1:
             continue
-        # Buying power guard — ensures Alpaca won't reject the order
+        # Capital guard — never exceed available cash / cap headroom (no margin).
         order_cost = shares * sig.entry_price
-        if available_bp < order_cost:
-            logger.info("SKIP %s — insufficient buying power ($%.2f needed, $%.2f available)", sig.symbol, order_cost, available_bp)
+        if available_capital < order_cost:
+            logger.info("SKIP %s — insufficient deployable capital ($%.2f needed, $%.2f available; no margin / cap headroom)",
+                        sig.symbol, order_cost, available_capital)
             continue
         if CONFIG.execution.order_type == "limit":
             limit = round(sig.entry_price + sig.entry_price * CONFIG.execution.limit_offset_bps / 10000, 2)
@@ -325,7 +352,7 @@ def run_daily_scan():
         result = dm.alpaca.submit_order(sig.symbol, shares, "BUY", CONFIG.execution.order_type, limit)
         if "error" not in result:
             placed += 1
-            available_bp -= order_cost
+            available_capital -= order_cost
             ledger.record_entry(MODEL_ID, sig.symbol, shares, sig.entry_price,
                                 datetime.now().strftime("%Y-%m-%d"),
                                 {"t_stat": sig.t_statistic, "stop": sig.stop_price,

@@ -1,0 +1,591 @@
+diff --git a/config.py b/config.py
+index 17d89d2..2272936 100644
+--- a/config.py
++++ b/config.py
+@@ -5,7 +5,7 @@ All parameters in ONE file. No magic numbers elsewhere.
+ 
+ import os
+ from dataclasses import dataclass, field
+-from typing import Dict, List
++from typing import Dict, List, Optional
+ 
+ from dotenv import load_dotenv
+ load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".env"))
+@@ -52,6 +52,18 @@ class SignalConfig:
+ 
+ @dataclass
+ class RiskConfig:
++    # ── Hard capital controls (explicit, not derived) ────────────────────────
++    # equity_cap: optional fixed dollar ceiling on deployed market value.
++    #   None  → no fixed cap. The account compounds: Kelly sizes off the full,
++    #           growing equity and the only ceiling is "no margin" (market value
++    #           <= equity, cash never negative). This is the default.
++    #   float → a hard ceiling. Raptor sizes off min(equity, cap) and never lets
++    #           market value exceed the cap (excess equity sits idle).
++    # allow_margin: when False, Raptor spends cash only — never borrowed buying
++    #   power. Orders are gated against available CASH (and cap headroom if a cap
++    #   is set), not the broker's margin-inflated buying_power. cash < 0 blocks.
++    equity_cap: Optional[float] = None
++    allow_margin: bool = False
+     kelly_fraction: float = 0.12  # H-8: was 0.15 but signals.py hard-clips to 0.12 ceiling — aligning config to actual cap. TODO:DERIVE both via EVT tail on closed trade returns.
+     max_position_pct: float = 0.08
+     min_position_pct: float = 0.02
+diff --git a/daily_recap.py b/daily_recap.py
+index 5ace37e..9035e5e 100644
+--- a/daily_recap.py
++++ b/daily_recap.py
+@@ -2,12 +2,13 @@
+ Raptor Daily Recap — Bloomberg-Style Email Report
+ ===================================================
+ Sends a daily HTML email with:
+-  - Account summary (equity, cash, P&L)
++  - Account summary (equity vs cap, cash, unrealized + realized P&L, headroom)
++  - Raptor P&L by period: 1W / 1M / 6M / YTD / All-time (total from broker equity
++    curve = realized + unrealized, plus ledger realized-only), vs SPY
+   - Today's trades (entries + exits)
+   - Current holdings with P&L + days held
+   - Signal diagnostics (top candidates)
+-  - Cumulative P&L: 1-week, 1-month, 6-month, YTD vs SPY
+-  - SPY 20/50/200 MA status + price trend
++  - SPY 20/50/200 MA status + price trend + benchmark returns
+   - Portfolio analytics: Sharpe, Sortino, Win Rate, Expectancy, Max DD
+   - Capital utilization, beta exposure
+   - Regime status, market scale, factor weights
+@@ -172,6 +173,105 @@ def get_ledger_data():
+     return closed, open_pos
+ 
+ 
++def get_realized_total(closed_trades):
++    """All-time realized PnL from the Raptor ledger (sum of closed-trade $ PnL)."""
++    tot = 0.0
++    for t in closed_trades or []:
++        pnl = t.get("pnl", t.get("pnl_dollar"))
++        if pnl is not None:
++            try:
++                tot += float(pnl)
++            except Exception:
++                pass
++    return round(tot, 2)
++
++
++def get_pnl_windows(dm, closed_trades):
++    """
++    Windowed PnL over 1W / 1M / 6M / YTD / All-time.
++
++    Two complementary views, both returned:
++      total    — change in account equity over each window, from Alpaca's
++                 portfolio history. This is realized + unrealized combined and
++                 already reflects positions that have been sold (broker truth).
++      realized — sum of ledger closed-trade $ PnL whose exit_date falls inside
++                 each window. This is the Raptor book's realized-only view.
++
++    Each value is a (dollars, pct) tuple for `total`; realized is dollars only.
++    Returns {"total": {...}, "realized": {...}, "source": "alpaca"|None}.
++    Skips gracefully (source=None, empty total) if portfolio history is missing.
++    """
++    # ── Total PnL from the equity curve ───────────────────────────────────────
++    hist = dm.alpaca.get_portfolio_history(period="5A", timeframe="1D")
++    if hist is None:
++        hist = dm.alpaca.get_portfolio_history(period="1A", timeframe="1D")
++
++    total = {}
++    source = None
++    if hist:
++        source = "alpaca"
++        eq = hist["equity"]
++        dates = hist["dates"]
++        latest = eq[-1]
++
++        def back(n):
++            base = eq[-(n + 1)] if len(eq) > n else eq[0]
++            d = latest - base
++            pct = ((latest / base) - 1) * 100 if base else 0.0
++            return (round(d, 2), round(pct, 2))
++
++        total["1W"] = back(5)
++        total["1M"] = back(21)
++        total["6M"] = back(126)
++
++        # YTD — first equity point of the current calendar year
++        yr = datetime.now().year
++        ytd_base = next((e for d, e in zip(dates, eq) if d.year == yr), eq[0])
++        total["YTD"] = (round(latest - ytd_base, 2),
++                        round(((latest / ytd_base) - 1) * 100, 2) if ytd_base else 0.0)
++
++        # All-time — earliest available point (inception for a paper account)
++        base0 = eq[0]
++        total["ALL"] = (round(latest - base0, 2),
++                        round(((latest / base0) - 1) * 100, 2) if base0 else 0.0)
++
++    # ── Realized PnL from the ledger, by exit_date window ─────────────────────
++    today = date.today()
++    cutoffs = {
++        "1W":  today - timedelta(days=7),
++        "1M":  today - timedelta(days=30),
++        "6M":  today - timedelta(days=182),
++        "YTD": date(today.year, 1, 1),
++        "ALL": None,
++    }
++    realized = {}
++    for label, cut in cutoffs.items():
++        tot = 0.0
++        for t in closed_trades or []:
++            pnl = t.get("pnl", t.get("pnl_dollar"))
++            if pnl is None:
++                continue
++            if cut is None:
++                try:
++                    tot += float(pnl)
++                except Exception:
++                    pass
++                continue
++            ed = str(t.get("exit_date", ""))[:10]
++            try:
++                edd = date.fromisoformat(ed)
++            except Exception:
++                continue
++            if edd >= cut:
++                try:
++                    tot += float(pnl)
++                except Exception:
++                    pass
++        realized[label] = round(tot, 2)
++
++    return {"total": total, "realized": realized, "source": source}
++
++
+ def get_portfolio_analytics(closed_trades, equity):
+     """
+     Compute Sharpe, Sortino, win rate, avg win, avg loss, expectancy,
+@@ -465,16 +565,30 @@ def get_days_held(open_ledger, positions):
+ 
+ def build_html(account, positions, entries, exits, signals, macro, scale,
+                spy_price, spy_returns, spy_mas, analytics, open_ledger, portfolio_beta,
+-               closed_trades=None, universe_size=None):
++               closed_trades=None, universe_size=None, pnl_windows=None, realized_total=0.0):
+ 
+     equity = float(account["equity"])
+     cash = float(account["cash"])
++    _cap_cfg = getattr(CONFIG.risk, "equity_cap", None)
+     date_str = datetime.now().strftime("%B %d, %Y")
+     time_str = datetime.now().strftime("%I:%M %p ET")
+ 
+-    # Portfolio P&L
++    # Portfolio P&L (open positions only — this is UNREALIZED)
+     total_pnl = sum(float(p.get("unrealized_pnl", 0)) for p in positions)
+     pnl_color = "#00d4aa" if total_pnl >= 0 else "#ff4757"
++    realized_color = "#00d4aa" if (realized_total or 0) >= 0 else "#ff4757"
++    # Market value of open positions, and the relevant ceiling label/headroom.
++    # Uncapped (compound) → ceiling is equity (no margin); headroom ≈ deployable cash.
++    # Capped → ceiling is the fixed cap; headroom = cap − market value.
++    total_mv = sum(abs(float(p.get("qty", 0))) * float(p.get("current_price", 0)) for p in positions)
++    if _cap_cfg is None:
++        cap_label = "no cap · compound"
++        margin_label = "no margin"
++        cap_headroom = max(0.0, equity - total_mv)
++    else:
++        cap_label = f"cap ${float(_cap_cfg):,.0f}"
++        margin_label = "no margin"
++        cap_headroom = max(0.0, float(_cap_cfg) - total_mv)
+ 
+     capital_util = get_capital_utilization(positions, equity)
+ 
+@@ -662,6 +776,47 @@ def build_html(account, positions, entries, exits, signals, macro, scale,
+     else:
+         spy_ma_html = '<span style="color:#a0a0b0">SPY MA data unavailable</span>'
+ 
++    # ── Raptor P&L by period ──────────────────────────────────────────────────
++    # total  = account equity change over the window (realized + unrealized),
++    #          from Alpaca portfolio history — includes positions already sold.
++    # real   = ledger realized-only $ PnL with exit_date inside the window.
++    # SPY    = benchmark % over the comparable window.
++    pnl_period_html = ""
++    if pnl_windows and pnl_windows.get("total"):
++        tot = pnl_windows["total"]
++        rea = pnl_windows.get("realized", {})
++        win_labels = [("1W", "1 Week"), ("1M", "1 Month"), ("6M", "6 Month"),
++                      ("YTD", "YTD"), ("ALL", "All-Time")]
++        spy_days_map = {"1W": 5, "1M": 21, "6M": 126, "YTD": 252, "ALL": None}
++        cells = ""
++        for key, label in win_labels:
++            dp = tot.get(key)
++            if dp is None:
++                continue
++            d_val, pct = dp
++            c = "#00d4aa" if pct >= 0 else "#ff4757"
++            r_val = rea.get(key)
++            r_str = f"${r_val:+,.0f}" if r_val is not None else "—"
++            sd = spy_days_map.get(key)
++            spy_v = spy_returns.get(sd) if sd else None
++            spy_str = f"SPY {spy_v:+.1f}%" if (sd and spy_v is not None) else "SPY —"
++            cells += f"""<td bgcolor="#0e0e20" style="background-color:#0e0e20;padding:12px 8px;text-align:center;border-bottom:1px solid #1e1e34;border-right:1px solid #1e1e34">
++                <div style="color:#6a6a8a;font-size:10px;text-transform:uppercase;letter-spacing:1px">{label}</div>
++                <div style="color:{c};font-size:17px;font-weight:700;margin-top:5px">${d_val:+,.0f}</div>
++                <div style="color:{c};font-size:12px;margin-top:1px">{pct:+.1f}%</div>
++                <div style="color:#6a6a8a;font-size:10px;margin-top:4px">real {r_str}</div>
++                <div style="color:#6a6a8a;font-size:10px;margin-top:1px">{spy_str}</div>
++            </td>"""
++        pnl_period_html = f"""
++        <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;border:1px solid #1e1e34">
++          <tr>{cells}</tr>
++        </table>
++        <div style="padding:6px 0 0 2px;font-size:10px;color:#6a6a8a">
++          Total = account equity change (realized + unrealized, incl. sold positions). Real = ledger realized-only over window.
++        </div>"""
++    else:
++        pnl_period_html = '<div style="color:#6a6a8a;font-size:12px;padding:8px 0">Portfolio history unavailable — windowed P&amp;L will populate once Alpaca portfolio history is reachable.</div>'
++
+     # ── Portfolio analytics ───────────────────────────────────────────────────
+     if analytics:
+         beta_str = f"{portfolio_beta:.2f}" if portfolio_beta is not None else "N/A"
+@@ -758,21 +913,41 @@ def build_html(account, positions, entries, exits, signals, macro, scale,
+             <div style="display:flex;justify-content:space-between">
+                 <div style="text-align:center;flex:1">
+                     <div style="color:#a0a0b0;font-size:11px;text-transform:uppercase;letter-spacing:1px">Equity</div>
+-                    <div style="color:#e0e0e0;font-size:24px;font-weight:700">${equity:,.2f}</div>
++                    <div style="color:#e0e0e0;font-size:22px;font-weight:700">${equity:,.2f}</div>
++                    <div style="color:#6a6a8a;font-size:10px;margin-top:2px">{cap_label}</div>
+                 </div>
+                 <div style="text-align:center;flex:1">
+                     <div style="color:#a0a0b0;font-size:11px;text-transform:uppercase;letter-spacing:1px">Cash</div>
+-                    <div style="color:#e0e0e0;font-size:24px;font-weight:700">${cash:,.2f}</div>
++                    <div style="color:#e0e0e0;font-size:22px;font-weight:700">${cash:,.2f}</div>
++                    <div style="color:#6a6a8a;font-size:10px;margin-top:2px">{margin_label}</div>
+                 </div>
+                 <div style="text-align:center;flex:1">
+                     <div style="color:#a0a0b0;font-size:11px;text-transform:uppercase;letter-spacing:1px">Unrealized P&L</div>
+-                    <div style="color:{pnl_color};font-size:24px;font-weight:700">${total_pnl:+,.2f}</div>
++                    <div style="color:{pnl_color};font-size:22px;font-weight:700">${total_pnl:+,.2f}</div>
++                    <div style="color:#6a6a8a;font-size:10px;margin-top:2px">open positions</div>
++                </div>
++                <div style="text-align:center;flex:1">
++                    <div style="color:#a0a0b0;font-size:11px;text-transform:uppercase;letter-spacing:1px">Realized P&L</div>
++                    <div style="color:{realized_color};font-size:22px;font-weight:700">${realized_total:+,.2f}</div>
++                    <div style="color:#6a6a8a;font-size:10px;margin-top:2px">all-time, ledger</div>
+                 </div>
+                 <div style="text-align:center;flex:1">
+                     <div style="color:#a0a0b0;font-size:11px;text-transform:uppercase;letter-spacing:1px">Positions</div>
+-                    <div style="color:#e0e0e0;font-size:24px;font-weight:700">{len(positions)}</div>
++                    <div style="color:#e0e0e0;font-size:22px;font-weight:700">{len(positions)}</div>
++                    <div style="color:#6a6a8a;font-size:10px;margin-top:2px">headroom ${cap_headroom:,.0f}</div>
+                 </div>
+             </div>
++            <div style="margin-top:12px;color:#6a6a8a;font-size:10px;line-height:1.5">
++                Equity &amp; Cash are live Alpaca balances and already reflect every sold position.
++                Unrealized P&amp;L is open positions only; Realized P&amp;L is the ledger's closed-trade total.
++                Per-period totals below combine both from the broker equity curve.
++            </div>
++        </div>
++
++        <!-- Raptor P&L by Period -->
++        <div style="padding:16px 28px;border-bottom:1px solid #2a2a3e">
++            <div style="color:#a0a0b0;font-size:11px;text-transform:uppercase;letter-spacing:2px;margin-bottom:8px">Raptor P&amp;L by Period</div>
++            {pnl_period_html}
+         </div>
+ 
+         <!-- Regime & Scale -->
+@@ -955,11 +1130,14 @@ def main(preview=False):
+         closed_trades, open_ledger = get_ledger_data()
+         analytics = get_portfolio_analytics(closed_trades, float(account["equity"]))
+         portfolio_beta = get_position_beta(positions, dm)
++        pnl_windows = get_pnl_windows(dm, closed_trades)
++        realized_total = get_realized_total(closed_trades)
+ 
+         html = build_html(
+             account, positions, entries, exits, signals, macro, scale,
+             spy_price, spy_returns, spy_mas, analytics, open_ledger, portfolio_beta,
+-            closed_trades=closed_trades, universe_size=universe_size
++            closed_trades=closed_trades, universe_size=universe_size,
++            pnl_windows=pnl_windows, realized_total=realized_total,
+         )
+ 
+         if preview:
+diff --git a/data_feeds.py b/data_feeds.py
+index f1f5eb7..d61d322 100644
+--- a/data_feeds.py
++++ b/data_feeds.py
+@@ -148,15 +148,56 @@ class AlpacaDataFeed:
+             for p in positions
+         ]
+ 
+-    def submit_order(
+-        self,
+-        symbol: str,
+-        qty: int,
+-        side: str,
+-        order_type: str = "limit",
+-        limit_price: Optional[float] = None,
+-        client_order_id: Optional[str] = None,
+-    ) -> Dict[str, Any]:
++    def get_portfolio_history(self, period: str = "1A", timeframe: str = "1D"):
++        """
++        Return the account equity time series (broker truth).
++
++        Alpaca's portfolio history is mark-to-market and already reflects every
++        closed position — when a position is sold, the realized result stays in
++        the equity curve. So equity change over any window = total PnL (realized
++        + unrealized) over that window. This is the correct source for windowed
++        account PnL and inherently 'syncs' positions already sold.
++
++        Returns a dict:
++            {
++              "dates":  [datetime, ...],     # one per daily point
++              "equity": [float, ...],        # account equity at each point
++              "base_value": float,           # equity at the start of the window
++            }
++        or None on any failure (caller must skip gracefully — never fabricate).
++        """
++        try:
++            from alpaca.trading.requests import GetPortfolioHistoryRequest
++            req = GetPortfolioHistoryRequest(period=period, timeframe=timeframe)
++            hist = self.trading_client.get_portfolio_history(req)
++
++            ts = list(getattr(hist, "timestamp", []) or [])
++            eq = list(getattr(hist, "equity", []) or [])
++            if not ts or not eq or len(ts) != len(eq):
++                return None
++
++            dates, equity = [], []
++            for t, e in zip(ts, eq):
++                if e is None:
++                    continue
++                # timestamps are epoch seconds (int) or datetime depending on SDK
++                if isinstance(t, (int, float)):
++                    d = datetime.fromtimestamp(t)
++                else:
++                    d = t
++                dates.append(d)
++                equity.append(float(e))
++
++            if len(equity) < 2:
++                return None
++
++            base_value = float(getattr(hist, "base_value", equity[0]) or equity[0])
++            return {"dates": dates, "equity": equity, "base_value": base_value}
++        except Exception as e:
++            logger.warning("Portfolio history error: %s", e)
++            return None
++
++
+         """Submit a buy or sell order. Returns order confirmation dict."""
+         order_side = OrderSide.BUY if side.upper() == "BUY" else OrderSide.SELL
+ 
+diff --git a/main.py b/main.py
+index db8e675..e5fd965 100644
+--- a/main.py
++++ b/main.py
+@@ -160,10 +160,16 @@ def run_daily_scan():
+     # Source of truth is Alpaca, not ledger
+     all_held = {p["symbol"] for p in positions}
+     current_position_count = len(positions)
+-    my_equity = account["equity"]  # H-7: EQUITY_ALLOCATION=1.00 removed — was a no-op dead variable
++    # Sizing base. With equity_cap=None (default) the account compounds: Kelly
++    # sizes off the full, growing equity. With a finite cap, sizing is bounded
++    # by min(equity, cap) and excess equity sits idle.
++    _cap = CONFIG.risk.equity_cap
++    my_equity = account["equity"] if _cap is None else min(account["equity"], _cap)
+ 
+-    logger.info("Account: equity=$%.2f  my_allocation=$%.2f  positions=%d",
+-                account["equity"], my_equity, current_position_count)
++    logger.info("Account: equity=$%.2f  cap=%s  sizing_base=$%.2f  positions=%d",
++                account["equity"],
++                "none (compound)" if _cap is None else f"${_cap:,.0f}",
++                my_equity, current_position_count)
+ 
+     # ── Market Agent gate — Layer 4 ───────────────────────────────────────────
+     try:
+@@ -298,10 +304,30 @@ def run_daily_scan():
+     # ─────────────────────────────────────────────────────────────────────────
+ 
+     max_my_positions = CONFIG.risk.max_positions  # Full slots — v6 removed
+-    # Use buying_power not cash — cash is negative when on margin but buying_power
+-    # reflects actual Alpaca-enforced available capital including margin limits.
+-    # Cap available_bp at 95% to preserve a 5% buffer.
+-    available_bp = float(account.get("buying_power", 0)) * 0.95
++    # No-margin deployment: spend CASH only. In a cash account equity = cash +
++    # market_value, so the cash buffer alone keeps market value <= equity (no
++    # leverage). If a finite cap is set, also keep market value under the cap.
++    # buying_power is deliberately NOT used when allow_margin is False — it
++    # reflects broker margin (often ~2-4x equity) and would permit leverage.
++    _cash     = float(account.get("cash", 0))
++    _total_mv = sum(abs(float(p.get("qty", 0))) * float(p.get("current_price", 0)) for p in positions)
++    _cash_avail = max(0.0, _cash * 0.95)
++    if CONFIG.risk.allow_margin:
++        available_capital = float(account.get("buying_power", 0)) * 0.95
++        _headroom_log = available_capital
++    elif _cap is None:
++        available_capital = _cash_avail            # no margin, no cap → cash-bounded
++        _headroom_log = available_capital
++    else:
++        _cap_headroom = max(0.0, _cap - _total_mv)  # no margin + finite cap
++        available_capital = min(_cash_avail, _cap_headroom)
++        _headroom_log = _cap_headroom
++    logger.info(
++        "Deployable: cap=%s  market_value=$%.0f  cash=$%.0f  headroom=$%.0f  available=$%.0f  (margin=%s)",
++        "none" if _cap is None else f"${_cap:,.0f}",
++        _total_mv, _cash, _headroom_log, available_capital,
++        "ON" if CONFIG.risk.allow_margin else "OFF",
++    )
+     placed = 0
+     for sig in signals:
+         if current_position_count + placed >= max_my_positions:
+@@ -313,10 +339,11 @@ def run_daily_scan():
+         shares = int((my_equity * sig.kelly_fraction) / sig.entry_price)
+         if shares < 1:
+             continue
+-        # Buying power guard — ensures Alpaca won't reject the order
++        # Capital guard — never exceed available cash / cap headroom (no margin).
+         order_cost = shares * sig.entry_price
+-        if available_bp < order_cost:
+-            logger.info("SKIP %s — insufficient buying power ($%.2f needed, $%.2f available)", sig.symbol, order_cost, available_bp)
++        if available_capital < order_cost:
++            logger.info("SKIP %s — insufficient deployable capital ($%.2f needed, $%.2f available; no margin / cap headroom)",
++                        sig.symbol, order_cost, available_capital)
+             continue
+         if CONFIG.execution.order_type == "limit":
+             limit = round(sig.entry_price + sig.entry_price * CONFIG.execution.limit_offset_bps / 10000, 2)
+@@ -325,7 +352,7 @@ def run_daily_scan():
+         result = dm.alpaca.submit_order(sig.symbol, shares, "BUY", CONFIG.execution.order_type, limit)
+         if "error" not in result:
+             placed += 1
+-            available_bp -= order_cost
++            available_capital -= order_cost
+             ledger.record_entry(MODEL_ID, sig.symbol, shares, sig.entry_price,
+                                 datetime.now().strftime("%Y-%m-%d"),
+                                 {"t_stat": sig.t_statistic, "stop": sig.stop_price,
+diff --git a/margin_guard.py b/margin_guard.py
+index 8fa25a3..0957898 100644
+--- a/margin_guard.py
++++ b/margin_guard.py
+@@ -7,10 +7,13 @@ before placing any new entry orders.
+ Also runnable standalone for a quick account health snapshot.
+ 
+ Rules:
+-  - Cash negative (on margin): REDUCE — cap new positions at 1
+-  - Utilization > 90%: BLOCK all new entries
++  - Market value >= equity_cap (only if a finite cap is set): BLOCK (hard cap)
++  - Cash negative (on margin) AND margin disabled: BLOCK all new entries
++  - Cash negative (on margin) AND margin allowed: REDUCE — cap at 1
++  - Utilization (vs base = equity, or min(equity,cap) if capped) > 90%: BLOCK
+   - Utilization > 85%: REDUCE — scale max new positions to 1
+   - Utilization <= 85%: ALLOW normal operation
++  Default config: equity_cap=None (compound) + allow_margin=False (cash only).
+ 
+ Fail-safe: API errors return BLOCKED (fail closed, not open).
+ Any exception during the check blocks entries to protect capital.
+@@ -68,14 +71,22 @@ def check_margin_safety(dm) -> Tuple[bool, int, str]:
+             logger.warning("MARGIN GUARD: capping new entries at %d — %s", max_new, reason)
+     """
+     try:
++        from config import CONFIG
+         account   = dm.alpaca.get_account()
+         positions = dm.alpaca.get_positions()
+ 
+         equity = float(account.get("equity", 0))
+         cash   = float(account.get("cash", 0))
+-        # portfolio_value intentionally not used — equity (net liquidation value)
+-        # is the correct denominator for utilization. portfolio_value == equity
+-        # in paper trading; keeping equity for consistency with live semantics.
++
++        cap          = getattr(CONFIG.risk, "equity_cap", None)
++        allow_margin = bool(getattr(CONFIG.risk, "allow_margin", True))
++        # Deployable base for utilization. Uncapped (cap=None) → compound: measure
++        # against full equity. Capped → measure against min(equity, cap).
++        if cap is None:
++            base = equity
++        else:
++            cap = float(cap)
++            base = min(equity, cap) if cap > 0 else equity
+ 
+         if equity <= 0:
+             return False, 0, "equity is zero or negative — blocking all entries"
+@@ -85,13 +96,14 @@ def check_margin_safety(dm) -> Tuple[bool, int, str]:
+             abs(float(p.get("qty", 0))) * float(p.get("current_price", 0))
+             for p in positions
+         )
+-        util      = total_mv / equity
++        util      = total_mv / base if base > 0 else 1.0
+         on_margin = cash < 0
+         margin_pct = abs(cash) / equity if on_margin else 0.0
+ 
++        cap_str = "none (compound)" if cap is None else f"${cap:,.0f}"
+         status_lines = [
+-            f"equity=${equity:,.0f}  cash=${cash:,.0f}  positions={len(positions)}",
+-            f"market_value=${total_mv:,.0f}  utilization={util:.1%}  margin={'YES' if on_margin else 'NO'}"
++            f"equity=${equity:,.0f}  cap={cap_str}  cash=${cash:,.0f}  positions={len(positions)}",
++            f"market_value=${total_mv:,.0f}  utilization={util:.1%} of base  margin={'YES' if on_margin else 'NO'}"
+         ]
+         if on_margin:
+             status_lines.append(f"margin_usage={margin_pct:.1%} of equity")
+@@ -99,15 +111,23 @@ def check_margin_safety(dm) -> Tuple[bool, int, str]:
+         for line in status_lines:
+             logger.info("MARGIN GUARD: %s", line)
+ 
+-        # ── Hard block ────────────────────────────────────────────────────────
++        # ── Hard equity cap (only when a finite cap is configured) ────────────
++        if cap is not None and total_mv >= cap:
++            return False, 0, f"market value ${total_mv:,.0f} >= equity cap ${cap:,.0f} — blocking new entries"
++
++        # ── No margin ─────────────────────────────────────────────────────────
++        # When margin is disallowed, negative cash means Alpaca is already lending.
++        # Hard block, not a reduce — no new entries until cash >= 0.
++        if on_margin and not allow_margin:
++            return False, 0, f"on margin (${abs(cash):,.0f}, {margin_pct:.1%} of equity) and margin disabled — blocking new entries"
++
++        # ── Hard block (utilization) ──────────────────────────────────────────
+         if util > BLOCK_THRESHOLD:
+-            return False, 0, f"utilization {util:.1%} > {BLOCK_THRESHOLD:.0%} — blocking new entries"
++            return False, 0, f"utilization {util:.1%} of base > {BLOCK_THRESHOLD:.0%} — blocking new entries"
+ 
+-        # ── Reduce: over threshold OR on margin ───────────────────────────────
+-        # On-margin means Alpaca is lending capital — adding positions increases
+-        # leverage. Cap at 1 new position the same as the REDUCE threshold.
++        # ── Reduce: over threshold OR on margin (margin allowed case) ─────────
+         if util > REDUCE_THRESHOLD:
+-            return True, 1, f"utilization {util:.1%} > {REDUCE_THRESHOLD:.0%} — capping at 1 new entry"
++            return True, 1, f"utilization {util:.1%} of base > {REDUCE_THRESHOLD:.0%} — capping at 1 new entry"
+ 
+         if on_margin:
+             logger.warning(
+@@ -118,9 +138,9 @@ def check_margin_safety(dm) -> Tuple[bool, int, str]:
+ 
+         # ── Warning only ──────────────────────────────────────────────────────
+         if util > WARN_THRESHOLD:
+-            logger.warning("MARGIN GUARD: WARNING — utilization %s", f"{util:.1%}")
++            logger.warning("MARGIN GUARD: WARNING — utilization %s of base", f"{util:.1%}")
+ 
+-        return True, _UNLIMITED, f"utilization {util:.1%} — normal operation"
++        return True, _UNLIMITED, f"utilization {util:.1%} of base — normal operation"
+ 
+     except Exception as e:
+         # Fail CLOSED — if we can't verify capital state, don't risk new entries.
+@@ -141,18 +161,27 @@ def print_snapshot():
+     equity   = float(account.get("equity", 0))
+     cash     = float(account.get("cash", 0))
+     bp       = float(account.get("buying_power", 0))
++    cap      = getattr(CONFIG.risk, "equity_cap", None)
++    if cap is None:
++        base = equity
++    else:
++        cap = float(cap)
++        base = min(equity, cap) if cap > 0 else equity
+     total_mv = sum(abs(float(p.get("qty", 0))) * float(p.get("current_price", 0)) for p in positions)
+-    util     = total_mv / equity if equity > 0 else 0
++    util     = total_mv / base if base > 0 else 0
+     on_margin = cash < 0
+ 
+     print(f"\n{'='*55}")
+     print(f"  RAPTOR CAPITAL UTILIZATION SNAPSHOT")
+     print(f"{'='*55}")
+     print(f"  Equity:          ${equity:>12,.2f}")
++    print(f"  Equity Cap:      {'  none (compound)' if cap is None else f'${cap:>12,.2f}'}")
+     print(f"  Cash:            ${cash:>12,.2f}  {'⚠ ON MARGIN' if on_margin else '✓'}")
+     print(f"  Buying Power:    ${bp:>12,.2f}")
+     print(f"  Market Value:    ${total_mv:>12,.2f}")
+-    print(f"  Utilization:     {util:>11.1%}  ", end="")
++    _headroom = max(0.0, (cap if cap is not None else equity) - total_mv)
++    print(f"  Headroom:        ${_headroom:>12,.2f}  ({'cap' if cap is not None else 'no-margin'})")
++    print(f"  Utilization:     {util:>11.1%}  (of {'cap' if cap is not None else 'equity'})  ", end="")
+ 
+     if util > BLOCK_THRESHOLD:
+         print("🔴 BLOCKED — no new entries")

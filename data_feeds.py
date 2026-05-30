@@ -148,15 +148,56 @@ class AlpacaDataFeed:
             for p in positions
         ]
 
-    def submit_order(
-        self,
-        symbol: str,
-        qty: int,
-        side: str,
-        order_type: str = "limit",
-        limit_price: Optional[float] = None,
-        client_order_id: Optional[str] = None,
-    ) -> Dict[str, Any]:
+    def get_portfolio_history(self, period: str = "1A", timeframe: str = "1D"):
+        """
+        Return the account equity time series (broker truth).
+
+        Alpaca's portfolio history is mark-to-market and already reflects every
+        closed position — when a position is sold, the realized result stays in
+        the equity curve. So equity change over any window = total PnL (realized
+        + unrealized) over that window. This is the correct source for windowed
+        account PnL and inherently 'syncs' positions already sold.
+
+        Returns a dict:
+            {
+              "dates":  [datetime, ...],     # one per daily point
+              "equity": [float, ...],        # account equity at each point
+              "base_value": float,           # equity at the start of the window
+            }
+        or None on any failure (caller must skip gracefully — never fabricate).
+        """
+        try:
+            from alpaca.trading.requests import GetPortfolioHistoryRequest
+            req = GetPortfolioHistoryRequest(period=period, timeframe=timeframe)
+            hist = self.trading_client.get_portfolio_history(req)
+
+            ts = list(getattr(hist, "timestamp", []) or [])
+            eq = list(getattr(hist, "equity", []) or [])
+            if not ts or not eq or len(ts) != len(eq):
+                return None
+
+            dates, equity = [], []
+            for t, e in zip(ts, eq):
+                if e is None:
+                    continue
+                # timestamps are epoch seconds (int) or datetime depending on SDK
+                if isinstance(t, (int, float)):
+                    d = datetime.fromtimestamp(t)
+                else:
+                    d = t
+                dates.append(d)
+                equity.append(float(e))
+
+            if len(equity) < 2:
+                return None
+
+            base_value = float(getattr(hist, "base_value", equity[0]) or equity[0])
+            return {"dates": dates, "equity": equity, "base_value": base_value}
+        except Exception as e:
+            logger.warning("Portfolio history error: %s", e)
+            return None
+
+
         """Submit a buy or sell order. Returns order confirmation dict."""
         order_side = OrderSide.BUY if side.upper() == "BUY" else OrderSide.SELL
 

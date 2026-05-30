@@ -5,7 +5,7 @@ All parameters in ONE file. No magic numbers elsewhere.
 
 import os
 from dataclasses import dataclass, field
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 from dotenv import load_dotenv
 load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".env"))
@@ -52,6 +52,18 @@ class SignalConfig:
 
 @dataclass
 class RiskConfig:
+    # ── Hard capital controls (explicit, not derived) ────────────────────────
+    # equity_cap: optional fixed dollar ceiling on deployed market value.
+    #   None  → no fixed cap. The account compounds: Kelly sizes off the full,
+    #           growing equity and the only ceiling is "no margin" (market value
+    #           <= equity, cash never negative). This is the default.
+    #   float → a hard ceiling. Raptor sizes off min(equity, cap) and never lets
+    #           market value exceed the cap (excess equity sits idle).
+    # allow_margin: when False, Raptor spends cash only — never borrowed buying
+    #   power. Orders are gated against available CASH (and cap headroom if a cap
+    #   is set), not the broker's margin-inflated buying_power. cash < 0 blocks.
+    equity_cap: Optional[float] = None
+    allow_margin: bool = False
     kelly_fraction: float = 0.12  # H-8: was 0.15 but signals.py hard-clips to 0.12 ceiling — aligning config to actual cap. TODO:DERIVE both via EVT tail on closed trade returns.
     max_position_pct: float = 0.08
     min_position_pct: float = 0.02
