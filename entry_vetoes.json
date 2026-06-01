@@ -644,5 +644,53 @@
     "symbol": "IREN",
     "timestamp": "2026-05-29T09:36:48.142895",
     "agent": "EntryAgent"
+  },
+  {
+    "decision": "PASS",
+    "confidence": 0.9,
+    "veto_reason": null,
+    "flags": [],
+    "symbol": "NVO",
+    "timestamp": "2026-06-01T09:35:37.225466",
+    "agent": "EntryAgent"
+  },
+  {
+    "decision": "PASS",
+    "confidence": 0.95,
+    "veto_reason": null,
+    "flags": [],
+    "symbol": "KRE",
+    "timestamp": "2026-06-01T09:35:55.056084",
+    "agent": "EntryAgent"
+  },
+  {
+    "decision": "PASS",
+    "confidence": 0.5,
+    "veto_reason": null,
+    "reasoning": "Agent unavailable \u2014 passthrough default",
+    "flags": [
+      "agent_error"
+    ],
+    "symbol": "PLTR",
+    "timestamp": "2026-06-01T09:36:13.819668",
+    "agent": "EntryAgent"
+  },
+  {
+    "decision": "PASS",
+    "confidence": 0.8,
+    "veto_reason": null,
+    "flags": [],
+    "symbol": "CRWV",
+    "timestamp": "2026-06-01T09:36:30.538887",
+    "agent": "EntryAgent"
+  },
+  {
+    "decision": "PASS",
+    "confidence": 0.8,
+    "veto_reason": null,
+    "flags": [],
+    "symbol": "HOOD",
+    "timestamp": "2026-06-01T09:36:48.183219",
+    "agent": "EntryAgent"
   }
 ]
