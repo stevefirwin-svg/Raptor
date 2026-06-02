@@ -2,8 +2,8 @@
   "decision": "SCAN",
   "risk_scalar": 1.0,
   "confidence": null,
-  "reasoning": "Macro regime is RISK_ON with a calm VIX and broad strength in sector breadth.",
+  "reasoning": "Macro regime is RISK_ON with calm VIX and broad strength, indicating a low-risk environment.",
   "source": "rule+llama3.2",
   "macro_regime": "RISK_ON",
-  "timestamp": "2026-06-01T13:15:32.263215+00:00"
+  "timestamp": "2026-06-02T13:15:32.990930+00:00"
 }

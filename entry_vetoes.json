@@ -692,5 +692,53 @@
     "symbol": "HOOD",
     "timestamp": "2026-06-01T09:36:48.183219",
     "agent": "EntryAgent"
+  },
+  {
+    "decision": "PASS",
+    "confidence": 1.0,
+    "veto_reason": null,
+    "flags": [],
+    "symbol": "PFE",
+    "timestamp": "2026-06-02T09:35:38.104300",
+    "agent": "EntryAgent"
+  },
+  {
+    "decision": "VETO",
+    "confidence": 0.0,
+    "veto_reason": "days_since_earnings < 5",
+    "flags": [],
+    "symbol": "HPE",
+    "timestamp": "2026-06-02T09:35:56.309111",
+    "agent": "EntryAgent"
+  },
+  {
+    "decision": "PASS",
+    "confidence": 0.9,
+    "veto_reason": null,
+    "flags": [],
+    "symbol": "CRWV",
+    "timestamp": "2026-06-02T09:36:14.110439",
+    "agent": "EntryAgent"
+  },
+  {
+    "decision": "PASS",
+    "confidence": 0.5,
+    "veto_reason": null,
+    "flags": [],
+    "symbol": "SOFI",
+    "timestamp": "2026-06-02T09:36:30.845546",
+    "agent": "EntryAgent"
+  },
+  {
+    "decision": "PASS",
+    "confidence": 0.5,
+    "veto_reason": null,
+    "reasoning": "Agent unavailable \u2014 passthrough default",
+    "flags": [
+      "agent_error"
+    ],
+    "symbol": "MRVL",
+    "timestamp": "2026-06-02T09:36:49.960100",
+    "agent": "EntryAgent"
   }
 ]
