@@ -7,13 +7,13 @@
       "entry_price": 50.189944,
       "entry_date": "2026-05-15",
       "metadata": {
-        "stop": 75.3568,
+        "stop": 75.61,
         "regime": "BACKFILL",
         "t_stat": null,
         "kelly_fraction": null,
         "composite_score": null,
         "note": "Backfilled from Alpaca \u2014 entry_date approximate",
-        "high_water": 79.35,
+        "high_water": 80.15,
         "last_trim_ts": "2026-05-29T15:50:24.136926"
       },
       "trims": [
@@ -46,7 +46,7 @@
       "entry_price": 391.11,
       "entry_date": "2026-05-22",
       "metadata": {
-        "stop": 421.5752,
+        "stop": 422.1329,
         "regime": "BACKFILL",
         "t_stat": null,
         "kelly_fraction": null,
@@ -62,13 +62,13 @@
       "entry_price": 304.32,
       "entry_date": "2026-05-22",
       "metadata": {
-        "stop": 493.335,
+        "stop": 514.7361,
         "regime": "BACKFILL",
         "t_stat": null,
         "kelly_fraction": null,
         "composite_score": null,
         "note": "Restored by backfill_positions.py 2026-05-27 \u2014 position was incorrectly closed in ledger by math_trim routing bug",
-        "high_water": 519.5996
+        "high_water": 541.95
       }
     },
     "v5.4:INTC": {
@@ -78,7 +78,7 @@
       "entry_price": 87.74,
       "entry_date": "2026-05-22",
       "metadata": {
-        "stop": 108.7121,
+        "stop": 112.0218,
         "regime": "BACKFILL",
         "t_stat": null,
         "kelly_fraction": null,
@@ -94,13 +94,13 @@
       "entry_price": 28.670593,
       "entry_date": "2026-05-24",
       "metadata": {
-        "stop": 29.5339,
+        "stop": 29.8546,
         "regime": "BACKFILL",
         "t_stat": null,
         "kelly_fraction": null,
         "composite_score": null,
         "note": "Restored by backfill_positions.py 2026-05-27 \u2014 position was incorrectly closed in ledger by math_trim routing bug",
-        "high_water": 30.495
+        "high_water": 30.835
       }
     },
     "v5.4:SMCI": {
@@ -117,22 +117,6 @@
         "composite_score": null,
         "note": "Restored by backfill_positions.py 2026-05-27 \u2014 position was incorrectly closed in ledger by math_trim routing bug",
         "high_water": 50.2695
-      }
-    },
-    "v5.4:PLTR": {
-      "model": "v5.4",
-      "symbol": "PLTR",
-      "shares": 43,
-      "entry_price": 148.845,
-      "entry_date": "2026-05-29",
-      "metadata": {
-        "t_stat": 0.0,
-        "stop": 135.7,
-        "tp": 0.0,
-        "regime": "RISK_ON/MIXED",
-        "kelly_fraction": 0.06,
-        "composite_score": 0.0,
-        "velocity": 0.0
       }
     },
     "v5.4:HPQ": {
@@ -778,6 +762,18 @@
       "exit_path": "math_exit",
       "pnl": -27.694809999999933,
       "pnl_pct": -5.024596015263905
+    },
+    {
+      "symbol": "PLTR",
+      "entry_date": "2026-05-29",
+      "exit_date": "2026-06-03",
+      "entry_price": 148.845,
+      "exit_price": 148.845,
+      "shares": 43,
+      "pnl": 0.0,
+      "pnl_pct": 0.0,
+      "reason": "ledger_ghost_removed",
+      "note": "Position never filled at Alpaca \u2014 removed during manual reconcile"
     }
   ]
 }

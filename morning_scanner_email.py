@@ -158,7 +158,7 @@ def build_symbol_rows(items, colour, label_fn, right_fn=None):
 
 
 def build_html(new_entries, trims, exits, held):
-    now_str = datetime.now().strftime("%A, %B %-d · %I:%M %p ET")
+    now_str = datetime.now().strftime("%A, %B %#d · %I:%M %p ET")
     market_decision = load_json("market_decision.json", {})
     regime = market_decision.get("macro_regime", "—")
     scan_mode = market_decision.get("decision", "—")
@@ -362,7 +362,7 @@ def main():
     msg = MIMEMultipart()
     msg["From"]    = EMAIL_SENDER
     msg["To"]      = EMAIL_RECEIVER
-    msg["Subject"] = f"RAPTOR Morning Scan · {datetime.now().strftime('%b %-d')} · {len(held)} held"
+    msg["Subject"] = f"RAPTOR Morning Scan · {datetime.now().strftime('%b %#d')} · {len(held)} held"
     msg.attach(MIMEText(html, "html"))
 
     try:

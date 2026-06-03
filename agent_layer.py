@@ -6,6 +6,7 @@ Agents run in a thread pool — failure always defaults to PASS/HOLD.
 """
 
 import json
+import re
 import logging
 import urllib.request
 import urllib.error
@@ -53,13 +54,20 @@ def _ollama_alive() -> bool:
 
 # ── Prompt Templates ───────────────────────────────────────────────────────────
 
-ENTRY_PROMPT = """Quantitative risk filter. Signal math already approved this entry. VETO only on structural risk.
+# FIX 2026-06-03: Tightened prompt to prevent LLM from substituting its own
+# regime judgment for the provided macro_regime field value. Previously the
+# model was hallucinating RISK_OFF when it saw high kelly_fraction values,
+# triggering rule 6 vetoes on RISK_ON candidates (KRE, HPE, HOOD, NOW all
+# blocked incorrectly on 2026-06-03). Added explicit instruction to use only
+# the literal field values from the candidate JSON.
+ENTRY_PROMPT = """You are a quantitative trade filter. Apply the rules below mechanically.
+Use ONLY the exact field values from the candidate JSON. Do NOT infer, assume, or override any field with your own market judgment.
 
-Macro: {macro}
+Macro context (for reference only — do not override macro_regime from candidate): {macro}
 
 Candidate: {context}
 
-VETO if ANY of these are true (otherwise PASS):
+VETO if ANY of these rules are explicitly met using the candidate's literal field values:
 1. regime="MIXED" AND composite_score < 1.0
 2. kelly_fraction > 0.10 AND atr_pct > 3.5
 3. days_since_earnings < 5
@@ -67,11 +75,12 @@ VETO if ANY of these are true (otherwise PASS):
 5. macro_regime="CRISIS"
 6. macro_regime="RISK_OFF" AND kelly_fraction > 0.07
 
-PASS if macro_regime is RISK_ON, NEUTRAL, or BULLISH — these are NOT veto conditions.
-Default is PASS. Only VETO when a numbered rule above is explicitly met.
+PASS if macro_regime is RISK_ON, NEUTRAL, or BULLISH — these are never veto conditions regardless of other fields.
+Default is PASS. Only VETO when a numbered rule above is literally and explicitly met by the candidate values.
+Do NOT infer the regime from kelly_fraction, atr_pct, or any other field. Use only the macro_regime value provided.
 
-Respond ONLY with this JSON, no other text:
-{{"decision": "PASS or VETO", "confidence": 0.0-1.0, "veto_reason": "rule number and reason or null", "flags": []}}"""
+Respond ONLY with valid JSON, no other text. Use only double quotes. Do not put quotes inside string values:
+{"decision": "PASS or VETO", "confidence": 0.0-1.0, "veto_reason": "rule number and reason or null", "flags": []}"""
 
 
 HOLD_PROMPT = """You are a quantitative position analyst. Evaluate whether to HOLD, TRIM, or EXIT based strictly on the numbers provided.
@@ -89,8 +98,8 @@ Decision logic (apply in order):
 Reasoning must cite actual numbers from the position data. Example: "health=-0.32 DECAYING, momentum=-0.41, volume=-0.28, pnl=-8.8% — thesis deteriorating across all dimensions"
 Never use generic phrases. Always reference specific field values.
 
-Respond ONLY with this JSON, no other text:
-{{"decision": "HOLD or TRIM or EXIT", "confidence": 0.0-1.0, "reasoning": "cite specific field values", "trim_pct": 25 or null}}"""
+Respond ONLY with valid JSON, no other text. Use only double quotes. Do not put quotes inside string values:
+{"decision": "HOLD or TRIM or EXIT", "confidence": 0.0-1.0, "reasoning": "cite specific field values", "trim_pct": 25 or null}"""
 
 
 # ── Core HTTP call (blocking, runs in thread) ──────────────────────────────────
@@ -116,6 +125,39 @@ def _call_ollama(prompt: str) -> str:
         return raw.get("response", "{}").strip()
 
 
+def _sanitize_llm_json(raw: str) -> str:
+    """
+    Sanitize common LLM JSON formatting errors before parsing.
+
+    FIX 2026-06-03: LLM (llama3.2) was producing unescaped double quotes
+    inside JSON string values, e.g.:
+        "veto_reason": "macro_regime="RISK_OFF" AND kelly_fraction > 0.07"
+    This is invalid JSON and caused JSONDecodeError, silently dropping the
+    agent decision and leaving the symbol absent from the decisions dict.
+    entry_passes() defaults to PASS on missing symbol, but the decision was
+    not written to entry_vetoes.json, making it invisible for debugging.
+
+    Strategy: extract each string value (between outer quotes) and replace
+    any interior double quotes with single quotes. Handles the most common
+    LLM output pattern without risking damage to the JSON structure itself.
+    """
+    def _fix_value(m):
+        key = m.group(1)
+        val = m.group(2)
+        # Replace any interior double quotes with single quotes
+        val_clean = val.replace('"', "'")
+        return f'"{key}": "{val_clean}"'
+
+    # Match "key": "value" patterns and sanitize interior quotes in value
+    sanitized = re.sub(
+        r'"([^"]+)":\s*"(.*?)"(?=\s*[,}])',
+        _fix_value,
+        raw,
+        flags=re.DOTALL
+    )
+    return sanitized
+
+
 # ── Agent Class ────────────────────────────────────────────────────────────────
 
 class OllamaAgent:
@@ -135,7 +177,7 @@ class OllamaAgent:
         try:
             inner = _call_ollama(prompt)
             logger.info(f"{self.name} | RAW: {repr(inner[:300])}")
-            # Extract only the first complete JSON object — Mistral sometimes outputs two
+            # Extract only the first complete JSON object — LLM sometimes outputs two
             start = inner.find("{")
             if start == -1:
                 inner = "{}"
@@ -149,10 +191,12 @@ class OllamaAgent:
                             end = i + 1
                             break
                 inner = inner[start:end]
+            # Sanitize before parsing — LLM may embed unescaped quotes in string values
+            inner = _sanitize_llm_json(inner)
             result = json.loads(inner)
             return self._stamp(result, context)
         except json.JSONDecodeError as e:
-            logger.warning(f"{self.name} | JSON parse error on {context.get('symbol')}: {e}")
+            logger.warning(f"{self.name} | JSON parse error on {context.get('symbol')}: {e} | raw: {repr(inner[:200])}")
             return self._default(context)
         except Exception as e:
             logger.warning(f"{self.name} | Error on {context.get('symbol')}: {e}")
@@ -297,6 +341,7 @@ if __name__ == "__main__":
         "regime": "TRENDING", "kelly_fraction": 0.09,
         "market_momentum_scalar": 0.85, "atr_pct": 2.1,
         "days_since_earnings": 14, "vix_regime": "NORMAL",
+        "macro_regime": "RISK_ON",
         "cluster_scores": {"MR": 0.42, "TREND": 1.21, "VOL": 0.88, "VOLAT": 0.31, "REV": 0.61}
     }]
 
