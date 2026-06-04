@@ -7,7 +7,7 @@
       "entry_price": 50.189944,
       "entry_date": "2026-05-15",
       "metadata": {
-        "stop": 75.61,
+        "stop": 76.1336,
         "regime": "BACKFILL",
         "t_stat": null,
         "kelly_fraction": null,
@@ -46,7 +46,7 @@
       "entry_price": 391.11,
       "entry_date": "2026-05-22",
       "metadata": {
-        "stop": 422.1329,
+        "stop": 422.4061,
         "regime": "BACKFILL",
         "t_stat": null,
         "kelly_fraction": null,
@@ -94,7 +94,7 @@
       "entry_price": 28.670593,
       "entry_date": "2026-05-24",
       "metadata": {
-        "stop": 29.8546,
+        "stop": 29.8825,
         "regime": "BACKFILL",
         "t_stat": null,
         "kelly_fraction": null,
