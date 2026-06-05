@@ -1,0 +1,11 @@
+2026-05-16 09:35:04,473 [raptor.main] INFO: ============================================================
+2026-05-16 09:35:04,474 [raptor.main] INFO: RAPTOR v5.4 DAILY SCAN - 2026-05-16T09:35:04.474249
+2026-05-16 09:35:04,474 [raptor.main] INFO: ============================================================
+2026-05-16 09:35:04,475 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-05-16 09:35:05,280 [raptor.main] INFO: Account: equity=$103962.33  my_allocation=$103962.33  positions=15
+2026-05-16 09:35:05,323 [MarketAgent] WARNING: [MarketAgent] market_decision.json is 19.2h old — defaulting to SCAN
+2026-05-16 09:35:05,348 [raptor.main] INFO: [MarketAgent] SCAN | scalar=1.00 | Stale decision file — defaulting to SCAN
+2026-05-16 09:35:05,970 [raptor.margin_guard] INFO: MARGIN GUARD: equity=$103,962  cash=$-68,506  positions=15
+2026-05-16 09:35:05,971 [raptor.margin_guard] INFO: MARGIN GUARD: market_value=$172,468  utilization=165.9%  margin=YES
+2026-05-16 09:35:05,971 [raptor.margin_guard] INFO: MARGIN GUARD: margin_usage=65.9% of equity
+2026-05-16 09:35:05,971 [raptor.main] WARNING: MARGIN GUARD BLOCK: utilization 165.9% > 90% — blocking new entries — skipping entry scan

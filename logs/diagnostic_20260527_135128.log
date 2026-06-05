@@ -1,0 +1,193 @@
+
+------------------------------------------------------------
+  1. ENVIRONMENT
+------------------------------------------------------------
+  [ PASS ]  Python version
+         Python 3.13.12
+  [ PASS ]  .env file exists
+  [ PASS ]  Required .py files
+         All 14 present
+  [ PASS ]  Syntax check
+         All 14 files clean
+
+------------------------------------------------------------
+  2. IMPORTS
+------------------------------------------------------------
+  [ PASS ]  import config
+  [ PASS ]  import signals
+  [ PASS ]  import exit_monitor
+  [ PASS ]  import hold_monitor
+  [ PASS ]  import main
+  [ PASS ]  import macro_context
+  [ PASS ]  import ledger
+  [ PASS ]  import outcome_tracker
+  [ PASS ]  import factor_lab
+  [ PASS ]  import kelly_engine
+  [ PASS ]  import universe_builder
+  [ PASS ]  import daily_recap
+  [ PASS ]  import margin_guard
+
+------------------------------------------------------------
+  3. CONFIG
+------------------------------------------------------------
+  [ PASS ]  Config loads and validates
+  [  INFO ]  Kelly mode
+         SHADOW until 100 trades (max_positions=10, kelly_fraction=0.15)
+  [  INFO ]  Trail ATR levels
+         early=2.5x (<=3d)  mid=2.0x (<=10d)  late=1.5x (<=20d)  final=1.0x
+  [  INFO ]  Stop ATR mult
+         initial_stop_atr_mult=3.0
+
+------------------------------------------------------------
+  4. DATA FILES
+------------------------------------------------------------
+  [ PASS ]  Ledger
+         modified 2026-05-27 13:35 (0.3h ago)
+  [ PASS ]  Hold Health
+         modified 2026-05-27 09:52 (4.0h ago)
+  [ PASS ]  Hold History
+         modified 2026-05-27 09:52 (4.0h ago)
+  [ PASS ]  Outcome Log
+         modified 2026-05-27 09:52 (4.0h ago)
+  [ PASS ]  Trim Log
+         modified 2026-05-26 15:50 (22.0h ago)
+  [ PASS ]  Composite Cache
+         modified 2026-05-27 09:52 (4.0h ago)
+  [ WARN ]  Cooldown Log
+         Stale — modified 2026-05-25 23:09 (38.7h ago)
+  [ PASS ]  Macro Context
+         modified 2026-05-27 09:00 (4.9h ago)
+  [ PASS ]  Market Decision
+         modified 2026-05-27 09:15 (4.6h ago)
+  [ PASS ]  Hold Decisions
+         modified 2026-05-27 09:52 (4.0h ago)
+  [ PASS ]  Entry Vetoes
+         modified 2026-05-27 09:36 (4.2h ago)
+  [ WARN ]  Factor IC Report
+         Stale — modified 2026-05-24 10:49 (75.0h ago)
+  [ WARN ]  Kelly Estimates
+         Stale — modified 2026-05-24 10:49 (75.0h ago)
+
+------------------------------------------------------------
+  5. LEDGER INTEGRITY
+------------------------------------------------------------
+  [ PASS ]  Ledger loads
+         10 open positions, 24 closed trades
+  [ PASS ]  Open positions: stop price
+         All 10 positions have stop metadata
+  [ PASS ]  Open positions: entry_date
+         All 10 positions have entry_date
+  [ WARN ]  Closed trades: pnl_pct units
+         Suspiciously small pnl_pct (<0.5) on: ['OWL', 'TSLL', 'KRE', 'FXI', 'INTC'] — may be decimal not %
+  [ PASS ]  Ledger atomic write
+         No .tmp file present
+  [  INFO ]  Open positions
+         STM(177sh)  TSLA(1sh)  AMD(18sh)  CSX(186sh)  CVE(100sh)  DKNG(58sh)  INTC(47sh)  KDP(28sh)  PLTD(152sh)  SMCI(43sh)
+
+------------------------------------------------------------
+  6. ALPACA CONNECTIVITY
+------------------------------------------------------------
+DataManager initialized with all feeds
+Starting new HTTPS connection (1): paper-api.alpaca.markets:443
+https://paper-api.alpaca.markets:443 "GET /v2/account HTTP/1.1" 200 None
+  [ PASS ]  Alpaca API connection
+         equity=$107,289.59  cash=$63,609.57
+https://paper-api.alpaca.markets:443 "GET /v2/positions HTTP/1.1" 200 None
+  [ PASS ]  Alpaca/Ledger sync
+         10 positions match between Alpaca and ledger
+  [ PASS ]  Buying power
+         $378,362.56 available
+
+------------------------------------------------------------
+  7. BAT FILE RUN ORDER
+------------------------------------------------------------
+  [ PASS ]  Start_Intraday_Monitor.bat order: hold_monitor.py before exit_monitor.py
+  [ PASS ]  Start_Morning_Monitor.bat order: hold_monitor.py before exit_monitor.py
+  [ PASS ]  Start_Afternoon_Monitor.bat order: hold_monitor.py before exit_monitor.py
+
+------------------------------------------------------------
+  8. HOLD HEALTH INTEGRITY
+------------------------------------------------------------
+  [ PASS ]  Hold health: no ghosts
+         All hold_health symbols match Alpaca positions
+  [ PASS ]  Hold health: coverage
+         All 10 positions have health scores
+  [ WARN ]  Hold health: freshness
+         Stale health scores (>1h old): ['AMD(4h)', 'CSX(4h)', 'CVE(4h)', 'DKNG(4h)', 'INTC(4h)', 'KDP(4h)', 'PLTD(4h)', 'SMCI(4h)', 'STM(4h)', 'TSLA(4h)']
+         exit_monitor will use these for trim/trail decisions
+  [ PASS ]  Trailing stops: ratcheted
+         Stops appear to have trailed with price
+
+------------------------------------------------------------
+  9. OUTCOME LOG INTEGRITY
+------------------------------------------------------------
+  [ PASS ]  Outcome log: no unknowns
+         0 unknown exit paths
+  [ PASS ]  Outcome log: pnl coverage
+         All non-pre_label records have pnl
+  [  INFO ]  Outcome log: IC-valid count
+         Full terminal exits (IC-valid): 6  Partial trims (excluded from IC): 50  Pre-label (excluded): 47
+  [  INFO ]  IC gate (60 full exits)
+         6/60 full exits — 54 more needed
+
+------------------------------------------------------------
+  10. COMPONENT DRY RUNS
+------------------------------------------------------------
+  [ PASS ]  hold_monitor: functions present
+  [ PASS ]  exit_monitor: functions present
+  [ PASS ]  ledger: all methods + atomic save
+  [ PASS ]  outcome_tracker: functions present
+  [ PASS ]  watchdog: ledger writes present
+  [ PASS ]  kelly_engine: math_trim excluded
+         41 clean outcomes loaded (no math_trim partials)
+  [ PASS ]  factor_lab: math_trim excluded
+
+------------------------------------------------------------
+  11. LOG FILES
+------------------------------------------------------------
+  [ PASS ]  Entry scan log
+         logs/raptor_20260527.log  29 lines  3,564b
+  [ PASS ]  Exit monitor log
+         logs/exits_20260527.log  52 lines  6,105b
+  [ WARN ]  Errors in exits_20260527.log
+         1 ERROR lines:
+         2026-05-27 09:52:10,445 [raptor.data_feeds] ERROR: FRED fetch failed for NAPM: 400 Client Error: Bad Request for url: https://api.stlouisfed.org/fred/series/observations?series_id=NAPM&api_key=da7dbeb2fb38addc5865122252685cee&file_type=json&observation_start=2023-05-28&observation_end=2026-05-27&sort_order=asc
+  [ WARN ]  Errors in raptor_20260527.log
+         1 ERROR lines:
+         2026-05-27 09:35:07,064 [raptor.data_feeds] ERROR: FRED fetch failed for NAPM: 400 Client Error: Bad Request for url: https://api.stlouisfed.org/fred/series/observations?series_id=NAPM&api_key=da7dbeb2fb38addc5865122252685cee&file_type=json&observation_start=2023-05-28&observation_end=2026-05-27&sort_order=asc
+
+------------------------------------------------------------
+  12. INVARIANTS (code-level)
+------------------------------------------------------------
+  [ PASS ]  comp=0.0 default (not -1.0)
+  [ PASS ]  No fabricated fallback in exit_monitor.py
+  [ PASS ]  No fabricated fallback in hold_monitor.py
+  [ PASS ]  No fabricated fallback in daily_recap.py
+  [ PASS ]  Atomic write in main.py
+  [ PASS ]  Atomic write in outcome_tracker.py
+  [ PASS ]  Atomic write in hold_monitor.py
+  [ PASS ]  Atomic write in exit_monitor.py
+  [ PASS ]  Atomic write in ledger.py
+
+------------------------------------------------------------
+  SUMMARY
+------------------------------------------------------------
+  Total checks: 74
+  [ PASS ]: 61
+  [ WARN ]: 7
+  [ FAIL ]: 0
+
+  WARNINGS — review before trading:
+    • Cooldown Log
+    • Factor IC Report
+    • Kelly Estimates
+    • Closed trades: pnl_pct units
+    • Hold health: freshness
+    • Errors in exits_20260527.log
+    • Errors in raptor_20260527.log
+
+  ========================================
+  SYSTEM READY  (0 failures, 7 warnings)
+  ========================================
+
+  Full log: logs/diagnostic_20260527_135128.log

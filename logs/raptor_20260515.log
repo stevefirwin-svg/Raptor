@@ -1,0 +1,25 @@
+2026-05-15 09:35:04,482 [raptor.main] INFO: ============================================================
+2026-05-15 09:35:04,483 [raptor.main] INFO: RAPTOR v5.4 DAILY SCAN - 2026-05-15T09:35:04.483022
+2026-05-15 09:35:04,483 [raptor.main] INFO: ============================================================
+2026-05-15 09:35:04,484 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-05-15 09:35:13,668 [raptor.main] INFO: Account: equity=$104841.29  my_allocation=$104841.29  positions=15
+2026-05-15 09:35:13,674 [raptor.main] INFO: [MarketAgent] SCAN | scalar=1.00 | All signals indicate a neutral to bullish market environment with no extreme conditions present.
+2026-05-15 09:35:13,688 [raptor.universe] INFO: Universe from cache: 135 symbols
+2026-05-15 09:35:13,689 [raptor.main] INFO: Dynamic universe: 135 symbols
+2026-05-15 09:35:17,005 [raptor.data_feeds] INFO: Fetched 136 new bars / 136 total cached
+2026-05-15 09:35:17,118 [raptor.data_feeds] INFO: FRED regime: NEUTRAL (score=-0.050)
+2026-05-15 09:35:18,327 [raptor.main] INFO: Data: 136 symbols | Macro: NEUTRAL (-0.050)
+2026-05-15 09:35:20,492 [raptor.signals] INFO: v5.4 Signals: 5 from 135 | Macro=NEUTRAL Scale=1.0 | Micro={'TRENDING': 93, 'MIXED': 42}
+2026-05-15 09:35:20,492 [raptor.main] INFO: Signals:
+2026-05-15 09:35:20,493 [raptor.main] INFO:   1. POET  t=0.258  pctl=100%  entry=$19.68  stop=$13.57  tp=$0.00  kelly=0.088  hold~5d
+2026-05-15 09:35:20,493 [raptor.main] INFO:   2. FCX  t=0.500  pctl=99%  entry=$62.00  stop=$54.42  tp=$0.00  kelly=0.100  hold~27d
+2026-05-15 09:35:20,493 [raptor.main] INFO:   3. F  t=0.274  pctl=99%  entry=$13.78  stop=$12.08  tp=$0.00  kelly=0.089  hold~2d
+2026-05-15 09:35:20,493 [raptor.main] INFO:   4. XOM  t=0.320  pctl=98%  entry=$153.95  stop=$144.81  tp=$0.00  kelly=0.091  hold~29d
+2026-05-15 09:35:20,494 [raptor.main] INFO:   5. IBIT  t=0.447  pctl=97%  entry=$45.15  stop=$42.54  tp=$0.00  kelly=0.097  hold~28d
+2026-05-15 09:36:36,756 [AgentLayer] INFO: EntryAgent | RAW: '{"decision": "PASS", "confidence": 1.0, "veto_reason": null, "flags": []}'
+2026-05-15 09:37:16,571 [AgentLayer] INFO: EntryAgent | RAW: '{"decision": "PASS", "confidence": 1.0, "veto_reason": null, "flags": []}'
+2026-05-15 09:37:53,604 [AgentLayer] INFO: EntryAgent | RAW: '{"decision": "PASS", "confidence": 1.0, "veto_reason": null, "flags": []}'
+2026-05-15 09:38:33,287 [AgentLayer] INFO: EntryAgent | RAW: '{"decision": "PASS", "confidence": 1.0, "veto_reason": null, "flags": []}'
+2026-05-15 09:39:12,935 [AgentLayer] INFO: EntryAgent | RAW: '{"decision": "PASS", "confidence": 1.0, "veto_reason": null, "flags": []}'
+2026-05-15 09:39:13,159 [AgentLayer] INFO: EntryAgent | Flushed 5 decisions -> entry_vetoes.json
+2026-05-15 09:39:13,165 [raptor.main] INFO: Scan complete. 0 orders placed for v5.4.

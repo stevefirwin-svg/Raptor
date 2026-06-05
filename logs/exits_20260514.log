@@ -1,0 +1,99 @@
+2026-05-14 09:52:06,562 [raptor.exits] INFO: ============================================================
+2026-05-14 09:52:06,563 [raptor.exits] INFO: RAPTOR v5.4 EXIT MONITOR - 2026-05-14T09:52:06.563335
+2026-05-14 09:52:06,564 [raptor.exits] INFO: ============================================================
+2026-05-14 09:52:06,566 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-05-14 09:52:06,976 [raptor.exits] INFO: Account: equity=$107666.44  cash=$-68505.56  positions=15
+2026-05-14 09:52:06,984 [raptor.universe] INFO: Universe from cache: 137 symbols
+2026-05-14 09:52:08,540 [raptor.data_feeds] INFO: Fetched 140 new bars / 140 total cached
+2026-05-14 09:52:08,576 [raptor.data_feeds] INFO: FRED regime: NEUTRAL (score=-0.050)
+2026-05-14 09:52:12,327 [raptor.signals] INFO: v5.4 Signals: 5 from 139 | Macro=NEUTRAL Scale=1.0 | Micro={'TRENDING': 99, 'MIXED': 40}
+2026-05-14 09:52:12,328 [raptor.exits] INFO: Portfolio unrealized: $10101.27 (9.38%)
+2026-05-14 09:52:12,337 [raptor.exits] INFO: EXIT 3 [THESIS] OWL composite=-1.0000 pnl=-7.3% (negative thesis + losing)
+2026-05-14 09:52:12,340 [raptor.exits] INFO: EXIT 3 [THESIS] SMCI composite=-1.0000 pnl=-5.3% (negative thesis + losing)
+2026-05-14 09:52:12,345 [raptor.exits] INFO: EXIT 2 [TRAIL] TTD $20.39 <= $20.66 (2.0x ATR)
+2026-05-14 09:52:12,345 [raptor.exits] INFO: 
+2026-05-14 09:52:12,346 [raptor.exits] INFO: ============================================================
+2026-05-14 09:52:12,346 [raptor.exits] INFO:   EXIT SUMMARY
+2026-05-14 09:52:12,346 [raptor.exits] INFO: ============================================================
+2026-05-14 09:52:12,346 [raptor.exits] INFO:   EXITS (3):
+2026-05-14 09:52:12,346 [raptor.exits] INFO:     OWL  thesis_invalid  pnl=-7.3%  comp=-1.0000
+2026-05-14 09:52:12,346 [raptor.exits] INFO:     SMCI  thesis_invalid  pnl=-5.3%  comp=-1.0000
+2026-05-14 09:52:12,346 [raptor.exits] INFO:     TTD  trailing_stop  pnl=-12.0%  comp=-1.0000
+2026-05-14 09:52:12,346 [raptor.exits] INFO:   HOLDS (12):
+2026-05-14 09:52:12,346 [raptor.exits] INFO:     AMD  pnl=+47.4%  trail=$421.7  comp=-1.0
+2026-05-14 09:52:12,346 [raptor.exits] INFO:     CSX  pnl=-1.5%  trail=$44.01  comp=-1.0
+2026-05-14 09:52:12,346 [raptor.exits] INFO:     CVE  pnl=+3.2%  trail=$27.66  comp=-1.0
+2026-05-14 09:52:12,347 [raptor.exits] INFO:     DKNG  pnl=-2.2%  trail=$22.94  comp=-1.0
+2026-05-14 09:52:12,347 [raptor.exits] INFO:     FXI  pnl=-0.6%  trail=$36.25  comp=-1.0
+2026-05-14 09:52:12,347 [raptor.exits] INFO:     INTC  pnl=+33.3%  trail=$103.91  comp=-1.0
+2026-05-14 09:52:12,347 [raptor.exits] INFO:     KDP  pnl=+2.8%  trail=$28.02  comp=-1.0
+2026-05-14 09:52:12,347 [raptor.exits] INFO:     KRE  pnl=-2.9%  trail=$67.28  comp=-1.0
+2026-05-14 09:52:12,347 [raptor.exits] INFO:     PLTD  pnl=+5.9%  trail=$7.61  comp=-1.0
+2026-05-14 09:52:12,347 [raptor.exits] INFO:     STM  pnl=+27.7%  trail=$61.41  comp=-1.0
+2026-05-14 09:52:12,348 [raptor.exits] INFO:     TSLA  pnl=+13.5%  trail=$419.4  comp=-1.0
+2026-05-14 09:52:12,348 [raptor.exits] INFO:     TSLL  pnl=+17.0%  trail=$15.04  comp=-1.0
+2026-05-14 09:52:12,348 [raptor.exits] INFO: ============================================================
+2026-05-14 09:54:14,639 [AgentLayer] WARNING: HoldAgent | Error on AMD: timed out
+2026-05-14 09:55:37,167 [AgentLayer] INFO: HoldAgent | RAW: '{"decision": "TRIM", "confidence": 0.7, "reasoning": "Multiple dimensions are deteriorating: health DECAYING, momentum losing, and volume distributing.", "trim_pct": 5}'
+2026-05-14 09:56:59,234 [AgentLayer] INFO: HoldAgent | RAW: '{"decision": "HOLD", "confidence": 0.7, "reasoning": "Although momentum is losing slightly, the position\'s health score and volume score are stable. With a small unrealized profit of 3.24%, it is recommended to hold onto the position."}'
+2026-05-14 09:58:19,056 [AgentLayer] INFO: HoldAgent | RAW: '{"decision": "HOLD", "confidence": 0.7, "reasoning": "Although momentum is losing, it\'s not extreme and the position is still profitable. The health score is stable and there are no clear signs of decay.", "trim_pct": null}'
+2026-05-14 09:59:39,968 [AgentLayer] INFO: HoldAgent | RAW: '{"decision": "HOLD", "confidence": 0.6, "reasoning": "Although the unrealized_pct is negative, the health_score and factor_coherence are not indicating a clear confluence of deterioration. The position has only 5 days of signal history, so it\'s recommended to hold for now."}'
+2026-05-14 10:01:12,970 [AgentLayer] INFO: HoldAgent | RAW: '{"decision": "HOLD", "confidence": 0.6, "reasoning": "Although the health score is slightly negative (-0.09), it\'s still within the STABLE tier and there are only 5 days of signal history. The position also has a positive momentum_score (-0.1343) and volume_score (0.5204). However, the unrealized_pc'
+2026-05-14 10:02:39,047 [AgentLayer] INFO: HoldAgent | RAW: '{"decision": "HOLD", "confidence": 0.7, "reasoning": "Health score is stable, momentum and volume scores are positive, and the position is not losing money."}'
+2026-05-14 10:04:10,134 [AgentLayer] INFO: HoldAgent | RAW: '{"decision": "TRIM", "confidence": 0.7, "reasoning": "Multiple dimensions are deteriorating: health DECAYING, momentum losing, and volume distributing.", "trim_pct": 5}'
+2026-05-14 10:05:38,056 [AgentLayer] INFO: HoldAgent | RAW: '{"decision": "HOLD", "confidence": 0.6, "reasoning": "Although momentum is losing, it\'s not extreme and the position is still profitable. Additionally, volume score is positive, indicating increasing distribution.", "trim_pct": null}'
+2026-05-14 15:50:06,190 [raptor.exits] INFO: ============================================================
+2026-05-14 15:50:06,191 [raptor.exits] INFO: RAPTOR v5.4 EXIT MONITOR - 2026-05-14T15:50:06.191522
+2026-05-14 15:50:06,192 [raptor.exits] INFO: ============================================================
+2026-05-14 15:50:06,193 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-05-14 15:50:06,644 [raptor.exits] INFO: Account: equity=$108870.89  cash=$-68505.56  positions=15
+2026-05-14 15:50:06,655 [raptor.universe] INFO: Universe from cache: 137 symbols
+2026-05-14 15:50:08,942 [raptor.data_feeds] INFO: Fetched 140 new bars / 140 total cached
+2026-05-14 15:50:10,863 [raptor.data_feeds] INFO: FRED fetch OK: T10Y2Y (749 observations)
+2026-05-14 15:50:11,313 [raptor.data_feeds] INFO: FRED fetch OK: FEDFUNDS (36 observations)
+2026-05-14 15:50:11,783 [raptor.data_feeds] INFO: FRED fetch OK: ICSA (156 observations)
+2026-05-14 15:50:12,314 [raptor.data_feeds] INFO: FRED fetch OK: VIXCLS (774 observations)
+2026-05-14 15:50:13,859 [raptor.data_feeds] INFO: FRED fetch OK: BAMLC0A4CBBB (786 observations)
+2026-05-14 15:50:15,532 [raptor.data_feeds] INFO: FRED fetch OK: CPIAUCSL (35 observations)
+2026-05-14 15:50:16,006 [raptor.data_feeds] INFO: FRED fetch OK: MANEMP (36 observations)
+2026-05-14 15:50:16,462 [raptor.data_feeds] INFO: FRED fetch OK: M2SL (35 observations)
+2026-05-14 15:50:16,929 [raptor.data_feeds] INFO: FRED fetch OK: RSXFS (36 observations)
+2026-05-14 15:50:17,380 [raptor.data_feeds] INFO: FRED fetch OK: UNRATE (35 observations)
+2026-05-14 15:50:17,383 [raptor.data_feeds] INFO: FRED regime: NEUTRAL (score=-0.050)
+2026-05-14 15:50:20,821 [raptor.signals] INFO: v5.4 Signals: 5 from 139 | Macro=NEUTRAL Scale=1.0 | Micro={'TRENDING': 101, 'MIXED': 38}
+2026-05-14 15:50:20,822 [raptor.exits] INFO: Portfolio unrealized: $11306.22 (10.38%)
+2026-05-14 15:50:20,830 [raptor.exits] INFO: EXIT 3 [THESIS] KRE composite=-1.0000 pnl=-3.1% (negative thesis + losing)
+2026-05-14 15:50:20,832 [raptor.exits] INFO: EXIT 3 [THESIS] OWL composite=-1.0000 pnl=-5.9% (negative thesis + losing)
+2026-05-14 15:50:20,834 [raptor.exits] INFO: EXIT 3 [THESIS] SMCI composite=-1.0000 pnl=-3.3% (negative thesis + losing)
+2026-05-14 15:50:20,840 [raptor.exits] INFO: EXIT 2 [TRAIL] TTD $20.40 <= $20.63 (2.0x ATR)
+2026-05-14 15:50:20,841 [raptor.exits] INFO: 
+2026-05-14 15:50:20,841 [raptor.exits] INFO: ============================================================
+2026-05-14 15:50:20,842 [raptor.exits] INFO:   EXIT SUMMARY
+2026-05-14 15:50:20,842 [raptor.exits] INFO: ============================================================
+2026-05-14 15:50:20,842 [raptor.exits] INFO:   EXITS (4):
+2026-05-14 15:50:20,843 [raptor.exits] INFO:     KRE  thesis_invalid  pnl=-3.1%  comp=-1.0000
+2026-05-14 15:50:20,843 [raptor.exits] INFO:     OWL  thesis_invalid  pnl=-5.9%  comp=-1.0000
+2026-05-14 15:50:20,843 [raptor.exits] INFO:     SMCI  thesis_invalid  pnl=-3.3%  comp=-1.0000
+2026-05-14 15:50:20,843 [raptor.exits] INFO:     TTD  trailing_stop  pnl=-12.0%  comp=-1.0000
+2026-05-14 15:50:20,843 [raptor.exits] INFO:   HOLDS (11):
+2026-05-14 15:50:20,844 [raptor.exits] INFO:     AMD  pnl=+48.4%  trail=$424.58  comp=-1.0
+2026-05-14 15:50:20,844 [raptor.exits] INFO:     CSX  pnl=+0.8%  trail=$44.26  comp=-1.0
+2026-05-14 15:50:20,844 [raptor.exits] INFO:     CVE  pnl=+4.9%  trail=$28.08  comp=-1.0
+2026-05-14 15:50:20,844 [raptor.exits] INFO:     DKNG  pnl=+0.6%  trail=$23.04  comp=-1.0
+2026-05-14 15:50:20,844 [raptor.exits] INFO:     FXI  pnl=-0.2%  trail=$36.24  comp=-1.0
+2026-05-14 15:50:20,844 [raptor.exits] INFO:     INTC  pnl=+32.0%  trail=$102.8  comp=-1.0
+2026-05-14 15:50:20,844 [raptor.exits] INFO:     KDP  pnl=+1.2%  trail=$27.51  comp=-1.0
+2026-05-14 15:50:20,844 [raptor.exits] INFO:     PLTD  pnl=+3.6%  trail=$7.41  comp=-1.0
+2026-05-14 15:50:20,844 [raptor.exits] INFO:     STM  pnl=+28.7%  trail=$61.84  comp=-1.0
+2026-05-14 15:50:20,845 [raptor.exits] INFO:     TSLA  pnl=+13.5%  trail=$418.67  comp=-1.0
+2026-05-14 15:50:20,845 [raptor.exits] INFO:     TSLL  pnl=+16.9%  trail=$14.97  comp=-1.0
+2026-05-14 15:50:20,845 [raptor.exits] INFO: ============================================================
+2026-05-14 15:52:23,226 [AgentLayer] WARNING: HoldAgent | Error on AMD: timed out
+2026-05-14 15:53:45,726 [AgentLayer] INFO: HoldAgent | RAW: '{"decision": "TRIM", "confidence": 0.7, "reasoning": "Multiple dimensions deteriorating and unrealized_pct is above the threshold of 5%"}'
+2026-05-14 15:55:14,593 [AgentLayer] INFO: HoldAgent | RAW: '{"decision": "HOLD", "confidence": 0.7, "reasoning": "Although momentum is losing slightly, the position\'s health score and volume score are stable. With a high unrealized profit of 4.88%, it is recommended to hold onto the position.", "trim_pct": null}'
+2026-05-14 15:56:42,577 [AgentLayer] INFO: HoldAgent | RAW: '{"decision": "HOLD", "confidence": 0.7, "reasoning": "Although momentum is losing, it\'s not extreme and the position is still profitable. The health score is stable and factor coherence is low due to thin data history."}'
+2026-05-14 15:58:04,120 [AgentLayer] INFO: HoldAgent | RAW: '{"decision": "HOLD", "confidence": 0.7, "reasoning": "Although momentum is negative and health score is slightly below neutral, the position\'s unrealized loss is minimal and there is no clear confluence of deterioration across all dimensions."}'
+2026-05-14 15:59:45,213 [AgentLayer] INFO: HoldAgent | RAW: '{"decision": "HOLD", "confidence": 0.7, "reasoning": "Although the health score is slightly negative (-0.09), it\'s still in the STABLE tier and there are only 5 days of signal history. The position also has a positive momentum_score (-0.1343) and volume_score (0.5204). However, the unrealized_pct is'
+2026-05-14 16:01:13,531 [AgentLayer] INFO: HoldAgent | RAW: '{"decision": "HOLD", "confidence": 0.7, "reasoning": "Although momentum is losing, it\'s not extreme and the position is still profitable. Additionally, volume score is positive, indicating healthy trading activity."}'
+2026-05-14 16:02:40,700 [AgentLayer] INFO: HoldAgent | RAW: '{"decision": "HOLD", "confidence": 0.6, "reasoning": "Although momentum is losing, it\'s not extreme and the position is still profitable. Additionally, volume score is positive, indicating healthy trading activity."}'
+2026-05-14 16:04:10,963 [AgentLayer] INFO: HoldAgent | RAW: '{"decision": "HOLD", "confidence": 0.8, "reasoning": "Although momentum is losing slightly, the overall health score and coherence are stable, and the position is still profitable. The stop distance is also not very close.", "trim_pct": null}'

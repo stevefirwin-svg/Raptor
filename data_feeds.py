@@ -197,7 +197,8 @@ class AlpacaDataFeed:
             logger.warning("Portfolio history error: %s", e)
             return None
 
-
+    def submit_order(self, symbol: str, qty, side: str, order_type: str = "market",
+                     limit_price: float = None, client_order_id: str = None) -> Dict[str, Any]:
         """Submit a buy or sell order. Returns order confirmation dict."""
         order_side = OrderSide.BUY if side.upper() == "BUY" else OrderSide.SELL
 

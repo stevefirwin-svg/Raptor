@@ -1,0 +1,33 @@
+2026-04-22 09:51:33,852 [raptor.exits] INFO: ============================================================
+2026-04-22 09:51:33,852 [raptor.exits] INFO: RAPTOR v5.4 EXIT MONITOR - 2026-04-22T09:51:33.852906
+2026-04-22 09:51:33,853 [raptor.exits] INFO: ============================================================
+2026-04-22 09:51:33,854 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-04-22 09:51:34,478 [raptor.exits] INFO: Account: equity=$104519.38  cash=$34213.97  positions=7
+2026-04-22 09:51:34,481 [raptor.universe] INFO: Universe from cache: 116 symbols
+2026-04-22 09:51:35,878 [raptor.data_feeds] INFO: Fetched bars for 116 / 116 symbols
+2026-04-22 09:51:35,988 [raptor.data_feeds] INFO: FRED regime: NEUTRAL (score=0.100)
+2026-04-22 09:51:51,857 [raptor.data_feeds] ERROR: Alpaca news fetch failed for batch 100: HTTPSConnectionPool(host='data.alpaca.markets', port=443): Max retries exceeded with url: /v1beta1/news?symbols=XLU%2CUSB%2CMDLZ%2CCSX%2CTFC%2CKMI%2CFITB%2CVALE%2CXLB%2CF%2CRWM%2CINDA%2CHBAN%2CKWEB%2CEXC%2CSPDN&start=2026-04-19T00%3A00%3A00Z&limit=50&sort=desc (Caused by ConnectTimeoutError(<HTTPSConnection(host='data.alpaca.markets', port=443) at 0x1feedbd82d0>, 'Connection to data.alpaca.markets timed out. (connect timeout=15)'))
+2026-04-22 09:51:54,416 [raptor.signals] INFO: v5.4 Signals: 5 from 116 | Macro=NEUTRAL Scale=1.0 | Micro={'TRENDING': 85, 'MIXED': 31}
+2026-04-22 09:51:54,417 [raptor.exits] INFO: Portfolio unrealized: $-103.23 (-0.10%)
+2026-04-22 09:51:54,419 [raptor.exits] INFO: EXIT 3 [THESIS] AAL composite=-1.0000 (strongly negative)
+2026-04-22 09:51:54,425 [raptor.exits] INFO: EXIT 3 [THESIS] RKT composite=-1.0000 (strongly negative)
+2026-04-22 09:51:54,427 [raptor.exits] INFO: 
+2026-04-22 09:51:54,427 [raptor.exits] INFO: ============================================================
+2026-04-22 09:51:54,428 [raptor.exits] INFO:   EXIT SUMMARY
+2026-04-22 09:51:54,428 [raptor.exits] INFO: ============================================================
+2026-04-22 09:51:54,428 [raptor.exits] INFO:   EXITS (2):
+2026-04-22 09:51:54,428 [raptor.exits] INFO:     AAL  thesis_invalid  pnl=-3.3%  comp=-1.0000
+2026-04-22 09:51:54,428 [raptor.exits] INFO:     RKT  thesis_invalid  pnl=-7.8%  comp=-1.0000
+2026-04-22 09:51:54,428 [raptor.exits] INFO:   HOLDS (5):
+2026-04-22 09:51:54,428 [raptor.exits] INFO:     CMCSA  pnl=-0.0%  trail=$28.06  comp=0.445
+2026-04-22 09:51:54,428 [raptor.exits] INFO:     HIMS  pnl=+3.2%  trail=$24.84  comp=0.7959
+2026-04-22 09:51:54,428 [raptor.exits] INFO:     IGV  pnl=-0.1%  trail=$82.66  comp=0.6905
+2026-04-22 09:51:54,428 [raptor.exits] INFO:     IONQ  pnl=+9.3%  trail=$42.47  comp=0.5615
+2026-04-22 09:51:54,428 [raptor.exits] INFO:     SMCI  pnl=-1.7%  trail=$26.7  comp=0.8751
+2026-04-22 09:51:54,428 [raptor.exits] INFO: ============================================================
+2026-04-22 09:51:54,429 [raptor.exits] INFO: SELL 823.0 AAL [thesis_invalid]
+2026-04-22 09:51:54,555 [raptor.data_feeds] INFO: Order submitted: SELL 823.0 AAL @ None
+2026-04-22 09:51:54,555 [raptor.exits] INFO:   OK: OrderStatus.PENDING_NEW
+2026-04-22 09:51:54,556 [raptor.exits] INFO: SELL 587.0 RKT [thesis_invalid]
+2026-04-22 09:51:54,759 [raptor.data_feeds] INFO: Order submitted: SELL 587.0 RKT @ None
+2026-04-22 09:51:54,760 [raptor.exits] INFO:   OK: OrderStatus.PENDING_NEW

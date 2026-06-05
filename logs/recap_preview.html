@@ -1,0 +1,688 @@
+
+    <html>
+    <head><meta name="color-scheme" content="dark"><meta name="supported-color-schemes" content="dark"></head>
+    <body style="margin:0;padding:0;background-color:#0a0a1a;font-family:'Segoe UI',Arial,sans-serif" bgcolor="#0a0a1a">
+    <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#0a0a1a" style="background-color:#0a0a1a">
+    <tr><td align="center" style="padding:20px 0">
+    <table width="720" cellpadding="0" cellspacing="0" bgcolor="#12122a" style="max-width:720px;background-color:#12122a;border:1px solid #2a2a3e">
+
+        <!-- Header -->
+        <div style="background:linear-gradient(135deg,#1a1a3e,#0d0d2b);padding:24px 28px;border-bottom:2px solid #00d4aa">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+                <div>
+                    <div style="color:#00d4aa;font-size:13px;letter-spacing:3px;text-transform:uppercase;font-weight:700">RAPTOR v5.4</div>
+                    <div style="color:#e0e0e0;font-size:22px;font-weight:700;margin-top:4px">Daily Intelligence Report</div>
+                </div>
+                <div style="text-align:right">
+                    <div style="color:#a0a0b0;font-size:12px">May 30, 2026</div>
+                    <div style="color:#a0a0b0;font-size:12px">07:37 AM ET</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Account Summary -->
+        <div style="padding:20px 28px;border-bottom:1px solid #2a2a3e">
+            <div style="display:flex;justify-content:space-between">
+                <div style="text-align:center;flex:1">
+                    <div style="color:#a0a0b0;font-size:11px;text-transform:uppercase;letter-spacing:1px">Equity</div>
+                    <div style="color:#e0e0e0;font-size:22px;font-weight:700">$107,732.46</div>
+                    <div style="color:#6a6a8a;font-size:10px;margin-top:2px">no cap · compound</div>
+                </div>
+                <div style="text-align:center;flex:1">
+                    <div style="color:#a0a0b0;font-size:11px;text-transform:uppercase;letter-spacing:1px">Cash</div>
+                    <div style="color:#e0e0e0;font-size:22px;font-weight:700">$76,566.30</div>
+                    <div style="color:#6a6a8a;font-size:10px;margin-top:2px">no margin</div>
+                </div>
+                <div style="text-align:center;flex:1">
+                    <div style="color:#a0a0b0;font-size:11px;text-transform:uppercase;letter-spacing:1px">Unrealized P&L</div>
+                    <div style="color:#00d4aa;font-size:22px;font-weight:700">$+7,590.89</div>
+                    <div style="color:#6a6a8a;font-size:10px;margin-top:2px">open positions</div>
+                </div>
+                <div style="text-align:center;flex:1">
+                    <div style="color:#a0a0b0;font-size:11px;text-transform:uppercase;letter-spacing:1px">Realized P&L</div>
+                    <div style="color:#00d4aa;font-size:22px;font-weight:700">$+11,375.26</div>
+                    <div style="color:#6a6a8a;font-size:10px;margin-top:2px">all-time, ledger</div>
+                </div>
+                <div style="text-align:center;flex:1">
+                    <div style="color:#a0a0b0;font-size:11px;text-transform:uppercase;letter-spacing:1px">Positions</div>
+                    <div style="color:#e0e0e0;font-size:22px;font-weight:700">7</div>
+                    <div style="color:#6a6a8a;font-size:10px;margin-top:2px">headroom $76,566</div>
+                </div>
+            </div>
+            <div style="margin-top:12px;color:#6a6a8a;font-size:10px;line-height:1.5">
+                Equity &amp; Cash are live Alpaca balances and already reflect every sold position.
+                Unrealized P&amp;L is open positions only; Realized P&amp;L is the ledger's closed-trade total.
+                Per-period totals below combine both from the broker equity curve.
+            </div>
+        </div>
+
+        <!-- Raptor P&L by Period -->
+        <div style="padding:16px 28px;border-bottom:1px solid #2a2a3e">
+            <div style="color:#a0a0b0;font-size:11px;text-transform:uppercase;letter-spacing:2px;margin-bottom:8px">Raptor P&amp;L by Period</div>
+            
+        <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;border:1px solid #1e1e34">
+          <tr><td bgcolor="#0e0e20" style="background-color:#0e0e20;padding:12px 8px;text-align:center;border-bottom:1px solid #1e1e34;border-right:1px solid #1e1e34">
+                <div style="color:#6a6a8a;font-size:10px;text-transform:uppercase;letter-spacing:1px">1 Week</div>
+                <div style="color:#00d4aa;font-size:17px;font-weight:700;margin-top:5px">$+2,409</div>
+                <div style="color:#00d4aa;font-size:12px;margin-top:1px">+2.3%</div>
+                <div style="color:#6a6a8a;font-size:10px;margin-top:4px">real $+7,826</div>
+                <div style="color:#6a6a8a;font-size:10px;margin-top:1px">SPY +1.8%</div>
+            </td><td bgcolor="#0e0e20" style="background-color:#0e0e20;padding:12px 8px;text-align:center;border-bottom:1px solid #1e1e34;border-right:1px solid #1e1e34">
+                <div style="color:#6a6a8a;font-size:10px;text-transform:uppercase;letter-spacing:1px">1 Month</div>
+                <div style="color:#00d4aa;font-size:17px;font-weight:700;margin-top:5px">$+3,925</div>
+                <div style="color:#00d4aa;font-size:12px;margin-top:1px">+3.8%</div>
+                <div style="color:#6a6a8a;font-size:10px;margin-top:4px">real $+11,375</div>
+                <div style="color:#6a6a8a;font-size:10px;margin-top:1px">SPY +6.3%</div>
+            </td><td bgcolor="#0e0e20" style="background-color:#0e0e20;padding:12px 8px;text-align:center;border-bottom:1px solid #1e1e34;border-right:1px solid #1e1e34">
+                <div style="color:#6a6a8a;font-size:10px;text-transform:uppercase;letter-spacing:1px">6 Month</div>
+                <div style="color:#00d4aa;font-size:17px;font-weight:700;margin-top:5px">$+107,732</div>
+                <div style="color:#00d4aa;font-size:12px;margin-top:1px">+0.0%</div>
+                <div style="color:#6a6a8a;font-size:10px;margin-top:4px">real $+11,375</div>
+                <div style="color:#6a6a8a;font-size:10px;margin-top:1px">SPY +10.5%</div>
+            </td><td bgcolor="#0e0e20" style="background-color:#0e0e20;padding:12px 8px;text-align:center;border-bottom:1px solid #1e1e34;border-right:1px solid #1e1e34">
+                <div style="color:#6a6a8a;font-size:10px;text-transform:uppercase;letter-spacing:1px">YTD</div>
+                <div style="color:#00d4aa;font-size:17px;font-weight:700;margin-top:5px">$+107,732</div>
+                <div style="color:#00d4aa;font-size:12px;margin-top:1px">+0.0%</div>
+                <div style="color:#6a6a8a;font-size:10px;margin-top:4px">real $+11,375</div>
+                <div style="color:#6a6a8a;font-size:10px;margin-top:1px">SPY +10.5%</div>
+            </td><td bgcolor="#0e0e20" style="background-color:#0e0e20;padding:12px 8px;text-align:center;border-bottom:1px solid #1e1e34;border-right:1px solid #1e1e34">
+                <div style="color:#6a6a8a;font-size:10px;text-transform:uppercase;letter-spacing:1px">All-Time</div>
+                <div style="color:#00d4aa;font-size:17px;font-weight:700;margin-top:5px">$+107,732</div>
+                <div style="color:#00d4aa;font-size:12px;margin-top:1px">+0.0%</div>
+                <div style="color:#6a6a8a;font-size:10px;margin-top:4px">real $+11,375</div>
+                <div style="color:#6a6a8a;font-size:10px;margin-top:1px">SPY —</div>
+            </td></tr>
+        </table>
+        <div style="padding:6px 0 0 2px;font-size:10px;color:#6a6a8a">
+          Total = account equity change (realized + unrealized, incl. sold positions). Real = ledger realized-only over window.
+        </div>
+        </div>
+
+        <!-- Regime & Scale -->
+        <div style="padding:14px 28px;border-bottom:1px solid #2a2a3e;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px">
+            <div>
+                <span style="color:#a0a0b0;font-size:12px">MACRO REGIME: </span>
+                <span style="color:#00d4aa;font-weight:700;font-size:14px">BULLISH</span>
+                <span style="color:#a0a0b0;font-size:12px"> (0.000)</span>
+            </div>
+            <div>
+                <span style="color:#a0a0b0;font-size:12px">MARKET SCALE: </span>
+                <span style="color:#e0e0e0;font-weight:700;font-size:14px">1.00x</span>
+            </div>
+            <div>
+                <span style="color:#a0a0b0;font-size:12px">SPY: </span>
+                <span style="color:#e0e0e0;font-weight:700;font-size:14px">$756.34</span>
+            </div>
+            <div>
+                <span style="color:#a0a0b0;font-size:12px">UNIVERSE: </span>
+                <span style="color:#e0e0e0;font-weight:700;font-size:14px">75 symbols</span>
+            </div>
+        </div>
+
+        <!-- SPY Moving Averages -->
+        <div style="padding:16px 28px;border-bottom:1px solid #2a2a3e">
+            <div style="color:#a0a0b0;font-size:11px;text-transform:uppercase;letter-spacing:2px;margin-bottom:8px">SPY Trend Structure</div>
+            <div style="display:flex;justify-content:space-between">
+            <div style="display:inline-block;width:31%;text-align:center;padding:10px 4px">
+                <div style="color:#a0a0b0;font-size:11px;text-transform:uppercase;letter-spacing:1px">20-Day MA</div>
+                <div style="color:#e0e0e0;font-size:15px;font-weight:700;margin-top:4px">$739.30</div>
+                <div style="color:#00d4aa;font-size:11px;margin-top:2px">● ABOVE &nbsp; +2.3%</div>
+            </div>
+            <div style="display:inline-block;width:31%;text-align:center;padding:10px 4px">
+                <div style="color:#a0a0b0;font-size:11px;text-transform:uppercase;letter-spacing:1px">50-Day MA</div>
+                <div style="color:#e0e0e0;font-size:15px;font-weight:700;margin-top:4px">$703.60</div>
+                <div style="color:#00d4aa;font-size:11px;margin-top:2px">● ABOVE &nbsp; +7.5%</div>
+            </div>
+            <div style="display:inline-block;width:31%;text-align:center;padding:10px 4px">
+                <div style="color:#a0a0b0;font-size:11px;text-transform:uppercase;letter-spacing:1px">200-Day MA</div>
+                <div style="color:#e0e0e0;font-size:15px;font-weight:700;margin-top:4px">$N/A</div>
+                <div style="color:#6a6a8a;font-size:11px;margin-top:2px">● N/A &nbsp; </div>
+            </div></div>
+        </div>
+
+        <!-- SPY Benchmark Returns -->
+        <div style="padding:16px 28px;border-bottom:1px solid #2a2a3e">
+            <div style="color:#a0a0b0;font-size:11px;text-transform:uppercase;letter-spacing:2px;margin-bottom:8px">SPY Benchmark Returns</div>
+            <div style="display:flex;justify-content:space-between">
+        <div style="display:inline-block;width:23%;text-align:center;padding:12px 0">
+            <div style="color:#a0a0b0;font-size:11px;text-transform:uppercase;letter-spacing:1px">1 Week</div>
+            <div style="color:#00d4aa;font-size:18px;font-weight:700;margin-top:4px">+1.8%</div>
+        </div>
+        <div style="display:inline-block;width:23%;text-align:center;padding:12px 0">
+            <div style="color:#a0a0b0;font-size:11px;text-transform:uppercase;letter-spacing:1px">1 Month</div>
+            <div style="color:#00d4aa;font-size:18px;font-weight:700;margin-top:4px">+6.3%</div>
+        </div>
+        <div style="display:inline-block;width:23%;text-align:center;padding:12px 0">
+            <div style="color:#a0a0b0;font-size:11px;text-transform:uppercase;letter-spacing:1px">6 Month</div>
+            <div style="color:#00d4aa;font-size:18px;font-weight:700;margin-top:4px">+10.5%</div>
+        </div>
+        <div style="display:inline-block;width:23%;text-align:center;padding:12px 0">
+            <div style="color:#a0a0b0;font-size:11px;text-transform:uppercase;letter-spacing:1px">YTD</div>
+            <div style="color:#00d4aa;font-size:18px;font-weight:700;margin-top:4px">+10.5%</div>
+        </div></div>
+        </div>
+
+        <!-- Recent Closed Trades -->
+        <div style="padding:16px 28px;border-bottom:1px solid #2a2a3e">
+            <div style="color:#a0a0b0;font-size:11px;text-transform:uppercase;letter-spacing:2px;margin-bottom:8px">Recent Closed Trades (Last 30)</div>
+            <table style="width:100%;border-collapse:collapse;font-size:13px"><tr style="border-bottom:2px solid #2a2a3e"><th style="padding:7px 10px;text-align:left;color:#00d4aa;font-size:11px;text-transform:uppercase">Symbol</th><th style="padding:7px 10px;text-align:right;color:#00d4aa;font-size:11px;text-transform:uppercase">P&L %</th><th style="padding:7px 10px;text-align:right;color:#00d4aa;font-size:11px;text-transform:uppercase">P&L $</th><th style="padding:7px 10px;text-align:right;color:#00d4aa;font-size:11px;text-transform:uppercase">Exit Type</th><th style="padding:7px 10px;text-align:right;color:#00d4aa;font-size:11px;text-transform:uppercase">Hold</th><th style="padding:7px 10px;text-align:right;color:#00d4aa;font-size:11px;text-transform:uppercase">Exit Date</th></tr><tr style="border-bottom:1px solid #1e1e34">
+                <td style="padding:7px 10px;color:#e0e0e0;font-weight:500">CSX</td>
+                <td style="padding:7px 10px;text-align:right;color:#ff4757;font-weight:600">-12.02%</td>
+                <td style="padding:7px 10px;text-align:right;color:#e0e0e0">$-9</td>
+                <td style="padding:7px 10px;text-align:right;color:#a0a0b0;font-size:12px">hard stop</td>
+                <td style="padding:7px 10px;text-align:right;color:#a0a0b0;font-size:12px">14d</td>
+                <td style="padding:7px 10px;text-align:right;color:#6a6a8a;font-size:11px">2026-05-29</td>
+            </tr><tr style="border-bottom:1px solid #1e1e34">
+                <td style="padding:7px 10px;color:#e0e0e0;font-weight:500">DKNG</td>
+                <td style="padding:7px 10px;text-align:right;color:#ff4757;font-weight:600">-5.02%</td>
+                <td style="padding:7px 10px;text-align:right;color:#e0e0e0">$-28</td>
+                <td style="padding:7px 10px;text-align:right;color:#a0a0b0;font-size:12px">math exit</td>
+                <td style="padding:7px 10px;text-align:right;color:#a0a0b0;font-size:12px">7d</td>
+                <td style="padding:7px 10px;text-align:right;color:#6a6a8a;font-size:11px">2026-05-29</td>
+            </tr><tr style="border-bottom:1px solid #1e1e34">
+                <td style="padding:7px 10px;color:#e0e0e0;font-weight:500">PLTD</td>
+                <td style="padding:7px 10px;text-align:right;color:#ff4757;font-weight:600">-2.91%</td>
+                <td style="padding:7px 10px;text-align:right;color:#e0e0e0">$-34</td>
+                <td style="padding:7px 10px;text-align:right;color:#a0a0b0;font-size:12px">hard stop</td>
+                <td style="padding:7px 10px;text-align:right;color:#a0a0b0;font-size:12px">4d</td>
+                <td style="padding:7px 10px;text-align:right;color:#6a6a8a;font-size:11px">2026-05-28</td>
+            </tr><tr style="border-bottom:1px solid #1e1e34">
+                <td style="padding:7px 10px;color:#e0e0e0;font-weight:500">CVE</td>
+                <td style="padding:7px 10px;text-align:right;color:#ff4757;font-weight:600">-2.44%</td>
+                <td style="padding:7px 10px;text-align:right;color:#e0e0e0">$-15</td>
+                <td style="padding:7px 10px;text-align:right;color:#a0a0b0;font-size:12px">math exit</td>
+                <td style="padding:7px 10px;text-align:right;color:#a0a0b0;font-size:12px">4d</td>
+                <td style="padding:7px 10px;text-align:right;color:#6a6a8a;font-size:11px">2026-05-28</td>
+            </tr><tr style="border-bottom:1px solid #1e1e34">
+                <td style="padding:7px 10px;color:#e0e0e0;font-weight:500">PLTD</td>
+                <td style="padding:7px 10px;text-align:right;color:#00d4aa;font-weight:600">+3.36%</td>
+                <td style="padding:7px 10px;text-align:right;color:#e0e0e0">$+190</td>
+                <td style="padding:7px 10px;text-align:right;color:#a0a0b0;font-size:12px">trim 20%</td>
+                <td style="padding:7px 10px;text-align:right;color:#a0a0b0;font-size:12px">2d</td>
+                <td style="padding:7px 10px;text-align:right;color:#6a6a8a;font-size:11px">2026-05-26</td>
+            </tr><tr style="border-bottom:1px solid #1e1e34">
+                <td style="padding:7px 10px;color:#e0e0e0;font-weight:500">CVE</td>
+                <td style="padding:7px 10px;text-align:right;color:#00d4aa;font-weight:600">+67.90%</td>
+                <td style="padding:7px 10px;text-align:right;color:#e0e0e0">$+52</td>
+                <td style="padding:7px 10px;text-align:right;color:#a0a0b0;font-size:12px">trim 1%</td>
+                <td style="padding:7px 10px;text-align:right;color:#a0a0b0;font-size:12px">2d</td>
+                <td style="padding:7px 10px;text-align:right;color:#6a6a8a;font-size:11px">2026-05-26</td>
+            </tr><tr style="border-bottom:1px solid #1e1e34">
+                <td style="padding:7px 10px;color:#e0e0e0;font-weight:500">AMD</td>
+                <td style="padding:7px 10px;text-align:right;color:#00d4aa;font-weight:600">+53.62%</td>
+                <td style="padding:7px 10px;text-align:right;color:#e0e0e0">$+3,753</td>
+                <td style="padding:7px 10px;text-align:right;color:#a0a0b0;font-size:12px">trim 20%</td>
+                <td style="padding:7px 10px;text-align:right;color:#a0a0b0;font-size:12px">2d</td>
+                <td style="padding:7px 10px;text-align:right;color:#6a6a8a;font-size:11px">2026-05-24</td>
+            </tr><tr style="border-bottom:1px solid #1e1e34">
+                <td style="padding:7px 10px;color:#e0e0e0;font-weight:500">CSX</td>
+                <td style="padding:7px 10px;text-align:right;color:#00d4aa;font-weight:600">+22.10%</td>
+                <td style="padding:7px 10px;text-align:right;color:#e0e0e0">$+42</td>
+                <td style="padding:7px 10px;text-align:right;color:#a0a0b0;font-size:12px">trim 55%</td>
+                <td style="padding:7px 10px;text-align:right;color:#a0a0b0;font-size:12px">9d</td>
+                <td style="padding:7px 10px;text-align:right;color:#6a6a8a;font-size:11px">2026-05-24</td>
+            </tr><tr style="border-bottom:1px solid #1e1e34">
+                <td style="padding:7px 10px;color:#e0e0e0;font-weight:500">DKNG</td>
+                <td style="padding:7px 10px;text-align:right;color:#00d4aa;font-weight:600">+26.40%</td>
+                <td style="padding:7px 10px;text-align:right;color:#e0e0e0">$+17</td>
+                <td style="padding:7px 10px;text-align:right;color:#a0a0b0;font-size:12px">trim 77%</td>
+                <td style="padding:7px 10px;text-align:right;color:#a0a0b0;font-size:12px">2d</td>
+                <td style="padding:7px 10px;text-align:right;color:#6a6a8a;font-size:11px">2026-05-24</td>
+            </tr><tr style="border-bottom:1px solid #1e1e34">
+                <td style="padding:7px 10px;color:#e0e0e0;font-weight:500">INTC</td>
+                <td style="padding:7px 10px;text-align:right;color:#00d4aa;font-weight:600">+36.59%</td>
+                <td style="padding:7px 10px;text-align:right;color:#e0e0e0">$+2,857</td>
+                <td style="padding:7px 10px;text-align:right;color:#a0a0b0;font-size:12px">trim 30%</td>
+                <td style="padding:7px 10px;text-align:right;color:#a0a0b0;font-size:12px">2d</td>
+                <td style="padding:7px 10px;text-align:right;color:#6a6a8a;font-size:11px">2026-05-24</td>
+            </tr><tr style="border-bottom:1px solid #1e1e34">
+                <td style="padding:7px 10px;color:#e0e0e0;font-weight:500">KDP</td>
+                <td style="padding:7px 10px;text-align:right;color:#00d4aa;font-weight:600">+1.57%</td>
+                <td style="padding:7px 10px;text-align:right;color:#e0e0e0">$+141</td>
+                <td style="padding:7px 10px;text-align:right;color:#a0a0b0;font-size:12px">trim 46%</td>
+                <td style="padding:7px 10px;text-align:right;color:#a0a0b0;font-size:12px">0d</td>
+                <td style="padding:7px 10px;text-align:right;color:#6a6a8a;font-size:11px">2026-05-24</td>
+            </tr><tr style="border-bottom:1px solid #1e1e34">
+                <td style="padding:7px 10px;color:#e0e0e0;font-weight:500">SMCI</td>
+                <td style="padding:7px 10px;text-align:right;color:#00d4aa;font-weight:600">+4.35%</td>
+                <td style="padding:7px 10px;text-align:right;color:#e0e0e0">$+276</td>
+                <td style="padding:7px 10px;text-align:right;color:#a0a0b0;font-size:12px">trim 48%</td>
+                <td style="padding:7px 10px;text-align:right;color:#a0a0b0;font-size:12px">2d</td>
+                <td style="padding:7px 10px;text-align:right;color:#6a6a8a;font-size:11px">2026-05-24</td>
+            </tr><tr style="border-bottom:1px solid #1e1e34">
+                <td style="padding:7px 10px;color:#e0e0e0;font-weight:500">CVE</td>
+                <td style="padding:7px 10px;text-align:right;color:#00d4aa;font-weight:600">+4.63%</td>
+                <td style="padding:7px 10px;text-align:right;color:#e0e0e0">$+355</td>
+                <td style="padding:7px 10px;text-align:right;color:#a0a0b0;font-size:12px">trim 31%</td>
+                <td style="padding:7px 10px;text-align:right;color:#a0a0b0;font-size:12px">1d</td>
+                <td style="padding:7px 10px;text-align:right;color:#6a6a8a;font-size:11px">2026-05-23</td>
+            </tr><tr style="border-bottom:1px solid #1e1e34">
+                <td style="padding:7px 10px;color:#e0e0e0;font-weight:500">KDP</td>
+                <td style="padding:7px 10px;text-align:right;color:#00d4aa;font-weight:600">+1.57%</td>
+                <td style="padding:7px 10px;text-align:right;color:#e0e0e0">$+141</td>
+                <td style="padding:7px 10px;text-align:right;color:#a0a0b0;font-size:12px">trim 23%</td>
+                <td style="padding:7px 10px;text-align:right;color:#a0a0b0;font-size:12px">1d</td>
+                <td style="padding:7px 10px;text-align:right;color:#6a6a8a;font-size:11px">2026-05-23</td>
+            </tr><tr style="border-bottom:1px solid #1e1e34">
+                <td style="padding:7px 10px;color:#e0e0e0;font-weight:500">PLTD</td>
+                <td style="padding:7px 10px;text-align:right;color:#00d4aa;font-weight:600">+1.55%</td>
+                <td style="padding:7px 10px;text-align:right;color:#e0e0e0">$+88</td>
+                <td style="padding:7px 10px;text-align:right;color:#a0a0b0;font-size:12px">trim 30%</td>
+                <td style="padding:7px 10px;text-align:right;color:#a0a0b0;font-size:12px">1d</td>
+                <td style="padding:7px 10px;text-align:right;color:#6a6a8a;font-size:11px">2026-05-23</td>
+            </tr><tr style="border-bottom:1px solid #1e1e34">
+                <td style="padding:7px 10px;color:#e0e0e0;font-weight:500">CVE</td>
+                <td style="padding:7px 10px;text-align:right;color:#00d4aa;font-weight:600">+4.47%</td>
+                <td style="padding:7px 10px;text-align:right;color:#e0e0e0">$+415</td>
+                <td style="padding:7px 10px;text-align:right;color:#a0a0b0;font-size:12px">trim 17%</td>
+                <td style="padding:7px 10px;text-align:right;color:#a0a0b0;font-size:12px">7d</td>
+                <td style="padding:7px 10px;text-align:right;color:#6a6a8a;font-size:11px">2026-05-22</td>
+            </tr><tr style="border-bottom:1px solid #1e1e34">
+                <td style="padding:7px 10px;color:#e0e0e0;font-weight:500">KDP</td>
+                <td style="padding:7px 10px;text-align:right;color:#ff4757;font-weight:600">-22.88%</td>
+                <td style="padding:7px 10px;text-align:right;color:#e0e0e0">$-22</td>
+                <td style="padding:7px 10px;text-align:right;color:#a0a0b0;font-size:12px">trim 7%</td>
+                <td style="padding:7px 10px;text-align:right;color:#a0a0b0;font-size:12px">6d</td>
+                <td style="padding:7px 10px;text-align:right;color:#6a6a8a;font-size:11px">2026-05-21</td>
+            </tr><tr style="border-bottom:1px solid #1e1e34">
+                <td style="padding:7px 10px;color:#e0e0e0;font-weight:500">TTD</td>
+                <td style="padding:7px 10px;text-align:right;color:#ff4757;font-weight:600">-11.82%</td>
+                <td style="padding:7px 10px;text-align:right;color:#e0e0e0">$-1,211</td>
+                <td style="padding:7px 10px;text-align:right;color:#a0a0b0;font-size:12px">trailing stop</td>
+                <td style="padding:7px 10px;text-align:right;color:#a0a0b0;font-size:12px">5d</td>
+                <td style="padding:7px 10px;text-align:right;color:#6a6a8a;font-size:11px">2026-05-20</td>
+            </tr><tr style="border-bottom:1px solid #1e1e34">
+                <td style="padding:7px 10px;color:#e0e0e0;font-weight:500">AMD</td>
+                <td style="padding:7px 10px;text-align:right;color:#00d4aa;font-weight:600">+42.34%</td>
+                <td style="padding:7px 10px;text-align:right;color:#e0e0e0">$+3,736</td>
+                <td style="padding:7px 10px;text-align:right;color:#a0a0b0;font-size:12px">trim 14%</td>
+                <td style="padding:7px 10px;text-align:right;color:#a0a0b0;font-size:12px">5d</td>
+                <td style="padding:7px 10px;text-align:right;color:#6a6a8a;font-size:11px">2026-05-20</td>
+            </tr><tr style="border-bottom:1px solid #1e1e34">
+                <td style="padding:7px 10px;color:#e0e0e0;font-weight:500">DKNG</td>
+                <td style="padding:7px 10px;text-align:right;color:#00d4aa;font-weight:600">+30.39%</td>
+                <td style="padding:7px 10px;text-align:right;color:#e0e0e0">$+63</td>
+                <td style="padding:7px 10px;text-align:right;color:#a0a0b0;font-size:12px">trim 14%</td>
+                <td style="padding:7px 10px;text-align:right;color:#a0a0b0;font-size:12px">5d</td>
+                <td style="padding:7px 10px;text-align:right;color:#6a6a8a;font-size:11px">2026-05-20</td>
+            </tr><tr style="border-bottom:1px solid #1e1e34">
+                <td style="padding:7px 10px;color:#e0e0e0;font-weight:500">KRE</td>
+                <td style="padding:7px 10px;text-align:right;color:#ff4757;font-weight:600">-3.80%</td>
+                <td style="padding:7px 10px;text-align:right;color:#e0e0e0">$-388</td>
+                <td style="padding:7px 10px;text-align:right;color:#a0a0b0;font-size:12px">trailing stop</td>
+                <td style="padding:7px 10px;text-align:right;color:#a0a0b0;font-size:12px">4d</td>
+                <td style="padding:7px 10px;text-align:right;color:#6a6a8a;font-size:11px">2026-05-19</td>
+            </tr><tr style="border-bottom:1px solid #1e1e34">
+                <td style="padding:7px 10px;color:#e0e0e0;font-weight:500">FXI</td>
+                <td style="padding:7px 10px;text-align:right;color:#ff4757;font-weight:600">-2.88%</td>
+                <td style="padding:7px 10px;text-align:right;color:#e0e0e0">$-292</td>
+                <td style="padding:7px 10px;text-align:right;color:#a0a0b0;font-size:12px">trim 59%</td>
+                <td style="padding:7px 10px;text-align:right;color:#a0a0b0;font-size:12px">4d</td>
+                <td style="padding:7px 10px;text-align:right;color:#6a6a8a;font-size:11px">2026-05-19</td>
+            </tr><tr style="border-bottom:1px solid #1e1e34">
+                <td style="padding:7px 10px;color:#e0e0e0;font-weight:500">INTC</td>
+                <td style="padding:7px 10px;text-align:right;color:#00d4aa;font-weight:600">+25.99%</td>
+                <td style="padding:7px 10px;text-align:right;color:#e0e0e0">$+2,257</td>
+                <td style="padding:7px 10px;text-align:right;color:#a0a0b0;font-size:12px">trim 8%</td>
+                <td style="padding:7px 10px;text-align:right;color:#a0a0b0;font-size:12px">4d</td>
+                <td style="padding:7px 10px;text-align:right;color:#6a6a8a;font-size:11px">2026-05-19</td>
+            </tr><tr style="border-bottom:1px solid #1e1e34">
+                <td style="padding:7px 10px;color:#e0e0e0;font-weight:500">PLTD</td>
+                <td style="padding:7px 10px;text-align:right;color:#00d4aa;font-weight:600">+2.39%</td>
+                <td style="padding:7px 10px;text-align:right;color:#e0e0e0">$+226</td>
+                <td style="padding:7px 10px;text-align:right;color:#a0a0b0;font-size:12px">trim 9%</td>
+                <td style="padding:7px 10px;text-align:right;color:#a0a0b0;font-size:12px">4d</td>
+                <td style="padding:7px 10px;text-align:right;color:#6a6a8a;font-size:11px">2026-05-19</td>
+            </tr><tr style="border-bottom:1px solid #1e1e34">
+                <td style="padding:7px 10px;color:#e0e0e0;font-weight:500">SMCI</td>
+                <td style="padding:7px 10px;text-align:right;color:#ff4757;font-weight:600">-10.14%</td>
+                <td style="padding:7px 10px;text-align:right;color:#e0e0e0">$-1,003</td>
+                <td style="padding:7px 10px;text-align:right;color:#a0a0b0;font-size:12px">trim 20%</td>
+                <td style="padding:7px 10px;text-align:right;color:#a0a0b0;font-size:12px">4d</td>
+                <td style="padding:7px 10px;text-align:right;color:#6a6a8a;font-size:11px">2026-05-19</td>
+            </tr><tr style="border-bottom:1px solid #1e1e34">
+                <td style="padding:7px 10px;color:#e0e0e0;font-weight:500">TSLA</td>
+                <td style="padding:7px 10px;text-align:right;color:#00d4aa;font-weight:600">+3.40%</td>
+                <td style="padding:7px 10px;text-align:right;color:#e0e0e0">$+333</td>
+                <td style="padding:7px 10px;text-align:right;color:#a0a0b0;font-size:12px">trim 59%</td>
+                <td style="padding:7px 10px;text-align:right;color:#a0a0b0;font-size:12px">4d</td>
+                <td style="padding:7px 10px;text-align:right;color:#6a6a8a;font-size:11px">2026-05-19</td>
+            </tr><tr style="border-bottom:1px solid #1e1e34">
+                <td style="padding:7px 10px;color:#e0e0e0;font-weight:500">OWL</td>
+                <td style="padding:7px 10px;text-align:right;color:#ff4757;font-weight:600">-10.16%</td>
+                <td style="padding:7px 10px;text-align:right;color:#e0e0e0">$-1,125</td>
+                <td style="padding:7px 10px;text-align:right;color:#a0a0b0;font-size:12px">trim 58%</td>
+                <td style="padding:7px 10px;text-align:right;color:#a0a0b0;font-size:12px">1d</td>
+                <td style="padding:7px 10px;text-align:right;color:#6a6a8a;font-size:11px">2026-05-16</td>
+            </tr><tr style="border-bottom:1px solid #1e1e34">
+                <td style="padding:7px 10px;color:#e0e0e0;font-weight:500">TSLL</td>
+                <td style="padding:7px 10px;text-align:right;color:#00d4aa;font-weight:600">+5.40%</td>
+                <td style="padding:7px 10px;text-align:right;color:#e0e0e0">$+560</td>
+                <td style="padding:7px 10px;text-align:right;color:#a0a0b0;font-size:12px">trim 32%</td>
+                <td style="padding:7px 10px;text-align:right;color:#a0a0b0;font-size:12px">1d</td>
+                <td style="padding:7px 10px;text-align:right;color:#6a6a8a;font-size:11px">2026-05-16</td>
+            </tr></table>
+        </div>
+
+        <!-- Portfolio Analytics -->
+        <div style="padding:16px 28px;border-bottom:1px solid #2a2a3e">
+            <div style="color:#a0a0b0;font-size:11px;text-transform:uppercase;letter-spacing:2px;margin-bottom:10px">Portfolio Analytics (All Closed Trades)</div>
+            
+        <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;border:1px solid #1e1e34">
+          <tr>
+            <td bgcolor="#0e0e20" style="background-color:#0e0e20;padding:12px 8px;text-align:center;border-bottom:1px solid #1e1e34;border-right:1px solid #1e1e34">
+        <div style="color:#6a6a8a;font-size:10px;text-transform:uppercase;letter-spacing:1px;white-space:nowrap">Trades</div>
+        <div style="color:#e0e0e0;font-size:16px;font-weight:700;margin-top:5px">28</div>
+    </td>
+            <td bgcolor="#0e0e20" style="background-color:#0e0e20;padding:12px 8px;text-align:center;border-bottom:1px solid #1e1e34;border-right:1px solid #1e1e34">
+        <div style="color:#6a6a8a;font-size:10px;text-transform:uppercase;letter-spacing:1px;white-space:nowrap">Win Rate</div>
+        <div style="color:#00d4aa;font-size:16px;font-weight:700;margin-top:5px">64.3%</div>
+    </td>
+            <td bgcolor="#0e0e20" style="background-color:#0e0e20;padding:12px 8px;text-align:center;border-bottom:1px solid #1e1e34;border-right:1px solid #1e1e34">
+        <div style="color:#6a6a8a;font-size:10px;text-transform:uppercase;letter-spacing:1px;white-space:nowrap">Avg Win</div>
+        <div style="color:#00d4aa;font-size:16px;font-weight:700;margin-top:5px">+18.78%</div>
+    </td>
+            <td bgcolor="#0e0e20" style="background-color:#0e0e20;padding:12px 8px;text-align:center;border-bottom:1px solid #1e1e34;border-right:1px solid #1e1e34">
+        <div style="color:#6a6a8a;font-size:10px;text-transform:uppercase;letter-spacing:1px;white-space:nowrap">Avg Loss</div>
+        <div style="color:#ff4757;font-size:16px;font-weight:700;margin-top:5px">-7.22%</div>
+    </td>
+            <td bgcolor="#0e0e20" style="background-color:#0e0e20;padding:12px 8px;text-align:center;border-bottom:1px solid #1e1e34;border-right:1px solid #1e1e34">
+        <div style="color:#6a6a8a;font-size:10px;text-transform:uppercase;letter-spacing:1px;white-space:nowrap">Expectancy</div>
+        <div style="color:#00d4aa;font-size:16px;font-weight:700;margin-top:5px">949.453%</div>
+    </td>
+            <td bgcolor="#0e0e20" style="background-color:#0e0e20;padding:12px 8px;text-align:center;border-bottom:1px solid #1e1e34;border-right:1px solid #1e1e34">
+        <div style="color:#6a6a8a;font-size:10px;text-transform:uppercase;letter-spacing:1px;white-space:nowrap">Profit Factor</div>
+        <div style="color:#00d4aa;font-size:16px;font-weight:700;margin-top:5px">4.68</div>
+    </td>
+          </tr>
+          <tr>
+            <td bgcolor="#0e0e20" style="background-color:#0e0e20;padding:12px 8px;text-align:center;border-bottom:1px solid #1e1e34;border-right:1px solid #1e1e34">
+        <div style="color:#6a6a8a;font-size:10px;text-transform:uppercase;letter-spacing:1px;white-space:nowrap">Sharpe</div>
+        <div style="color:#00d4aa;font-size:16px;font-weight:700;margin-top:5px">7.17</div>
+    </td>
+            <td bgcolor="#0e0e20" style="background-color:#0e0e20;padding:12px 8px;text-align:center;border-bottom:1px solid #1e1e34;border-right:1px solid #1e1e34">
+        <div style="color:#6a6a8a;font-size:10px;text-transform:uppercase;letter-spacing:1px;white-space:nowrap">Sortino</div>
+        <div style="color:#00d4aa;font-size:16px;font-weight:700;margin-top:5px">22.31</div>
+    </td>
+            <td bgcolor="#0e0e20" style="background-color:#0e0e20;padding:12px 8px;text-align:center;border-bottom:1px solid #1e1e34;border-right:1px solid #1e1e34">
+        <div style="color:#6a6a8a;font-size:10px;text-transform:uppercase;letter-spacing:1px;white-space:nowrap">Max DD</div>
+        <div style="color:#ff4757;font-size:16px;font-weight:700;margin-top:5px">-22.9%</div>
+    </td>
+            <td bgcolor="#0e0e20" style="background-color:#0e0e20;padding:12px 8px;text-align:center;border-bottom:1px solid #1e1e34;border-right:1px solid #1e1e34">
+        <div style="color:#6a6a8a;font-size:10px;text-transform:uppercase;letter-spacing:1px;white-space:nowrap">Capital Util</div>
+        <div style="color:#e0e0e0;font-size:16px;font-weight:700;margin-top:5px">28.9%</div>
+    </td>
+            <td bgcolor="#0e0e20" style="background-color:#0e0e20;padding:12px 8px;text-align:center;border-bottom:1px solid #1e1e34;border-right:1px solid #1e1e34">
+        <div style="color:#6a6a8a;font-size:10px;text-transform:uppercase;letter-spacing:1px;white-space:nowrap">Port Beta</div>
+        <div style="color:#a0a0b0;font-size:16px;font-weight:700;margin-top:5px">2.39</div>
+    </td>
+            <td bgcolor="#0e0e20" style="background-color:#0e0e20;border-bottom:1px solid #1e1e34"></td>
+          </tr>
+          <tr>
+            <td bgcolor="#0e0e20" style="background-color:#0e0e20;padding:12px 8px;text-align:center;border-bottom:1px solid #1e1e34;border-right:1px solid #1e1e34">
+        <div style="color:#6a6a8a;font-size:10px;text-transform:uppercase;letter-spacing:1px;white-space:nowrap">Roll10 WR</div>
+        <div style="color:#00d4aa;font-size:16px;font-weight:700;margin-top:5px">60.0%</div>
+    </td>
+            <td bgcolor="#0e0e20" style="background-color:#0e0e20;padding:12px 8px;text-align:center;border-bottom:1px solid #1e1e34;border-right:1px solid #1e1e34">
+        <div style="color:#6a6a8a;font-size:10px;text-transform:uppercase;letter-spacing:1px;white-space:nowrap">Loss Streak</div>
+        <div style="color:#ff4757;font-size:16px;font-weight:700;margin-top:5px">4 trades</div>
+    </td>
+            <td bgcolor="#0e0e20" style="background-color:#0e0e20;padding:12px 8px;text-align:center;border-bottom:1px solid #1e1e34;border-right:1px solid #1e1e34">
+        <div style="color:#6a6a8a;font-size:10px;text-transform:uppercase;letter-spacing:1px;white-space:nowrap">Trim Effic.</div>
+        <div style="color:#a0a0b0;font-size:16px;font-weight:700;margin-top:5px">0%</div>
+    </td>
+            <td bgcolor="#0e0e20" style="background-color:#0e0e20;padding:12px 8px;text-align:center;border-bottom:1px solid #1e1e34;border-right:1px solid #1e1e34">
+        <div style="color:#6a6a8a;font-size:10px;text-transform:uppercase;letter-spacing:1px;white-space:nowrap">Cap Effic.</div>
+        <div style="color:#a0a0b0;font-size:16px;font-weight:700;margin-top:5px">N/A</div>
+    </td>
+            <td colspan="2" bgcolor="#0e0e20" style="background-color:#0e0e20;border-bottom:1px solid #1e1e34"></td>
+          </tr>
+        </table>
+        <div style="padding:6px 0 2px 2px;font-size:11px;color:#6a6a8a">
+          Exit breakdown: math_trim_20%: 11% (0d avg) | trailing_stop: 7% (0d avg) | math_trim_59%: 7% (0d avg) | math_trim_14%: 7% (0d avg) | math_trim_30%: 7% (0d avg) | hard_stop: 7% (0d avg) | math_exit: 7% (0d avg) | math_trim_58%: 4% (0d avg) | math_trim_32%: 4% (0d avg) | math_trim_8%: 4% (0d avg) | math_trim_9%: 4% (0d avg) | math_trim_7%: 4% (0d avg) | math_trim_17%: 4% (0d avg) | math_trim_31%: 4% (0d avg) | math_trim_23%: 4% (0d avg) | math_trim_55%: 4% (0d avg) | math_trim_77%: 4% (0d avg) | math_trim_46%: 4% (0d avg) | math_trim_48%: 4% (0d avg) | math_trim_1%: 4% (0d avg)
+        </div>
+        </div>
+
+        <!-- Today's Activity -->
+        <div style="padding:16px 28px;border-bottom:1px solid #2a2a3e">
+            <div style="color:#a0a0b0;font-size:11px;text-transform:uppercase;letter-spacing:2px;margin-bottom:8px">Today's Activity</div>
+            <div style="font-size:13px;font-family:'Courier New',monospace"><div style="color:#a0a0b0">No trades today</div></div>
+        </div>
+
+        <!-- Holdings -->
+        <div style="padding:16px 28px;border-bottom:1px solid #2a2a3e">
+            <div style="color:#a0a0b0;font-size:11px;text-transform:uppercase;letter-spacing:2px;margin-bottom:8px">Current Holdings</div>
+            <table style="width:100%;border-collapse:collapse;font-size:13px">
+                <tr style="border-bottom:2px solid #2a2a3e">
+                    <th style="padding:8px 10px;text-align:left;color:#00d4aa;font-size:11px;text-transform:uppercase">Symbol</th>
+                    <th style="padding:8px 10px;text-align:right;color:#00d4aa;font-size:11px;text-transform:uppercase">Qty</th>
+                    <th style="padding:8px 10px;text-align:right;color:#00d4aa;font-size:11px;text-transform:uppercase">Entry</th>
+                    <th style="padding:8px 10px;text-align:right;color:#00d4aa;font-size:11px;text-transform:uppercase">Current</th>
+                    <th style="padding:8px 10px;text-align:right;color:#00d4aa;font-size:11px;text-transform:uppercase">P&L %</th>
+                    <th style="padding:8px 10px;text-align:right;color:#00d4aa;font-size:11px;text-transform:uppercase">P&L $</th>
+                    <th style="padding:8px 10px;text-align:right;color:#00d4aa;font-size:11px;text-transform:uppercase">Stop Dist</th>
+                    <th style="padding:8px 10px;text-align:right;color:#00d4aa;font-size:11px;text-transform:uppercase">Regime</th>
+                    <th style="padding:8px 10px;text-align:right;color:#00d4aa;font-size:11px;text-transform:uppercase">Days</th>
+                </tr>
+                
+        <tr>
+            <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#e0e0e0;font-weight:600">AMD</td>
+            <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#a0a0b0;text-align:right">18</td>
+            <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#a0a0b0;text-align:right">$304.32</td>
+            <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#a0a0b0;text-align:right">$516.10</td>
+            <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#00d4aa;text-align:right;font-weight:600">+69.6%</td>
+            <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#00d4aa;text-align:right">$+3,812.04</td>
+            <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#ff4757;text-align:right">4.4%</td>
+            <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#a0a0b0;text-align:right;font-size:11px">BACKFILL</td>
+            <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#6a6a8a;text-align:right">8d</td>
+        </tr>
+        <tr>
+            <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#e0e0e0;font-weight:600">STM</td>
+            <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#a0a0b0;text-align:right">98</td>
+            <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#a0a0b0;text-align:right">$50.19</td>
+            <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#a0a0b0;text-align:right">$69.31</td>
+            <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#00d4aa;text-align:right;font-weight:600">+38.1%</td>
+            <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#00d4aa;text-align:right">$+1,873.77</td>
+            <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#ff4757;text-align:right">2.6%</td>
+            <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#a0a0b0;text-align:right;font-size:11px">BACKFILL</td>
+            <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#6a6a8a;text-align:right">15d</td>
+        </tr>
+        <tr>
+            <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#e0e0e0;font-weight:600">SMCI</td>
+            <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#a0a0b0;text-align:right">43</td>
+            <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#a0a0b0;text-align:right">$34.10</td>
+            <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#a0a0b0;text-align:right">$46.09</td>
+            <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#00d4aa;text-align:right;font-weight:600">+35.2%</td>
+            <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#00d4aa;text-align:right">$+515.70</td>
+            <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#ff4757;text-align:right">2.4%</td>
+            <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#a0a0b0;text-align:right;font-size:11px">BACKFILL</td>
+            <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#6a6a8a;text-align:right">8d</td>
+        </tr>
+        <tr>
+            <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#e0e0e0;font-weight:600">INTC</td>
+            <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#a0a0b0;text-align:right">47</td>
+            <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#a0a0b0;text-align:right">$87.74</td>
+            <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#a0a0b0;text-align:right">$114.68</td>
+            <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#00d4aa;text-align:right;font-weight:600">+30.7%</td>
+            <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#00d4aa;text-align:right">$+1,266.18</td>
+            <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#ffa502;text-align:right">5.2%</td>
+            <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#a0a0b0;text-align:right;font-size:11px">BACKFILL</td>
+            <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#6a6a8a;text-align:right">8d</td>
+        </tr>
+        <tr>
+            <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#e0e0e0;font-weight:600">TSLA</td>
+            <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#a0a0b0;text-align:right">1</td>
+            <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#a0a0b0;text-align:right">$391.11</td>
+            <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#a0a0b0;text-align:right">$435.79</td>
+            <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#00d4aa;text-align:right;font-weight:600">+11.4%</td>
+            <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#00d4aa;text-align:right">$+44.68</td>
+            <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#ff4757;text-align:right">3.7%</td>
+            <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#a0a0b0;text-align:right;font-size:11px">BACKFILL</td>
+            <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#6a6a8a;text-align:right">8d</td>
+        </tr>
+        <tr>
+            <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#e0e0e0;font-weight:600">KDP</td>
+            <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#a0a0b0;text-align:right">28</td>
+            <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#a0a0b0;text-align:right">$28.67</td>
+            <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#a0a0b0;text-align:right">$30.03</td>
+            <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#00d4aa;text-align:right;font-weight:600">+4.7%</td>
+            <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#00d4aa;text-align:right">$+38.06</td>
+            <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#ff4757;text-align:right">2.3%</td>
+            <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#a0a0b0;text-align:right;font-size:11px">BACKFILL</td>
+            <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#6a6a8a;text-align:right">6d</td>
+        </tr>
+        <tr>
+            <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#e0e0e0;font-weight:600">HPQ</td>
+            <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#a0a0b0;text-align:right">238</td>
+            <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#a0a0b0;text-align:right">$26.87</td>
+            <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#a0a0b0;text-align:right">$27.04</td>
+            <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#00d4aa;text-align:right;font-weight:600">+0.6%</td>
+            <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#00d4aa;text-align:right">$+40.46</td>
+            <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#6a6a8a;text-align:right">11.0%</td>
+            <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#ffa502;text-align:right;font-size:11px">MIXED</td>
+            <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#6a6a8a;text-align:right">1d</td>
+        </tr>
+            </table>
+        </div>
+
+        <!-- Position Health Monitor -->
+        <div style="padding:16px 28px;border-bottom:1px solid #2a2a3e">
+            
+    <div style="color:#a0a0b0;font-size:11px;text-transform:uppercase;letter-spacing:2px;margin-bottom:8px">Position Health Monitor</div>
+    <table style="width:100%;border-collapse:collapse;font-size:13px">
+      <tr style="border-bottom:2px solid #2a2a3e">
+        <th style="padding:8px 10px;text-align:left;color:#00d4aa;font-size:11px;text-transform:uppercase">Symbol</th>
+        <th style="padding:8px 10px;text-align:center;color:#00d4aa;font-size:11px;text-transform:uppercase">Tier</th>
+        <th style="padding:8px 10px;text-align:right;color:#00d4aa;font-size:11px;text-transform:uppercase">Health</th>
+        <th style="padding:8px 10px;text-align:right;color:#00d4aa;font-size:11px;text-transform:uppercase">P&amp;L</th>
+        <th style="padding:8px 10px;text-align:center;color:#00d4aa;font-size:11px;text-transform:uppercase">FAR</th>
+        <th style="padding:8px 10px;text-align:right;color:#00d4aa;font-size:11px;text-transform:uppercase">Composite</th>
+        <th style="padding:8px 10px;text-align:right;color:#00d4aa;font-size:11px;text-transform:uppercase">Stop Dist</th>
+        <th style="padding:8px 10px;text-align:right;color:#00d4aa;font-size:11px;text-transform:uppercase">History</th>
+      </tr>
+      
+        <tr>
+          <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#e0e0e0;font-weight:600">[RED] INTC</td>
+          <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#ff4757;font-weight:700;text-align:center">DECAYING</td>
+          <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#ff4757;text-align:right;font-weight:600">-0.209</td>
+          <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#00d4aa;text-align:right">+30.7%</td>
+          <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#a0a0b0;text-align:center">8/16</td>
+          <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#a0a0b0;text-align:right">+0.000</td>
+          <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#a0a0b0;text-align:right">0.65 ATR</td>
+          <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#6a6a8a;text-align:right;font-size:11px">22d</td>
+        </tr><tr><td colspan="8" style="padding:2px 10px 4px 28px;border-bottom:1px solid #1a1a2e;color:#ff4757;font-size:10px;font-family:Courier New,monospace">&#x2937; Decay: price_momentum: ROC5=-3.24%  HH=0 HL=0  ClosePos=0.49  ROCtrend=-0.96</td></tr><tr><td colspan="8" style="padding:3px 10px 7px 28px;border-bottom:1px solid #1a1a2e;color:#ffa502;font-size:11px;font-family:Courier New,monospace">&#x2937; Minor trim 8% — early warning, reduce exposure | 4 shares (7.6%)</td></tr>
+        <tr>
+          <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#e0e0e0;font-weight:600">[RED] KDP</td>
+          <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#ff4757;font-weight:700;text-align:center">DECAYING</td>
+          <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#ff4757;text-align:right;font-weight:600">-0.155</td>
+          <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#00d4aa;text-align:right">+4.7%</td>
+          <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#a0a0b0;text-align:center">6/16</td>
+          <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#a0a0b0;text-align:right">-0.000</td>
+          <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#a0a0b0;text-align:right">1.12 ATR</td>
+          <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#6a6a8a;text-align:right;font-size:11px">22d</td>
+        </tr><tr><td colspan="8" style="padding:2px 10px 4px 28px;border-bottom:1px solid #1a1a2e;color:#ff4757;font-size:10px;font-family:Courier New,monospace">&#x2937; Decay: factor_agreement: FAR=6/16  trend=-0.188</td></tr><tr><td colspan="8" style="padding:3px 10px 7px 28px;border-bottom:1px solid #1a1a2e;color:#ffa502;font-size:11px;font-family:Courier New,monospace">&#x2937; Minor trim 3% — early warning, reduce exposure | 1 shares (3.4%)</td></tr>
+        <tr>
+          <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#e0e0e0;font-weight:600">[RED] STM</td>
+          <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#ff4757;font-weight:700;text-align:center">DECAYING</td>
+          <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#ff4757;text-align:right;font-weight:600">-0.192</td>
+          <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#00d4aa;text-align:right">+38.1%</td>
+          <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#a0a0b0;text-align:center">9/16</td>
+          <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#a0a0b0;text-align:right">+0.000</td>
+          <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#a0a0b0;text-align:right">0.53 ATR</td>
+          <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#6a6a8a;text-align:right;font-size:11px">22d</td>
+        </tr><tr><td colspan="8" style="padding:2px 10px 4px 28px;border-bottom:1px solid #1a1a2e;color:#ff4757;font-size:10px;font-family:Courier New,monospace">&#x2937; Decay: composite_slope: slope=-0.1510/day over 5d</td></tr><tr><td colspan="8" style="padding:3px 10px 7px 28px;border-bottom:1px solid #1a1a2e;color:#ffa502;font-size:11px;font-family:Courier New,monospace">&#x2937; Minor trim 24% — early warning, reduce exposure | 24 shares (24.5%)</td></tr>
+        <tr>
+          <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#e0e0e0;font-weight:600">[YLW] AMD</td>
+          <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#ffa502;font-weight:700;text-align:center">STABLE</td>
+          <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#ffa502;text-align:right;font-weight:600">-0.043</td>
+          <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#00d4aa;text-align:right">+69.6%</td>
+          <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#a0a0b0;text-align:center">8/16</td>
+          <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#a0a0b0;text-align:right">+0.000</td>
+          <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#a0a0b0;text-align:right">0.84 ATR</td>
+          <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#6a6a8a;text-align:right;font-size:11px">22d</td>
+        </tr>
+        <tr>
+          <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#e0e0e0;font-weight:600">[YLW] SMCI</td>
+          <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#ffa502;font-weight:700;text-align:center">STABLE</td>
+          <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#ffa502;text-align:right;font-weight:600">-0.026</td>
+          <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#00d4aa;text-align:right">+35.2%</td>
+          <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#a0a0b0;text-align:center">9/16</td>
+          <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#a0a0b0;text-align:right">+0.000</td>
+          <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#a0a0b0;text-align:right">0.40 ATR</td>
+          <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#6a6a8a;text-align:right;font-size:11px">22d</td>
+        </tr>
+        <tr>
+          <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#e0e0e0;font-weight:600">[YLW] TSLA</td>
+          <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#ffa502;font-weight:700;text-align:center">STABLE</td>
+          <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#ffa502;text-align:right;font-weight:600">+0.073</td>
+          <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#00d4aa;text-align:right">+11.4%</td>
+          <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#a0a0b0;text-align:center">6/16</td>
+          <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#a0a0b0;text-align:right">+0.000</td>
+          <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#a0a0b0;text-align:right">0.98 ATR</td>
+          <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#6a6a8a;text-align:right;font-size:11px">22d</td>
+        </tr>
+        <tr>
+          <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#e0e0e0;font-weight:600">[---] HPQ</td>
+          <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#6a6a8a;font-weight:700;text-align:center">INSUFFICIENT DATA</td>
+          <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#00d4aa;text-align:right;font-weight:600">+0.296</td>
+          <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#00d4aa;text-align:right">+0.6%</td>
+          <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#a0a0b0;text-align:center">10/16</td>
+          <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#a0a0b0;text-align:right">+0.000</td>
+          <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#a0a0b0;text-align:right">2.26 ATR</td>
+          <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#6a6a8a;text-align:right;font-size:11px">2d</td>
+        </tr>
+    </table>
+    <div style="color:#3a3a5e;font-size:10px;margin-top:6px;padding:0 4px">
+      Health: &gt;+0.20=STRENGTHENING | -0.15 to +0.20=STABLE | &lt;-0.15=DECAYING
+      | FAR=Factor Agreement Ratio (of 16) | History=pre+hold days
+    </div>
+        </div>
+
+        <!-- Top Signals -->
+        <div style="padding:16px 28px;border-bottom:1px solid #2a2a3e">
+            <div style="color:#a0a0b0;font-size:11px;text-transform:uppercase;letter-spacing:2px;margin-bottom:8px">Signal Pipeline (Top 5)</div>
+            <div style="font-size:13px;font-family:'Courier New',monospace">
+        <div style="padding:6px 0;border-bottom:1px solid #1e1e34">
+            <span style="color:#e0e0e0;font-weight:600;width:60px;display:inline-block">PLTR</span>
+            <span style="color:#a0a0b0">score=0.000</span>
+            <span style="color:#a0a0b0;margin-left:12px">kelly=0.060</span>
+            <span style="color:#a0a0b0;margin-left:12px">[BULLISH/MIXED]</span>
+        </div>
+        <div style="padding:6px 0;border-bottom:1px solid #1e1e34">
+            <span style="color:#e0e0e0;font-weight:600;width:60px;display:inline-block">HPQ</span>
+            <span style="color:#a0a0b0">score=0.000</span>
+            <span style="color:#a0a0b0;margin-left:12px">kelly=0.060</span>
+            <span style="color:#a0a0b0;margin-left:12px">[BULLISH/MIXED]</span>
+        </div>
+        <div style="padding:6px 0;border-bottom:1px solid #1e1e34">
+            <span style="color:#e0e0e0;font-weight:600;width:60px;display:inline-block">HOOD</span>
+            <span style="color:#a0a0b0">score=0.000</span>
+            <span style="color:#a0a0b0;margin-left:12px">kelly=0.060</span>
+            <span style="color:#a0a0b0;margin-left:12px">[BULLISH/MIXED]</span>
+        </div>
+        <div style="padding:6px 0;border-bottom:1px solid #1e1e34">
+            <span style="color:#e0e0e0;font-weight:600;width:60px;display:inline-block">WULF</span>
+            <span style="color:#a0a0b0">score=0.000</span>
+            <span style="color:#a0a0b0;margin-left:12px">kelly=0.060</span>
+            <span style="color:#a0a0b0;margin-left:12px">[BULLISH/MIXED]</span>
+        </div>
+        <div style="padding:6px 0;border-bottom:1px solid #1e1e34">
+            <span style="color:#e0e0e0;font-weight:600;width:60px;display:inline-block">RDW</span>
+            <span style="color:#a0a0b0">score=0.000</span>
+            <span style="color:#a0a0b0;margin-left:12px">kelly=0.060</span>
+            <span style="color:#a0a0b0;margin-left:12px">[BULLISH/MIXED]</span>
+        </div></div>
+        </div>
+
+        <!-- Footer -->
+        <div style="padding:16px 28px;text-align:center">
+            <div style="color:#3a3a5e;font-size:11px">RAPTOR v5.4 | 16 Factors | Inverse-Vol Weighted | Adaptive Ridge</div>
+            <div style="color:#3a3a5e;font-size:10px;margin-top:4px">Paper Trading — Not Financial Advice</div>
+        </div>
+
+    </table>
+    </td></tr>
+    </table>
+    </body>
+    </html>
+    

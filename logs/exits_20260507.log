@@ -1,0 +1,31 @@
+2026-05-07 09:53:53,799 [raptor.exits] INFO: ============================================================
+2026-05-07 09:53:53,800 [raptor.exits] INFO: RAPTOR v5.4 EXIT MONITOR - 2026-05-07T09:53:53.800113
+2026-05-07 09:53:53,802 [raptor.exits] INFO: ============================================================
+2026-05-07 09:53:53,804 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-05-07 09:53:54,217 [raptor.exits] INFO: Account: equity=$104865.63  cash=$-37477.31  positions=13
+2026-05-07 09:53:54,231 [raptor.universe] INFO: Universe from cache: 113 symbols
+2026-05-07 09:53:57,938 [raptor.data_feeds] INFO: Fetched bars for 116 / 116 symbols
+2026-05-07 09:53:58,637 [raptor.data_feeds] INFO: FRED fetch OK: RSXFS (35 observations)
+2026-05-07 09:53:58,652 [raptor.data_feeds] INFO: FRED regime: NEUTRAL (score=-0.050)
+2026-05-07 09:54:02,287 [raptor.signals] INFO: v5.4 Signals: 5 from 116 | Macro=NEUTRAL Scale=1.0 | Micro={'TRENDING': 77, 'MIXED': 39}
+2026-05-07 09:54:02,288 [raptor.exits] INFO: Portfolio unrealized: $7300.96 (6.96%)
+2026-05-07 09:54:02,302 [raptor.exits] INFO: 
+2026-05-07 09:54:02,303 [raptor.exits] INFO: ============================================================
+2026-05-07 09:54:02,303 [raptor.exits] INFO:   EXIT SUMMARY
+2026-05-07 09:54:02,303 [raptor.exits] INFO: ============================================================
+2026-05-07 09:54:02,304 [raptor.exits] INFO:   No exits triggered.
+2026-05-07 09:54:02,304 [raptor.exits] INFO:   HOLDS (13):
+2026-05-07 09:54:02,304 [raptor.exits] INFO:     AMD  pnl=+36.6%  trail=$391.96  comp=-1.0
+2026-05-07 09:54:02,304 [raptor.exits] INFO:     CSX  pnl=-0.5%  trail=$43.61  comp=-1.0
+2026-05-07 09:54:02,304 [raptor.exits] INFO:     CVE  pnl=-2.3%  trail=$26.9  comp=-1.0
+2026-05-07 09:54:02,304 [raptor.exits] INFO:     FXI  pnl=-0.0%  trail=$36.48  comp=-1.0
+2026-05-07 09:54:02,304 [raptor.exits] INFO:     INTC  pnl=+27.2%  trail=$101.68  comp=-1.0
+2026-05-07 09:54:02,305 [raptor.exits] INFO:     KDP  pnl=-1.8%  trail=$27.02  comp=-1.0
+2026-05-07 09:54:02,305 [raptor.exits] INFO:     KRE  pnl=+1.2%  trail=$68.3  comp=-1.0
+2026-05-07 09:54:02,305 [raptor.exits] INFO:     OWL  pnl=-1.9%  trail=$9.49  comp=0.6028
+2026-05-07 09:54:02,305 [raptor.exits] INFO:     PLTD  pnl=+0.9%  trail=$7.21  comp=-1.0
+2026-05-07 09:54:02,305 [raptor.exits] INFO:     SMCI  pnl=-0.1%  trail=$30.11  comp=0.7103
+2026-05-07 09:54:02,305 [raptor.exits] INFO:     STM  pnl=+13.7%  trail=$53.73  comp=-1.0
+2026-05-07 09:54:02,305 [raptor.exits] INFO:     TSLA  pnl=+4.7%  trail=$382.76  comp=0.6716
+2026-05-07 09:54:02,305 [raptor.exits] INFO:     TTD  pnl=+5.1%  trail=$22.08  comp=-1.0
+2026-05-07 09:54:02,305 [raptor.exits] INFO: ============================================================

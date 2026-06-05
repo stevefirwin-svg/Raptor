@@ -1,0 +1,37 @@
+2026-04-23 09:51:33,474 [raptor.exits] INFO: ============================================================
+2026-04-23 09:51:33,475 [raptor.exits] INFO: RAPTOR v5.4 EXIT MONITOR - 2026-04-23T09:51:33.475092
+2026-04-23 09:51:33,475 [raptor.exits] INFO: ============================================================
+2026-04-23 09:51:33,476 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-04-23 09:51:35,179 [raptor.exits] INFO: Account: equity=$104034.88  cash=$24812.75  positions=8
+2026-04-23 09:51:35,183 [raptor.universe] INFO: Universe from cache: 115 symbols
+2026-04-23 09:51:38,196 [raptor.data_feeds] INFO: Fetched bars for 115 / 115 symbols
+2026-04-23 09:51:38,310 [raptor.data_feeds] INFO: FRED regime: NEUTRAL (score=0.100)
+2026-04-23 09:51:44,250 [raptor.signals] INFO: v5.4 Signals: 5 from 115 | Macro=NEUTRAL Scale=1.0 | Micro={'TRENDING': 80, 'MIXED': 35}
+2026-04-23 09:51:44,251 [raptor.exits] INFO: Portfolio unrealized: $551.19 (0.53%)
+2026-04-23 09:51:44,256 [raptor.exits] INFO: EXIT 3 [THESIS] IGV composite=-1.0000 (strongly negative)
+2026-04-23 09:51:44,259 [raptor.exits] INFO: EXIT 3 [THESIS] IONQ composite=-1.0000 (strongly negative)
+2026-04-23 09:51:44,264 [raptor.exits] INFO: EXIT 3 [THESIS] SMCI composite=-1.0000 (strongly negative)
+2026-04-23 09:51:44,264 [raptor.exits] INFO: 
+2026-04-23 09:51:44,265 [raptor.exits] INFO: ============================================================
+2026-04-23 09:51:44,265 [raptor.exits] INFO:   EXIT SUMMARY
+2026-04-23 09:51:44,265 [raptor.exits] INFO: ============================================================
+2026-04-23 09:51:44,265 [raptor.exits] INFO:   EXITS (3):
+2026-04-23 09:51:44,265 [raptor.exits] INFO:     IGV  thesis_invalid  pnl=-4.2%  comp=-1.0000
+2026-04-23 09:51:44,265 [raptor.exits] INFO:     IONQ  thesis_invalid  pnl=+4.6%  comp=-1.0000
+2026-04-23 09:51:44,265 [raptor.exits] INFO:     SMCI  thesis_invalid  pnl=-7.0%  comp=-1.0000
+2026-04-23 09:51:44,265 [raptor.exits] INFO:   HOLDS (5):
+2026-04-23 09:51:44,265 [raptor.exits] INFO:     AMD  pnl=-0.0%  trail=$283.6  comp=0.3736
+2026-04-23 09:51:44,265 [raptor.exits] INFO:     CMCSA  pnl=+7.8%  trail=$30.45  comp=0.6228
+2026-04-23 09:51:44,265 [raptor.exits] INFO:     HIMS  pnl=+5.1%  trail=$25.1  comp=0.5713
+2026-04-23 09:51:44,266 [raptor.exits] INFO:     PLTR  pnl=-0.1%  trail=$133.66  comp=0.4729
+2026-04-23 09:51:44,266 [raptor.exits] INFO:     PYPL  pnl=-0.1%  trail=$47.32  comp=0.4715
+2026-04-23 09:51:44,266 [raptor.exits] INFO: ============================================================
+2026-04-23 09:51:44,266 [raptor.exits] INFO: SELL 111.0 IGV [thesis_invalid]
+2026-04-23 09:51:44,907 [raptor.data_feeds] INFO: Order submitted: SELL 111.0 IGV @ None
+2026-04-23 09:51:44,908 [raptor.exits] INFO:   OK: OrderStatus.PENDING_NEW
+2026-04-23 09:51:44,908 [raptor.exits] INFO: SELL 214.0 IONQ [thesis_invalid]
+2026-04-23 09:51:46,443 [raptor.data_feeds] INFO: Order submitted: SELL 214.0 IONQ @ None
+2026-04-23 09:51:46,444 [raptor.exits] INFO:   OK: OrderStatus.PENDING_NEW
+2026-04-23 09:51:46,444 [raptor.exits] INFO: SELL 368.0 SMCI [thesis_invalid]
+2026-04-23 09:51:48,799 [raptor.data_feeds] INFO: Order submitted: SELL 368.0 SMCI @ None
+2026-04-23 09:51:48,799 [raptor.exits] INFO:   OK: OrderStatus.PENDING_NEW

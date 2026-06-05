@@ -1,0 +1,37 @@
+2026-05-01 09:52:19,626 [raptor.exits] INFO: ============================================================
+2026-05-01 09:52:19,627 [raptor.exits] INFO: RAPTOR v5.4 EXIT MONITOR - 2026-05-01T09:52:19.627422
+2026-05-01 09:52:19,628 [raptor.exits] INFO: ============================================================
+2026-05-01 09:52:19,629 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-05-01 09:52:20,022 [raptor.exits] INFO: Account: equity=$104936.14  cash=$-49061.64  positions=15
+2026-05-01 09:52:20,044 [raptor.universe] INFO: Universe from cache: 105 symbols
+2026-05-01 09:52:21,665 [raptor.data_feeds] INFO: Fetched bars for 109 / 109 symbols
+2026-05-01 09:52:22,305 [raptor.data_feeds] INFO: FRED fetch OK: RSXFS (35 observations)
+2026-05-01 09:52:22,319 [raptor.data_feeds] INFO: FRED regime: NEUTRAL (score=0.100)
+2026-05-01 09:52:29,233 [raptor.signals] INFO: v5.4 Signals: 5 from 109 | Macro=NEUTRAL Scale=1.0 | Micro={'TRENDING': 64, 'MIXED': 45}
+2026-05-01 09:52:29,234 [raptor.exits] INFO: Portfolio unrealized: $3654.60 (3.48%)
+2026-05-01 09:52:29,244 [raptor.exits] INFO: EXIT 3 [THESIS] NVDA composite=-1.0000 pnl=-4.6% (negative thesis + losing)
+2026-05-01 09:52:29,253 [raptor.exits] INFO: 
+2026-05-01 09:52:29,253 [raptor.exits] INFO: ============================================================
+2026-05-01 09:52:29,254 [raptor.exits] INFO:   EXIT SUMMARY
+2026-05-01 09:52:29,254 [raptor.exits] INFO: ============================================================
+2026-05-01 09:52:29,254 [raptor.exits] INFO:   EXITS (1):
+2026-05-01 09:52:29,254 [raptor.exits] INFO:     NVDA  thesis_invalid  pnl=-4.6%  comp=-1.0000
+2026-05-01 09:52:29,254 [raptor.exits] INFO:   HOLDS (14):
+2026-05-01 09:52:29,254 [raptor.exits] INFO:     AMD  pnl=+16.2%  trail=$327.69  comp=-1.0
+2026-05-01 09:52:29,255 [raptor.exits] INFO:     CSX  pnl=-0.4%  trail=$43.56  comp=-1.0
+2026-05-01 09:52:29,255 [raptor.exits] INFO:     CVE  pnl=+1.6%  trail=$27.62  comp=0.7137
+2026-05-01 09:52:29,255 [raptor.exits] INFO:     DVN  pnl=-0.5%  trail=$47.92  comp=0.505
+2026-05-01 09:52:29,255 [raptor.exits] INFO:     INTC  pnl=+10.3%  trail=$86.48  comp=-1.0
+2026-05-01 09:52:29,255 [raptor.exits] INFO:     KDP  pnl=+2.5%  trail=$27.89  comp=-1.0
+2026-05-01 09:52:29,255 [raptor.exits] INFO:     KO  pnl=-0.6%  trail=$77.14  comp=-1.0
+2026-05-01 09:52:29,255 [raptor.exits] INFO:     KRE  pnl=-0.5%  trail=$67.36  comp=-1.0
+2026-05-01 09:52:29,255 [raptor.exits] INFO:     OXY  pnl=+1.7%  trail=$56.09  comp=0.5793
+2026-05-01 09:52:29,255 [raptor.exits] INFO:     PYPL  pnl=+1.2%  trail=$47.89  comp=-1.0
+2026-05-01 09:52:29,255 [raptor.exits] INFO:     STM  pnl=+10.3%  trail=$52.33  comp=-1.0
+2026-05-01 09:52:29,255 [raptor.exits] INFO:     TFC  pnl=-1.4%  trail=$49.56  comp=-1.0
+2026-05-01 09:52:29,256 [raptor.exits] INFO:     TTD  pnl=+4.6%  trail=$21.87  comp=-1.0
+2026-05-01 09:52:29,256 [raptor.exits] INFO:     XOM  pnl=+0.2%  trail=$146.44  comp=0.5167
+2026-05-01 09:52:29,256 [raptor.exits] INFO: ============================================================
+2026-05-01 09:52:29,256 [raptor.exits] INFO: SELL 41.0 NVDA [thesis_invalid]
+2026-05-01 09:52:29,287 [raptor.data_feeds] INFO: Order submitted: SELL 41.0 NVDA @ None
+2026-05-01 09:52:29,287 [raptor.exits] INFO:   OK: OrderStatus.PENDING_NEW

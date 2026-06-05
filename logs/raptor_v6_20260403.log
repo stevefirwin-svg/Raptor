@@ -1,0 +1,57 @@
+2026-04-03 09:31:54,329 [raptor.v6] INFO: ============================================================
+2026-04-03 09:31:54,329 [raptor.v6] INFO: RAPTOR v6.0 DAILY SCAN - 2026-04-03T09:31:54.329911
+2026-04-03 09:31:54,330 [raptor.v6] INFO: ============================================================
+2026-04-03 09:31:55,689 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-04-03 09:31:56,272 [raptor.v6] INFO: Account: equity=$103876.77  my_allocation=$51938.39  my_positions=2
+2026-04-03 09:31:56,293 [raptor.universe] INFO: Universe from cache: 135 symbols
+2026-04-03 09:31:56,295 [raptor.v6] INFO: Dynamic universe: 135 symbols
+2026-04-03 09:31:57,824 [raptor.data_feeds] INFO: Fetched bars for 135 / 135 symbols
+2026-04-03 09:31:58,458 [raptor.data_feeds] INFO: FRED fetch OK: VIXCLS (773 observations)
+2026-04-03 09:31:58,566 [raptor.data_feeds] INFO: FRED regime: NEUTRAL (score=-0.100)
+2026-04-03 09:31:59,969 [raptor.v6] INFO: Data: 135 symbols | Macro: NEUTRAL (-0.100)
+2026-04-03 09:31:59,970 [raptor.v6.signals] INFO: QuantSignalEngineV6 initialized: 20 factors, 6 clusters
+2026-04-03 09:32:03,404 [raptor.v6.signals] INFO: v6 Signals: 3 from 135 syms (regime=NEUTRAL)
+2026-04-03 09:32:03,404 [raptor.v6.signals] INFO: v6 Composite: mean=-0.0005 std=0.1722 max=0.4512
+2026-04-03 09:32:03,405 [raptor.v6] INFO: No signals today. Patience.
+2026-04-03 10:30:11,107 [raptor.v6] INFO: ============================================================
+2026-04-03 10:30:11,108 [raptor.v6] INFO: RAPTOR v6.0 DAILY SCAN - 2026-04-03T10:30:11.108825
+2026-04-03 10:30:11,109 [raptor.v6] INFO: ============================================================
+2026-04-03 10:30:12,572 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-04-03 10:30:13,402 [raptor.v6] INFO: Account: equity=$103876.77  my_allocation=$51938.39  my_positions=2
+2026-04-03 10:30:13,406 [raptor.universe] INFO: Universe from cache: 135 symbols
+2026-04-03 10:30:13,406 [raptor.v6] INFO: Dynamic universe: 135 symbols
+2026-04-03 10:30:16,718 [raptor.data_feeds] INFO: Fetched bars for 135 / 135 symbols
+2026-04-03 10:30:16,751 [raptor.data_feeds] INFO: FRED regime: NEUTRAL (score=-0.100)
+2026-04-03 10:30:18,217 [raptor.v6] INFO: Data: 135 symbols | Macro: NEUTRAL (-0.100)
+2026-04-03 10:30:18,217 [raptor.v6.signals] INFO: QuantSignalEngineV6 initialized: 20 factors, 6 clusters
+2026-04-03 10:30:21,363 [raptor.v6.signals] INFO: v6 Signals: 3 from 135 syms (regime=NEUTRAL)
+2026-04-03 10:30:21,364 [raptor.v6.signals] INFO: v6 Composite: mean=-0.0005 std=0.1722 max=0.4512
+2026-04-03 10:30:21,364 [raptor.v6] INFO: No signals today. Patience.
+2026-04-03 19:37:22,772 [raptor.v6] INFO: ============================================================
+2026-04-03 19:37:22,773 [raptor.v6] INFO: RAPTOR v6.0 DAILY SCAN - 2026-04-03T19:37:22.773323
+2026-04-03 19:37:22,773 [raptor.v6] INFO: ============================================================
+2026-04-03 19:37:24,269 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-04-03 19:37:24,742 [raptor.v6] INFO: Account: equity=$103876.77  my_allocation=$51938.39  my_positions=2
+2026-04-03 19:37:24,747 [raptor.universe] INFO: Universe from cache: 135 symbols
+2026-04-03 19:37:24,747 [raptor.v6] INFO: Dynamic universe: 135 symbols
+2026-04-03 19:37:26,070 [raptor.data_feeds] INFO: Fetched bars for 135 / 135 symbols
+2026-04-03 19:37:26,173 [raptor.data_feeds] INFO: FRED regime: NEUTRAL (score=-0.100)
+2026-04-03 19:37:27,589 [raptor.v6] INFO: Data: 135 symbols | Macro: NEUTRAL (-0.100)
+2026-04-03 19:37:27,590 [raptor.v6.signals] INFO: QuantSignalEngineV6 initialized: 20 factors, 6 clusters
+2026-04-03 19:37:30,707 [raptor.v6.signals] INFO: v6 Signals: 3 from 135 syms (regime=NEUTRAL)
+2026-04-03 19:37:30,707 [raptor.v6.signals] INFO: v6 Composite: mean=-0.0005 std=0.1722 max=0.4512
+2026-04-03 19:37:30,708 [raptor.v6] INFO: No signals today. Patience.
+2026-04-03 20:30:10,421 [raptor.v6] INFO: ============================================================
+2026-04-03 20:30:10,422 [raptor.v6] INFO: RAPTOR v6.0 DAILY SCAN - 2026-04-03T20:30:10.422756
+2026-04-03 20:30:10,423 [raptor.v6] INFO: ============================================================
+2026-04-03 20:30:11,533 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-04-03 20:30:12,089 [raptor.v6] INFO: Account: equity=$103876.77  my_allocation=$51938.39  my_positions=2
+2026-04-03 20:30:12,092 [raptor.universe] INFO: Universe from cache: 135 symbols
+2026-04-03 20:30:12,092 [raptor.v6] INFO: Dynamic universe: 135 symbols
+2026-04-03 20:30:13,481 [raptor.data_feeds] INFO: Fetched bars for 135 / 135 symbols
+2026-04-03 20:30:13,504 [raptor.data_feeds] INFO: FRED regime: NEUTRAL (score=-0.100)
+2026-04-03 20:30:15,191 [raptor.v6] INFO: Data: 135 symbols | Macro: NEUTRAL (-0.100)
+2026-04-03 20:30:15,191 [raptor.v6.signals] INFO: QuantSignalEngineV6 initialized: 20 factors, 6 clusters
+2026-04-03 20:30:18,120 [raptor.v6.signals] INFO: v6 Signals: 3 from 135 syms (regime=NEUTRAL)
+2026-04-03 20:30:18,121 [raptor.v6.signals] INFO: v6 Composite: mean=-0.0005 std=0.1722 max=0.4512
+2026-04-03 20:30:18,121 [raptor.v6] INFO: No signals today. Patience.

@@ -1,0 +1,33 @@
+2026-05-05 09:51:09,619 [raptor.main] INFO: ============================================================
+2026-05-05 09:51:09,620 [raptor.main] INFO: RAPTOR v5.4 DAILY SCAN - 2026-05-05T09:51:09.620209
+2026-05-05 09:51:09,620 [raptor.main] INFO: ============================================================
+2026-05-05 09:51:09,622 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-05-05 09:51:10,256 [raptor.main] INFO: Account: equity=$104110.23  my_allocation=$104110.23  positions=14
+2026-05-05 09:51:10,267 [raptor.universe] INFO: Building universe...
+2026-05-05 09:51:11,160 [raptor.universe] INFO: Alpaca tradeable assets: 7094 after initial filter
+2026-05-05 09:51:11,175 [raptor.universe] INFO: Step 1: 7094 tradeable assets from Alpaca
+2026-05-05 09:51:11,177 [raptor.universe] INFO: Step 2: Fetching bars for 7094 symbols (this takes 1-2 min)...
+2026-05-05 09:51:42,764 [raptor.universe] INFO: Step 2: Got bars for 7081 symbols
+2026-05-05 09:51:48,839 [raptor.universe] INFO: Step 3: 108 symbols passed all screens
+2026-05-05 09:51:48,922 [raptor.main] INFO: Dynamic universe: 108 symbols
+2026-05-05 09:51:50,743 [raptor.data_feeds] INFO: Fetched bars for 109 / 109 symbols
+2026-05-05 09:51:51,283 [raptor.data_feeds] INFO: FRED fetch OK: T10Y2Y (747 observations)
+2026-05-05 09:51:51,800 [raptor.data_feeds] INFO: FRED fetch OK: FEDFUNDS (36 observations)
+2026-05-05 09:51:52,360 [raptor.data_feeds] INFO: FRED fetch OK: ICSA (156 observations)
+2026-05-05 09:51:52,811 [raptor.data_feeds] INFO: FRED fetch OK: VIXCLS (772 observations)
+2026-05-05 09:51:53,322 [raptor.data_feeds] INFO: FRED fetch OK: BAMLC0A4CBBB (783 observations)
+2026-05-05 09:51:53,983 [raptor.data_feeds] INFO: FRED fetch OK: CPIAUCSL (34 observations)
+2026-05-05 09:51:54,422 [raptor.data_feeds] INFO: FRED fetch OK: MANEMP (35 observations)
+2026-05-05 09:51:54,849 [raptor.data_feeds] INFO: FRED fetch OK: M2SL (35 observations)
+2026-05-05 09:51:55,444 [raptor.data_feeds] INFO: FRED fetch OK: RSXFS (35 observations)
+2026-05-05 09:51:55,872 [raptor.data_feeds] INFO: FRED fetch OK: UNRATE (34 observations)
+2026-05-05 09:51:55,876 [raptor.data_feeds] INFO: FRED regime: NEUTRAL (score=0.100)
+2026-05-05 09:51:58,690 [raptor.main] INFO: Data: 109 symbols | Macro: NEUTRAL (0.100)
+2026-05-05 09:52:01,340 [raptor.signals] INFO: v5.4 Signals: 5 from 109 | Macro=NEUTRAL Scale=1.0 | Micro={'TRENDING': 59, 'MIXED': 50}
+2026-05-05 09:52:01,341 [raptor.main] INFO: Signals:
+2026-05-05 09:52:01,341 [raptor.main] INFO:   1. PLTD  t=0.320  pctl=99%  entry=$7.74  stop=$7.02  tp=$0.00  kelly=0.091  hold~26d
+2026-05-05 09:52:01,341 [raptor.main] INFO:   2. BMNR  t=0.316  pctl=98%  entry=$23.33  stop=$20.47  tp=$0.00  kelly=0.091  hold~29d
+2026-05-05 09:52:01,342 [raptor.main] INFO:   3. TSLA  t=0.256  pctl=96%  entry=$397.86  stop=$365.02  tp=$0.00  kelly=0.088  hold~23d
+2026-05-05 09:52:01,371 [raptor.data_feeds] INFO: Order submitted: BUY 1224 PLTD @ 7.75
+2026-05-05 09:52:01,375 [raptor.main] INFO: ORDER [v5.4]: BUY 1224 PLTD @ $7.75
+2026-05-05 09:52:01,375 [raptor.main] INFO: Scan complete. 1 orders placed for v5.4.

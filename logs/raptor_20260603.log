@@ -1,0 +1,32 @@
+2026-06-03 09:35:04,278 [raptor.main] INFO: ============================================================
+2026-06-03 09:35:04,279 [raptor.main] INFO: RAPTOR v5.4 DAILY SCAN - 2026-06-03T09:35:04.279214
+2026-06-03 09:35:04,279 [raptor.main] INFO: ============================================================
+2026-06-03 09:35:04,280 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-06-03 09:35:04,753 [raptor.main] INFO: Account: equity=$109080.65  cap=none (compound)  sizing_base=$109080.65  positions=7
+2026-06-03 09:35:04,757 [raptor.main] INFO: [MarketAgent] SCAN | scalar=1.00 | macro_regime is RISK_ON with VIX at 16.2 and no extreme signals present.
+2026-06-03 09:35:04,852 [raptor.margin_guard] INFO: MARGIN GUARD: equity=$109,081  cap=none (compound)  cash=$76,566  positions=7
+2026-06-03 09:35:04,853 [raptor.margin_guard] INFO: MARGIN GUARD: market_value=$32,506  utilization=29.8% of base  margin=NO
+2026-06-03 09:35:04,872 [raptor.universe] INFO: Universe from cache: 74 symbols
+2026-06-03 09:35:04,872 [raptor.main] INFO: Dynamic universe: 74 symbols
+2026-06-03 09:35:08,441 [raptor.data_feeds] INFO: Fetched 75 new bars / 75 total cached
+2026-06-03 09:35:08,621 [raptor.data_feeds] INFO: FRED regime: BULLISH (score=0.300)
+2026-06-03 09:35:08,686 [raptor.main] INFO: Data: 75 symbols | Macro: RISK_ON (0.300)
+2026-06-03 09:35:10,142 [raptor.signals] INFO: v5.4 Signals: 5 from 74 | Macro=RISK_ON Scale=1.0 | Micro={'MIXED': 56, 'TRENDING': 16, 'REVERTING': 2} | SNR min=1.23 max=1.85
+2026-06-03 09:35:10,162 [raptor.main] INFO: Velocity gate: 5 signals remain | velocities: {'MRVL': '+0.000', 'KRE': '+0.000', 'HPE': '+0.000', 'HOOD': '+0.000', 'NOW': '+0.000'}
+2026-06-03 09:35:10,165 [raptor.main] INFO: Signals:
+2026-06-03 09:35:10,166 [raptor.main] INFO:   1. MRVL  t=1.850  pctl=100%  entry=$310.24  stop=$258.36  tp=$0.00  kelly=0.120  hold~2d
+2026-06-03 09:35:10,166 [raptor.main] INFO:   2. KRE  t=1.577  pctl=88%  entry=$69.07  stop=$66.76  tp=$0.00  kelly=0.120  hold~29d
+2026-06-03 09:35:10,166 [raptor.main] INFO:   3. HPE  t=1.324  pctl=96%  entry=$54.32  stop=$45.91  tp=$0.00  kelly=0.113  hold~2d
+2026-06-03 09:35:10,167 [raptor.main] INFO:   4. HOOD  t=1.311  pctl=95%  entry=$85.14  stop=$72.42  tp=$0.00  kelly=0.112  hold~3d
+2026-06-03 09:35:10,167 [raptor.main] INFO:   5. NOW  t=1.232  pctl=92%  entry=$124.15  stop=$104.09  tp=$0.00  kelly=0.109  hold~2d
+2026-06-03 09:35:43,006 [AgentLayer] INFO: EntryAgent | RAW: '{"decision": "PASS", "confidence": 0.95, "veto_reason": null, "flags": []}'
+2026-06-03 09:36:01,946 [AgentLayer] INFO: EntryAgent | RAW: '{"decision": "VETO", "confidence": 0.0, "veto_reason": "macro_regime="RISK_OFF" AND kelly_fraction > 0.07", "flags": []}'
+2026-06-03 09:36:01,946 [AgentLayer] WARNING: EntryAgent | JSON parse error on KRE: Expecting ',' delimiter: line 1 column 71 (char 70)
+2026-06-03 09:36:21,472 [AgentLayer] INFO: EntryAgent | RAW: '{"decision": "VETO", "confidence": 0.0, "veto_reason": "macro_regime="RISK_OFF" AND kelly_fraction > 0.07", "flags": []}'
+2026-06-03 09:36:21,472 [AgentLayer] WARNING: EntryAgent | JSON parse error on HPE: Expecting ',' delimiter: line 1 column 71 (char 70)
+2026-06-03 09:36:40,512 [AgentLayer] INFO: EntryAgent | RAW: '{"decision": "VETO", "confidence": 0.0, "veto_reason": "regime="MIXED" AND composite_score < 1.0", "flags": []}'
+2026-06-03 09:36:40,512 [AgentLayer] WARNING: EntryAgent | JSON parse error on HOOD: Expecting ',' delimiter: line 1 column 65 (char 64)
+2026-06-03 09:36:58,687 [AgentLayer] INFO: EntryAgent | RAW: '{"decision": "VETO", "confidence": 0.0, "veto_reason": "regime="MIXED" AND composite_score < 1.0", "flags": []}'
+2026-06-03 09:36:58,688 [AgentLayer] WARNING: EntryAgent | JSON parse error on NOW: Expecting ',' delimiter: line 1 column 65 (char 64)
+2026-06-03 09:36:58,694 [AgentLayer] INFO: EntryAgent | Flushed 5 decisions -> entry_vetoes.json
+2026-06-03 09:36:58,697 [raptor.main] INFO: Deployable: cap=none  market_value=$32509  cash=$76566  headroom=$72738  available=$72738  (margin=OFF)

@@ -1,0 +1,192 @@
+2026-04-08 06:28:23,590 [raptor.main] INFO: ============================================================
+2026-04-08 06:28:23,590 [raptor.main] INFO: RAPTOR v5.2 DAILY SCAN - 2026-04-08T06:28:23.590915
+2026-04-08 06:28:23,591 [raptor.main] INFO: ============================================================
+2026-04-08 06:28:23,593 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-04-08 06:28:25,085 [raptor.main] INFO: Account: equity=$106275.91  my_allocation=$53137.96  my_positions=4
+2026-04-08 06:28:25,091 [raptor.universe] INFO: Building universe...
+2026-04-08 06:28:26,415 [raptor.universe] INFO: Alpaca tradeable assets: 6914 after initial filter
+2026-04-08 06:28:26,430 [raptor.universe] INFO: Step 1: 6914 tradeable assets from Alpaca
+2026-04-08 06:28:26,432 [raptor.universe] INFO: Step 2: Fetching bars for 6914 symbols (this takes 1-2 min)...
+2026-04-08 06:28:58,188 [raptor.universe] INFO: Step 2: Got bars for 6907 symbols
+2026-04-08 06:29:07,150 [raptor.universe] INFO: Step 3: 129 symbols passed all screens
+2026-04-08 06:29:07,246 [raptor.main] INFO: Dynamic universe: 129 symbols
+2026-04-08 06:29:09,204 [raptor.data_feeds] INFO: Fetched bars for 129 / 129 symbols
+2026-04-08 06:29:10,383 [raptor.data_feeds] INFO: FRED fetch OK: T10Y2Y (748 observations)
+2026-04-08 06:29:11,579 [raptor.data_feeds] INFO: FRED fetch OK: FEDFUNDS (36 observations)
+2026-04-08 06:29:12,512 [raptor.data_feeds] INFO: FRED fetch OK: ICSA (155 observations)
+2026-04-08 06:29:13,454 [raptor.data_feeds] INFO: FRED fetch OK: VIXCLS (772 observations)
+2026-04-08 06:29:14,553 [raptor.data_feeds] INFO: FRED fetch OK: BAMLC0A4CBBB (785 observations)
+2026-04-08 06:29:15,418 [raptor.data_feeds] INFO: FRED fetch OK: CPIAUCSL (34 observations)
+2026-04-08 06:29:16,400 [raptor.data_feeds] INFO: FRED fetch OK: MANEMP (36 observations)
+2026-04-08 06:29:17,414 [raptor.data_feeds] INFO: FRED fetch OK: M2SL (35 observations)
+2026-04-08 06:29:18,233 [raptor.data_feeds] INFO: FRED fetch OK: RSXFS (35 observations)
+2026-04-08 06:29:19,053 [raptor.data_feeds] INFO: FRED fetch OK: UNRATE (35 observations)
+2026-04-08 06:29:19,058 [raptor.data_feeds] INFO: FRED regime: NEUTRAL (score=-0.100)
+2026-04-08 06:29:21,521 [raptor.main] INFO: Data: 129 symbols | Macro: NEUTRAL (-0.100)
+2026-04-08 06:29:25,145 [raptor.signals] INFO: Signals: 1 from 129 syms (regime=NEUTRAL, confirmed=1)
+2026-04-08 06:29:25,146 [raptor.signals] INFO: Composite: mean=-0.0032 std=0.2103 max=0.7762
+2026-04-08 06:29:25,146 [raptor.main] INFO: Signals:
+2026-04-08 06:29:25,147 [raptor.main] INFO:   1. NOK  t=2.128  pctl=98%  entry=$8.85  stop=$7.73  tp=$0.00  kelly=0.041  hold~4d
+2026-04-08 06:29:25,297 [raptor.data_feeds] INFO: Order submitted: BUY 247 NOK @ 8.86
+2026-04-08 06:29:25,303 [raptor.main] INFO: ORDER [v5.2]: BUY 247 NOK @ $8.86
+2026-04-08 06:29:25,304 [raptor.main] INFO: Scan complete. 1 orders placed for v5.2.
+2026-04-08 06:31:03,709 [raptor.main] INFO: ============================================================
+2026-04-08 06:31:03,709 [raptor.main] INFO: RAPTOR v5.2 DAILY SCAN - 2026-04-08T06:31:03.709897
+2026-04-08 06:31:03,710 [raptor.main] INFO: ============================================================
+2026-04-08 06:31:03,711 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-04-08 06:31:04,528 [raptor.main] INFO: Account: equity=$106439.67  my_allocation=$53219.83  my_positions=5
+2026-04-08 06:31:04,533 [raptor.universe] INFO: Universe from cache: 129 symbols
+2026-04-08 06:31:04,533 [raptor.main] INFO: Dynamic universe: 129 symbols
+2026-04-08 06:31:06,840 [raptor.data_feeds] INFO: Fetched bars for 129 / 129 symbols
+2026-04-08 06:31:06,885 [raptor.data_feeds] INFO: FRED regime: NEUTRAL (score=-0.100)
+2026-04-08 06:31:09,069 [raptor.main] INFO: Data: 129 symbols | Macro: NEUTRAL (-0.100)
+2026-04-08 06:31:12,215 [raptor.signals] INFO: Signals: 1 from 129 syms (regime=NEUTRAL, confirmed=1)
+2026-04-08 06:31:12,215 [raptor.signals] INFO: Composite: mean=-0.0032 std=0.2103 max=0.7762
+2026-04-08 06:31:12,216 [raptor.main] INFO: No signals today. Patience.
+2026-04-08 09:30:00,471 [raptor.main] INFO: ============================================================
+2026-04-08 09:30:00,475 [raptor.main] INFO: RAPTOR v5.2 DAILY SCAN - 2026-04-08T09:30:00.475492
+2026-04-08 09:30:00,477 [raptor.main] INFO: ============================================================
+2026-04-08 09:30:00,478 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-04-08 09:30:01,221 [raptor.main] INFO: Account: equity=$106667.74  my_allocation=$53333.87  my_positions=5
+2026-04-08 09:30:01,232 [raptor.universe] INFO: Universe from cache: 129 symbols
+2026-04-08 09:30:01,234 [raptor.main] INFO: Dynamic universe: 129 symbols
+2026-04-08 09:30:04,259 [raptor.data_feeds] INFO: Fetched bars for 129 / 129 symbols
+2026-04-08 09:30:04,328 [raptor.data_feeds] INFO: FRED regime: NEUTRAL (score=-0.100)
+2026-04-08 09:30:06,362 [raptor.main] INFO: Data: 129 symbols | Macro: NEUTRAL (-0.100)
+2026-04-08 09:30:08,883 [raptor.signals] INFO: Signals: 5 from 129 syms (regime=NEUTRAL)
+2026-04-08 09:30:08,884 [raptor.signals] INFO: Composite: mean=-0.0023 std=0.2688 max=0.6762
+2026-04-08 09:30:08,886 [raptor.main] INFO: Signals:
+2026-04-08 09:30:08,886 [raptor.main] INFO:   1. AVGO  t=2.378  pctl=99%  entry=$334.02  stop=$298.66  tp=$0.00  kelly=0.052  hold~24d
+2026-04-08 09:30:08,887 [raptor.main] INFO:   2. TFC  t=2.313  pctl=98%  entry=$47.84  stop=$44.82  tp=$0.00  kelly=0.050  hold~25d
+2026-04-08 09:30:08,887 [raptor.main] INFO:   3. USB  t=2.084  pctl=98%  entry=$53.70  stop=$50.30  tp=$0.00  kelly=0.039  hold~23d
+2026-04-08 09:30:08,888 [raptor.main] INFO:   4. KRE  t=2.057  pctl=97%  entry=$66.78  stop=$62.84  tp=$0.00  kelly=0.038  hold~26d
+2026-04-08 09:30:08,952 [raptor.data_feeds] INFO: Order submitted: BUY 8 AVGO @ 334.36
+2026-04-08 09:30:08,954 [raptor.main] INFO: ORDER [v5.2]: BUY 8 AVGO @ $334.36
+2026-04-08 09:30:09,054 [raptor.data_feeds] INFO: Order submitted: BUY 55 TFC @ 47.88
+2026-04-08 09:30:09,056 [raptor.main] INFO: ORDER [v5.2]: BUY 55 TFC @ $47.88
+2026-04-08 09:30:09,057 [raptor.main] INFO: Scan complete. 2 orders placed for v5.2.
+2026-04-08 16:59:54,513 [raptor.main] INFO: ============================================================
+2026-04-08 16:59:54,515 [raptor.main] INFO: RAPTOR v5.2 DAILY SCAN - 2026-04-08T16:59:54.515729
+2026-04-08 16:59:54,517 [raptor.main] INFO: ============================================================
+2026-04-08 16:59:54,519 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-04-08 16:59:55,347 [raptor.main] INFO: Account: equity=$105490.41  my_allocation=$52745.21  my_positions=7
+2026-04-08 16:59:55,391 [raptor.universe] INFO: Universe from cache: 129 symbols
+2026-04-08 16:59:55,393 [raptor.main] INFO: Dynamic universe: 129 symbols
+2026-04-08 16:59:57,940 [raptor.data_feeds] INFO: Fetched bars for 129 / 129 symbols
+2026-04-08 16:59:58,853 [raptor.data_feeds] INFO: FRED fetch OK: T10Y2Y (748 observations)
+2026-04-08 16:59:59,952 [raptor.data_feeds] ERROR: FRED fetch failed for FEDFUNDS: 500 Server Error: Internal Server Error for url: https://api.stlouisfed.org/fred/series/observations?series_id=FEDFUNDS&api_key=da7dbeb2fb38addc5865122252685cee&file_type=json&observation_start=2023-04-09&observation_end=2026-04-08&sort_order=asc
+2026-04-08 17:00:01,191 [raptor.data_feeds] INFO: FRED fetch OK: ICSA (155 observations)
+2026-04-08 17:00:02,317 [raptor.data_feeds] INFO: FRED fetch OK: VIXCLS (773 observations)
+2026-04-08 17:00:03,417 [raptor.data_feeds] ERROR: FRED fetch failed for BAMLC0A4CBBB: 500 Server Error: Internal Server Error for url: https://api.stlouisfed.org/fred/series/observations?series_id=BAMLC0A4CBBB&api_key=da7dbeb2fb38addc5865122252685cee&file_type=json&observation_start=2023-04-09&observation_end=2026-04-08&sort_order=asc
+2026-04-08 17:00:05,793 [raptor.data_feeds] INFO: FRED fetch OK: CPIAUCSL (34 observations)
+2026-04-08 17:00:07,940 [raptor.data_feeds] ERROR: FRED fetch failed for MANEMP: 500 Server Error: Internal Server Error for url: https://api.stlouisfed.org/fred/series/observations?series_id=MANEMP&api_key=da7dbeb2fb38addc5865122252685cee&file_type=json&observation_start=2023-04-09&observation_end=2026-04-08&sort_order=asc
+2026-04-08 17:00:10,914 [raptor.data_feeds] INFO: FRED fetch OK: M2SL (35 observations)
+2026-04-08 17:00:13,986 [raptor.data_feeds] INFO: FRED fetch OK: RSXFS (35 observations)
+2026-04-08 17:00:16,340 [raptor.data_feeds] INFO: FRED fetch OK: UNRATE (35 observations)
+2026-04-08 17:00:16,345 [raptor.data_feeds] INFO: FRED regime: NEUTRAL (score=0.100)
+2026-04-08 17:00:19,218 [raptor.main] INFO: Data: 129 symbols | Macro: NEUTRAL (0.100)
+2026-04-08 17:00:19,219 [raptor.signals] INFO: Market momentum scale: 0.8x (SPY weak, conserving capital)
+2026-04-08 17:00:25,729 [raptor.signals] INFO: Signals: 3 from 129 syms | Macro=NEUTRAL MktScale=0.8 | Micro: {'TRENDING': 88, 'MIXED': 41}
+2026-04-08 17:00:25,730 [raptor.signals] INFO: Composite: mean=-0.0102 std=0.2913 max=0.7937
+2026-04-08 17:00:25,731 [raptor.main] INFO: Signals:
+2026-04-08 17:00:25,731 [raptor.main] INFO:   1. KRE  t=2.895  pctl=100%  entry=$68.69  stop=$64.39  tp=$0.00  kelly=0.060  hold~22d
+2026-04-08 17:00:25,732 [raptor.main] INFO:   2. EWJ  t=2.765  pctl=99%  entry=$89.42  stop=$82.43  tp=$0.00  kelly=0.056  hold~2d
+2026-04-08 17:00:25,732 [raptor.main] INFO: Scan complete. 0 orders placed for v5.2.
+2026-04-08 17:04:13,073 [raptor.main] INFO: ============================================================
+2026-04-08 17:04:13,074 [raptor.main] INFO: RAPTOR v5.2 DAILY SCAN - 2026-04-08T17:04:13.074657
+2026-04-08 17:04:13,075 [raptor.main] INFO: ============================================================
+2026-04-08 17:04:13,078 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-04-08 17:04:13,815 [raptor.main] INFO: Account: equity=$105423.44  my_allocation=$52711.72  my_positions=7
+2026-04-08 17:04:13,819 [raptor.universe] INFO: Universe from cache: 129 symbols
+2026-04-08 17:04:13,820 [raptor.main] INFO: Dynamic universe: 129 symbols
+2026-04-08 17:04:15,555 [raptor.data_feeds] INFO: Fetched bars for 129 / 129 symbols
+2026-04-08 17:04:16,885 [raptor.data_feeds] INFO: FRED fetch OK: FEDFUNDS (36 observations)
+2026-04-08 17:04:18,025 [raptor.data_feeds] INFO: FRED fetch OK: BAMLC0A4CBBB (786 observations)
+2026-04-08 17:04:18,962 [raptor.data_feeds] ERROR: FRED fetch failed for MANEMP: 500 Server Error: Internal Server Error for url: https://api.stlouisfed.org/fred/series/observations?series_id=MANEMP&api_key=da7dbeb2fb38addc5865122252685cee&file_type=json&observation_start=2023-04-09&observation_end=2026-04-08&sort_order=asc
+2026-04-08 17:04:19,021 [raptor.data_feeds] INFO: FRED regime: NEUTRAL (score=0.100)
+2026-04-08 17:04:21,224 [raptor.main] INFO: Data: 129 symbols | Macro: NEUTRAL (0.100)
+2026-04-08 17:04:21,226 [raptor.signals] INFO: Market momentum scale: 0.8x (SPY weak, conserving capital)
+2026-04-08 17:04:25,437 [raptor.signals] INFO: Signals: 3 from 129 syms | Macro=NEUTRAL MktScale=0.8 | Micro: {'TRENDING': 88, 'MIXED': 41}
+2026-04-08 17:04:25,439 [raptor.signals] INFO: Composite: mean=-0.0102 std=0.2913 max=0.7937
+2026-04-08 17:04:25,440 [raptor.main] INFO: Signals:
+2026-04-08 17:04:25,441 [raptor.main] INFO:   1. KRE  t=2.895  pctl=100%  entry=$68.69  stop=$64.39  tp=$0.00  kelly=0.060  hold~22d
+2026-04-08 17:04:25,441 [raptor.main] INFO:   2. EWJ  t=2.765  pctl=99%  entry=$89.42  stop=$82.43  tp=$0.00  kelly=0.056  hold~2d
+2026-04-08 17:04:25,442 [raptor.main] INFO: Scan complete. 0 orders placed for v5.2.
+2026-04-08 17:08:42,962 [raptor.main] INFO: ============================================================
+2026-04-08 17:08:42,963 [raptor.main] INFO: RAPTOR v5.3 DAILY SCAN - 2026-04-08T17:08:42.963774
+2026-04-08 17:08:42,964 [raptor.main] INFO: ============================================================
+2026-04-08 17:08:42,966 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-04-08 17:08:43,754 [raptor.main] INFO: Account: equity=$105476.61  my_allocation=$105476.61  my_positions=0
+2026-04-08 17:08:43,767 [raptor.universe] INFO: Universe from cache: 129 symbols
+2026-04-08 17:08:43,773 [raptor.main] INFO: Dynamic universe: 129 symbols
+2026-04-08 17:08:45,715 [raptor.data_feeds] INFO: Fetched bars for 129 / 129 symbols
+2026-04-08 17:08:46,827 [raptor.data_feeds] INFO: FRED fetch OK: MANEMP (36 observations)
+2026-04-08 17:08:46,838 [raptor.data_feeds] INFO: FRED regime: NEUTRAL (score=-0.100)
+2026-04-08 17:08:48,879 [raptor.main] INFO: Data: 129 symbols | Macro: NEUTRAL (-0.100)
+2026-04-08 17:08:48,881 [raptor.signals] INFO: Market momentum scale: 0.8x (SPY weak, conserving capital)
+2026-04-08 17:08:53,006 [raptor.signals] INFO: Signals: 3 from 129 syms | Macro=NEUTRAL MktScale=0.8 | Micro: {'TRENDING': 88, 'MIXED': 41}
+2026-04-08 17:08:53,008 [raptor.signals] INFO: Composite: mean=-0.0102 std=0.2913 max=0.7937
+2026-04-08 17:08:53,009 [raptor.main] INFO: Signals:
+2026-04-08 17:08:53,010 [raptor.main] INFO:   1. KRE  t=2.895  pctl=100%  entry=$68.69  stop=$64.39  tp=$0.00  kelly=0.060  hold~22d
+2026-04-08 17:08:53,011 [raptor.main] INFO:   2. EWJ  t=2.765  pctl=99%  entry=$89.42  stop=$82.43  tp=$0.00  kelly=0.056  hold~2d
+2026-04-08 17:08:53,073 [raptor.data_feeds] INFO: Order submitted: BUY 92 KRE @ 68.76
+2026-04-08 17:08:53,076 [raptor.main] INFO: ORDER [v5.3]: BUY 92 KRE @ $68.76
+2026-04-08 17:08:53,175 [raptor.data_feeds] INFO: Order submitted: BUY 65 EWJ @ 89.5
+2026-04-08 17:08:53,178 [raptor.main] INFO: ORDER [v5.3]: BUY 65 EWJ @ $89.50
+2026-04-08 17:08:53,179 [raptor.main] INFO: Scan complete. 2 orders placed for v5.3.
+2026-04-08 17:49:36,224 [raptor.main] INFO: ============================================================
+2026-04-08 17:49:36,225 [raptor.main] INFO: RAPTOR v5.3 DAILY SCAN - 2026-04-08T17:49:36.225824
+2026-04-08 17:49:36,226 [raptor.main] INFO: ============================================================
+2026-04-08 17:49:36,228 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-04-08 17:49:36,874 [raptor.main] INFO: Account: equity=$105504.71  my_allocation=$105504.71  my_positions=2
+2026-04-08 17:49:36,878 [raptor.universe] INFO: Universe from cache: 129 symbols
+2026-04-08 17:49:36,879 [raptor.main] INFO: Dynamic universe: 129 symbols
+2026-04-08 17:49:38,740 [raptor.data_feeds] INFO: Fetched bars for 129 / 129 symbols
+2026-04-08 17:49:38,791 [raptor.data_feeds] INFO: FRED regime: NEUTRAL (score=-0.100)
+2026-04-08 17:49:40,366 [raptor.main] INFO: Data: 129 symbols | Macro: NEUTRAL (-0.100)
+2026-04-08 17:49:40,367 [raptor.signals] INFO: Market momentum scale: 0.8x (SPY weak, conserving capital)
+2026-04-08 17:49:43,523 [raptor.signals] INFO: Signals: 3 from 129 syms | Macro=NEUTRAL MktScale=0.8 | Micro: {'TRENDING': 88, 'MIXED': 41}
+2026-04-08 17:49:43,524 [raptor.signals] INFO: Composite: mean=-0.0102 std=0.2913 max=0.7937
+2026-04-08 17:49:43,525 [raptor.main] INFO: No signals today. Patience.
+2026-04-08 18:51:32,439 [raptor.main] INFO: ============================================================
+2026-04-08 18:51:32,441 [raptor.main] INFO: RAPTOR v5.3 DAILY SCAN - 2026-04-08T18:51:32.440965
+2026-04-08 18:51:32,441 [raptor.main] INFO: ============================================================
+2026-04-08 18:51:32,445 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-04-08 18:51:33,242 [raptor.main] INFO: Account: equity=$105511.22  my_allocation=$105511.22  my_positions=2
+2026-04-08 18:51:33,272 [raptor.universe] INFO: Universe from cache: 129 symbols
+2026-04-08 18:51:33,273 [raptor.main] INFO: Dynamic universe: 129 symbols
+2026-04-08 18:51:35,270 [raptor.data_feeds] INFO: Fetched bars for 129 / 129 symbols
+2026-04-08 18:51:35,352 [raptor.data_feeds] INFO: FRED regime: NEUTRAL (score=-0.100)
+2026-04-08 18:51:37,246 [raptor.main] INFO: Data: 129 symbols | Macro: NEUTRAL (-0.100)
+2026-04-08 18:51:37,248 [raptor.signals] INFO: Market momentum scale: 0.8x (SPY weak, conserving capital)
+2026-04-08 18:51:41,178 [raptor.signals] INFO: Signals: 3 from 129 syms | Macro=NEUTRAL MktScale=0.8 | Micro: {'TRENDING': 88, 'MIXED': 41}
+2026-04-08 18:51:41,179 [raptor.signals] INFO: Composite: mean=-0.0102 std=0.2913 max=0.7937
+2026-04-08 18:51:41,180 [raptor.main] INFO: No signals today. Patience.
+2026-04-08 19:30:01,332 [raptor.main] INFO: ============================================================
+2026-04-08 19:30:01,334 [raptor.main] INFO: RAPTOR v5.3 DAILY SCAN - 2026-04-08T19:30:01.334154
+2026-04-08 19:30:01,335 [raptor.main] INFO: ============================================================
+2026-04-08 19:30:01,338 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-04-08 19:30:02,068 [raptor.main] INFO: Account: equity=$105498.46  my_allocation=$105498.46  my_positions=2
+2026-04-08 19:30:02,079 [raptor.universe] INFO: Universe from cache: 129 symbols
+2026-04-08 19:30:02,081 [raptor.main] INFO: Dynamic universe: 129 symbols
+2026-04-08 19:30:03,768 [raptor.data_feeds] INFO: Fetched bars for 129 / 129 symbols
+2026-04-08 19:30:03,810 [raptor.data_feeds] INFO: FRED regime: NEUTRAL (score=-0.100)
+2026-04-08 19:30:05,414 [raptor.main] INFO: Data: 129 symbols | Macro: NEUTRAL (-0.100)
+2026-04-08 19:30:08,716 [raptor.signals] INFO: v5.4 Signals: 5 from 129 | Macro=NEUTRAL Scale=0.8 | Micro={'TRENDING': 88, 'MIXED': 41}
+2026-04-08 19:30:08,718 [raptor.main] INFO: Signals:
+2026-04-08 19:30:08,719 [raptor.main] INFO:   1. SOXL  t=0.296  pctl=98%  entry=$67.58  stop=$48.94  tp=$0.00  kelly=0.072  hold~8d
+2026-04-08 19:30:08,817 [raptor.data_feeds] INFO: Order submitted: BUY 112 SOXL @ 67.65
+2026-04-08 19:30:08,820 [raptor.main] INFO: ORDER [v5.3]: BUY 112 SOXL @ $67.65
+2026-04-08 19:30:08,821 [raptor.main] INFO: Scan complete. 1 orders placed for v5.3.
+2026-04-08 20:30:00,766 [raptor.main] INFO: ============================================================
+2026-04-08 20:30:00,767 [raptor.main] INFO: RAPTOR v5.3 DAILY SCAN - 2026-04-08T20:30:00.767264
+2026-04-08 20:30:00,767 [raptor.main] INFO: ============================================================
+2026-04-08 20:30:00,770 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-04-08 20:30:01,366 [raptor.main] INFO: Account: equity=$105568.06  my_allocation=$105568.06  my_positions=3
+2026-04-08 20:30:01,370 [raptor.universe] INFO: Universe from cache: 129 symbols
+2026-04-08 20:30:01,371 [raptor.main] INFO: Dynamic universe: 129 symbols
+2026-04-08 20:30:03,087 [raptor.data_feeds] INFO: Fetched bars for 129 / 129 symbols
+2026-04-08 20:30:03,148 [raptor.data_feeds] INFO: FRED regime: NEUTRAL (score=-0.100)
+2026-04-08 20:30:04,990 [raptor.main] INFO: Data: 129 symbols | Macro: NEUTRAL (-0.100)
+2026-04-08 20:30:07,956 [raptor.signals] INFO: v5.4 Signals: 5 from 129 | Macro=NEUTRAL Scale=0.8 | Micro={'TRENDING': 88, 'MIXED': 41}
+2026-04-08 20:30:07,957 [raptor.main] INFO: No signals today. Patience.

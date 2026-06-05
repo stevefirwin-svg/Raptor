@@ -1,0 +1,29 @@
+2026-04-30 09:51:25,929 [raptor.exits] INFO: ============================================================
+2026-04-30 09:51:25,929 [raptor.exits] INFO: RAPTOR v5.4 EXIT MONITOR - 2026-04-30T09:51:25.929587
+2026-04-30 09:51:25,930 [raptor.exits] INFO: ============================================================
+2026-04-30 09:51:25,931 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-04-30 09:51:26,367 [raptor.exits] INFO: Account: equity=$102925.95  cash=$-20795.68  positions=12
+2026-04-30 09:51:26,370 [raptor.universe] INFO: Universe from cache: 112 symbols
+2026-04-30 09:51:30,715 [raptor.data_feeds] INFO: Fetched bars for 113 / 113 symbols
+2026-04-30 09:51:30,845 [raptor.data_feeds] INFO: FRED regime: NEUTRAL (score=0.100)
+2026-04-30 09:51:35,308 [raptor.signals] INFO: v5.4 Signals: 5 from 113 | Macro=NEUTRAL Scale=1.0 | Micro={'TRENDING': 67, 'MIXED': 46}
+2026-04-30 09:51:35,308 [raptor.exits] INFO: Portfolio unrealized: $1644.41 (1.60%)
+2026-04-30 09:51:35,325 [raptor.exits] INFO: 
+2026-04-30 09:51:35,325 [raptor.exits] INFO: ============================================================
+2026-04-30 09:51:35,325 [raptor.exits] INFO:   EXIT SUMMARY
+2026-04-30 09:51:35,326 [raptor.exits] INFO: ============================================================
+2026-04-30 09:51:35,326 [raptor.exits] INFO:   No exits triggered.
+2026-04-30 09:51:35,326 [raptor.exits] INFO:   HOLDS (12):
+2026-04-30 09:51:35,326 [raptor.exits] INFO:     AMD  pnl=+11.0%  trail=$313.41  comp=-1.0
+2026-04-30 09:51:35,327 [raptor.exits] INFO:     CSX  pnl=-1.3%  trail=$43.61  comp=-1.0
+2026-04-30 09:51:35,327 [raptor.exits] INFO:     INTC  pnl=+4.9%  trail=$82.0  comp=0.5776
+2026-04-30 09:51:35,327 [raptor.exits] INFO:     KDP  pnl=+1.8%  trail=$27.62  comp=-1.0
+2026-04-30 09:51:35,327 [raptor.exits] INFO:     KO  pnl=-1.5%  trail=$77.02  comp=-1.0
+2026-04-30 09:51:35,327 [raptor.exits] INFO:     KRE  pnl=-1.2%  trail=$67.45  comp=-1.0
+2026-04-30 09:51:35,327 [raptor.exits] INFO:     NVDA  pnl=-1.7%  trail=$197.76  comp=-1.0
+2026-04-30 09:51:35,327 [raptor.exits] INFO:     OXY  pnl=+2.3%  trail=$56.37  comp=0.5862
+2026-04-30 09:51:35,327 [raptor.exits] INFO:     PYPL  pnl=+0.4%  trail=$47.2  comp=-1.0
+2026-04-30 09:51:35,327 [raptor.exits] INFO:     STM  pnl=+5.2%  trail=$49.06  comp=-1.0
+2026-04-30 09:51:35,327 [raptor.exits] INFO:     TFC  pnl=-1.6%  trail=$49.61  comp=-1.0
+2026-04-30 09:51:35,327 [raptor.exits] INFO:     TTD  pnl=+1.4%  trail=$21.15  comp=-1.0
+2026-04-30 09:51:35,328 [raptor.exits] INFO: ============================================================

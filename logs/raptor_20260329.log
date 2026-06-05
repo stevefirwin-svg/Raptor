@@ -1,0 +1,68 @@
+2026-03-29 15:18:07,023 [raptor.main] INFO: ============================================================
+2026-03-29 15:18:07,024 [raptor.main] INFO: RAPTOR v5.0.0 DAILY SCAN — 2026-03-29T15:18:07.024258
+2026-03-29 15:18:07,024 [raptor.main] INFO: ============================================================
+2026-03-29 15:25:37,835 [raptor.main] INFO: ============================================================
+2026-03-29 15:25:37,836 [raptor.main] INFO: RAPTOR v5.0.0 DAILY SCAN — 2026-03-29T15:25:37.836810
+2026-03-29 15:25:37,837 [raptor.main] INFO: ============================================================
+2026-03-29 15:36:31,372 [raptor.main] INFO: ============================================================
+2026-03-29 15:36:31,373 [raptor.main] INFO: RAPTOR v5.0.0 DAILY SCAN — 2026-03-29T15:36:31.373361
+2026-03-29 15:36:31,373 [raptor.main] INFO: ============================================================
+2026-03-29 15:39:27,379 [raptor.main] INFO: ============================================================
+2026-03-29 15:39:27,380 [raptor.main] INFO: RAPTOR v5.0.0 DAILY SCAN — 2026-03-29T15:39:27.380116
+2026-03-29 15:39:27,380 [raptor.main] INFO: ============================================================
+2026-03-29 15:46:07,543 [raptor.main] INFO: ============================================================
+2026-03-29 15:46:07,544 [raptor.main] INFO: RAPTOR v5.0.0 DAILY SCAN — 2026-03-29T15:46:07.544028
+2026-03-29 15:46:07,544 [raptor.main] INFO: ============================================================
+2026-03-29 15:46:07,546 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-03-29 15:46:08,239 [raptor.main] INFO: Account: equity=$98721.35  cash=$70918.54  positions=3
+2026-03-29 15:46:09,213 [raptor.data_feeds] INFO: Fetched bars for 46 / 47 symbols
+2026-03-29 15:46:10,121 [raptor.data_feeds] INFO: FRED fetch OK: T10Y2Y (748 observations)
+2026-03-29 15:46:10,899 [raptor.data_feeds] INFO: FRED fetch OK: FEDFUNDS (36 observations)
+2026-03-29 15:46:11,528 [raptor.data_feeds] INFO: FRED fetch OK: ICSA (156 observations)
+2026-03-29 15:46:12,181 [raptor.data_feeds] INFO: FRED fetch OK: VIXCLS (772 observations)
+2026-03-29 15:46:12,711 [raptor.data_feeds] ERROR: FRED fetch failed for BAMLC0A4CRPSYTW: 400 Client Error: Bad Request for url: https://api.stlouisfed.org/fred/series/observations?series_id=BAMLC0A4CRPSYTW&api_key=da7dbeb2fb38addc5865122252685cee&file_type=json&observation_start=2023-03-30&observation_end=2026-03-29&sort_order=asc
+2026-03-29 15:46:13,474 [raptor.data_feeds] INFO: FRED fetch OK: CPIAUCSL (35 observations)
+2026-03-29 15:46:14,082 [raptor.data_feeds] ERROR: FRED fetch failed for ISM/MAN_PMI: 400 Client Error: Bad Request for url: https://api.stlouisfed.org/fred/series/observations?series_id=ISM%2FMAN_PMI&api_key=da7dbeb2fb38addc5865122252685cee&file_type=json&observation_start=2023-03-30&observation_end=2026-03-29&sort_order=asc
+2026-03-29 15:46:14,781 [raptor.data_feeds] INFO: FRED fetch OK: M2SL (36 observations)
+2026-03-29 15:46:15,391 [raptor.data_feeds] INFO: FRED fetch OK: RSXFS (35 observations)
+2026-03-29 15:46:15,896 [raptor.data_feeds] INFO: FRED fetch OK: UNRATE (35 observations)
+2026-03-29 15:46:15,899 [raptor.data_feeds] INFO: FRED regime: NEUTRAL (score=0.100)
+2026-03-29 15:46:16,351 [raptor.main] INFO: Data: 46 symbols with bars  |  Macro regime: NEUTRAL (0.100)  |  Sentiment for 46 symbols
+2026-03-29 15:46:16,704 [raptor.signals] INFO: Generated 0 signals from 46 symbols (regime=NEUTRAL)
+2026-03-29 15:46:16,704 [raptor.main] INFO: No new signals today.
+2026-03-29 15:52:38,854 [raptor.main] INFO: ============================================================
+2026-03-29 15:52:38,855 [raptor.main] INFO: RAPTOR v5.0.0 DAILY SCAN — 2026-03-29T15:52:38.854974
+2026-03-29 15:52:38,855 [raptor.main] INFO: ============================================================
+2026-03-29 15:52:38,856 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-03-29 15:52:39,560 [raptor.main] INFO: Account: equity=$98712.70  cash=$70918.54  positions=3
+2026-03-29 15:52:40,670 [raptor.data_feeds] INFO: Fetched bars for 46 / 47 symbols
+2026-03-29 15:52:41,594 [raptor.data_feeds] ERROR: FRED fetch failed for BAMLC0A4CRPSYTW: 400 Client Error: Bad Request for url: https://api.stlouisfed.org/fred/series/observations?series_id=BAMLC0A4CRPSYTW&api_key=da7dbeb2fb38addc5865122252685cee&file_type=json&observation_start=2023-03-30&observation_end=2026-03-29&sort_order=asc
+2026-03-29 15:52:42,250 [raptor.data_feeds] ERROR: FRED fetch failed for ISM/MAN_PMI: 400 Client Error: Bad Request for url: https://api.stlouisfed.org/fred/series/observations?series_id=ISM%2FMAN_PMI&api_key=da7dbeb2fb38addc5865122252685cee&file_type=json&observation_start=2023-03-30&observation_end=2026-03-29&sort_order=asc
+2026-03-29 15:52:42,284 [raptor.data_feeds] INFO: FRED regime: NEUTRAL (score=0.100)
+2026-03-29 15:52:42,757 [raptor.main] INFO: Data: 46 symbols with bars  |  Macro regime: NEUTRAL (0.100)  |  Sentiment for 46 symbols
+2026-03-29 15:52:43,076 [raptor.signals] INFO: Generated 0 signals from 46 symbols (regime=NEUTRAL)
+2026-03-29 15:52:43,077 [raptor.main] INFO: No new signals today.
+2026-03-29 15:53:23,055 [raptor.main] INFO: ============================================================
+2026-03-29 15:53:23,056 [raptor.main] INFO: RAPTOR v5.0.0 DAILY SCAN — 2026-03-29T15:53:23.056735
+2026-03-29 15:53:23,057 [raptor.main] INFO: ============================================================
+2026-03-29 15:53:23,058 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-03-29 15:53:23,701 [raptor.main] INFO: Account: equity=$98639.10  cash=$70918.54  positions=3
+2026-03-29 15:53:24,561 [raptor.data_feeds] INFO: Fetched bars for 46 / 47 symbols
+2026-03-29 15:53:25,339 [raptor.data_feeds] ERROR: FRED fetch failed for BAMLC0A4CRPSYTW: 400 Client Error: Bad Request for url: https://api.stlouisfed.org/fred/series/observations?series_id=BAMLC0A4CRPSYTW&api_key=da7dbeb2fb38addc5865122252685cee&file_type=json&observation_start=2023-03-30&observation_end=2026-03-29&sort_order=asc
+2026-03-29 15:53:26,260 [raptor.data_feeds] ERROR: FRED fetch failed for ISM/MAN_PMI: 400 Client Error: Bad Request for url: https://api.stlouisfed.org/fred/series/observations?series_id=ISM%2FMAN_PMI&api_key=da7dbeb2fb38addc5865122252685cee&file_type=json&observation_start=2023-03-30&observation_end=2026-03-29&sort_order=asc
+2026-03-29 15:53:26,268 [raptor.data_feeds] INFO: FRED regime: NEUTRAL (score=0.100)
+2026-03-29 15:53:26,980 [raptor.main] INFO: Data: 46 symbols with bars  |  Macro regime: NEUTRAL (0.100)  |  Sentiment for 46 symbols
+2026-03-29 15:53:27,315 [raptor.signals] INFO: Generated 0 signals from 46 symbols (regime=NEUTRAL)
+2026-03-29 15:53:27,316 [raptor.main] INFO: No new signals today.
+2026-03-29 15:56:52,261 [raptor.main] INFO: ============================================================
+2026-03-29 15:56:52,262 [raptor.main] INFO: RAPTOR v5.0.0 DAILY SCAN — 2026-03-29T15:56:52.262811
+2026-03-29 15:56:52,263 [raptor.main] INFO: ============================================================
+2026-03-29 15:56:52,265 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-03-29 15:56:53,395 [raptor.main] INFO: Account: equity=$98639.10  cash=$70918.54  positions=3
+2026-03-29 15:56:54,654 [raptor.data_feeds] INFO: Fetched bars for 46 / 47 symbols
+2026-03-29 15:56:55,707 [raptor.data_feeds] INFO: FRED fetch OK: BAA10Y (746 observations)
+2026-03-29 15:56:57,117 [raptor.data_feeds] INFO: FRED fetch OK: MANEMP (36 observations)
+2026-03-29 15:56:57,137 [raptor.data_feeds] INFO: FRED regime: BULLISH (score=0.250)
+2026-03-29 15:56:57,982 [raptor.main] INFO: Data: 46 symbols with bars  |  Macro regime: BULLISH (0.250)  |  Sentiment for 46 symbols
+2026-03-29 15:56:58,566 [raptor.signals] INFO: Generated 0 signals from 46 symbols (regime=BULLISH)
+2026-03-29 15:56:58,567 [raptor.main] INFO: No new signals today.

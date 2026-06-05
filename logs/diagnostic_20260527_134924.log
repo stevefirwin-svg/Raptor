@@ -1,0 +1,58 @@
+
+  1. ENVIRONMENT
+
+  2. IMPORTS
+
+  3. CONFIG
+    INFO  Kelly mode
+         SHADOW until 100 trades (max_positions=10, kelly_fraction=0.15)
+    INFO  Trail ATR levels
+         early=2.5x (<=3d)  mid=2.0x (<=10d)  late=1.5x (<=20d)  final=1.0x
+    INFO  Stop ATR mult
+         initial_stop_atr_mult=3.0
+
+  4. DATA FILES
+
+  5. LEDGER INTEGRITY
+    INFO  Open positions
+         STM(177sh)  TSLA(1sh)  AMD(18sh)  CSX(186sh)  CVE(100sh)  DKNG(58sh)  INTC(47sh)  KDP(28sh)  PLTD(152sh)  SMCI(43sh)
+
+  6. ALPACA CONNECTIVITY
+DataManager initialized with all feeds
+Starting new HTTPS connection (1): paper-api.alpaca.markets:443
+https://paper-api.alpaca.markets:443 "GET /v2/account HTTP/1.1" 200 None
+https://paper-api.alpaca.markets:443 "GET /v2/positions HTTP/1.1" 200 None
+
+  7. BAT FILE RUN ORDER
+
+  8. HOLD HEALTH INTEGRITY
+
+  9. OUTCOME LOG INTEGRITY
+    INFO  Outcome log: IC-valid count
+         Full terminal exits (IC-valid): 6  Partial trims (excluded from IC): 50  Pre-label (excluded): 47
+    INFO  IC gate (60 full exits)
+         6/60 full exits — 54 more needed
+
+  10. COMPONENT DRY RUNS
+
+  11. LOG FILES
+
+  12. INVARIANTS (code-level)
+
+  SUMMARY
+  Total checks: 74
+
+  WARNINGS — review before trading:
+    • Cooldown Log
+    • Factor IC Report
+    • Kelly Estimates
+    • Closed trades: pnl_pct units
+    • Hold health: freshness
+    • Errors in exits_20260527.log
+    • Errors in raptor_20260527.log
+
+  ========================================
+  SYSTEM READY  (0 failures, 7 warnings)
+  ========================================
+
+  Full log: logs/diagnostic_20260527_134924.log

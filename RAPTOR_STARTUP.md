@@ -1,6 +1,6 @@
 # RAPTOR_STARTUP.md — Session Startup
 *Read first. Every session. No exceptions.*
-*Last updated: 2026-05-29 | Version: 5.9*
+*Last updated: 2026-06-05 | Version: 6.0*
 
 ---
 
@@ -20,8 +20,6 @@ Remove-Item -Recurse -Force __pycache__ -ErrorAction SilentlyContinue
 ```
 
 **Note the top commit hash from `log --oneline`.** Paste it to Claude at session start.
-Claude uses it as `LAST_STEVE_COMMIT` when generating the end-of-session patch.
-This ensures the patch contains exactly the delta between Steve's machine and Claude's work — nothing more.
 
 ---
 
@@ -34,9 +32,53 @@ This ensures the patch contains exactly the delta between Steve's machine and Cl
 
 ---
 
-## STEP 3 — HEALTH CHECK
+## STEP 3 — INFRASTRUCTURE INTEGRITY CHECK
 
-Run before writing any code. Paste output to Claude when starting.
+**Run this first, before health check, before any code work. These are not optional.**
+
+```bash
+# 1. AlpacaDataFeed has submit_order — the method that actually submits trades
+python3 -c "
+from data_feeds import AlpacaDataFeed
+methods = [m for m in dir(AlpacaDataFeed) if not m.startswith('_')]
+assert 'submit_order' in methods, 'CRITICAL: submit_order MISSING from AlpacaDataFeed'
+print('OK: submit_order present')
+print('All methods:', methods)
+"
+
+# 2. Syntax check all critical files
+for f in main.py signals.py exit_monitor.py hold_monitor.py data_feeds.py outcome_tracker.py; do
+    python3 -c "import ast; ast.parse(open('$f').read()); print('OK: $f')"
+done
+
+# 3. No fabricated fallbacks
+grep -n "price \* 0\.02\|entry_price \* 0\.92" exit_monitor.py hold_monitor.py
+# Expected: no output. Any match = fabricated fallback = fix before proceeding.
+
+# 4. Default composite is 0.0 not -1.0
+grep -n "scores\[sym\] = 0\.0\|default 0\.0" exit_monitor.py | head -3
+
+# 5. Atomic writes present
+grep -n "os.replace" main.py outcome_tracker.py hold_monitor.py exit_monitor.py
+
+# 6. _last_full_signals stores ALL scored symbols
+grep -n "_last_full_signals" signals.py | head -3
+
+# 7. Velocity and cooldown gates wired
+grep -n "_velocity_filter\|_cooldown_filter" main.py | head -4
+
+# 8. Spearman IC in AdaptiveWeights
+grep -n "spearmanr" signals.py | head -3
+```
+
+**If submit_order check fails: STOP. Do not run exit_monitor live. Fix data_feeds.py first.**
+This check exists because submit_order was missing its `def` line from ~2026-05-25 to 2026-06-05,
+causing every order submission to fail silently with no log output. Eleven days of exits and trims
+never reached Alpaca.
+
+---
+
+## STEP 4 — HEALTH CHECK
 
 ```powershell
 python outcome_tracker.py --summary
@@ -49,7 +91,7 @@ python factor_lab.py
 `outcome_tracker.py --summary`:
 - IC-valid count — goal: 60 (unlocks MATH-5, ARCH-1). Currently 8
 - math_trim win% should be > 60%
-- trailing_stop win% should be > 40% (currently underperforming)
+- trailing_stop win% should be > 40%
 - entry_decision field: populating from next exit onwards (P0-1 fixed 2026-05-29)
 
 `kelly_engine.py`:
@@ -63,55 +105,13 @@ python factor_lab.py
 
 ---
 
-## STEP 4 — VERIFY CRITICAL INVARIANTS
-
-```bash
-# 1. _last_full_signals stores ALL scored symbols
-grep -n "_last_full_signals" signals.py | head -3
-
-# 2. Default composite is 0.0 not -1.0
-grep -n "0\.0.*Not scored\|scores\[sym\] = 0\.0\|default 0\.0" exit_monitor.py | head -3
-
-# 3. No fabricated fallbacks
-grep -n "price \* 0\.02\|entry_price \* 0\.92" exit_monitor.py hold_monitor.py
-
-# 4. Atomic writes present
-grep -n "os.replace" main.py outcome_tracker.py hold_monitor.py exit_monitor.py
-
-# 5. Spearman IC in AdaptiveWeights
-grep -n "spearmanr" signals.py | head -3
-
-# 6. Velocity and cooldown gates wired
-grep -n "_velocity_filter\|_cooldown_filter" main.py | head -4
-
-# 7. Per-book adaptive weights
-grep -n "adaptive_mom\|adaptive_mr" signals.py | head -3
-
-# 8. Soft z shrinkage (not hard threshold)
-grep -n "z_soft\|z\[fn\]\*(abs" signals.py | head -3
-```
-
-If any check fails: restore from GitHub before proceeding.
-
----
-
-## NOTES — Last session (2026-05-29 session 2)
-
-- MATH-3 DFA hurst complete — R/S replaced with DFA-1 (Kantelhardt 2002)
-- All H-1 through H-8 hygiene items closed
-- daily_recap now shows dynamic universe size and 5 new metrics (roll WR, streak, exit breakdown, trim efficiency, cap efficiency)
-- hold_monitor compute_trim reads stop_dist_atr as float, not parsed string
-- Dead files gone: raptor_state.json, diagnose.py, diagnose_regime.py, Start_Raptor_Recap.bat
-- MATH items remaining: MATH-1, MATH-5 (both data-gated)
-
----
-
 ## STEP 5 — CONTEXT CHECK
 
 1. What positions are held? Run `python check_account.py` or paste portfolio.
 2. What did hold monitor say last run? Check `hold_health.json`.
-3. What is current macro regime? Check `macro_context.json`.
-4. What is today's build target? See MASTER_PLAN open items.
+3. Are hold_health timestamps TODAY? If all timestamps are yesterday → hold_monitor did not run this morning. Investigate before trusting trim recommendations.
+4. What is current macro regime? Check `macro_context.json`.
+5. What is today's build target? See MASTER_PLAN open items.
 
 ---
 
@@ -132,36 +132,36 @@ If any check fails: restore from GitHub before proceeding.
 
 ---
 
-## SYSTEM STATE (2026-05-27)
+## SYSTEM STATE (2026-06-05)
 
 ### Live and working
 
 | Component | Status |
 |-----------|--------|
 | Dual-book signal engine (MOMENTUM live, MR suspended) | ✅ LIVE |
-| Ledoit-Wolf SNR entry ranking | ✅ LIVE 2026-05-25 |
-| Soft z-score shrinkage (replaces hard \|z\|>0.10 threshold) | ✅ LIVE 2026-05-27 |
-| accum_dist: r² quality weight (was abs(r)) | ✅ LIVE 2026-05-27 |
-| Spearman IC inline derivation comments | ✅ LIVE 2026-05-27 |
-| Regime probability blend (Gaussian, continuous macro_score) | ✅ LIVE 2026-05-25 |
+| submit_order method on AlpacaDataFeed | ✅ FIXED 2026-06-05 (was missing def line) |
+| submit_order try/except in execute loop | ✅ FIXED 2026-06-05 (loop no longer aborts on first error) |
+| Ledoit-Wolf SNR entry ranking | ✅ LIVE |
+| Soft z-score shrinkage (replaces hard threshold) | ✅ LIVE |
+| accum_dist: r² quality weight | ✅ LIVE |
+| Regime probability blend (Gaussian, continuous) | ✅ LIVE |
 | Velocity gate (_velocity_filter) | ✅ LIVE |
 | Cooldown gate (_cooldown_filter) | ✅ LIVE |
-| Vol-regime hard stop (2.5/3.0/3.5x ATR) | ✅ LIVE |
+| Vol-regime hard stop | ✅ LIVE |
 | Signal-aware trail (composite + health modifier) | ✅ LIVE |
 | Regime-relative thesis threshold | ✅ LIVE |
 | Multi-MA breadth (50/150/200) | ✅ LIVE |
-| Hold monitor 10-layer health scoring | ✅ LIVE |
+| Hold monitor 8-layer health scoring | ✅ LIVE |
 | Math trim from hold_health.json | ✅ LIVE |
-| Portfolio heat proportional 25% trim | ✅ LIVE 2026-05-25 |
+| Portfolio heat proportional 25% trim | ✅ LIVE |
 | Bootstrap Kelly — SHADOW mode | ✅ LIVE |
 | Spearman IC + WLS + exponential decay (λ=0.005) | ✅ LIVE |
 | Per-book AdaptiveWeights (MOMENTUM + MR files) | ✅ LIVE |
 | Outcome tracker --backfill --relabel | ✅ LIVE |
 | Atomic JSON writes (os.replace) | ✅ LIVE |
-| exit_monitor: ATR fallback → hold_health.json, skip if missing | ✅ LIVE 2026-05-27 |
-| exit_monitor: days_held fallback 1 (was 7) | ✅ LIVE 2026-05-27 |
-| All scored symbols in _last_full_signals | ✅ LIVE |
-| daily_recap regime_score, Sharpe, stop dist fixed | ✅ LIVE |
+| P0-1: outcome_pending sidecar | ✅ LIVE 2026-05-29 |
+| P0-8: regime override from macro_context.json | ✅ LIVE 2026-05-29 |
+| DFA-1 Hurst (replaces R/S) | ✅ LIVE 2026-05-29 |
 
 ### NOT live (claimed but not in code)
 
@@ -170,23 +170,14 @@ If any check fails: restore from GitHub before proceeding.
 | P1-1 Kalman macro | macro_context.py is vote-count; replaced by Gaussian blend in signals.py |
 | P1-5 OU hold target | hardcoded 15 days MOM; dist_to_mean formula for MR |
 
-### Fixed this session (2026-05-29)
+### Known open issues
 
-| Item | Files changed |
-|------|--------------|
-| P0-1: outcome_pending sidecar | exit_monitor.py, outcome_tracker.py |
-| P0-8: regime override from macro_context.json | main.py, exit_monitor.py |
-
-### Open (next to build)
-
-| Priority | Item | Gate |
-|----------|------|------|
-| Next session | MATH-3 Full Hurst DFA | No gate |
-| IC-valid >= 60 | MATH-5: n_prior 50→20 | Have 8 |
-| IC-valid >= 60 | ARCH-1: IC layer weights hold monitor | Have 8 |
-| IC-valid >= 60 | MATH-1: Regime-conditional IC | Have 8 |
-| 100 equity trades | Kelly ACTIVE mode | Have 8 |
-| After MR resumes | P1-5: OU hold target per stock | MR needs outcomes |
+| Issue | Impact | Status |
+|-------|--------|--------|
+| Trail multiplier uses round numbers (profit_atr≥4.0→1.0×) | Stops too tight on winning positions — EXIT 1 fires on broad pullback days | GAP-B, needs backtest derivation |
+| INTC ledger stop=112 (stale backfill) above current price | EXIT 1 fires every run | Verify/fix ledger stop manually |
+| logs/ was gitignored | Diagnostic logs unavailable for analysis | Fixed 2026-06-05 — now tracked |
+| UnicodeEncodeError on → character in log output | Logging error printed but execution continues | Low priority cosmetic fix |
 
 ---
 
@@ -197,10 +188,11 @@ RAPTOR_STARTUP.md         This file — read first
 RAPTOR_MASTER_PLAN.md     Priority queue + verified status
 RAPTOR_SKILL.md           Rules + factor lifecycle + what to never do
 RAPTOR_ONTOLOGY.md        Full system logic — no code
+data_feeds.py             AlpacaDataFeed — submit_order, get_positions, get_account
 signals.py                Dual-book engine + SNR + AdaptiveWeights + FACTOR_NAMES
 main.py                   Entry + velocity + cooldown gates
 exit_monitor.py           All exit and trim logic
-hold_monitor.py           10-layer health scoring
+hold_monitor.py           8-layer health scoring
 outcome_tracker.py        Trade labeling
 kelly_engine.py           Bootstrap Kelly (shadow)
 factor_lab.py             IC validation
@@ -212,7 +204,6 @@ factor_ic_report.json     IC validation results
 hold_health.json          Position health scores
 composite_cache.json      Today's composites (velocity gate input)
 cooldown_log.json         Active re-entry blocks
-adaptive_weights_MOMENTUM.json  Per-book ridge weights
 ```
 
 ---
@@ -222,46 +213,30 @@ adaptive_weights_MOMENTUM.json  Per-book ridge weights
 ### Claude side (every session that touches code)
 
 ```bash
-# 1. Syntax check all changed files
-for f in main.py signals.py exit_monitor.py hold_monitor.py outcome_tracker.py kelly_engine.py daily_recap.py; do
-    python3 -c "import ast; ast.parse(open('$f').read()); print('OK: $f')" 2>/dev/null
+# 1. Infrastructure integrity check (Step 3 above) — re-run after any data_feeds.py change
+python3 -c "
+from data_feeds import AlpacaDataFeed
+assert 'submit_order' in dir(AlpacaDataFeed), 'CRITICAL: submit_order missing'
+print('OK: submit_order present')
+"
+
+# 2. Syntax check all changed files
+for f in main.py signals.py exit_monitor.py hold_monitor.py data_feeds.py outcome_tracker.py; do
+    python3 -c "import ast; ast.parse(open('$f').read()); print('OK: $f')"
 done
 
-# 2. Commit locally
+# 3. Commit
 git add -A
 git commit -m "Description: what changed and why (2026-MM-DD)"
 git log --oneline -3
-
-# 3. Generate patch against last known Steve commit (the hash shown in git log that Steve's machine is at)
-git diff LAST_STEVE_COMMIT HEAD > /tmp/session_fixes.patch
-cp /tmp/session_fixes.patch /mnt/user-data/outputs/session_fixes.patch
-# Then call present_files to surface the download link
 ```
 
-**Why patch instead of push:** Claude's cloud environment cannot authenticate to GitHub.
-Commits stay local here. The patch file is the canonical handoff every session.
-
----
-
-### Steve's side (apply patch, commit, push)
+### Steve's side (pull and push)
 
 ```powershell
 cd "C:\Users\steve\OneDrive\Desktop\Raptor"
-
-# 1. Apply the downloaded patch
-git apply session_fixes.patch
-
-# 2. Verify it applied cleanly
-git diff --stat
-
-# 3. Commit and push
-git add -A
-git commit -m "same message as Claude commit"
-git push origin main
+git pull origin main
 git log --oneline -4
-
-# 4. Cleanup
-Remove-Item session_fixes.patch
 Remove-Item -Recurse -Force __pycache__ -ErrorAction SilentlyContinue
 ```
 
@@ -271,18 +246,18 @@ Remove-Item -Recurse -Force __pycache__ -ErrorAction SilentlyContinue
 
 1. Clone fresh from GitHub first. Never work from project knowledge alone.
 2. Read all four MD files before any technical work.
-3. Run health check before writing code.
-4. Verify invariants (Step 4). If any fail, restore before proceeding.
+3. Run infrastructure integrity check (Step 3) before any code work.
+4. Run health check before writing code.
 5. Real data or skip. Never invent a default.
 6. comp=0.0 for unscored positions. Never -1.0.
 7. Momentum clustering is alpha. No correlation gates.
 8. Kelly is SHADOW until 100 trades.
 9. Syntax check before committing.
 10. Commit message must describe what changed and why.
-11. Every session that touches code ends with a patch file handed to Steve. Claude cannot push to GitHub — patch is the canonical handoff. Never end a code session without generating the patch.
-12. Update ONTOLOGY same session as architecture changes.
-13. Run outcome_tracker.py after any session touching trade outcomes.
-14. Never change code intraday (9:35–3:50 ET) without explicit intent.
-15. No factor is permanent. IC > 0.05, ICIR > 0.5 over 60-day rolling window to stay.
-16. Every constant needs a derivation or `# TODO:DERIVE` comment with method noted.
-17. When evaluation is impossible → log warning, skip. Never substitute.
+11. Update ONTOLOGY same session as architecture changes.
+12. Run outcome_tracker.py after any session touching trade outcomes.
+13. Never change code intraday (9:35–3:50 ET) without explicit intent.
+14. No factor is permanent. IC > 0.03, |t| > 1.0, ICIR > 0.3 over 60-day rolling window to stay.
+15. Every constant needs a derivation or `# TODO:DERIVE` comment with method noted.
+16. When evaluation is impossible → log warning, skip. Never substitute.
+17. After any edit to data_feeds.py: re-run the submit_order existence check. Non-negotiable.

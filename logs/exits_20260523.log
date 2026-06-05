@@ -1,0 +1,237 @@
+2026-05-23 09:52:11,723 [raptor.exits] INFO: ============================================================
+2026-05-23 09:52:11,723 [raptor.exits] INFO: RAPTOR v5.4 EXIT MONITOR - 2026-05-23T09:52:11.723448
+2026-05-23 09:52:11,724 [raptor.exits] INFO: ============================================================
+2026-05-23 09:52:11,725 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-05-23 09:52:12,281 [raptor.exits] INFO: Account: equity=$106369.43  cash=$17918.70  positions=10
+2026-05-23 09:52:12,305 [raptor.universe] INFO: Universe from cache: 70 symbols
+2026-05-23 09:52:13,288 [raptor.data_feeds] INFO: Fetched 76 new bars / 76 total cached
+2026-05-23 09:52:13,918 [raptor.data_feeds] ERROR: FRED fetch failed for NAPM: 400 Client Error: Bad Request for url: https://api.stlouisfed.org/fred/series/observations?series_id=NAPM&api_key=da7dbeb2fb38addc5865122252685cee&file_type=json&observation_start=2023-05-24&observation_end=2026-05-23&sort_order=asc
+2026-05-23 09:52:13,934 [raptor.data_feeds] INFO: FRED regime: BULLISH (score=0.150)
+2026-05-23 09:52:15,308 [raptor.signals] INFO: v5.4 Signals: 5 from 75 | Macro=BULLISH Scale=1.0 | Micro={'TRENDING': 40, 'MIXED': 35}
+2026-05-23 09:52:15,309 [raptor.exits] INFO: Portfolio unrealized: $10513.92 (9.88%)
+2026-05-23 09:52:15,361 [raptor.exits] WARNING: MATH TRIM [TRIM_MODERATE] CVE — 83 of 267 shares (31%) — Moderate trim 31% — thesis weakening
+2026-05-23 09:52:15,362 [raptor.exits] WARNING: MATH TRIM [TRIM_MINOR] KDP — 71 of 314 shares (23%) — Minor trim 23% — early warning, reduce exposure
+2026-05-23 09:52:15,362 [raptor.exits] WARNING: MATH TRIM [TRIM_MODERATE] PLTD — 221 of 731 shares (30%) — Moderate trim 30% — thesis weakening
+2026-05-23 09:52:15,362 [raptor.exits] INFO: 
+2026-05-23 09:52:15,362 [raptor.exits] INFO: ============================================================
+2026-05-23 09:52:15,362 [raptor.exits] INFO:   EXIT SUMMARY
+2026-05-23 09:52:15,363 [raptor.exits] INFO: ============================================================
+2026-05-23 09:52:15,363 [raptor.exits] INFO:   EXITS (3):
+2026-05-23 09:52:15,363 [raptor.exits] INFO:     CVE  math_trim_31%  pnl=+4.6%  comp=0.0962
+2026-05-23 09:52:15,363 [raptor.exits] INFO:     KDP  math_trim_23%  pnl=+1.6%  comp=-0.0859
+2026-05-23 09:52:15,363 [raptor.exits] INFO:     PLTD  math_trim_30%  pnl=+1.6%  comp=-0.2024
+2026-05-23 09:52:15,363 [raptor.exits] INFO:   HOLDS (7):
+2026-05-23 09:52:15,363 [raptor.exits] INFO:     AMD  pnl=+53.6%  trail=$418.49  comp=-0.0718
+2026-05-23 09:52:15,364 [raptor.exits] INFO:     CSX  pnl=+0.2%  trail=$43.96  comp=0.385
+2026-05-23 09:52:15,364 [raptor.exits] INFO:     DKNG  pnl=+0.3%  trail=$21.97  comp=0.0955
+2026-05-23 09:52:15,364 [raptor.exits] INFO:     INTC  pnl=+36.6%  trail=$104.84  comp=-0.1952
+2026-05-23 09:52:15,364 [raptor.exits] INFO:     SMCI  pnl=+4.3%  trail=$25.35  comp=0.1113
+2026-05-23 09:52:15,364 [raptor.exits] INFO:     STM  pnl=+33.2%  trail=$61.69  comp=0.3921
+2026-05-23 09:52:15,364 [raptor.exits] INFO:     TSLA  pnl=+8.9%  trail=$389.75  comp=-0.331
+2026-05-23 09:52:15,364 [raptor.exits] INFO: ============================================================
+2026-05-23 09:52:15,377 [raptor.exits] INFO: AGENT [advisory] TRIM NVDA — 3+ deteriorating dimensions and unrealized_pct>5 (conf=0.60, from 2026-05-15T13:05:37.330779) [not executed — math trim governs]
+2026-05-23 09:52:15,377 [raptor.exits] INFO: AGENT [advisory] HOLD AMD — Agent unavailable — passthrough default (conf=0.50, from 2026-05-23T09:31:55.474274)
+2026-05-23 09:52:15,377 [raptor.exits] INFO: AGENT [advisory] HOLD CVE — Agent unavailable — passthrough default (conf=0.50, from 2026-05-23T09:31:55.474291)
+2026-05-23 09:52:15,377 [raptor.exits] INFO: AGENT [advisory] HOLD FXI — insufficient history: 0 days (conf=0.90, from 2026-05-19T16:30:29.205147)
+2026-05-23 09:52:15,378 [raptor.exits] INFO: AGENT [advisory] HOLD CSX — Agent unavailable — passthrough default (conf=0.50, from 2026-05-23T09:31:55.474288)
+2026-05-23 09:52:15,378 [raptor.exits] INFO: AGENT [advisory] HOLD INTC — Agent unavailable — passthrough default (conf=0.50, from 2026-05-23T09:31:55.474297)
+2026-05-23 09:52:15,378 [raptor.exits] INFO: AGENT [advisory] HOLD KDP — Agent unavailable — passthrough default (conf=0.50, from 2026-05-23T09:31:55.474299)
+2026-05-23 09:52:15,378 [raptor.exits] INFO: AGENT [advisory] HOLD OWL — insufficient history: 0 days (conf=0.90, from 2026-05-17T15:50:38.416296)
+2026-05-23 09:52:15,378 [raptor.exits] INFO: AGENT [advisory] HOLD KRE — insufficient history: 0 days (conf=0.90, from 2026-05-18T21:00:50.566737)
+2026-05-23 09:52:15,378 [raptor.exits] INFO: AGENT [advisory] HOLD PLTD — Agent unavailable — passthrough default (conf=0.50, from 2026-05-23T09:31:55.474302)
+2026-05-23 09:52:15,378 [raptor.exits] INFO: AGENT [advisory] HOLD STM — Agent unavailable — passthrough default (conf=0.50, from 2026-05-23T09:31:55.474307)
+2026-05-23 09:52:15,378 [raptor.exits] INFO: AGENT [advisory] HOLD SMCI — Agent unavailable — passthrough default (conf=0.50, from 2026-05-23T09:31:55.474304)
+2026-05-23 09:52:15,379 [raptor.exits] INFO: AGENT [advisory] HOLD TSLA — Agent unavailable — passthrough default (conf=0.50, from 2026-05-23T09:31:55.474309)
+2026-05-23 09:52:15,379 [raptor.exits] INFO: AGENT [advisory] HOLD TSLL — insufficient history: 0 days (conf=0.90, from 2026-05-19T16:30:29.205168)
+2026-05-23 09:52:15,379 [raptor.exits] INFO: AGENT [advisory] HOLD TTD — insufficient history: 0 days (conf=0.90, from 2026-05-19T16:30:29.205175)
+2026-05-23 09:52:15,379 [raptor.exits] INFO: AGENT [advisory] HOLD DKNG — Agent unavailable — passthrough default (conf=0.50, from 2026-05-23T09:31:55.474294)
+2026-05-23 09:52:15,381 [raptor.exits] INFO: SELL 83 CVE [math_trim_31%]
+2026-05-23 09:52:15,425 [raptor.data_feeds] INFO: Order submitted: SELL 83 CVE @ None
+2026-05-23 09:52:15,425 [raptor.exits] INFO:   OK: OrderStatus.ACCEPTED
+2026-05-23 09:52:15,430 [raptor.exits] INFO: SELL 71 KDP [math_trim_23%]
+2026-05-23 09:52:15,456 [raptor.data_feeds] INFO: Order submitted: SELL 71 KDP @ None
+2026-05-23 09:52:15,457 [raptor.exits] INFO:   OK: OrderStatus.ACCEPTED
+2026-05-23 09:52:15,469 [raptor.exits] INFO: SELL 221 PLTD [math_trim_30%]
+2026-05-23 09:52:15,496 [raptor.data_feeds] INFO: Order submitted: SELL 221 PLTD @ None
+2026-05-23 09:52:15,496 [raptor.exits] INFO:   OK: OrderStatus.ACCEPTED
+2026-05-23 09:52:15,579 [raptor.exits] INFO: GAP9: Afternoon rescore complete — all composites stable
+2026-05-23 10:10:42,644 [raptor.universe] INFO: Universe from cache: 70 symbols
+2026-05-23 10:10:45,328 [raptor.backtest] INFO: Loaded 69 / 70 symbols
+2026-05-23 10:10:45,380 [raptor.backtest] INFO: Loaded 1 / 1 symbols
+2026-05-23 10:26:47,760 [raptor.universe] INFO: Universe from cache: 70 symbols
+2026-05-23 10:26:48,796 [raptor.backtest] INFO: Loaded 69 / 70 symbols
+2026-05-23 10:26:48,804 [raptor.backtest] INFO: Loaded 1 / 1 symbols
+2026-05-23 11:11:04,123 [raptor.universe] INFO: Universe from cache: 70 symbols
+2026-05-23 11:11:05,150 [raptor.backtest] INFO: Loaded 69 / 70 symbols
+2026-05-23 11:11:05,158 [raptor.backtest] INFO: Loaded 1 / 1 symbols
+2026-05-23 12:09:53,005 [raptor.backtest] INFO: Loaded 0 / 0 symbols
+2026-05-23 12:09:53,057 [raptor.backtest] INFO: Loaded 1 / 1 symbols
+2026-05-23 12:10:59,265 [raptor.backtest] INFO: Loaded AEP: 1365 bars
+2026-05-23 12:10:59,355 [raptor.backtest] INFO: Loaded AFRM: 1247 bars
+2026-05-23 12:10:59,433 [raptor.backtest] INFO: Loaded AI: 1267 bars
+2026-05-23 12:10:59,500 [raptor.backtest] INFO: Loaded AIG: 1362 bars
+2026-05-23 12:10:59,592 [raptor.backtest] INFO: Loaded AMAT: 1365 bars
+2026-05-23 12:10:59,789 [raptor.backtest] INFO: Loaded AMT: 1362 bars
+2026-05-23 12:10:59,856 [raptor.backtest] INFO: Loaded ASTR: 765 bars
+2026-05-23 12:10:59,952 [raptor.backtest] INFO: Loaded AXP: 1362 bars
+2026-05-23 12:11:00,158 [raptor.backtest] INFO: Loaded BBAI: 1133 bars
+2026-05-23 12:11:00,262 [raptor.backtest] INFO: Loaded BIIB: 1364 bars
+2026-05-23 12:11:00,370 [raptor.backtest] INFO: Loaded BILL: 1362 bars
+2026-05-23 12:11:00,470 [raptor.backtest] INFO: Loaded BKNG: 1365 bars
+2026-05-23 12:11:00,548 [raptor.backtest] INFO: Loaded BLK: 1362 bars
+2026-05-23 12:11:00,675 [raptor.backtest] INFO: Loaded BNTX: 1365 bars
+2026-05-23 12:11:00,884 [raptor.backtest] INFO: Loaded CCI: 1362 bars
+2026-05-23 12:11:00,979 [raptor.backtest] INFO: Loaded CDNS: 1365 bars
+2026-05-23 12:11:01,083 [raptor.backtest] INFO: Loaded COF: 1362 bars
+2026-05-23 12:11:01,287 [raptor.backtest] INFO: Loaded CRWD: 1365 bars
+2026-05-23 12:11:01,392 [raptor.backtest] INFO: Loaded DASH: 1267 bars
+2026-05-23 12:11:01,593 [raptor.backtest] INFO: Loaded DHR: 1362 bars
+2026-05-23 12:11:01,698 [raptor.backtest] INFO: Loaded DOCU: 1365 bars
+2026-05-23 12:11:01,799 [raptor.backtest] INFO: Loaded DPZ: 1362 bars
+2026-05-23 12:11:01,888 [raptor.backtest] INFO: Loaded DUK: 1362 bars
+2026-05-23 12:11:01,962 [raptor.backtest] INFO: Loaded EA: 1365 bars
+2026-05-23 12:11:02,034 [raptor.backtest] INFO: Loaded EMR: 1363 bars
+2026-05-23 12:11:02,102 [raptor.backtest] INFO: Loaded EOG: 1363 bars
+2026-05-23 12:11:02,181 [raptor.backtest] INFO: Loaded EQIX: 1365 bars
+2026-05-23 12:11:02,249 [raptor.backtest] INFO: Loaded ETN: 1362 bars
+2026-05-23 12:11:02,314 [raptor.backtest] INFO: Loaded EXPE: 1365 bars
+2026-05-23 12:11:02,385 [raptor.backtest] INFO: Loaded FANG: 1365 bars
+2026-05-23 12:11:02,454 [raptor.backtest] INFO: Loaded FDX: 1362 bars
+2026-05-23 12:11:02,537 [raptor.backtest] INFO: Loaded FISV: 1365 bars
+2026-05-23 12:11:02,608 [raptor.backtest] INFO: Loaded FOX: 1365 bars
+2026-05-23 12:11:02,689 [raptor.backtest] INFO: Loaded GD: 1362 bars
+2026-05-23 12:11:02,781 [raptor.backtest] INFO: Loaded GILD: 1365 bars
+2026-05-23 12:11:02,848 [raptor.backtest] INFO: Loaded GOOG: 1365 bars
+2026-05-23 12:11:02,926 [raptor.backtest] INFO: Loaded GPN: 1362 bars
+2026-05-23 12:11:02,998 [raptor.backtest] INFO: Loaded GTLB: 1057 bars
+2026-05-23 12:11:03,092 [raptor.backtest] INFO: Loaded HLT: 1362 bars
+2026-05-23 12:11:03,178 [raptor.backtest] INFO: Loaded HON: 1364 bars
+2026-05-23 12:11:03,258 [raptor.backtest] INFO: Loaded HUBS: 1362 bars
+2026-05-23 12:11:03,331 [raptor.backtest] INFO: Loaded IDXX: 1365 bars
+2026-05-23 12:11:03,407 [raptor.backtest] INFO: Loaded IQV: 1362 bars
+2026-05-23 12:11:03,472 [raptor.backtest] INFO: Loaded ISRG: 1365 bars
+2026-05-23 12:11:03,552 [raptor.backtest] INFO: Loaded ITW: 1362 bars
+2026-05-23 12:11:03,658 [raptor.backtest] INFO: Loaded KLAC: 1365 bars
+2026-05-23 12:11:03,729 [raptor.backtest] INFO: Loaded LC: 1362 bars
+2026-05-23 12:11:03,847 [raptor.backtest] INFO: Loaded LRCX: 1365 bars
+2026-05-23 12:11:03,923 [raptor.backtest] INFO: Loaded LULU: 1365 bars
+2026-05-23 12:11:04,009 [raptor.backtest] INFO: Loaded LYFT: 1365 bars
+2026-05-23 12:11:04,085 [raptor.backtest] INFO: Loaded MAR: 1365 bars
+2026-05-23 12:11:04,153 [raptor.backtest] INFO: Loaded MCD: 1362 bars
+2026-05-23 12:11:04,227 [raptor.backtest] INFO: Loaded MDB: 1365 bars
+2026-05-23 12:11:04,311 [raptor.backtest] INFO: Loaded MET: 1362 bars
+2026-05-23 12:11:04,396 [raptor.backtest] INFO: Loaded MGNI: 1365 bars
+2026-05-23 12:11:04,466 [raptor.backtest] INFO: Loaded MMM: 1362 bars
+2026-05-23 12:11:04,532 [raptor.backtest] INFO: Loaded MNDY: 1144 bars
+2026-05-23 12:11:04,601 [raptor.backtest] INFO: Loaded MPC: 1362 bars
+2026-05-23 12:11:04,691 [raptor.backtest] INFO: Loaded MRNA: 1365 bars
+2026-05-23 12:11:04,827 [raptor.backtest] INFO: Loaded NOC: 1362 bars
+2026-05-23 12:11:04,898 [raptor.backtest] INFO: Loaded NSC: 1362 bars
+2026-05-23 12:11:04,975 [raptor.backtest] INFO: Loaded O: 1362 bars
+2026-05-23 12:11:05,045 [raptor.backtest] INFO: Loaded OKTA: 1365 bars
+2026-05-23 12:11:05,119 [raptor.backtest] INFO: Loaded PATH: 1178 bars
+2026-05-23 12:11:05,196 [raptor.backtest] INFO: Loaded PH: 1362 bars
+2026-05-23 12:11:05,302 [raptor.backtest] INFO: Loaded PLD: 1362 bars
+2026-05-23 12:11:05,377 [raptor.backtest] INFO: Loaded PNC: 1362 bars
+2026-05-23 12:11:05,445 [raptor.backtest] INFO: Loaded PRU: 1362 bars
+2026-05-23 12:11:05,525 [raptor.backtest] INFO: Loaded PSX: 1362 bars
+2026-05-23 12:11:05,601 [raptor.backtest] INFO: Loaded PTON: 1365 bars
+2026-05-23 12:11:05,683 [raptor.backtest] INFO: Loaded PUBM: 1270 bars
+2026-05-23 12:11:05,750 [raptor.backtest] INFO: Loaded PXD: 946 bars
+2026-05-23 12:11:05,907 [raptor.backtest] INFO: Loaded REGN: 1365 bars
+2026-05-23 12:11:05,984 [raptor.backtest] INFO: Loaded ROK: 1362 bars
+2026-05-23 12:11:06,054 [raptor.backtest] INFO: Loaded ROKU: 1365 bars
+2026-05-23 12:11:06,122 [raptor.backtest] INFO: Loaded ROST: 1365 bars
+2026-05-23 12:11:06,254 [raptor.backtest] INFO: Loaded SNAP: 1362 bars
+2026-05-23 12:11:06,332 [raptor.backtest] INFO: Loaded SNPS: 1366 bars
+2026-05-23 12:11:06,401 [raptor.backtest] INFO: Loaded SO: 1363 bars
+2026-05-23 12:11:06,485 [raptor.backtest] INFO: Loaded SPG: 1362 bars
+2026-05-23 12:11:06,544 [raptor.backtest] INFO: Loaded SPLK: 916 bars
+2026-05-23 12:11:06,611 [raptor.backtest] INFO: Loaded SPOT: 1362 bars
+2026-05-23 12:11:06,708 [raptor.backtest] INFO: Loaded SYK: 1362 bars
+2026-05-23 12:11:06,782 [raptor.backtest] INFO: Loaded TEAM: 1365 bars
+2026-05-23 12:11:06,876 [raptor.backtest] INFO: Loaded TJX: 1362 bars
+2026-05-23 12:11:06,946 [raptor.backtest] INFO: Loaded TMO: 1362 bars
+2026-05-23 12:11:07,057 [raptor.backtest] INFO: Loaded TTWO: 1365 bars
+2026-05-23 12:11:07,122 [raptor.backtest] INFO: Loaded TXN: 1365 bars
+2026-05-23 12:11:07,211 [raptor.backtest] INFO: Loaded UNP: 1362 bars
+2026-05-23 12:11:07,283 [raptor.backtest] INFO: Loaded UPS: 1362 bars
+2026-05-23 12:11:07,346 [raptor.backtest] INFO: Loaded UPST: 1265 bars
+2026-05-23 12:11:07,444 [raptor.backtest] INFO: Loaded VEEV: 1362 bars
+2026-05-23 12:11:07,515 [raptor.backtest] INFO: Loaded VLO: 1362 bars
+2026-05-23 12:11:07,600 [raptor.backtest] INFO: Loaded VRTX: 1365 bars
+2026-05-23 12:11:07,670 [raptor.backtest] INFO: Loaded WBD: 937 bars
+2026-05-23 12:11:07,743 [raptor.backtest] INFO: Loaded WDAY: 1365 bars
+2026-05-23 12:11:07,846 [raptor.backtest] INFO: Loaded XYL: 1362 bars
+2026-05-23 12:11:07,915 [raptor.backtest] INFO: Loaded YUM: 1362 bars
+2026-05-23 12:11:07,989 [raptor.backtest] INFO: Loaded ZM: 1365 bars
+2026-05-23 12:11:08,059 [raptor.backtest] INFO: Loaded ZS: 1365 bars
+2026-05-23 12:11:08,060 [raptor.backtest] INFO: Loaded 181 / 181 symbols
+2026-05-23 13:55:26,776 [raptor.backtest] INFO: Loaded 181 / 181 symbols
+2026-05-23 15:50:04,182 [raptor.exits] INFO: ============================================================
+2026-05-23 15:50:04,183 [raptor.exits] INFO: RAPTOR v5.4 EXIT MONITOR - 2026-05-23T15:50:04.183719
+2026-05-23 15:50:04,184 [raptor.exits] INFO: ============================================================
+2026-05-23 15:50:04,185 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-05-23 15:50:04,743 [raptor.exits] INFO: Account: equity=$106369.43  cash=$17918.70  positions=10
+2026-05-23 15:50:04,749 [raptor.universe] INFO: Universe from cache: 70 symbols
+2026-05-23 15:50:05,745 [raptor.data_feeds] INFO: Fetched 76 new bars / 76 total cached
+2026-05-23 15:50:06,263 [raptor.data_feeds] INFO: FRED fetch OK: T10Y2Y (749 observations)
+2026-05-23 15:50:06,645 [raptor.data_feeds] INFO: FRED fetch OK: FEDFUNDS (36 observations)
+2026-05-23 15:50:07,080 [raptor.data_feeds] INFO: FRED fetch OK: ICSA (156 observations)
+2026-05-23 15:50:07,496 [raptor.data_feeds] INFO: FRED fetch OK: VIXCLS (773 observations)
+2026-05-23 15:50:07,928 [raptor.data_feeds] INFO: FRED fetch OK: BAMLC0A4CBBB (785 observations)
+2026-05-23 15:50:08,342 [raptor.data_feeds] INFO: FRED fetch OK: CPIAUCSL (35 observations)
+2026-05-23 15:50:08,759 [raptor.data_feeds] ERROR: FRED fetch failed for NAPM: 400 Client Error: Bad Request for url: https://api.stlouisfed.org/fred/series/observations?series_id=NAPM&api_key=da7dbeb2fb38addc5865122252685cee&file_type=json&observation_start=2023-05-24&observation_end=2026-05-23&sort_order=asc
+2026-05-23 15:50:09,203 [raptor.data_feeds] INFO: FRED fetch OK: M2SL (35 observations)
+2026-05-23 15:50:09,607 [raptor.data_feeds] INFO: FRED fetch OK: RSXFS (36 observations)
+2026-05-23 15:50:10,036 [raptor.data_feeds] INFO: FRED fetch OK: UNRATE (35 observations)
+2026-05-23 15:50:10,038 [raptor.data_feeds] INFO: FRED regime: BULLISH (score=0.150)
+2026-05-23 15:50:12,048 [raptor.signals] INFO: v5.5 Books: MOMENTUM=21 candidates  MEAN_REVERSION=SUSPENDED  Scale=1.0
+2026-05-23 15:50:12,051 [raptor.signals] INFO: v5.5 Final signals: 5 MOMENTUM  0 MEAN_REVERSION  (scale=1.0  regime=BULLISH)
+2026-05-23 15:50:12,052 [raptor.exits] INFO: Portfolio unrealized: $10513.92 (9.88%)
+2026-05-23 15:50:12,092 [raptor.exits] WARNING: MATH TRIM [TRIM_MODERATE] CVE — 83 of 267 shares (31%) — Moderate trim 31% — thesis weakening
+2026-05-23 15:50:12,093 [raptor.exits] WARNING: MATH TRIM [TRIM_MINOR] KDP — 71 of 314 shares (23%) — Minor trim 23% — early warning, reduce exposure
+2026-05-23 15:50:12,093 [raptor.exits] WARNING: MATH TRIM [TRIM_MODERATE] PLTD — 209 of 731 shares (29%) — Moderate trim 29% — thesis weakening
+2026-05-23 15:50:12,093 [raptor.exits] INFO: 
+2026-05-23 15:50:12,094 [raptor.exits] INFO: ============================================================
+2026-05-23 15:50:12,094 [raptor.exits] INFO:   EXIT SUMMARY
+2026-05-23 15:50:12,094 [raptor.exits] INFO: ============================================================
+2026-05-23 15:50:12,094 [raptor.exits] INFO:   EXITS (3):
+2026-05-23 15:50:12,094 [raptor.exits] INFO:     CVE  math_trim_31%  pnl=+4.6%  comp=-1.0000
+2026-05-23 15:50:12,094 [raptor.exits] INFO:     KDP  math_trim_23%  pnl=+1.6%  comp=-1.0000
+2026-05-23 15:50:12,094 [raptor.exits] INFO:     PLTD  math_trim_29%  pnl=+1.6%  comp=-1.0000
+2026-05-23 15:50:12,094 [raptor.exits] INFO:   HOLDS (7):
+2026-05-23 15:50:12,094 [raptor.exits] INFO:     AMD  pnl=+53.6%  trail=$443.0  comp=-1.0
+2026-05-23 15:50:12,095 [raptor.exits] INFO:     CSX  pnl=+0.2%  trail=$44.27  comp=-1.0
+2026-05-23 15:50:12,095 [raptor.exits] INFO:     DKNG  pnl=+0.3%  trail=$22.6  comp=-1.0
+2026-05-23 15:50:12,095 [raptor.exits] INFO:     INTC  pnl=+36.6%  trail=$107.84  comp=-1.0
+2026-05-23 15:50:12,095 [raptor.exits] INFO:     SMCI  pnl=+4.3%  trail=$30.47  comp=-1.0
+2026-05-23 15:50:12,095 [raptor.exits] INFO:     STM  pnl=+33.2%  trail=$61.69  comp=0.3296
+2026-05-23 15:50:12,095 [raptor.exits] INFO:     TSLA  pnl=+8.9%  trail=$397.0  comp=-1.0
+2026-05-23 15:50:12,095 [raptor.exits] INFO: ============================================================
+2026-05-23 15:50:12,108 [raptor.exits] INFO: AGENT [advisory] TRIM NVDA — 3+ deteriorating dimensions and unrealized_pct>5 (conf=0.60, from 2026-05-15T13:05:37.330779) [not executed — math trim governs]
+2026-05-23 15:50:12,108 [raptor.exits] INFO: AGENT [advisory] HOLD AMD — Agent unavailable — passthrough default (conf=0.50, from 2026-05-23T09:52:27.324654)
+2026-05-23 15:50:12,108 [raptor.exits] INFO: AGENT [advisory] HOLD CVE — Agent unavailable — passthrough default (conf=0.50, from 2026-05-23T09:52:27.324688)
+2026-05-23 15:50:12,108 [raptor.exits] INFO: AGENT [advisory] HOLD FXI — insufficient history: 0 days (conf=0.90, from 2026-05-19T16:30:29.205147)
+2026-05-23 15:50:12,109 [raptor.exits] INFO: AGENT [advisory] HOLD CSX — Agent unavailable — passthrough default (conf=0.50, from 2026-05-23T09:52:27.324683)
+2026-05-23 15:50:12,109 [raptor.exits] INFO: AGENT [advisory] HOLD INTC — Agent unavailable — passthrough default (conf=0.50, from 2026-05-23T09:52:27.324694)
+2026-05-23 15:50:12,109 [raptor.exits] INFO: AGENT [advisory] HOLD KDP — Agent unavailable — passthrough default (conf=0.50, from 2026-05-23T09:52:27.324697)
+2026-05-23 15:50:12,109 [raptor.exits] INFO: AGENT [advisory] HOLD OWL — insufficient history: 0 days (conf=0.90, from 2026-05-17T15:50:38.416296)
+2026-05-23 15:50:12,109 [raptor.exits] INFO: AGENT [advisory] HOLD KRE — insufficient history: 0 days (conf=0.90, from 2026-05-18T21:00:50.566737)
+2026-05-23 15:50:12,109 [raptor.exits] INFO: AGENT [advisory] HOLD PLTD — Agent unavailable — passthrough default (conf=0.50, from 2026-05-23T09:52:27.324700)
+2026-05-23 15:50:12,109 [raptor.exits] INFO: AGENT [advisory] HOLD STM — Agent unavailable — passthrough default (conf=0.50, from 2026-05-23T09:52:27.324705)
+2026-05-23 15:50:12,110 [raptor.exits] INFO: AGENT [advisory] HOLD SMCI — Agent unavailable — passthrough default (conf=0.50, from 2026-05-23T09:52:27.324702)
+2026-05-23 15:50:12,110 [raptor.exits] INFO: AGENT [advisory] HOLD TSLA — Agent unavailable — passthrough default (conf=0.50, from 2026-05-23T09:52:27.324707)
+2026-05-23 15:50:12,110 [raptor.exits] INFO: AGENT [advisory] HOLD TSLL — insufficient history: 0 days (conf=0.90, from 2026-05-19T16:30:29.205168)
+2026-05-23 15:50:12,110 [raptor.exits] INFO: AGENT [advisory] HOLD TTD — insufficient history: 0 days (conf=0.90, from 2026-05-19T16:30:29.205175)
+2026-05-23 15:50:12,110 [raptor.exits] INFO: AGENT [advisory] HOLD DKNG — Agent unavailable — passthrough default (conf=0.50, from 2026-05-23T09:52:27.324692)
+2026-05-23 15:50:12,110 [raptor.exits] INFO: SELL 83 CVE [math_trim_31%]
+2026-05-23 15:50:12,144 [raptor.data_feeds] INFO: Order submitted: SELL 83 CVE @ None
+2026-05-23 15:50:12,144 [raptor.exits] INFO:   OK: OrderStatus.ACCEPTED
+2026-05-23 15:50:12,145 [raptor.exits] INFO: SELL 71 KDP [math_trim_23%]
+2026-05-23 15:50:12,174 [raptor.data_feeds] INFO: Order submitted: SELL 71 KDP @ None
+2026-05-23 15:50:12,174 [raptor.exits] INFO:   OK: OrderStatus.ACCEPTED
+2026-05-23 15:50:12,175 [raptor.exits] INFO: SELL 209 PLTD [math_trim_29%]
+2026-05-23 15:50:12,202 [raptor.data_feeds] INFO: Order submitted: SELL 209 PLTD @ None
+2026-05-23 15:50:12,203 [raptor.exits] INFO:   OK: OrderStatus.ACCEPTED
+2026-05-23 15:50:12,230 [raptor.exits] INFO: GAP9: Afternoon rescore complete — all composites stable

@@ -1,0 +1,10 @@
+2026-05-21 09:35:04,070 [raptor.main] INFO: ============================================================
+2026-05-21 09:35:04,070 [raptor.main] INFO: RAPTOR v5.4 DAILY SCAN - 2026-05-21T09:35:04.070509
+2026-05-21 09:35:04,070 [raptor.main] INFO: ============================================================
+2026-05-21 09:35:04,071 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-05-21 09:35:04,472 [raptor.main] INFO: Account: equity=$104415.34  my_allocation=$104415.34  positions=10
+2026-05-21 09:35:04,480 [raptor.main] INFO: [MarketAgent] SCAN | scalar=1.00 | Macro conditions are favorable with a bullish trend and broad strength, indicating a suitable environment for quantitative swing trading.
+2026-05-21 09:35:04,543 [raptor.margin_guard] INFO: MARGIN GUARD: equity=$104,415  cash=$-97  positions=10
+2026-05-21 09:35:04,544 [raptor.margin_guard] INFO: MARGIN GUARD: market_value=$104,511  utilization=100.1%  margin=YES
+2026-05-21 09:35:04,544 [raptor.margin_guard] INFO: MARGIN GUARD: margin_usage=0.1% of equity
+2026-05-21 09:35:04,544 [raptor.main] WARNING: MARGIN GUARD BLOCK: utilization 100.1% > 90% — blocking new entries — skipping entry scan

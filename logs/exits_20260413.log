@@ -1,0 +1,55 @@
+2026-04-13 04:51:38,207 [raptor.exits] INFO: ============================================================
+2026-04-13 04:51:38,208 [raptor.exits] INFO: RAPTOR v5.4 EXIT MONITOR - 2026-04-13T04:51:38.208454
+2026-04-13 04:51:38,209 [raptor.exits] INFO: ============================================================
+2026-04-13 04:51:38,210 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-04-13 04:51:38,999 [raptor.exits] INFO: Account: equity=$103872.88  cash=$66631.71  positions=4
+2026-04-13 04:51:39,027 [raptor.universe] INFO: Universe from cache: 128 symbols
+2026-04-13 04:51:42,337 [raptor.data_feeds] INFO: Fetched bars for 128 / 128 symbols
+2026-04-13 04:51:42,547 [raptor.data_feeds] INFO: FRED regime: NEUTRAL (score=0.100)
+2026-04-13 04:51:48,891 [raptor.signals] INFO: v5.4 Signals: 5 from 128 | Macro=NEUTRAL Scale=0.8 | Micro={'TRENDING': 92, 'MIXED': 36}
+2026-04-13 04:51:48,892 [raptor.exits] INFO: Portfolio unrealized: $-468.94 (-0.45%)
+2026-04-13 04:51:48,901 [raptor.exits] INFO: 
+2026-04-13 04:51:48,901 [raptor.exits] INFO: ============================================================
+2026-04-13 04:51:48,901 [raptor.exits] INFO:   EXIT SUMMARY
+2026-04-13 04:51:48,901 [raptor.exits] INFO: ============================================================
+2026-04-13 04:51:48,902 [raptor.exits] INFO:   No exits triggered.
+2026-04-13 04:51:48,902 [raptor.exits] INFO:   HOLDS (4):
+2026-04-13 04:51:48,902 [raptor.exits] INFO:     INTC  pnl=-1.0%  trail=$56.18  comp=0.5508
+2026-04-13 04:51:48,902 [raptor.exits] INFO:     NVDA  pnl=-1.7%  trail=$179.0  comp=0.4698
+2026-04-13 04:51:48,902 [raptor.exits] INFO:     SOXL  pnl=-1.5%  trail=$63.17  comp=0.5095
+2026-04-13 04:51:48,902 [raptor.exits] INFO:     WFC  pnl=-0.9%  trail=$81.51  comp=0.555
+2026-04-13 04:51:48,903 [raptor.exits] INFO: ============================================================
+2026-04-13 21:30:26,479 [raptor.exits] INFO: ============================================================
+2026-04-13 21:30:26,483 [raptor.exits] INFO: RAPTOR v5.4 EXIT MONITOR - 2026-04-13T21:30:26.483200
+2026-04-13 21:30:26,484 [raptor.exits] INFO: ============================================================
+2026-04-13 21:30:26,485 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-04-13 21:30:27,005 [raptor.exits] INFO: Account: equity=$105557.73  cash=$75925.59  positions=3
+2026-04-13 21:30:27,009 [raptor.universe] INFO: Universe from cache: 128 symbols
+2026-04-13 21:30:28,273 [raptor.data_feeds] INFO: Fetched bars for 128 / 128 symbols
+2026-04-13 21:30:28,921 [raptor.data_feeds] INFO: FRED fetch OK: T10Y2Y (748 observations)
+2026-04-13 21:30:30,339 [raptor.data_feeds] INFO: FRED fetch OK: FEDFUNDS (36 observations)
+2026-04-13 21:30:31,671 [raptor.data_feeds] INFO: FRED fetch OK: ICSA (156 observations)
+2026-04-13 21:30:33,409 [raptor.data_feeds] ERROR: FRED fetch failed for VIXCLS: 500 Server Error: Internal Server Error for url: https://api.stlouisfed.org/fred/series/observations?series_id=VIXCLS&api_key=da7dbeb2fb38addc5865122252685cee&file_type=json&observation_start=2023-04-14&observation_end=2026-04-13&sort_order=asc
+2026-04-13 21:30:34,239 [raptor.data_feeds] INFO: FRED fetch OK: M2SL (35 observations)
+2026-04-13 21:30:35,091 [raptor.data_feeds] INFO: FRED fetch OK: UNRATE (35 observations)
+2026-04-13 21:30:35,095 [raptor.data_feeds] INFO: FRED regime: NEUTRAL (score=0.050)
+2026-04-13 21:30:39,628 [raptor.signals] INFO: v5.4 Signals: 5 from 128 | Macro=NEUTRAL Scale=1.0 | Micro={'TRENDING': 81, 'MIXED': 47}
+2026-04-13 21:30:39,629 [raptor.exits] INFO: Portfolio unrealized: $1387.03 (1.31%)
+2026-04-13 21:30:39,631 [raptor.exits] INFO: EXIT 3 [THESIS] INTC composite=-1.0000 (strongly negative)
+2026-04-13 21:30:39,634 [raptor.exits] INFO: EXIT 3 [THESIS] WFC composite=-1.0000 (strongly negative)
+2026-04-13 21:30:39,634 [raptor.exits] INFO: 
+2026-04-13 21:30:39,634 [raptor.exits] INFO: ============================================================
+2026-04-13 21:30:39,635 [raptor.exits] INFO:   EXIT SUMMARY
+2026-04-13 21:30:39,635 [raptor.exits] INFO: ============================================================
+2026-04-13 21:30:39,635 [raptor.exits] INFO:   EXITS (2):
+2026-04-13 21:30:39,635 [raptor.exits] INFO:     INTC  thesis_invalid  pnl=+5.3%  comp=-1.0000
+2026-04-13 21:30:39,635 [raptor.exits] INFO:     WFC  thesis_invalid  pnl=+0.9%  comp=-1.0000
+2026-04-13 21:30:39,635 [raptor.exits] INFO:   HOLDS (1):
+2026-04-13 21:30:39,636 [raptor.exits] INFO:     SOXL  pnl=+8.8%  trail=$69.8  comp=0.5801
+2026-04-13 21:30:39,636 [raptor.exits] INFO: ============================================================
+2026-04-13 21:30:39,636 [raptor.exits] INFO: SELL 147.0 INTC [thesis_invalid]
+2026-04-13 21:30:39,675 [raptor.data_feeds] INFO: Order submitted: SELL 147.0 INTC @ None
+2026-04-13 21:30:39,676 [raptor.exits] INFO:   OK: OrderStatus.ACCEPTED
+2026-04-13 21:30:39,676 [raptor.exits] INFO: SELL 114.0 WFC [thesis_invalid]
+2026-04-13 21:30:39,705 [raptor.data_feeds] INFO: Order submitted: SELL 114.0 WFC @ None
+2026-04-13 21:30:39,706 [raptor.exits] INFO:   OK: OrderStatus.ACCEPTED

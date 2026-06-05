@@ -1,0 +1,11 @@
+2026-04-08 06:29:27,504 [raptor.v6] INFO: ============================================================
+2026-04-08 06:29:27,505 [raptor.v6] INFO: RAPTOR v6.0 DAILY SCAN - 2026-04-08T06:29:27.504957
+2026-04-08 06:29:27,505 [raptor.v6] INFO: ============================================================
+2026-04-08 06:29:28,937 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-04-08 06:29:29,599 [raptor.v6] INFO: Account: equity=$106200.61  my_allocation=$53100.31  my_positions=2
+2026-04-08 06:29:29,625 [raptor.universe] INFO: Universe from cache: 129 symbols
+2026-04-08 06:29:29,626 [raptor.v6] INFO: Dynamic universe: 129 symbols
+2026-04-08 06:29:31,621 [raptor.data_feeds] INFO: Fetched bars for 129 / 129 symbols
+2026-04-08 06:29:31,840 [raptor.data_feeds] INFO: FRED regime: NEUTRAL (score=-0.100)
+2026-04-08 06:29:33,935 [raptor.v6] INFO: Data: 129 symbols | Macro: NEUTRAL (-0.100)
+2026-04-08 06:29:33,936 [raptor.v6.signals] INFO: QuantSignalEngineV6 initialized: 20 factors, 6 clusters

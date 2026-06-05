@@ -1,0 +1,18 @@
+===== Raptor Recap Debug ===== 
+Run time: Fri 05/08/2026 16:30:02.28 
+ 
+--- Python version --- 
+Python 3.13.12
+ 
+--- Working directory --- 
+C:\Users\steve\OneDrive\Desktop\Raptor 
+ 
+--- File checks --- 
+FOUND: daily_recap.py 
+FOUND: config.py 
+FOUND: data_feeds.py 
+FOUND: signals.py 
+FOUND: universe_builder.py 
+ 
+--- Script output --- 
+^C

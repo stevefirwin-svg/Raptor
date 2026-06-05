@@ -1,0 +1,45 @@
+[2026-05-26T20:33:34.202353] Recap email sent OK.
+[2026-05-27T15:50:33.733249] Recap email sent OK.
+[2026-05-27T16:30:13.939160] Recap email sent OK.
+[2026-05-27T16:30:14.480046] Recap email sent OK.
+[2026-05-28T15:50:34.507543] FATAL: daily_recap.py crashed
+Traceback (most recent call last):
+  File "C:\Users\steve\OneDrive\Desktop\Raptor\daily_recap.py", line 863, in main
+    html = build_html(
+        account, positions, entries, exits, signals, macro, scale,
+        spy_price, spy_returns, spy_mas, analytics, open_ledger, portfolio_beta,
+        closed_trades=closed_trades
+    )
+  File "C:\Users\steve\OneDrive\Desktop\Raptor\daily_recap.py", line 754, in build_html
+    {build_health_html()}
+     ~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\steve\OneDrive\Desktop\Raptor\hold_monitor.py", line 846, in build_health_html
+    <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#a0a0b0;text-align:right">{stop_atr:.2f} ATR</td>
+                                                                                                ^^^^^^^^^^^^^^
+TypeError: unsupported format string passed to NoneType.__format__
+
+[2026-05-28T16:30:13.863325] Recap email sent OK.
+[2026-05-28T16:30:14.540395] Recap email sent OK.
+[2026-05-29T16:30:10.496902] run_monitor() failed: [WinError 32] The process cannot access the file because it is being used by another process: 'hold_history.json.tmp' -> 'hold_history.json'
+Traceback (most recent call last):
+  File "C:\Users\steve\OneDrive\Desktop\Raptor\daily_recap.py", line 946, in main
+    run_monitor()
+    ~~~~~~~~~~~^^
+  File "C:\Users\steve\OneDrive\Desktop\Raptor\hold_monitor.py", line 756, in run_monitor
+    save_history(history)
+    ~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\steve\OneDrive\Desktop\Raptor\hold_monitor.py", line 94, in save_history
+    os.replace(tmp, HISTORY_FILE)
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'hold_history.json.tmp' -> 'hold_history.json'
+
+[2026-05-29T16:30:12.340003] Recap email sent OK.
+[2026-05-29T16:30:14.086391] Recap email sent OK.
+[2026-06-01T16:30:14.005217] Recap email sent OK.
+[2026-06-01T16:30:14.366124] Recap email sent OK.
+[2026-06-02T16:30:15.232436] Recap email sent OK.
+[2026-06-02T16:30:15.667972] Recap email sent OK.
+[2026-06-03T16:30:24.475063] Recap email sent OK.
+[2026-06-03T17:30:47.827892] Recap email sent OK.
+[2026-06-04T16:30:18.600578] Recap email sent OK.
+[2026-06-04T16:30:19.411046] Recap email sent OK.

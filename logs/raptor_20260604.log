@@ -1,0 +1,23 @@
+2026-06-04 09:35:04,038 [raptor.main] INFO: ============================================================
+2026-06-04 09:35:04,039 [raptor.main] INFO: RAPTOR v5.4 DAILY SCAN - 2026-06-04T09:35:04.039152
+2026-06-04 09:35:04,039 [raptor.main] INFO: ============================================================
+2026-06-04 09:35:04,040 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-06-04 09:35:04,602 [raptor.main] INFO: Account: equity=$108032.12  cap=none (compound)  sizing_base=$108032.12  positions=7
+2026-06-04 09:35:04,619 [raptor.main] INFO: [MarketAgent] SCAN | scalar=1.00 | Macro regime is RISK_ON with calm VIX and sector breadth in a mixed state.
+2026-06-04 09:35:04,747 [raptor.margin_guard] INFO: MARGIN GUARD: equity=$108,031  cap=none (compound)  cash=$76,566  positions=7
+2026-06-04 09:35:04,747 [raptor.margin_guard] INFO: MARGIN GUARD: market_value=$31,465  utilization=29.1% of base  margin=NO
+2026-06-04 09:35:04,767 [raptor.universe] INFO: Universe from cache: 74 symbols
+2026-06-04 09:35:04,768 [raptor.main] INFO: Dynamic universe: 74 symbols
+2026-06-04 09:35:06,676 [raptor.data_feeds] INFO: Fetched 75 new bars / 75 total cached
+2026-06-04 09:35:06,878 [raptor.data_feeds] INFO: FRED regime: BULLISH (score=0.300)
+2026-06-04 09:35:06,944 [raptor.main] INFO: Data: 75 symbols | Macro: RISK_ON (0.300)
+2026-06-04 09:35:08,337 [raptor.signals] INFO: v5.4 Signals: 5 from 74 | Macro=RISK_ON Scale=1.0 | Micro={'MIXED': 57, 'REVERTING': 5, 'TRENDING': 12} | SNR min=1.09 max=1.69
+2026-06-04 09:35:08,361 [raptor.main] INFO: Velocity gate: 5 signals remain | velocities: {'MRVL': '+0.000', 'PFE': '+0.000', 'NOW': '+0.000', 'XLF': '+0.000', 'B': '+0.000'}
+2026-06-04 09:35:08,388 [raptor.main] INFO: Signals:
+2026-06-04 09:35:08,388 [raptor.main] INFO:   1. MRVL  t=1.690  pctl=100%  entry=$287.83  stop=$234.79  tp=$0.00  kelly=0.120  hold~2d
+2026-06-04 09:35:08,389 [raptor.main] INFO:   2. PFE  t=1.308  pctl=92%  entry=$25.86  stop=$24.98  tp=$0.00  kelly=0.112  hold~27d
+2026-06-04 09:35:08,389 [raptor.main] INFO:   3. NOW  t=1.256  pctl=95%  entry=$120.03  stop=$99.10  tp=$0.00  kelly=0.110  hold~2d
+2026-06-04 09:35:08,389 [raptor.main] INFO:   4. XLF  t=1.210  pctl=86%  entry=$51.63  stop=$50.33  tp=$0.00  kelly=0.108  hold~22d
+2026-06-04 09:35:08,389 [raptor.main] INFO:   5. B  t=1.088  pctl=93%  entry=$42.36  stop=$38.50  tp=$0.00  kelly=0.103  hold~23d
+2026-06-04 09:35:10,516 [raptor.main] WARNING: EntryAgent unavailable ('"decision"') — proceeding without screening.
+2026-06-04 09:35:10,516 [raptor.main] INFO: Deployable: cap=none  market_value=$31466  cash=$76566  headroom=$72738  available=$72738  (margin=OFF)

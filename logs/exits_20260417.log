@@ -1,0 +1,67 @@
+2026-04-17 13:01:52,010 [raptor.exits] INFO: ============================================================
+2026-04-17 13:01:52,010 [raptor.exits] INFO: RAPTOR v5.4 EXIT MONITOR - 2026-04-17T13:01:52.010543
+2026-04-17 13:01:52,011 [raptor.exits] INFO: ============================================================
+2026-04-17 13:01:52,012 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-04-17 13:01:52,563 [raptor.exits] INFO: Account: equity=$105358.11  cash=$24415.10  positions=8
+2026-04-17 13:01:52,566 [raptor.universe] INFO: Universe from cache: 130 symbols
+2026-04-17 13:02:02,067 [raptor.data_feeds] INFO: Fetched bars for 130 / 130 symbols
+2026-04-17 13:02:02,116 [raptor.data_feeds] INFO: FRED regime: NEUTRAL (score=0.100)
+2026-04-17 13:02:14,103 [raptor.signals] INFO: v5.4 Signals: 5 from 130 | Macro=NEUTRAL Scale=1.0 | Micro={'TRENDING': 97, 'MIXED': 33}
+2026-04-17 13:02:14,103 [raptor.exits] INFO: Portfolio unrealized: $130.76 (0.12%)
+2026-04-17 13:02:14,108 [raptor.exits] INFO: EXIT 3 [THESIS] IONQ composite=-1.0000 (strongly negative)
+2026-04-17 13:02:14,109 [raptor.exits] INFO: EXIT 3 [THESIS] IREN composite=-1.0000 (strongly negative)
+2026-04-17 13:02:14,112 [raptor.exits] INFO: EXIT 3 [THESIS] ORCL composite=-1.0000 (strongly negative)
+2026-04-17 13:02:14,115 [raptor.exits] INFO: EXIT 3 [THESIS] UBER composite=-1.0000 (strongly negative)
+2026-04-17 13:02:14,115 [raptor.exits] INFO: 
+2026-04-17 13:02:14,115 [raptor.exits] INFO: ============================================================
+2026-04-17 13:02:14,115 [raptor.exits] INFO:   EXIT SUMMARY
+2026-04-17 13:02:14,115 [raptor.exits] INFO: ============================================================
+2026-04-17 13:02:14,116 [raptor.exits] INFO:   EXITS (4):
+2026-04-17 13:02:14,116 [raptor.exits] INFO:     IONQ  thesis_invalid  pnl=+0.5%  comp=-1.0000
+2026-04-17 13:02:14,116 [raptor.exits] INFO:     IREN  thesis_invalid  pnl=+0.6%  comp=-1.0000
+2026-04-17 13:02:14,116 [raptor.exits] INFO:     ORCL  thesis_invalid  pnl=-0.6%  comp=-1.0000
+2026-04-17 13:02:14,116 [raptor.exits] INFO:     UBER  thesis_invalid  pnl=-0.1%  comp=-1.0000
+2026-04-17 13:02:14,116 [raptor.exits] INFO:   HOLDS (4):
+2026-04-17 13:02:14,116 [raptor.exits] INFO:     HIMS  pnl=+0.3%  trail=$24.41  comp=0.7083
+2026-04-17 13:02:14,116 [raptor.exits] INFO:     HOOD  pnl=-0.2%  trail=$82.75  comp=0.6773
+2026-04-17 13:02:14,117 [raptor.exits] INFO:     MSFT  pnl=-0.3%  trail=$407.9  comp=0.6557
+2026-04-17 13:02:14,117 [raptor.exits] INFO:     QBTS  pnl=+1.0%  trail=$18.72  comp=0.8313
+2026-04-17 13:02:14,117 [raptor.exits] INFO: ============================================================
+2026-04-17 13:02:14,117 [raptor.exits] INFO: SELL 225.0 IONQ [thesis_invalid]
+2026-04-17 13:02:14,146 [raptor.data_feeds] INFO: Order submitted: SELL 225.0 IONQ @ None
+2026-04-17 13:02:14,146 [raptor.exits] INFO:   OK: OrderStatus.PENDING_NEW
+2026-04-17 13:02:14,146 [raptor.exits] INFO: SELL 220.0 IREN [thesis_invalid]
+2026-04-17 13:02:14,175 [raptor.data_feeds] INFO: Order submitted: SELL 220.0 IREN @ None
+2026-04-17 13:02:14,175 [raptor.exits] INFO:   OK: OrderStatus.PENDING_NEW
+2026-04-17 13:02:14,175 [raptor.exits] INFO: SELL 54.0 ORCL [thesis_invalid]
+2026-04-17 13:02:14,205 [raptor.data_feeds] INFO: Order submitted: SELL 54.0 ORCL @ None
+2026-04-17 13:02:14,205 [raptor.exits] INFO:   OK: OrderStatus.PENDING_NEW
+2026-04-17 13:02:14,205 [raptor.exits] INFO: SELL 135.0 UBER [thesis_invalid]
+2026-04-17 13:02:14,233 [raptor.data_feeds] INFO: Order submitted: SELL 135.0 UBER @ None
+2026-04-17 13:02:14,233 [raptor.exits] INFO:   OK: OrderStatus.PENDING_NEW
+2026-04-17 14:15:42,691 [raptor.exits] INFO: ============================================================
+2026-04-17 14:15:42,692 [raptor.exits] INFO: RAPTOR v5.4 EXIT MONITOR - 2026-04-17T14:15:42.692603
+2026-04-17 14:15:42,693 [raptor.exits] INFO: ============================================================
+2026-04-17 14:15:42,694 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-04-17 14:15:43,259 [raptor.exits] INFO: Account: equity=$104621.72  cash=$55163.16  positions=5
+2026-04-17 14:15:43,262 [raptor.universe] INFO: Universe from cache: 130 symbols
+2026-04-17 14:15:47,977 [raptor.data_feeds] INFO: Fetched bars for 130 / 130 symbols
+2026-04-17 14:15:48,001 [raptor.data_feeds] INFO: FRED regime: NEUTRAL (score=0.100)
+2026-04-17 14:15:53,305 [raptor.signals] INFO: v5.4 Signals: 5 from 130 | Macro=NEUTRAL Scale=1.0 | Micro={'TRENDING': 97, 'MIXED': 33}
+2026-04-17 14:15:53,306 [raptor.exits] INFO: Portfolio unrealized: $-655.30 (-0.63%)
+2026-04-17 14:15:53,314 [raptor.exits] INFO: EXIT 3 [THESIS] TSLL composite=-1.0000 (strongly negative)
+2026-04-17 14:15:53,315 [raptor.exits] INFO: 
+2026-04-17 14:15:53,315 [raptor.exits] INFO: ============================================================
+2026-04-17 14:15:53,315 [raptor.exits] INFO:   EXIT SUMMARY
+2026-04-17 14:15:53,316 [raptor.exits] INFO: ============================================================
+2026-04-17 14:15:53,316 [raptor.exits] INFO:   EXITS (1):
+2026-04-17 14:15:53,316 [raptor.exits] INFO:     TSLL  thesis_invalid  pnl=-2.8%  comp=-1.0000
+2026-04-17 14:15:53,316 [raptor.exits] INFO:   HOLDS (4):
+2026-04-17 14:15:53,316 [raptor.exits] INFO:     HIMS  pnl=-0.6%  trail=$24.33  comp=0.6718
+2026-04-17 14:15:53,316 [raptor.exits] INFO:     HOOD  pnl=-1.6%  trail=$82.75  comp=0.6901
+2026-04-17 14:15:53,316 [raptor.exits] INFO:     MSFT  pnl=-1.1%  trail=$407.9  comp=0.7253
+2026-04-17 14:15:53,316 [raptor.exits] INFO:     QBTS  pnl=-0.4%  trail=$18.5  comp=0.8511
+2026-04-17 14:15:53,316 [raptor.exits] INFO: ============================================================
+2026-04-17 14:15:53,316 [raptor.exits] INFO: SELL 700.0 TSLL [thesis_invalid]
+2026-04-17 14:15:53,353 [raptor.data_feeds] INFO: Order submitted: SELL 700.0 TSLL @ None
+2026-04-17 14:15:53,354 [raptor.exits] INFO:   OK: OrderStatus.PENDING_NEW

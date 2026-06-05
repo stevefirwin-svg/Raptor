@@ -1,0 +1,29 @@
+2026-06-01 09:35:03,476 [raptor.main] INFO: ============================================================
+2026-06-01 09:35:03,477 [raptor.main] INFO: RAPTOR v5.4 DAILY SCAN - 2026-06-01T09:35:03.477206
+2026-06-01 09:35:03,477 [raptor.main] INFO: ============================================================
+2026-06-01 09:35:03,478 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-06-01 09:35:04,165 [raptor.main] INFO: Account: equity=$107341.68  cap=none (compound)  sizing_base=$107341.68  positions=7
+2026-06-01 09:35:04,188 [raptor.main] INFO: [MarketAgent] SCAN | scalar=1.00 | Macro regime is RISK_ON with a calm VIX and broad strength in sector breadth.
+2026-06-01 09:35:04,293 [raptor.margin_guard] INFO: MARGIN GUARD: equity=$107,343  cap=none (compound)  cash=$76,566  positions=7
+2026-06-01 09:35:04,294 [raptor.margin_guard] INFO: MARGIN GUARD: market_value=$30,777  utilization=28.7% of base  margin=NO
+2026-06-01 09:35:04,317 [raptor.universe] INFO: Universe from cache: 74 symbols
+2026-06-01 09:35:04,318 [raptor.main] INFO: Dynamic universe: 74 symbols
+2026-06-01 09:35:05,722 [raptor.data_feeds] INFO: Fetched 75 new bars / 75 total cached
+2026-06-01 09:35:05,914 [raptor.data_feeds] INFO: FRED regime: BULLISH (score=0.300)
+2026-06-01 09:35:06,029 [raptor.main] INFO: Data: 75 symbols | Macro: RISK_ON (0.300)
+2026-06-01 09:35:07,694 [raptor.signals] INFO: v5.4 Signals: 5 from 74 | Macro=RISK_ON Scale=1.0 | Micro={'TRENDING': 16, 'MIXED': 52, 'REVERTING': 6} | SNR min=0.00 max=0.00
+2026-06-01 09:35:07,714 [raptor.main] INFO: Velocity gate: 5 signals remain | velocities: {'NVO': '+0.000', 'KRE': '+0.000', 'PLTR': '+0.000', 'CRWV': '+0.000', 'HOOD': '+0.000'}
+2026-06-01 09:35:07,730 [raptor.main] INFO: Signals:
+2026-06-01 09:35:07,730 [raptor.main] INFO:   1. NVO  t=0.000  pctl=100%  entry=$44.88  stop=$42.79  tp=$0.00  kelly=0.060  hold~23d
+2026-06-01 09:35:07,730 [raptor.main] INFO:   2. KRE  t=0.000  pctl=99%  entry=$68.81  stop=$66.50  tp=$0.00  kelly=0.060  hold~29d
+2026-06-01 09:35:07,730 [raptor.main] INFO:   3. PLTR  t=0.000  pctl=97%  entry=$157.76  stop=$143.33  tp=$0.00  kelly=0.060  hold~23d
+2026-06-01 09:35:07,730 [raptor.main] INFO:   4. CRWV  t=0.000  pctl=96%  entry=$117.21  stop=$98.38  tp=$0.00  kelly=0.060  hold~18d
+2026-06-01 09:35:07,730 [raptor.main] INFO:   5. HOOD  t=0.000  pctl=95%  entry=$86.22  stop=$73.58  tp=$0.00  kelly=0.060  hold~4d
+2026-06-01 09:35:37,222 [AgentLayer] INFO: EntryAgent | RAW: '{"decision": "PASS", "confidence": 0.9, "veto_reason": null, "flags": []}'
+2026-06-01 09:35:55,055 [AgentLayer] INFO: EntryAgent | RAW: '{"decision": "PASS", "confidence": 0.95, "veto_reason": null, "flags": []}'
+2026-06-01 09:36:13,818 [AgentLayer] INFO: EntryAgent | RAW: '{"decision": "VETO", "confidence": 0.0, "veto_reason": "macro_regime="RISK_OFF" AND kelly_fraction > 0.07", "flags": []}'
+2026-06-01 09:36:13,819 [AgentLayer] WARNING: EntryAgent | JSON parse error on PLTR: Expecting ',' delimiter: line 1 column 71 (char 70)
+2026-06-01 09:36:30,538 [AgentLayer] INFO: EntryAgent | RAW: '{"decision": "PASS", "confidence": 0.8, "veto_reason": null, "flags": []}'
+2026-06-01 09:36:48,182 [AgentLayer] INFO: EntryAgent | RAW: '{"decision": "PASS", "confidence": 0.8, "veto_reason": null, "flags": []}'
+2026-06-01 09:36:48,209 [AgentLayer] INFO: EntryAgent | Flushed 5 decisions -> entry_vetoes.json
+2026-06-01 09:36:48,211 [raptor.main] INFO: Deployable: cap=none  market_value=$30775  cash=$76566  headroom=$72738  available=$72738  (margin=OFF)

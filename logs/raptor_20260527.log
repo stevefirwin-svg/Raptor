@@ -1,0 +1,29 @@
+2026-05-27 09:35:04,191 [raptor.main] INFO: ============================================================
+2026-05-27 09:35:04,191 [raptor.main] INFO: RAPTOR v5.4 DAILY SCAN - 2026-05-27T09:35:04.191776
+2026-05-27 09:35:04,192 [raptor.main] INFO: ============================================================
+2026-05-27 09:35:04,192 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-05-27 09:35:04,843 [raptor.main] INFO: Account: equity=$107821.43  my_allocation=$107821.43  positions=10
+2026-05-27 09:35:04,855 [raptor.main] INFO: [MarketAgent] SCAN | scalar=1.00 | Macro environment is conducive to risk-taking with no extreme signals present.
+2026-05-27 09:35:04,939 [raptor.margin_guard] INFO: MARGIN GUARD: equity=$107,821  cash=$63,610  positions=10
+2026-05-27 09:35:04,940 [raptor.margin_guard] INFO: MARGIN GUARD: market_value=$44,201  utilization=41.0%  margin=NO
+2026-05-27 09:35:04,957 [raptor.universe] INFO: Universe from cache: 70 symbols
+2026-05-27 09:35:04,957 [raptor.main] INFO: Dynamic universe: 70 symbols
+2026-05-27 09:35:06,186 [raptor.data_feeds] INFO: Fetched 71 new bars / 71 total cached
+2026-05-27 09:35:07,064 [raptor.data_feeds] ERROR: FRED fetch failed for NAPM: 400 Client Error: Bad Request for url: https://api.stlouisfed.org/fred/series/observations?series_id=NAPM&api_key=da7dbeb2fb38addc5865122252685cee&file_type=json&observation_start=2023-05-28&observation_end=2026-05-27&sort_order=asc
+2026-05-27 09:35:07,097 [raptor.data_feeds] INFO: FRED regime: BULLISH (score=0.150)
+2026-05-27 09:35:07,097 [raptor.main] INFO: Data: 71 symbols | Macro: BULLISH (0.150)
+2026-05-27 09:35:08,312 [raptor.signals] INFO: v5.4 Signals: 5 from 70 | Macro=BULLISH Scale=1.0 | Micro={'TRENDING': 41, 'MIXED': 29} | SNR min=1.26 max=1.86
+2026-05-27 09:35:08,324 [raptor.main] INFO: Velocity gate: 5 signals remain | velocities: {'CCL': '+0.000', 'RDW': '+0.000', 'KRE': '+0.000', 'BAC': '+0.000', 'QBTS': '+0.000'}
+2026-05-27 09:35:08,326 [raptor.main] INFO: Signals:
+2026-05-27 09:35:08,326 [raptor.main] INFO:   1. CCL  t=1.857  pctl=93%  entry=$28.08  stop=$25.16  tp=$0.00  kelly=0.120  hold~23d
+2026-05-27 09:35:08,326 [raptor.main] INFO:   2. RDW  t=1.695  pctl=100%  entry=$22.77  stop=$16.33  tp=$0.00  kelly=0.120  hold~2d
+2026-05-27 09:35:08,327 [raptor.main] INFO:   3. KRE  t=1.465  pctl=90%  entry=$70.36  stop=$67.44  tp=$0.00  kelly=0.120  hold~29d
+2026-05-27 09:35:08,327 [raptor.main] INFO:   4. BAC  t=1.460  pctl=89%  entry=$52.29  stop=$49.82  tp=$0.00  kelly=0.120  hold~29d
+2026-05-27 09:35:08,327 [raptor.main] INFO:   5. QBTS  t=1.256  pctl=99%  entry=$26.88  stop=$19.11  tp=$0.00  kelly=0.120  hold~2d
+2026-05-27 09:35:37,449 [AgentLayer] INFO: EntryAgent | RAW: '{"decision": "PASS", "confidence": 0.95, "veto_reason": null, "flags": []}'
+2026-05-27 09:35:55,247 [AgentLayer] INFO: EntryAgent | RAW: '{"decision": "PASS", "confidence": 0.95, "veto_reason": null, "flags": []}'
+2026-05-27 09:36:12,426 [AgentLayer] INFO: EntryAgent | RAW: '{"decision": "PASS", "confidence": 0.9, "veto_reason": null, "flags": []}'
+2026-05-27 09:36:29,373 [AgentLayer] INFO: EntryAgent | RAW: '{"decision": "PASS", "confidence": 0.95, "veto_reason": null, "flags": []}'
+2026-05-27 09:36:46,988 [AgentLayer] INFO: EntryAgent | RAW: '{"decision": "PASS", "confidence": 0.95, "veto_reason": null, "flags": []}'
+2026-05-27 09:36:47,006 [AgentLayer] INFO: EntryAgent | Flushed 5 decisions -> entry_vetoes.json
+2026-05-27 09:36:47,008 [raptor.main] INFO: Scan complete. 0 orders placed for v5.4.

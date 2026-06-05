@@ -1,0 +1,32 @@
+2026-04-24 09:51:04,994 [raptor.main] INFO: ============================================================
+2026-04-24 09:51:04,995 [raptor.main] INFO: RAPTOR v5.4 DAILY SCAN - 2026-04-24T09:51:04.995508
+2026-04-24 09:51:04,995 [raptor.main] INFO: ============================================================
+2026-04-24 09:51:04,997 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-04-24 09:51:05,557 [raptor.main] INFO: Account: equity=$104056.65  my_allocation=$104056.65  positions=5
+2026-04-24 09:51:05,561 [raptor.universe] INFO: Universe from cache: 119 symbols
+2026-04-24 09:51:05,562 [raptor.main] INFO: Dynamic universe: 119 symbols
+2026-04-24 09:51:09,026 [raptor.data_feeds] INFO: Fetched bars for 119 / 119 symbols
+2026-04-24 09:51:09,752 [raptor.data_feeds] INFO: FRED fetch OK: T10Y2Y (749 observations)
+2026-04-24 09:51:10,338 [raptor.data_feeds] INFO: FRED fetch OK: FEDFUNDS (36 observations)
+2026-04-24 09:51:10,817 [raptor.data_feeds] INFO: FRED fetch OK: ICSA (156 observations)
+2026-04-24 09:51:11,389 [raptor.data_feeds] INFO: FRED fetch OK: VIXCLS (774 observations)
+2026-04-24 09:51:12,047 [raptor.data_feeds] INFO: FRED fetch OK: BAMLC0A4CBBB (786 observations)
+2026-04-24 09:51:12,659 [raptor.data_feeds] INFO: FRED fetch OK: CPIAUCSL (35 observations)
+2026-04-24 09:51:13,231 [raptor.data_feeds] INFO: FRED fetch OK: MANEMP (36 observations)
+2026-04-24 09:51:13,896 [raptor.data_feeds] INFO: FRED fetch OK: M2SL (35 observations)
+2026-04-24 09:51:14,540 [raptor.data_feeds] INFO: FRED fetch OK: RSXFS (36 observations)
+2026-04-24 09:51:15,070 [raptor.data_feeds] INFO: FRED fetch OK: UNRATE (35 observations)
+2026-04-24 09:51:15,073 [raptor.data_feeds] INFO: FRED regime: BULLISH (score=0.200)
+2026-04-24 09:51:19,180 [raptor.main] INFO: Data: 119 symbols | Macro: BULLISH (0.200)
+2026-04-24 09:51:21,938 [raptor.signals] INFO: v5.4 Signals: 5 from 119 | Macro=BULLISH Scale=1.0 | Micro={'TRENDING': 78, 'MIXED': 41}
+2026-04-24 09:51:21,938 [raptor.main] INFO: Signals:
+2026-04-24 09:51:21,938 [raptor.main] INFO:   1. SMCI  t=0.585  pctl=100%  entry=$28.36  stop=$23.74  tp=$0.00  kelly=0.104  hold~24d
+2026-04-24 09:51:21,939 [raptor.main] INFO:   2. KDP  t=0.361  pctl=99%  entry=$28.66  stop=$26.64  tp=$0.00  kelly=0.093  hold~11d
+2026-04-24 09:51:21,939 [raptor.main] INFO:   3. STM  t=0.217  pctl=97%  entry=$50.16  stop=$44.86  tp=$0.00  kelly=0.086  hold~2d
+2026-04-24 09:51:22,004 [raptor.data_feeds] INFO: Order submitted: BUY 382 SMCI @ 28.39
+2026-04-24 09:51:22,006 [raptor.main] INFO: ORDER [v5.4]: BUY 382 SMCI @ $28.39
+2026-04-24 09:51:22,037 [raptor.data_feeds] INFO: Order submitted: BUY 337 KDP @ 28.69
+2026-04-24 09:51:22,039 [raptor.main] INFO: ORDER [v5.4]: BUY 337 KDP @ $28.69
+2026-04-24 09:51:22,146 [raptor.data_feeds] INFO: Order submitted: BUY 177 STM @ 50.21
+2026-04-24 09:51:22,148 [raptor.main] INFO: ORDER [v5.4]: BUY 177 STM @ $50.21
+2026-04-24 09:51:22,148 [raptor.main] INFO: Scan complete. 3 orders placed for v5.4.

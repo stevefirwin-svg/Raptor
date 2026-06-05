@@ -1,0 +1,46 @@
+2026-05-06 09:52:55,472 [raptor.exits] INFO: ============================================================
+2026-05-06 09:52:55,472 [raptor.exits] INFO: RAPTOR v5.4 EXIT MONITOR - 2026-05-06T09:52:55.472611
+2026-05-06 09:52:55,473 [raptor.exits] INFO: ============================================================
+2026-05-06 09:52:55,474 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-05-06 09:52:55,856 [raptor.exits] INFO: Account: equity=$105808.38  cash=$-33607.25  positions=13
+2026-05-06 09:52:55,879 [raptor.universe] INFO: Universe from cache: 109 symbols
+2026-05-06 09:52:57,519 [raptor.data_feeds] INFO: Fetched bars for 112 / 112 symbols
+2026-05-06 09:52:57,631 [raptor.data_feeds] INFO: FRED regime: NEUTRAL (score=0.100)
+2026-05-06 09:53:01,243 [raptor.signals] INFO: v5.4 Signals: 5 from 112 | Macro=NEUTRAL Scale=1.0 | Micro={'TRENDING': 69, 'MIXED': 43}
+2026-05-06 09:53:01,244 [raptor.exits] INFO: Portfolio unrealized: $6400.42 (6.05%)
+2026-05-06 09:53:01,249 [raptor.exits] INFO: EXIT 3 [THESIS] CTRA composite=-1.0000 pnl=-5.5% (negative thesis + losing)
+2026-05-06 09:53:01,252 [raptor.exits] INFO: EXIT 3 [THESIS] DVN composite=-1.0000 pnl=-6.4% (negative thesis + losing)
+2026-05-06 09:53:01,258 [raptor.exits] INFO: EXIT 3 [THESIS] OXY composite=-1.0000 pnl=-4.2% (negative thesis + losing)
+2026-05-06 09:53:01,263 [raptor.exits] INFO: EXIT 3 [THESIS] XOM composite=-1.0000 pnl=-3.2% (negative thesis + losing)
+2026-05-06 09:53:01,263 [raptor.exits] INFO: 
+2026-05-06 09:53:01,264 [raptor.exits] INFO: ============================================================
+2026-05-06 09:53:01,264 [raptor.exits] INFO:   EXIT SUMMARY
+2026-05-06 09:53:01,264 [raptor.exits] INFO: ============================================================
+2026-05-06 09:53:01,264 [raptor.exits] INFO:   EXITS (4):
+2026-05-06 09:53:01,264 [raptor.exits] INFO:     CTRA  thesis_invalid  pnl=-5.5%  comp=-1.0000
+2026-05-06 09:53:01,265 [raptor.exits] INFO:     DVN  thesis_invalid  pnl=-6.4%  comp=-1.0000
+2026-05-06 09:53:01,265 [raptor.exits] INFO:     OXY  thesis_invalid  pnl=-4.2%  comp=-1.0000
+2026-05-06 09:53:01,265 [raptor.exits] INFO:     XOM  thesis_invalid  pnl=-3.2%  comp=-1.0000
+2026-05-06 09:53:01,265 [raptor.exits] INFO:   HOLDS (9):
+2026-05-06 09:53:01,265 [raptor.exits] INFO:     AMD  pnl=+38.0%  trail=$396.67  comp=0.4999
+2026-05-06 09:53:01,265 [raptor.exits] INFO:     CSX  pnl=-0.1%  trail=$43.59  comp=-1.0
+2026-05-06 09:53:01,265 [raptor.exits] INFO:     CVE  pnl=+1.1%  trail=$27.12  comp=-1.0
+2026-05-06 09:53:01,266 [raptor.exits] INFO:     INTC  pnl=+28.1%  trail=$102.82  comp=-1.0
+2026-05-06 09:53:01,266 [raptor.exits] INFO:     KDP  pnl=+1.3%  trail=$27.43  comp=-1.0
+2026-05-06 09:53:01,266 [raptor.exits] INFO:     KRE  pnl=+1.6%  trail=$68.24  comp=-1.0
+2026-05-06 09:53:01,266 [raptor.exits] INFO:     PLTD  pnl=+4.3%  trail=$7.47  comp=-1.0
+2026-05-06 09:53:01,267 [raptor.exits] INFO:     STM  pnl=+14.1%  trail=$53.94  comp=-1.0
+2026-05-06 09:53:01,267 [raptor.exits] INFO:     TTD  pnl=+4.5%  trail=$21.89  comp=-1.0
+2026-05-06 09:53:01,267 [raptor.exits] INFO: ============================================================
+2026-05-06 09:53:01,267 [raptor.exits] INFO: SELL 285.0 CTRA [thesis_invalid]
+2026-05-06 09:53:01,322 [raptor.data_feeds] INFO: Order submitted: SELL 285.0 CTRA @ None
+2026-05-06 09:53:01,322 [raptor.exits] INFO:   OK: OrderStatus.PENDING_NEW
+2026-05-06 09:53:01,323 [raptor.exits] INFO: SELL 185.0 DVN [thesis_invalid]
+2026-05-06 09:53:01,424 [raptor.data_feeds] INFO: Order submitted: SELL 185.0 DVN @ None
+2026-05-06 09:53:01,425 [raptor.exits] INFO:   OK: OrderStatus.PENDING_NEW
+2026-05-06 09:53:01,425 [raptor.exits] INFO: SELL 167.0 OXY [thesis_invalid]
+2026-05-06 09:53:01,698 [raptor.data_feeds] INFO: Order submitted: SELL 167.0 OXY @ None
+2026-05-06 09:53:01,699 [raptor.exits] INFO:   OK: OrderStatus.PENDING_NEW
+2026-05-06 09:53:01,699 [raptor.exits] INFO: SELL 62.0 XOM [thesis_invalid]
+2026-05-06 09:53:01,728 [raptor.data_feeds] INFO: Order submitted: SELL 62.0 XOM @ None
+2026-05-06 09:53:01,728 [raptor.exits] INFO:   OK: OrderStatus.PENDING_NEW

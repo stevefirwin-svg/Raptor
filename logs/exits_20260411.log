@@ -1,0 +1,53 @@
+2026-04-11 09:31:12,637 [raptor.exits] INFO: ============================================================
+2026-04-11 09:31:12,637 [raptor.exits] INFO: RAPTOR v5.4 EXIT MONITOR - 2026-04-11T09:31:12.637799
+2026-04-11 09:31:12,638 [raptor.exits] INFO: ============================================================
+2026-04-11 09:31:12,639 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-04-11 09:31:13,211 [raptor.exits] INFO: Account: equity=$104441.03  cash=$66631.71  positions=4
+2026-04-11 09:31:13,229 [raptor.universe] INFO: Universe from cache: 128 symbols
+2026-04-11 09:31:14,640 [raptor.data_feeds] INFO: Fetched bars for 128 / 128 symbols
+2026-04-11 09:31:15,275 [raptor.data_feeds] INFO: FRED fetch OK: T10Y2Y (749 observations)
+2026-04-11 09:31:15,952 [raptor.data_feeds] INFO: FRED fetch OK: M2SL (35 observations)
+2026-04-11 09:31:16,702 [raptor.data_feeds] INFO: FRED fetch OK: RSXFS (35 observations)
+2026-04-11 09:31:16,722 [raptor.data_feeds] INFO: FRED regime: NEUTRAL (score=0.100)
+2026-04-11 09:31:21,199 [raptor.signals] INFO: v5.4 Signals: 5 from 128 | Macro=NEUTRAL Scale=0.8 | Micro={'TRENDING': 91, 'MIXED': 37}
+2026-04-11 09:31:21,200 [raptor.exits] INFO: Portfolio unrealized: $99.21 (0.09%)
+2026-04-11 09:31:21,203 [raptor.exits] INFO: EXIT 3 [THESIS] NVDA composite=-1.0000 (strongly negative)
+2026-04-11 09:31:21,206 [raptor.exits] INFO: 
+2026-04-11 09:31:21,207 [raptor.exits] INFO: ============================================================
+2026-04-11 09:31:21,207 [raptor.exits] INFO:   EXIT SUMMARY
+2026-04-11 09:31:21,207 [raptor.exits] INFO: ============================================================
+2026-04-11 09:31:21,207 [raptor.exits] INFO:   EXITS (1):
+2026-04-11 09:31:21,208 [raptor.exits] INFO:     NVDA  thesis_invalid  pnl=-0.4%  comp=-1.0000
+2026-04-11 09:31:21,208 [raptor.exits] INFO:   HOLDS (3):
+2026-04-11 09:31:21,208 [raptor.exits] INFO:     INTC  pnl=-0.1%  trail=$56.18  comp=0.5081
+2026-04-11 09:31:21,208 [raptor.exits] INFO:     SOXL  pnl=+1.6%  trail=$64.39  comp=0.538
+2026-04-11 09:31:21,208 [raptor.exits] INFO:     WFC  pnl=-0.1%  trail=$81.51  comp=0.539
+2026-04-11 09:31:21,208 [raptor.exits] INFO: ============================================================
+2026-04-11 09:31:21,208 [raptor.exits] INFO: SELL 50.0 NVDA [thesis_invalid]
+2026-04-11 09:31:21,237 [raptor.data_feeds] ERROR: Order submission failed: {"available":"0","code":40310000,"existing_qty":"50","held_for_orders":"50","message":"insufficient qty available for order (requested: 50, available: 0)","related_orders":["7eb3112c-a2b4-46d9-a11d-d10797229519"],"symbol":"NVDA"}
+2026-04-11 09:31:21,237 [raptor.exits] ERROR:   FAILED: {"available":"0","code":40310000,"existing_qty":"50","held_for_orders":"50","message":"insufficient qty available for order (requested: 50, available: 0)","related_orders":["7eb3112c-a2b4-46d9-a11d-d10797229519"],"symbol":"NVDA"}
+2026-04-11 13:30:12,450 [raptor.exits] INFO: ============================================================
+2026-04-11 13:30:12,451 [raptor.exits] INFO: RAPTOR v5.4 EXIT MONITOR - 2026-04-11T13:30:12.451559
+2026-04-11 13:30:12,452 [raptor.exits] INFO: ============================================================
+2026-04-11 13:30:12,453 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-04-11 13:30:13,318 [raptor.exits] INFO: Account: equity=$104441.03  cash=$66631.71  positions=4
+2026-04-11 13:30:13,324 [raptor.universe] INFO: Universe from cache: 128 symbols
+2026-04-11 13:30:15,242 [raptor.data_feeds] INFO: Fetched bars for 128 / 128 symbols
+2026-04-11 13:30:15,274 [raptor.data_feeds] INFO: FRED regime: NEUTRAL (score=0.100)
+2026-04-11 13:30:19,432 [raptor.signals] INFO: v5.4 Signals: 5 from 128 | Macro=NEUTRAL Scale=0.8 | Micro={'TRENDING': 91, 'MIXED': 37}
+2026-04-11 13:30:19,433 [raptor.exits] INFO: Portfolio unrealized: $99.21 (0.09%)
+2026-04-11 13:30:19,436 [raptor.exits] INFO: EXIT 3 [THESIS] NVDA composite=-1.0000 (strongly negative)
+2026-04-11 13:30:19,439 [raptor.exits] INFO: 
+2026-04-11 13:30:19,439 [raptor.exits] INFO: ============================================================
+2026-04-11 13:30:19,440 [raptor.exits] INFO:   EXIT SUMMARY
+2026-04-11 13:30:19,440 [raptor.exits] INFO: ============================================================
+2026-04-11 13:30:19,440 [raptor.exits] INFO:   EXITS (1):
+2026-04-11 13:30:19,440 [raptor.exits] INFO:     NVDA  thesis_invalid  pnl=-0.4%  comp=-1.0000
+2026-04-11 13:30:19,440 [raptor.exits] INFO:   HOLDS (3):
+2026-04-11 13:30:19,441 [raptor.exits] INFO:     INTC  pnl=-0.1%  trail=$56.18  comp=0.5081
+2026-04-11 13:30:19,441 [raptor.exits] INFO:     SOXL  pnl=+1.6%  trail=$64.39  comp=0.538
+2026-04-11 13:30:19,441 [raptor.exits] INFO:     WFC  pnl=-0.1%  trail=$81.51  comp=0.539
+2026-04-11 13:30:19,441 [raptor.exits] INFO: ============================================================
+2026-04-11 13:30:19,441 [raptor.exits] INFO: SELL 50.0 NVDA [thesis_invalid]
+2026-04-11 13:30:19,547 [raptor.data_feeds] ERROR: Order submission failed: {"available":"0","code":40310000,"existing_qty":"50","held_for_orders":"50","message":"insufficient qty available for order (requested: 50, available: 0)","related_orders":["7eb3112c-a2b4-46d9-a11d-d10797229519"],"symbol":"NVDA"}
+2026-04-11 13:30:19,548 [raptor.exits] ERROR:   FAILED: {"available":"0","code":40310000,"existing_qty":"50","held_for_orders":"50","message":"insufficient qty available for order (requested: 50, available: 0)","related_orders":["7eb3112c-a2b4-46d9-a11d-d10797229519"],"symbol":"NVDA"}

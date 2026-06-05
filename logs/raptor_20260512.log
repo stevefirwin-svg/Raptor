@@ -1,0 +1,25 @@
+2026-05-12 09:35:05,827 [raptor.main] INFO: ============================================================
+2026-05-12 09:35:05,829 [raptor.main] INFO: RAPTOR v5.4 DAILY SCAN - 2026-05-12T09:35:05.829045
+2026-05-12 09:35:05,829 [raptor.main] INFO: ============================================================
+2026-05-12 09:35:05,831 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-05-12 09:35:06,466 [raptor.main] INFO: Account: equity=$107671.44  my_allocation=$107671.44  positions=15
+2026-05-12 09:35:06,480 [raptor.universe] INFO: Universe from cache: 134 symbols
+2026-05-12 09:35:06,481 [raptor.main] INFO: Dynamic universe: 134 symbols
+2026-05-12 09:35:08,576 [raptor.data_feeds] INFO: Fetched 135 new bars / 135 total cached
+2026-05-12 09:35:08,692 [raptor.data_feeds] INFO: FRED regime: NEUTRAL (score=-0.050)
+2026-05-12 09:35:09,806 [raptor.main] INFO: Data: 135 symbols | Macro: NEUTRAL (-0.050)
+2026-05-12 09:35:11,981 [raptor.signals] INFO: v5.4 Signals: 5 from 134 | Macro=NEUTRAL Scale=1.0 | Micro={'TRENDING': 97, 'MIXED': 37}
+2026-05-12 09:35:11,982 [raptor.main] INFO: Signals:
+2026-05-12 09:35:11,983 [raptor.main] INFO:   1. FCX  t=0.411  pctl=100%  entry=$63.07  stop=$55.06  tp=$0.00  kelly=0.096  hold~22d
+2026-05-12 09:35:11,983 [raptor.main] INFO:   2. B  t=0.307  pctl=99%  entry=$46.31  stop=$41.73  tp=$0.00  kelly=0.090  hold~23d
+2026-05-12 09:35:11,983 [raptor.main] INFO:   3. SLV  t=0.352  pctl=99%  entry=$76.61  stop=$68.82  tp=$0.00  kelly=0.093  hold~23d
+2026-05-12 09:35:11,983 [raptor.main] INFO:   4. RGTI  t=0.333  pctl=98%  entry=$20.24  stop=$16.14  tp=$0.00  kelly=0.092  hold~8d
+2026-05-12 09:35:11,984 [raptor.main] INFO:   5. VALE  t=0.437  pctl=97%  entry=$16.82  stop=$15.48  tp=$0.00  kelly=0.097  hold~20d
+2026-05-12 09:36:17,394 [AgentLayer] INFO: EntryAgent | RAW: '{"decision": "PASS", "confidence": 1.0, "veto_reason": null, "flags": []}'
+2026-05-12 09:37:07,449 [AgentLayer] INFO: EntryAgent | RAW: '{"decision": "VETO", "confidence": 1.0, "veto_reason": "kelly_fraction > 0.10 AND atr_pct > 3.5"}'
+2026-05-12 09:37:50,362 [AgentLayer] INFO: EntryAgent | RAW: '{"decision": "PASS", "confidence": 1.0, "veto_reason": null, "flags": []}'
+2026-05-12 09:38:30,210 [AgentLayer] INFO: EntryAgent | RAW: '{"decision": "VETO", "confidence": 1.0, "veto_reason": "kelly_fraction > 0.10 AND atr_pct > 3.5"}'
+2026-05-12 09:39:13,281 [AgentLayer] INFO: EntryAgent | RAW: '{"decision": "PASS", "confidence": 1.0, "veto_reason": null, "flags": []}'
+2026-05-12 09:39:13,610 [AgentLayer] INFO: EntryAgent | Flushed 5 decisions -> entry_vetoes.json
+2026-05-12 09:39:13,675 [raptor.main] INFO: EntryAgent vetoed 2 candidate(s).
+2026-05-12 09:39:13,678 [raptor.main] INFO: Scan complete. 0 orders placed for v5.4.

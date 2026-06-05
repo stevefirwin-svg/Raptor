@@ -1,0 +1,75 @@
+2026-03-29 06:29:21,419 | Raptor | =================================================================
+2026-03-29 06:29:21,421 | Raptor | RAPTOR ENGINE v4.1 — Wave Rider
+2026-03-29 06:29:21,421 | Raptor |   Universe: 35 symbols
+2026-03-29 06:29:21,421 | Raptor |   Max positions: 4
+2026-03-29 06:29:21,421 | Raptor |   Daily loss limit: 3%
+2026-03-29 06:29:21,422 | Raptor |   Weekly loss limit: 5%
+2026-03-29 06:29:21,422 | Raptor |   Kelly fraction: 0.125 (1/8 Kelly)
+2026-03-29 06:29:21,422 | Raptor |   Max sector concentration: 50%
+2026-03-29 06:29:21,422 | Raptor |   Max correlation: 0.7
+2026-03-29 06:29:21,422 | Raptor |   Alpha factors: 18 (IC-weighted ensemble)
+2026-03-29 06:29:21,423 | Raptor |   News sentiment: ON (FinBERT/VADER)
+2026-03-29 06:29:21,423 | Raptor |   VIX regime: ON
+2026-03-29 06:29:21,424 | Raptor |   Earnings gate: ON
+2026-03-29 06:29:21,424 | Raptor |   Trailing stops: ON (4-stage lifecycle)
+2026-03-29 06:29:21,424 | Raptor |   Trade logging: ON
+2026-03-29 06:29:21,424 | Raptor |   Online learning: ON (SGD + IC tracker)
+2026-03-29 06:29:21,424 | Raptor |   Drawdown persistence: ON
+2026-03-29 06:29:21,424 | Raptor | =================================================================
+2026-03-29 06:29:22,017 | Raptor | Market closed — waiting 60s
+2026-03-29 06:30:22,096 | Raptor | Market closed — waiting 60s
+2026-03-29 06:31:22,207 | Raptor | Market closed — waiting 60s
+2026-03-29 06:32:22,319 | Raptor | Market closed — waiting 60s
+2026-03-29 06:33:22,430 | Raptor | Market closed — waiting 60s
+2026-03-29 06:34:22,467 | Raptor | Market closed — waiting 60s
+2026-03-29 06:34:25,286 | Raptor | Shutdown by user
+2026-03-29 06:39:49,597 | Raptor | =================================================================
+2026-03-29 06:39:49,598 | Raptor | RAPTOR ENGINE v4.2 — Wave Rider
+2026-03-29 06:39:49,598 | Raptor |   Universe: 35 symbols
+2026-03-29 06:39:49,599 | Raptor |   Max positions: 4
+2026-03-29 06:39:49,599 | Raptor |   Daily loss limit: 3%
+2026-03-29 06:39:49,599 | Raptor |   Weekly loss limit: 5%
+2026-03-29 06:39:49,599 | Raptor |   Kelly fraction: 0.125 (1/8 Kelly)
+2026-03-29 06:39:49,599 | Raptor |   Live slippage discount: 90%
+2026-03-29 06:39:49,600 | Raptor |   Max sector concentration: 50%
+2026-03-29 06:39:49,600 | Raptor |   Max correlation: 0.7
+2026-03-29 06:39:49,600 | Raptor |   Alpha factors: 18 (IC-weighted ensemble)
+2026-03-29 06:39:49,600 | Raptor |   News sentiment: ON (FinBERT/VADER)
+2026-03-29 06:39:49,600 | Raptor |   VIX regime: ON
+2026-03-29 06:39:49,600 | Raptor |   Macro regime: ON (risk-on/off/trending/choppy)
+2026-03-29 06:39:49,600 | Raptor |   Portfolio beta control: ON (max 1.2)
+2026-03-29 06:39:49,600 | Raptor |   Marginal Sharpe check: ON
+2026-03-29 06:39:49,600 | Raptor |   Risk parity sizing: ON
+2026-03-29 06:39:49,600 | Raptor |   Earnings gate: ON
+2026-03-29 06:39:49,601 | Raptor |   Trailing stops: ON (4-stage lifecycle)
+2026-03-29 06:39:49,601 | Raptor |   Trade logging: ON
+2026-03-29 06:39:49,601 | Raptor |   Online learning: ON (SGD + IC tracker)
+2026-03-29 06:39:49,601 | Raptor |   Drawdown persistence: ON
+2026-03-29 06:39:49,601 | Raptor | =================================================================
+2026-03-29 06:39:50,492 | Raptor | Market closed — waiting 60s
+2026-03-29 06:40:22,707 | Raptor | Shutdown by user
+2026-03-29 12:28:40,698 | Raptor | =================================================================
+2026-03-29 12:28:40,699 | Raptor | RAPTOR ENGINE v4.2 — Wave Rider
+2026-03-29 12:28:40,699 | Raptor |   Universe: 35 symbols
+2026-03-29 12:28:40,700 | Raptor |   Max positions: 4
+2026-03-29 12:28:40,700 | Raptor |   Daily loss limit: 3%
+2026-03-29 12:28:40,700 | Raptor |   Weekly loss limit: 5%
+2026-03-29 12:28:40,700 | Raptor |   Kelly fraction: 0.200 (1/5 Kelly)
+2026-03-29 12:28:40,700 | Raptor |   Live slippage discount: 90%
+2026-03-29 12:28:40,700 | Raptor |   Max sector concentration: 50%
+2026-03-29 12:28:40,700 | Raptor |   Max correlation: 0.7
+2026-03-29 12:28:40,700 | Raptor |   Alpha factors: 18 (IC-weighted ensemble)
+2026-03-29 12:28:40,701 | Raptor |   News sentiment: ON (FinBERT/VADER)
+2026-03-29 12:28:40,701 | Raptor |   VIX regime: ON
+2026-03-29 12:28:40,701 | Raptor |   Macro regime: ON (risk-on/off/trending/choppy)
+2026-03-29 12:28:40,701 | Raptor |   Portfolio beta control: ON (max 1.2)
+2026-03-29 12:28:40,701 | Raptor |   Marginal Sharpe check: ON
+2026-03-29 12:28:40,701 | Raptor |   Risk parity sizing: ON
+2026-03-29 12:28:40,701 | Raptor |   Earnings gate: ON
+2026-03-29 12:28:40,701 | Raptor |   Trailing stops: ON (4-stage lifecycle)
+2026-03-29 12:28:40,701 | Raptor |   Trade logging: ON
+2026-03-29 12:28:40,702 | Raptor |   Online learning: ON (SGD + IC tracker)
+2026-03-29 12:28:40,702 | Raptor |   Drawdown persistence: ON
+2026-03-29 12:28:40,702 | Raptor | =================================================================
+2026-03-29 12:28:41,381 | Raptor | Market closed — waiting 60s
+2026-03-29 12:29:41,409 | Raptor | Market closed — waiting 60s

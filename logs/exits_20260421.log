@@ -1,0 +1,36 @@
+2026-04-21 09:51:22,150 [raptor.exits] INFO: ============================================================
+2026-04-21 09:51:22,151 [raptor.exits] INFO: RAPTOR v5.4 EXIT MONITOR - 2026-04-21T09:51:22.151074
+2026-04-21 09:51:22,151 [raptor.exits] INFO: ============================================================
+2026-04-21 09:51:22,152 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-04-21 09:51:22,801 [raptor.exits] INFO: Account: equity=$105963.28  cash=$36340.65  positions=7
+2026-04-21 09:51:22,805 [raptor.universe] INFO: Universe from cache: 122 symbols
+2026-04-21 09:51:24,477 [raptor.data_feeds] INFO: Fetched bars for 122 / 122 symbols
+2026-04-21 09:51:24,590 [raptor.data_feeds] INFO: FRED regime: NEUTRAL (score=0.100)
+2026-04-21 09:51:40,248 [raptor.signals] INFO: v5.4 Signals: 5 from 122 | Macro=NEUTRAL Scale=1.0 | Micro={'TRENDING': 92, 'MIXED': 30}
+2026-04-21 09:51:40,249 [raptor.exits] INFO: Portfolio unrealized: $942.33 (0.89%)
+2026-04-21 09:51:40,253 [raptor.exits] INFO: EXIT 3 [THESIS] HOOD composite=-1.0000 (strongly negative)
+2026-04-21 09:51:40,256 [raptor.exits] INFO: EXIT 3 [THESIS] MSFT composite=-1.0000 (strongly negative)
+2026-04-21 09:51:40,257 [raptor.exits] INFO: EXIT 3 [THESIS] QBTS composite=-1.0000 (strongly negative)
+2026-04-21 09:51:40,259 [raptor.exits] INFO: 
+2026-04-21 09:51:40,259 [raptor.exits] INFO: ============================================================
+2026-04-21 09:51:40,259 [raptor.exits] INFO:   EXIT SUMMARY
+2026-04-21 09:51:40,259 [raptor.exits] INFO: ============================================================
+2026-04-21 09:51:40,259 [raptor.exits] INFO:   EXITS (3):
+2026-04-21 09:51:40,259 [raptor.exits] INFO:     HOOD  thesis_invalid  pnl=-2.5%  comp=-1.0000
+2026-04-21 09:51:40,259 [raptor.exits] INFO:     MSFT  thesis_invalid  pnl=-1.3%  comp=-1.0000
+2026-04-21 09:51:40,259 [raptor.exits] INFO:     QBTS  thesis_invalid  pnl=-0.0%  comp=-1.0000
+2026-04-21 09:51:40,260 [raptor.exits] INFO:   HOLDS (4):
+2026-04-21 09:51:40,260 [raptor.exits] INFO:     AAL  pnl=+0.0%  trail=$10.99  comp=0.5695
+2026-04-21 09:51:40,260 [raptor.exits] INFO:     HIMS  pnl=+6.9%  trail=$25.8  comp=0.8141
+2026-04-21 09:51:40,260 [raptor.exits] INFO:     IONQ  pnl=+6.9%  trail=$41.62  comp=0.612
+2026-04-21 09:51:40,260 [raptor.exits] INFO:     RKT  pnl=-0.0%  trail=$15.84  comp=0.5579
+2026-04-21 09:51:40,260 [raptor.exits] INFO: ============================================================
+2026-04-21 09:51:40,260 [raptor.exits] INFO: SELL 113.0 HOOD [thesis_invalid]
+2026-04-21 09:51:40,375 [raptor.data_feeds] INFO: Order submitted: SELL 113.0 HOOD @ None
+2026-04-21 09:51:40,376 [raptor.exits] INFO:   OK: OrderStatus.PENDING_NEW
+2026-04-21 09:51:40,377 [raptor.exits] INFO: SELL 23.0 MSFT [thesis_invalid]
+2026-04-21 09:51:40,454 [raptor.data_feeds] INFO: Order submitted: SELL 23.0 MSFT @ None
+2026-04-21 09:51:40,455 [raptor.exits] INFO:   OK: OrderStatus.PENDING_NEW
+2026-04-21 09:51:40,455 [raptor.exits] INFO: SELL 461.0 QBTS [thesis_invalid]
+2026-04-21 09:51:40,560 [raptor.data_feeds] INFO: Order submitted: SELL 461.0 QBTS @ None
+2026-04-21 09:51:40,561 [raptor.exits] INFO:   OK: OrderStatus.PENDING_NEW

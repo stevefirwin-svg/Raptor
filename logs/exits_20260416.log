@@ -1,0 +1,20 @@
+2026-04-16 09:32:49,176 [raptor.exits] INFO: ============================================================
+2026-04-16 09:32:49,176 [raptor.exits] INFO: RAPTOR v5.4 EXIT MONITOR - 2026-04-16T09:32:49.176794
+2026-04-16 09:32:49,177 [raptor.exits] INFO: ============================================================
+2026-04-16 09:32:49,178 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-04-16 09:32:50,047 [raptor.exits] INFO: No open positions. Nothing to monitor.
+2026-04-16 18:27:17,483 [raptor.exits] INFO: ============================================================
+2026-04-16 18:27:17,491 [raptor.exits] INFO: RAPTOR v5.4 EXIT MONITOR - 2026-04-16T18:27:17.491305
+2026-04-16 18:27:17,492 [raptor.exits] INFO: ============================================================
+2026-04-16 18:27:17,493 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-04-16 18:27:18,206 [raptor.exits] INFO: No open positions. Nothing to monitor.
+2026-04-16 18:32:09,380 [raptor.exits] INFO: ============================================================
+2026-04-16 18:32:09,381 [raptor.exits] INFO: RAPTOR v5.4 EXIT MONITOR - 2026-04-16T18:32:09.381327
+2026-04-16 18:32:09,382 [raptor.exits] INFO: ============================================================
+2026-04-16 18:32:09,383 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-04-16 18:32:09,865 [raptor.exits] INFO: No open positions. Nothing to monitor.
+2026-04-16 19:54:47,902 [raptor.exits] INFO: ============================================================
+2026-04-16 19:54:47,903 [raptor.exits] INFO: RAPTOR v5.4 EXIT MONITOR - 2026-04-16T19:54:47.903101
+2026-04-16 19:54:47,904 [raptor.exits] INFO: ============================================================
+2026-04-16 19:54:47,905 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-04-16 19:54:48,337 [raptor.exits] INFO: No open positions. Nothing to monitor.

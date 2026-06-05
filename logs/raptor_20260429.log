@@ -1,0 +1,22 @@
+2026-04-29 09:50:59,714 [raptor.main] INFO: ============================================================
+2026-04-29 09:50:59,716 [raptor.main] INFO: RAPTOR v5.4 DAILY SCAN - 2026-04-29T09:50:59.716594
+2026-04-29 09:50:59,717 [raptor.main] INFO: ============================================================
+2026-04-29 09:50:59,719 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-04-29 09:51:00,215 [raptor.main] INFO: Account: equity=$102156.25  my_allocation=$102156.25  positions=11
+2026-04-29 09:51:00,218 [raptor.universe] INFO: Universe from cache: 110 symbols
+2026-04-29 09:51:00,219 [raptor.main] INFO: Dynamic universe: 110 symbols
+2026-04-29 09:51:03,851 [raptor.data_feeds] INFO: Fetched bars for 110 / 110 symbols
+2026-04-29 09:51:03,908 [raptor.data_feeds] INFO: FRED regime: NEUTRAL (score=0.100)
+2026-04-29 09:51:12,318 [raptor.main] INFO: Data: 110 symbols | Macro: NEUTRAL (0.100)
+2026-04-29 09:51:14,739 [raptor.signals] INFO: v5.4 Signals: 5 from 110 | Macro=NEUTRAL Scale=1.0 | Micro={'TRENDING': 65, 'MIXED': 45}
+2026-04-29 09:51:14,740 [raptor.main] INFO: Signals:
+2026-04-29 09:51:14,741 [raptor.main] INFO:   1. OXY  t=0.421  pctl=100%  entry=$58.62  stop=$54.37  tp=$0.00  kelly=0.096  hold~24d
+2026-04-29 09:51:14,741 [raptor.main] INFO:   2. KRE  t=0.509  pctl=99%  entry=$69.89  stop=$66.40  tp=$0.00  kelly=0.100  hold~29d
+2026-04-29 09:51:14,741 [raptor.main] INFO:   3. INTC  t=0.215  pctl=96%  entry=$87.74  stop=$74.31  tp=$0.00  kelly=0.086  hold~2d
+2026-04-29 09:51:14,867 [raptor.data_feeds] INFO: Order submitted: BUY 167 OXY @ 58.68
+2026-04-29 09:51:14,869 [raptor.main] INFO: ORDER [v5.4]: BUY 167 OXY @ $58.68
+2026-04-29 09:51:14,972 [raptor.data_feeds] INFO: Order submitted: BUY 146 KRE @ 69.96
+2026-04-29 09:51:14,974 [raptor.main] INFO: ORDER [v5.4]: BUY 146 KRE @ $69.96
+2026-04-29 09:51:15,001 [raptor.data_feeds] INFO: Order submitted: BUY 99 INTC @ 87.83
+2026-04-29 09:51:15,003 [raptor.main] INFO: ORDER [v5.4]: BUY 99 INTC @ $87.83
+2026-04-29 09:51:15,003 [raptor.main] INFO: Scan complete. 3 orders placed for v5.4.

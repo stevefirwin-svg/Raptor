@@ -1,0 +1,22 @@
+Exit code : 1
+Runtime   : 5.3s
+Timestamp : 2026-04-01T12:05:50.118005
+
+--- Last output ---
+2026-04-01 12:05:49,712 [raptor.main] INFO: ============================================================
+2026-04-01 12:05:49,713 [raptor.main] INFO: RAPTOR v5.2.0 DAILY SCAN — 2026-04-01T12:05:49.713615
+2026-04-01 12:05:49,714 [raptor.main] INFO: ============================================================
+Traceback (most recent call last):
+File "C:\Users\steve\OneDrive\Desktop\Raptor\main.py", line 104, in <module>
+run_daily_scan()
+~~~~~~~~~~~~~~^^
+File "C:\Users\steve\OneDrive\Desktop\Raptor\main.py", line 24, in run_daily_scan
+CONFIG.validate_all()
+~~~~~~~~~~~~~~~~~~~^^
+File "C:\Users\steve\OneDrive\Desktop\Raptor\config.py", line 116, in validate_all
+print(f"[CONFIG] Raptor v{self.version} validated \u2713")
+~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+File "C:\Users\steve\AppData\Local\Programs\Python\Python313\Lib\encodings\cp1252.py", line 19, in encode
+return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2713' in position 33: character maps to <undefined>

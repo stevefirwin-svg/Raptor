@@ -1,0 +1,40 @@
+2026-04-29 09:51:17,699 [raptor.exits] INFO: ============================================================
+2026-04-29 09:51:17,700 [raptor.exits] INFO: RAPTOR v5.4 EXIT MONITOR - 2026-04-29T09:51:17.700412
+2026-04-29 09:51:17,702 [raptor.exits] INFO: ============================================================
+2026-04-29 09:51:17,704 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-04-29 09:51:18,210 [raptor.exits] INFO: Account: equity=$102110.26  cash=$-38155.33  positions=14
+2026-04-29 09:51:18,213 [raptor.universe] INFO: Universe from cache: 110 symbols
+2026-04-29 09:51:21,329 [raptor.data_feeds] INFO: Fetched bars for 111 / 111 symbols
+2026-04-29 09:51:21,353 [raptor.data_feeds] INFO: FRED regime: NEUTRAL (score=0.100)
+2026-04-29 09:51:36,370 [raptor.data_feeds] ERROR: Alpaca news fetch failed for batch 0: HTTPSConnectionPool(host='data.alpaca.markets', port=443): Max retries exceeded with url: /v1beta1/news?symbols=INTC%2CMRVL%2CTSLA%2CMU%2CORCL%2CSOXL%2CTQQQ%2CBITO%2CAMD%2CNFLX%2CAVGO%2CNOW%2CXOM%2CPLTR%2CIGV%2CCRWV%2CGDX%2CNVDA%2CMSFT%2CAMZN%2CAAPL%2CGOOGL%2CNOK%2CXLE%2CSQQQ%2CHOOD%2CBAC%2CBSX%2CTZA%2CFCX%2CSLV%2CIBIT%2CEEM%2CCSCO%2CQQQ%2CEFA%2CPLTD%2CSMCI%2CXLI%2CXLF%2CSPY%2CSLB%2CSCHW%2CB%2CIREN%2CNKE%2CT%2CUBER%2CDOW%2CCCL&start=2026-04-26T00%3A00%3A00Z&limit=50&sort=desc (Caused by ConnectTimeoutError(<HTTPSConnection(host='data.alpaca.markets', port=443) at 0x1b967200910>, 'Connection to data.alpaca.markets timed out. (connect timeout=15)'))
+2026-04-29 09:51:42,492 [raptor.signals] INFO: v5.4 Signals: 5 from 111 | Macro=NEUTRAL Scale=1.0 | Micro={'TRENDING': 65, 'MIXED': 46}
+2026-04-29 09:51:42,493 [raptor.exits] INFO: Portfolio unrealized: $768.05 (0.75%)
+2026-04-29 09:51:42,498 [raptor.exits] INFO: EXIT 3 [THESIS] HIMS composite=-1.0000 pnl=-4.6% (negative thesis + losing)
+2026-04-29 09:51:42,509 [raptor.exits] INFO: EXIT 4B [LEV CAP] SOXL 3x ETF held too long
+2026-04-29 09:51:42,513 [raptor.exits] INFO: 
+2026-04-29 09:51:42,514 [raptor.exits] INFO: ============================================================
+2026-04-29 09:51:42,514 [raptor.exits] INFO:   EXIT SUMMARY
+2026-04-29 09:51:42,514 [raptor.exits] INFO: ============================================================
+2026-04-29 09:51:42,515 [raptor.exits] INFO:   EXITS (2):
+2026-04-29 09:51:42,515 [raptor.exits] INFO:     HIMS  thesis_invalid  pnl=-4.6%  comp=-1.0000
+2026-04-29 09:51:42,515 [raptor.exits] INFO:     SOXL  leveraged_3x_cap  pnl=+5.3%  comp=-1.0000
+2026-04-29 09:51:42,515 [raptor.exits] INFO:   HOLDS (12):
+2026-04-29 09:51:42,515 [raptor.exits] INFO:     AMD  pnl=+5.9%  trail=$291.39  comp=0.5391
+2026-04-29 09:51:42,515 [raptor.exits] INFO:     CSX  pnl=-0.7%  trail=$43.63  comp=-1.0
+2026-04-29 09:51:42,515 [raptor.exits] INFO:     INTC  pnl=-0.0%  trail=$78.79  comp=0.5082
+2026-04-29 09:51:42,515 [raptor.exits] INFO:     KDP  pnl=+0.4%  trail=$27.25  comp=-1.0
+2026-04-29 09:51:42,515 [raptor.exits] INFO:     KO  pnl=-0.9%  trail=$77.02  comp=-1.0
+2026-04-29 09:51:42,516 [raptor.exits] INFO:     KRE  pnl=-0.0%  trail=$67.55  comp=0.5695
+2026-04-29 09:51:42,516 [raptor.exits] INFO:     NVDA  pnl=+0.9%  trail=$199.89  comp=-1.0
+2026-04-29 09:51:42,516 [raptor.exits] INFO:     OXY  pnl=-0.0%  trail=$55.28  comp=0.5895
+2026-04-29 09:51:42,516 [raptor.exits] INFO:     PYPL  pnl=-1.2%  trail=$47.36  comp=-1.0
+2026-04-29 09:51:42,516 [raptor.exits] INFO:     STM  pnl=+3.1%  trail=$48.14  comp=0.539
+2026-04-29 09:51:42,516 [raptor.exits] INFO:     TFC  pnl=-1.3%  trail=$49.65  comp=-1.0
+2026-04-29 09:51:42,516 [raptor.exits] INFO:     TTD  pnl=+3.7%  trail=$21.67  comp=-1.0
+2026-04-29 09:51:42,516 [raptor.exits] INFO: ============================================================
+2026-04-29 09:51:42,516 [raptor.exits] INFO: SELL 356.0 HIMS [thesis_invalid]
+2026-04-29 09:51:42,623 [raptor.data_feeds] INFO: Order submitted: SELL 356.0 HIMS @ None
+2026-04-29 09:51:42,623 [raptor.exits] INFO:   OK: OrderStatus.PENDING_NEW
+2026-04-29 09:51:42,623 [raptor.exits] INFO: SELL 70.0 SOXL [leveraged_3x_cap]
+2026-04-29 09:51:42,724 [raptor.data_feeds] INFO: Order submitted: SELL 70.0 SOXL @ None
+2026-04-29 09:51:42,725 [raptor.exits] INFO:   OK: OrderStatus.PENDING_NEW

@@ -1,0 +1,18 @@
+2026-05-13 18:15:16,582 [raptor.main] INFO: ============================================================
+2026-05-13 18:15:16,584 [raptor.main] INFO: RAPTOR v5.4 DAILY SCAN - 2026-05-13T18:15:16.584821
+2026-05-13 18:15:16,585 [raptor.main] INFO: ============================================================
+2026-05-13 18:15:16,587 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-05-13 18:15:17,519 [raptor.main] INFO: Account: equity=$108297.53  my_allocation=$108297.53  positions=15
+2026-05-13 18:15:17,522 [raptor.main] INFO: [MarketAgent] SCAN | scalar=1.00 | All signals indicate a bullish market environment with broad strength and stable conditions, allowing for normal operation.
+2026-05-13 18:15:17,535 [raptor.universe] INFO: Universe from cache: 137 symbols
+2026-05-13 18:15:17,535 [raptor.main] INFO: Dynamic universe: 137 symbols
+2026-05-13 18:15:19,586 [raptor.data_feeds] INFO: Fetched 138 new bars / 138 total cached
+2026-05-13 18:15:19,649 [raptor.data_feeds] INFO: FRED regime: NEUTRAL (score=-0.050)
+2026-05-13 18:15:21,531 [raptor.main] INFO: Data: 138 symbols | Macro: NEUTRAL (-0.050)
+2026-05-13 18:15:24,375 [raptor.signals] INFO: v5.4 Signals: 5 from 137 | Macro=NEUTRAL Scale=1.0 | Micro={'TRENDING': 96, 'MIXED': 41}
+2026-05-13 18:15:24,376 [raptor.main] INFO: Signals:
+2026-05-13 18:15:24,376 [raptor.main] INFO:   1. GDX  t=0.459  pctl=100%  entry=$96.21  stop=$86.06  tp=$0.00  kelly=0.098  hold~24d
+2026-05-13 18:15:24,376 [raptor.main] INFO:   2. FCX  t=0.387  pctl=99%  entry=$67.15  stop=$60.03  tp=$0.00  kelly=0.094  hold~28d
+2026-05-13 18:15:24,376 [raptor.main] INFO:   3. SLV  t=0.376  pctl=99%  entry=$79.35  stop=$71.21  tp=$0.00  kelly=0.094  hold~21d
+2026-05-13 18:15:24,377 [raptor.main] INFO:   4. BITO  t=0.592  pctl=98%  entry=$10.88  stop=$10.29  tp=$0.00  kelly=0.105  hold~29d
+2026-05-13 18:15:24,377 [raptor.main] INFO:   5. F  t=0.312  pctl=97%  entry=$13.59  stop=$12.23  tp=$0.00  kelly=0.091  hold~7d

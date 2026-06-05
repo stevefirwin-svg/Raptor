@@ -1,0 +1,33 @@
+2026-05-29 09:35:03,338 [raptor.main] INFO: ============================================================
+2026-05-29 09:35:03,338 [raptor.main] INFO: RAPTOR v5.4 DAILY SCAN - 2026-05-29T09:35:03.338752
+2026-05-29 09:35:03,338 [raptor.main] INFO: ============================================================
+2026-05-29 09:35:03,339 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-05-29 09:35:04,074 [raptor.main] INFO: Account: equity=$108292.94  my_allocation=$108292.94  positions=8
+2026-05-29 09:35:04,080 [raptor.main] INFO: [MarketAgent] SCAN | scalar=1.00 | Macro environment is conducive to risk-taking with no extreme signals present.
+2026-05-29 09:35:04,244 [raptor.margin_guard] INFO: MARGIN GUARD: equity=$108,295  cash=$69,151  positions=8
+2026-05-29 09:35:04,244 [raptor.margin_guard] INFO: MARGIN GUARD: market_value=$39,143  utilization=36.1%  margin=NO
+2026-05-29 09:35:04,256 [raptor.universe] INFO: Universe from cache: 72 symbols
+2026-05-29 09:35:04,256 [raptor.main] INFO: Dynamic universe: 72 symbols
+2026-05-29 09:35:06,500 [raptor.data_feeds] INFO: Fetched 73 new bars / 73 total cached
+2026-05-29 09:35:06,617 [raptor.data_feeds] INFO: FRED regime: BULLISH (score=0.300)
+2026-05-29 09:35:06,654 [raptor.main] INFO: Data: 73 symbols | Macro: RISK_ON (0.300)
+2026-05-29 09:35:07,767 [raptor.signals] INFO: v5.4 Signals: 5 from 72 | Macro=RISK_ON Scale=1.0 | Micro={'TRENDING': 13, 'MIXED': 58, 'REVERTING': 1} | SNR min=0.00 max=0.00
+2026-05-29 09:35:07,779 [raptor.main] INFO: Velocity gate: 5 signals remain | velocities: {'PLTR': '+0.000', 'HPQ': '+0.000', 'HOOD': '+0.000', 'SOXL': '+0.000', 'IREN': '+0.000'}
+2026-05-29 09:35:07,790 [raptor.main] INFO: Signals:
+2026-05-29 09:35:07,790 [raptor.main] INFO:   1. PLTR  t=0.000  pctl=100%  entry=$148.84  stop=$135.70  tp=$0.00  kelly=0.060  hold~28d
+2026-05-29 09:35:07,790 [raptor.main] INFO:   2. HPQ  t=0.000  pctl=99%  entry=$27.25  stop=$24.07  tp=$0.00  kelly=0.060  hold~2d
+2026-05-29 09:35:07,790 [raptor.main] INFO:   3. HOOD  t=0.000  pctl=97%  entry=$86.83  stop=$75.90  tp=$0.00  kelly=0.060  hold~13d
+2026-05-29 09:35:07,790 [raptor.main] INFO:   4. SOXL  t=0.000  pctl=96%  entry=$229.83  stop=$172.32  tp=$0.00  kelly=0.060  hold~2d
+2026-05-29 09:35:07,791 [raptor.main] INFO:   5. IREN  t=0.000  pctl=94%  entry=$63.09  stop=$50.48  tp=$0.00  kelly=0.060  hold~8d
+2026-05-29 09:35:37,620 [AgentLayer] INFO: EntryAgent | RAW: '{"decision": "PASS", "confidence": 0.5, "veto_reason": null, "flags": []}'
+2026-05-29 09:35:54,999 [AgentLayer] INFO: EntryAgent | RAW: '{"decision": "PASS", "confidence": 0.8, "veto_reason": null, "flags": []}'
+2026-05-29 09:36:12,507 [AgentLayer] INFO: EntryAgent | RAW: '{"decision": "PASS", "confidence": 0.8, "veto_reason": null, "flags": []}'
+2026-05-29 09:36:31,205 [AgentLayer] INFO: EntryAgent | RAW: '{"decision": "VETO", "confidence": 0.0, "veto_reason": "macro_regime="RISK_OFF" AND kelly_fraction > 0.07", "flags": []}'
+2026-05-29 09:36:31,208 [AgentLayer] WARNING: EntryAgent | JSON parse error on SOXL: Expecting ',' delimiter: line 1 column 71 (char 70)
+2026-05-29 09:36:48,140 [AgentLayer] INFO: EntryAgent | RAW: '{"decision": "PASS", "confidence": 1.0, "veto_reason": null, "flags": []}'
+2026-05-29 09:36:48,165 [AgentLayer] INFO: EntryAgent | Flushed 5 decisions -> entry_vetoes.json
+2026-05-29 09:36:49,361 [raptor.data_feeds] INFO: Order submitted: BUY 43 PLTR @ 148.99
+2026-05-29 09:36:49,370 [raptor.main] INFO: ORDER [v5.4]: BUY 43 PLTR @ $148.99
+2026-05-29 09:36:49,438 [raptor.data_feeds] INFO: Order submitted: BUY 238 HPQ @ 27.28
+2026-05-29 09:36:49,442 [raptor.main] INFO: ORDER [v5.4]: BUY 238 HPQ @ $27.28
+2026-05-29 09:36:49,443 [raptor.main] INFO: Scan complete. 2 orders placed for v5.4.

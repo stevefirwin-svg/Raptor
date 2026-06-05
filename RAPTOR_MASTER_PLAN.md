@@ -1,5 +1,5 @@
 # Raptor — Master Priority Plan
-*Last updated: 2026-05-29 (session 2). Source of truth: GitHub + live code audit.*
+*Last updated: 2026-06-05 (session 3). Source of truth: GitHub + live code audit.*
 *Supersedes all prior versions.*
 
 ---
@@ -21,6 +21,7 @@ session confirming it. Documented-but-unverified fixes are NOT done.
 | Component | Status |
 |-----------|--------|
 | All P0 blockers | FIXED |
+| submit_order execution | FIXED 2026-06-05 |
 | P0-1 outcome sidecar | FIXED 2026-05-29 |
 | P0-8 regime unification | FIXED 2026-05-29 |
 | Fabricated defaults | ELIMINATED |
@@ -46,6 +47,8 @@ session confirming it. Documented-but-unverified fixes are NOT done.
 
 | ID | What was fixed |
 |----|---------------|
+| 2026-06-05 | submit_order missing `def` line in data_feeds.py — method existed as floating dead code inside get_portfolio_history, never registered on AlpacaDataFeed. Every order submission since ~2026-05-25 raised AttributeError, crashed execute loop silently. 11 days of exits and trims never reached Alpaca. Fixed: def line restored, execute loop wrapped in try/except per-order so one failure doesn't abort remaining positions. |
+| 2026-06-05 | logs/ removed from .gitignore — runtime logs now tracked in git for diagnostic analysis. |
 | CRIT-0 | outcome_tracker: trades backfilled, parse_ts UTC-aware, atomic writes |
 | CRIT-1 | Velocity gate wired into main.py |
 | CRIT-2 | Cooldown gate wired into main.py |
@@ -133,6 +136,14 @@ Fix: Reduce n_prior 50 to 20 in kelly_engine.py
 | ARCH-6 | Database | When JSON causes incident |
 
 ---
+
+## KNOWN ISSUES — Open
+
+| Issue | Impact | Priority |
+|-------|--------|----------|
+| Trail multiplier profit_atr≥4.0→1.0× ATR (round number, no derivation) | Stops ratchet too tight on winning positions — EXIT 1 fires on normal pullback days, wiping multiple positions simultaneously | GAP-B: derive from backtest drawdown analysis |
+| INTC ledger stop=112.02 (stale backfill value) above current price | EXIT 1 fires every run, position can never trim | Fix ledger stop manually to ATR-based value |
+| UnicodeEncodeError on → character in log output (cp1252 encoding) | Cosmetic logging error, execution continues | Low priority |
 
 ## HYGIENE - Open Items
 

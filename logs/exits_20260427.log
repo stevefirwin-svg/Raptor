@@ -1,0 +1,24 @@
+2026-04-27 20:33:25,882 [raptor.exits] INFO: ============================================================
+2026-04-27 20:33:25,883 [raptor.exits] INFO: RAPTOR v5.4 EXIT MONITOR - 2026-04-27T20:33:25.883016
+2026-04-27 20:33:25,884 [raptor.exits] INFO: ============================================================
+2026-04-27 20:33:25,885 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-04-27 20:33:26,501 [raptor.exits] INFO: Account: equity=$103061.79  cash=$24789.23  positions=7
+2026-04-27 20:33:26,504 [raptor.universe] INFO: Universe from cache: 118 symbols
+2026-04-27 20:33:27,909 [raptor.data_feeds] INFO: Fetched bars for 118 / 118 symbols
+2026-04-27 20:33:28,018 [raptor.data_feeds] INFO: FRED regime: NEUTRAL (score=0.100)
+2026-04-27 20:33:32,304 [raptor.signals] INFO: v5.4 Signals: 5 from 118 | Macro=NEUTRAL Scale=1.0 | Micro={'TRENDING': 71, 'MIXED': 47}
+2026-04-27 20:33:32,305 [raptor.exits] INFO: Portfolio unrealized: $1203.66 (1.17%)
+2026-04-27 20:33:32,316 [raptor.exits] INFO: 
+2026-04-27 20:33:32,316 [raptor.exits] INFO: ============================================================
+2026-04-27 20:33:32,316 [raptor.exits] INFO:   EXIT SUMMARY
+2026-04-27 20:33:32,317 [raptor.exits] INFO: ============================================================
+2026-04-27 20:33:32,317 [raptor.exits] INFO:   No exits triggered.
+2026-04-27 20:33:32,317 [raptor.exits] INFO:   HOLDS (7):
+2026-04-27 20:33:32,317 [raptor.exits] INFO:     AMD  pnl=+9.9%  trail=$312.56  comp=0.6582
+2026-04-27 20:33:32,317 [raptor.exits] INFO:     CSX  pnl=-1.1%  trail=$43.55  comp=-1.0
+2026-04-27 20:33:32,317 [raptor.exits] INFO:     HIMS  pnl=+5.6%  trail=$24.65  comp=-1.0
+2026-04-27 20:33:32,317 [raptor.exits] INFO:     KDP  pnl=+1.5%  trail=$27.57  comp=0.5507
+2026-04-27 20:33:32,317 [raptor.exits] INFO:     PYPL  pnl=-0.2%  trail=$47.2  comp=-1.0
+2026-04-27 20:33:32,318 [raptor.exits] INFO:     SMCI  pnl=-1.3%  trail=$25.01  comp=-1.0
+2026-04-27 20:33:32,318 [raptor.exits] INFO:     STM  pnl=-0.0%  trail=$46.6  comp=-1.0
+2026-04-27 20:33:32,318 [raptor.exits] INFO: ============================================================

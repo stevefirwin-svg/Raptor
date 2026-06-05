@@ -1,0 +1,28 @@
+2026-05-28 09:35:03,331 [raptor.main] INFO: ============================================================
+2026-05-28 09:35:03,332 [raptor.main] INFO: RAPTOR v5.4 DAILY SCAN - 2026-05-28T09:35:03.332468
+2026-05-28 09:35:03,332 [raptor.main] INFO: ============================================================
+2026-05-28 09:35:03,334 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-05-28 09:35:03,781 [raptor.main] INFO: Account: equity=$107612.46  my_allocation=$107612.46  positions=10
+2026-05-28 09:35:03,789 [raptor.main] INFO: [MarketAgent] SCAN | scalar=1.00 | Macro regime is RISK_ON with a calm VIX and broad strength in sector breadth.
+2026-05-28 09:35:03,892 [raptor.margin_guard] INFO: MARGIN GUARD: equity=$107,613  cash=$64,768  positions=10
+2026-05-28 09:35:03,892 [raptor.margin_guard] INFO: MARGIN GUARD: market_value=$42,845  utilization=39.8%  margin=NO
+2026-05-28 09:35:03,905 [raptor.universe] INFO: Universe from cache: 72 symbols
+2026-05-28 09:35:03,905 [raptor.main] INFO: Dynamic universe: 72 symbols
+2026-05-28 09:35:04,919 [raptor.data_feeds] INFO: Fetched 73 new bars / 73 total cached
+2026-05-28 09:35:05,038 [raptor.data_feeds] INFO: FRED regime: BULLISH (score=0.200)
+2026-05-28 09:35:05,038 [raptor.main] INFO: Data: 73 symbols | Macro: BULLISH (0.200)
+2026-05-28 09:35:06,322 [raptor.signals] INFO: v5.4 Signals: 5 from 72 | Macro=BULLISH Scale=1.0 | Micro={'TRENDING': 42, 'MIXED': 30} | SNR min=1.06 max=2.04
+2026-05-28 09:35:06,334 [raptor.main] INFO: Velocity gate: 5 signals remain | velocities: {'HPQ': '+0.000', 'RDW': '+0.000', 'CCL': '+0.000', 'RGTI': '+0.000', 'QBTS': '+0.000'}
+2026-05-28 09:35:06,336 [raptor.main] INFO: Signals:
+2026-05-28 09:35:06,336 [raptor.main] INFO:   1. HPQ  t=2.038  pctl=99%  entry=$24.87  stop=$21.86  tp=$0.00  kelly=0.120  hold~2d
+2026-05-28 09:35:06,336 [raptor.main] INFO:   2. RDW  t=1.380  pctl=100%  entry=$24.67  stop=$17.91  tp=$0.00  kelly=0.120  hold~2d
+2026-05-28 09:35:06,336 [raptor.main] INFO:   3. CCL  t=1.219  pctl=89%  entry=$27.28  stop=$24.44  tp=$0.00  kelly=0.120  hold~25d
+2026-05-28 09:35:06,337 [raptor.main] INFO:   4. RGTI  t=1.192  pctl=97%  entry=$24.21  stop=$17.19  tp=$0.00  kelly=0.120  hold~2d
+2026-05-28 09:35:06,338 [raptor.main] INFO:   5. QBTS  t=1.056  pctl=96%  entry=$27.30  stop=$19.43  tp=$0.00  kelly=0.120  hold~2d
+2026-05-28 09:35:35,778 [AgentLayer] INFO: EntryAgent | RAW: '{"decision": "PASS", "confidence": 0.9, "veto_reason": null, "flags": []}'
+2026-05-28 09:35:53,176 [AgentLayer] INFO: EntryAgent | RAW: '{"decision": "PASS", "confidence": 0.95, "veto_reason": null, "flags": []}'
+2026-05-28 09:36:10,126 [AgentLayer] INFO: EntryAgent | RAW: '{"decision": "PASS", "confidence": 0.9, "veto_reason": null, "flags": []}'
+2026-05-28 09:36:27,346 [AgentLayer] INFO: EntryAgent | RAW: '{"decision": "PASS", "confidence": 0.95, "veto_reason": null, "flags": []}'
+2026-05-28 09:36:44,420 [AgentLayer] INFO: EntryAgent | RAW: '{"decision": "PASS", "confidence": 0.9, "veto_reason": null, "flags": []}'
+2026-05-28 09:36:44,448 [AgentLayer] INFO: EntryAgent | Flushed 5 decisions -> entry_vetoes.json
+2026-05-28 09:36:44,448 [raptor.main] INFO: Scan complete. 0 orders placed for v5.4.

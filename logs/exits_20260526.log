@@ -1,0 +1,109 @@
+2026-05-26 09:52:04,956 [raptor.exits] INFO: ============================================================
+2026-05-26 09:52:04,957 [raptor.exits] INFO: RAPTOR v5.4 EXIT MONITOR - 2026-05-26T09:52:04.957435
+2026-05-26 09:52:04,959 [raptor.exits] INFO: ============================================================
+2026-05-26 09:52:04,960 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-05-26 09:52:07,234 [raptor.exits] INFO: Account: equity=$107656.74  cash=$62366.61  positions=10
+2026-05-26 09:52:07,256 [raptor.universe] INFO: Universe from cache: 70 symbols
+2026-05-26 09:52:10,299 [raptor.data_feeds] INFO: Fetched 76 new bars / 76 total cached
+2026-05-26 09:52:11,104 [raptor.data_feeds] ERROR: FRED fetch failed for NAPM: 400 Client Error: Bad Request for url: https://api.stlouisfed.org/fred/series/observations?series_id=NAPM&api_key=da7dbeb2fb38addc5865122252685cee&file_type=json&observation_start=2023-05-27&observation_end=2026-05-26&sort_order=asc
+2026-05-26 09:52:11,113 [raptor.data_feeds] INFO: FRED regime: BULLISH (score=0.150)
+2026-05-26 09:52:12,313 [raptor.signals] INFO: v5.4 Signals: 5 from 75 | Macro=BULLISH Scale=1.0 | Micro={'TRENDING': 43, 'MIXED': 32} | SNR min=1.34 max=2.11
+2026-05-26 09:52:12,316 [raptor.exits] INFO: Portfolio unrealized: $8989.89 (8.35%)
+2026-05-26 09:52:12,341 [raptor.exits] WARNING: MATH TRIM [TRIM_MINOR] PLTD — 149 of 301 shares (20%) — Minor trim 20% — early warning, reduce exposure
+2026-05-26 09:52:12,341 [raptor.exits] INFO: 
+2026-05-26 09:52:12,341 [raptor.exits] INFO: ============================================================
+2026-05-26 09:52:12,342 [raptor.exits] INFO:   EXIT SUMMARY
+2026-05-26 09:52:12,342 [raptor.exits] INFO: ============================================================
+2026-05-26 09:52:12,342 [raptor.exits] INFO:   EXITS (1):
+2026-05-26 09:52:12,342 [raptor.exits] INFO:     PLTD  math_trim_20%  pnl=+3.4%  comp=-0.7396
+2026-05-26 09:52:12,342 [raptor.exits] INFO:   HOLDS (9):
+2026-05-26 09:52:12,342 [raptor.exits] INFO:     AMD  pnl=+60.4%  trail=$457.03  comp=0.1361
+2026-05-26 09:52:12,342 [raptor.exits] INFO:     CSX  pnl=+1.9%  trail=$44.7  comp=-0.0714
+2026-05-26 09:52:12,342 [raptor.exits] INFO:     CVE  pnl=+1.9%  trail=$26.66  comp=-0.4542
+2026-05-26 09:52:12,342 [raptor.exits] INFO:     DKNG  pnl=-4.4%  trail=$22.48  comp=-0.2764
+2026-05-26 09:52:12,342 [raptor.exits] INFO:     INTC  pnl=+40.1%  trail=$108.9  comp=0.06
+2026-05-26 09:52:12,342 [raptor.exits] INFO:     KDP  pnl=+2.9%  trail=$28.22  comp=-0.0353
+2026-05-26 09:52:12,343 [raptor.exits] INFO:     SMCI  pnl=+4.8%  trail=$30.61  comp=0.2613
+2026-05-26 09:52:12,343 [raptor.exits] INFO:     STM  pnl=+41.2%  trail=$66.53  comp=0.4861
+2026-05-26 09:52:12,343 [raptor.exits] INFO:     TSLA  pnl=+10.4%  trail=$405.24  comp=-0.2351
+2026-05-26 09:52:12,343 [raptor.exits] INFO: ============================================================
+2026-05-26 09:52:12,356 [raptor.exits] INFO: AGENT [advisory] TRIM NVDA — 3+ deteriorating dimensions and unrealized_pct>5 (conf=0.60, from 2026-05-15T13:05:37.330779) [not executed — math trim governs]
+2026-05-26 09:52:12,356 [raptor.exits] INFO: AGENT [advisory] HOLD AMD — insufficient history: 0 days (conf=0.90, from 2026-05-25T16:30:22.471050)
+2026-05-26 09:52:12,356 [raptor.exits] INFO: AGENT [advisory] HOLD CVE — insufficient history: 0 days (conf=0.90, from 2026-05-25T16:30:22.471070)
+2026-05-26 09:52:12,357 [raptor.exits] INFO: AGENT [advisory] HOLD FXI — insufficient history: 0 days (conf=0.90, from 2026-05-19T16:30:29.205147)
+2026-05-26 09:52:12,357 [raptor.exits] INFO: AGENT [advisory] HOLD CSX — insufficient history: 0 days (conf=0.90, from 2026-05-25T16:30:22.471067)
+2026-05-26 09:52:12,357 [raptor.exits] INFO: AGENT [advisory] HOLD INTC — insufficient history: 0 days (conf=0.90, from 2026-05-25T16:30:22.471075)
+2026-05-26 09:52:12,357 [raptor.exits] INFO: AGENT [advisory] HOLD KDP — insufficient history: 0 days (conf=0.90, from 2026-05-25T16:30:22.471077)
+2026-05-26 09:52:12,357 [raptor.exits] INFO: AGENT [advisory] HOLD OWL — insufficient history: 0 days (conf=0.90, from 2026-05-17T15:50:38.416296)
+2026-05-26 09:52:12,358 [raptor.exits] INFO: AGENT [advisory] HOLD KRE — insufficient history: 0 days (conf=0.90, from 2026-05-18T21:00:50.566737)
+2026-05-26 09:52:12,358 [raptor.exits] INFO: AGENT [advisory] HOLD PLTD — insufficient history: 0 days (conf=0.90, from 2026-05-25T16:30:22.471080)
+2026-05-26 09:52:12,358 [raptor.exits] INFO: AGENT [advisory] HOLD STM — insufficient history: 0 days (conf=0.90, from 2026-05-25T16:30:22.471084)
+2026-05-26 09:52:12,358 [raptor.exits] INFO: AGENT [advisory] HOLD SMCI — insufficient history: 0 days (conf=0.90, from 2026-05-25T16:30:22.471082)
+2026-05-26 09:52:12,358 [raptor.exits] INFO: AGENT [advisory] HOLD TSLA — insufficient history: 0 days (conf=0.90, from 2026-05-25T16:30:22.471086)
+2026-05-26 09:52:12,358 [raptor.exits] INFO: AGENT [advisory] HOLD TSLL — insufficient history: 0 days (conf=0.90, from 2026-05-19T16:30:29.205168)
+2026-05-26 09:52:12,359 [raptor.exits] INFO: AGENT [advisory] HOLD TTD — insufficient history: 0 days (conf=0.90, from 2026-05-19T16:30:29.205175)
+2026-05-26 09:52:12,359 [raptor.exits] INFO: AGENT [advisory] HOLD DKNG — insufficient history: 0 days (conf=0.90, from 2026-05-25T16:30:22.471073)
+2026-05-26 09:52:12,359 [raptor.exits] INFO: SELL 149 PLTD [math_trim_20%]
+2026-05-26 09:52:12,445 [raptor.data_feeds] INFO: Order submitted: SELL 149 PLTD @ None
+2026-05-26 09:52:12,446 [raptor.exits] INFO:   OK: OrderStatus.PENDING_NEW
+2026-05-26 15:50:11,938 [raptor.exits] INFO: ============================================================
+2026-05-26 15:50:11,939 [raptor.exits] INFO: RAPTOR v5.4 EXIT MONITOR - 2026-05-26T15:50:11.939830
+2026-05-26 15:50:11,940 [raptor.exits] INFO: ============================================================
+2026-05-26 15:50:11,941 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-05-26 15:50:12,590 [raptor.exits] INFO: Account: equity=$108026.23  cash=$63557.12  positions=10
+2026-05-26 15:50:12,615 [raptor.universe] INFO: Universe from cache: 70 symbols
+2026-05-26 15:50:14,347 [raptor.data_feeds] INFO: Fetched 76 new bars / 76 total cached
+2026-05-26 15:50:14,881 [raptor.data_feeds] INFO: FRED fetch OK: T10Y2Y (746 observations)
+2026-05-26 15:50:15,315 [raptor.data_feeds] INFO: FRED fetch OK: FEDFUNDS (36 observations)
+2026-05-26 15:50:15,753 [raptor.data_feeds] INFO: FRED fetch OK: ICSA (156 observations)
+2026-05-26 15:50:16,165 [raptor.data_feeds] INFO: FRED fetch OK: VIXCLS (772 observations)
+2026-05-26 15:50:16,697 [raptor.data_feeds] INFO: FRED fetch OK: BAMLC0A4CBBB (784 observations)
+2026-05-26 15:50:17,120 [raptor.data_feeds] INFO: FRED fetch OK: CPIAUCSL (35 observations)
+2026-05-26 15:50:17,546 [raptor.data_feeds] ERROR: FRED fetch failed for NAPM: 400 Client Error: Bad Request for url: https://api.stlouisfed.org/fred/series/observations?series_id=NAPM&api_key=da7dbeb2fb38addc5865122252685cee&file_type=json&observation_start=2023-05-27&observation_end=2026-05-26&sort_order=asc
+2026-05-26 15:50:17,972 [raptor.data_feeds] INFO: FRED fetch OK: M2SL (36 observations)
+2026-05-26 15:50:18,356 [raptor.data_feeds] INFO: FRED fetch OK: RSXFS (36 observations)
+2026-05-26 15:50:18,823 [raptor.data_feeds] INFO: FRED fetch OK: UNRATE (35 observations)
+2026-05-26 15:50:18,826 [raptor.data_feeds] INFO: FRED regime: BULLISH (score=0.150)
+2026-05-26 15:50:20,043 [raptor.signals] INFO: v5.4 Signals: 5 from 75 | Macro=BULLISH Scale=1.0 | Micro={'TRENDING': 43, 'MIXED': 32} | SNR min=1.64 max=2.04
+2026-05-26 15:50:20,046 [raptor.exits] INFO: Portfolio unrealized: $9320.52 (8.63%)
+2026-05-26 15:50:20,073 [raptor.exits] WARNING: MATH TRIM [TRIM_MINOR] CVE — 1 of 101 shares (1%) — Minor trim 1% — early warning, reduce exposure
+2026-05-26 15:50:20,074 [raptor.exits] WARNING: MATH TRIM [TRIM_MINOR] DKNG — 1 of 59 shares (2%) — Minor trim 2% — early warning, reduce exposure
+2026-05-26 15:50:20,074 [raptor.exits] INFO: 
+2026-05-26 15:50:20,074 [raptor.exits] INFO: ============================================================
+2026-05-26 15:50:20,075 [raptor.exits] INFO:   EXIT SUMMARY
+2026-05-26 15:50:20,075 [raptor.exits] INFO: ============================================================
+2026-05-26 15:50:20,075 [raptor.exits] INFO:   EXITS (2):
+2026-05-26 15:50:20,076 [raptor.exits] INFO:     CVE  math_trim_1%  pnl=+0.7%  comp=-0.3925
+2026-05-26 15:50:20,076 [raptor.exits] INFO:     DKNG  math_trim_2%  pnl=-4.9%  comp=-0.2136
+2026-05-26 15:50:20,076 [raptor.exits] INFO:   HOLDS (8):
+2026-05-26 15:50:20,076 [raptor.exits] INFO:     AMD  pnl=+65.6%  trail=$462.12  comp=0.1357
+2026-05-26 15:50:20,076 [raptor.exits] INFO:     CSX  pnl=+2.6%  trail=$44.96  comp=0.0414
+2026-05-26 15:50:20,076 [raptor.exits] INFO:     INTC  pnl=+40.9%  trail=$109.32  comp=0.0556
+2026-05-26 15:50:20,076 [raptor.exits] INFO:     KDP  pnl=+3.2%  trail=$28.25  comp=0.0227
+2026-05-26 15:50:20,077 [raptor.exits] INFO:     PLTD  pnl=+2.1%  trail=$7.36  comp=-0.2892
+2026-05-26 15:50:20,077 [raptor.exits] INFO:     SMCI  pnl=+8.9%  trail=$30.2  comp=0.4149
+2026-05-26 15:50:20,077 [raptor.exits] INFO:     STM  pnl=+41.1%  trail=$66.47  comp=0.5627
+2026-05-26 15:50:20,077 [raptor.exits] INFO:     TSLA  pnl=+10.7%  trail=$406.13  comp=-0.1811
+2026-05-26 15:50:20,077 [raptor.exits] INFO: ============================================================
+2026-05-26 15:50:20,091 [raptor.exits] INFO: AGENT [advisory] TRIM NVDA — 3+ deteriorating dimensions and unrealized_pct>5 (conf=0.60, from 2026-05-15T13:05:37.330779) [not executed — math trim governs]
+2026-05-26 15:50:20,091 [raptor.exits] INFO: AGENT [advisory] HOLD AMD — insufficient history: 0 days (conf=0.90, from 2026-05-26T09:52:28.981250)
+2026-05-26 15:50:20,092 [raptor.exits] INFO: AGENT [advisory] HOLD CVE — insufficient history: 0 days (conf=0.90, from 2026-05-26T09:52:28.981277)
+2026-05-26 15:50:20,092 [raptor.exits] INFO: AGENT [advisory] HOLD FXI — insufficient history: 0 days (conf=0.90, from 2026-05-19T16:30:29.205147)
+2026-05-26 15:50:20,092 [raptor.exits] INFO: AGENT [advisory] HOLD CSX — insufficient history: 0 days (conf=0.90, from 2026-05-26T09:52:28.981271)
+2026-05-26 15:50:20,092 [raptor.exits] INFO: AGENT [advisory] HOLD INTC — insufficient history: 0 days (conf=0.90, from 2026-05-26T09:52:28.981285)
+2026-05-26 15:50:20,092 [raptor.exits] INFO: AGENT [advisory] HOLD KDP — insufficient history: 0 days (conf=0.90, from 2026-05-26T09:52:28.981289)
+2026-05-26 15:50:20,092 [raptor.exits] INFO: AGENT [advisory] HOLD OWL — insufficient history: 0 days (conf=0.90, from 2026-05-17T15:50:38.416296)
+2026-05-26 15:50:20,093 [raptor.exits] INFO: AGENT [advisory] HOLD KRE — insufficient history: 0 days (conf=0.90, from 2026-05-18T21:00:50.566737)
+2026-05-26 15:50:20,093 [raptor.exits] INFO: AGENT [advisory] HOLD PLTD — insufficient history: 0 days (conf=0.90, from 2026-05-26T09:52:28.981294)
+2026-05-26 15:50:20,093 [raptor.exits] INFO: AGENT [advisory] HOLD STM — insufficient history: 0 days (conf=0.90, from 2026-05-26T09:52:28.981302)
+2026-05-26 15:50:20,093 [raptor.exits] INFO: AGENT [advisory] HOLD SMCI — insufficient history: 0 days (conf=0.90, from 2026-05-26T09:52:28.981298)
+2026-05-26 15:50:20,093 [raptor.exits] INFO: AGENT [advisory] HOLD TSLA — insufficient history: 0 days (conf=0.90, from 2026-05-26T09:52:28.981306)
+2026-05-26 15:50:20,093 [raptor.exits] INFO: AGENT [advisory] HOLD TSLL — insufficient history: 0 days (conf=0.90, from 2026-05-19T16:30:29.205168)
+2026-05-26 15:50:20,093 [raptor.exits] INFO: AGENT [advisory] HOLD TTD — insufficient history: 0 days (conf=0.90, from 2026-05-19T16:30:29.205175)
+2026-05-26 15:50:20,094 [raptor.exits] INFO: AGENT [advisory] HOLD DKNG — insufficient history: 0 days (conf=0.90, from 2026-05-26T09:52:28.981281)
+2026-05-26 15:50:20,094 [raptor.exits] INFO: SELL 1 CVE [math_trim_1%]
+2026-05-26 15:50:20,127 [raptor.data_feeds] INFO: Order submitted: SELL 1 CVE @ None
+2026-05-26 15:50:20,128 [raptor.exits] INFO:   OK: OrderStatus.PENDING_NEW
+2026-05-26 15:50:20,132 [raptor.exits] INFO: SELL 1 DKNG [math_trim_2%]
+2026-05-26 15:50:20,407 [raptor.data_feeds] INFO: Order submitted: SELL 1 DKNG @ None
+2026-05-26 15:50:20,407 [raptor.exits] INFO:   OK: OrderStatus.PENDING_NEW

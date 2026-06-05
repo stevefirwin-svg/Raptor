@@ -656,10 +656,14 @@ def run_exit_monitor(dry_run=False):
     if exits and not dry_run:
         for ex in exits:
             logger.info("SELL %s %s [%s]", ex["qty"], ex["symbol"], ex["reason"])
-            result = dm.alpaca.submit_order(
-                ex["symbol"], ex["qty"], "SELL", "market",
-                client_order_id=f"{ex['reason']}_{ex['symbol']}_{datetime.now():%Y%m%d%H%M%S}"
-            )
+            try:
+                result = dm.alpaca.submit_order(
+                    ex["symbol"], ex["qty"], "SELL", "market",
+                    client_order_id=f"{ex['reason']}_{ex['symbol']}_{datetime.now():%Y%m%d%H%M%S}"
+                )
+            except Exception as _oe:
+                logger.error("  ORDER EXCEPTION %s: %s", ex["symbol"], _oe)
+                continue
             if "error" not in result:
                 logger.info("  OK: %s", result.get("status", "submitted"))
                 # P0-1: Write outcome_pending sidecar — keyed by Alpaca order ID.

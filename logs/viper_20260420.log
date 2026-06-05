@@ -1,0 +1,149 @@
+2026-04-20 19:38:00,227 [viper] INFO: ============================================================
+2026-04-20 19:38:00,228 [viper] INFO: VIPER OPTIONS ENGINE v1.0 - 2026-04-20T19:38:00.228314
+2026-04-20 19:38:00,229 [viper] INFO: ============================================================
+2026-04-20 19:38:06,120 [viper] INFO: Account: equity=$106483.83  cash=$55322.64
+2026-04-20 19:38:06,211 [raptor.universe] INFO: Building universe...
+2026-04-20 19:38:07,131 [raptor.universe] INFO: Alpaca tradeable assets: 7021 after initial filter
+2026-04-20 19:38:07,159 [raptor.universe] INFO: Step 1: 7021 tradeable assets from Alpaca
+2026-04-20 19:38:07,162 [raptor.universe] INFO: Step 2: Fetching bars for 7021 symbols (this takes 1-2 min)...
+2026-04-20 19:38:34,097 [raptor.universe] INFO: Step 2: Got bars for 7012 symbols
+2026-04-20 19:38:40,363 [raptor.universe] INFO: Step 3: 122 symbols passed all screens
+2026-04-20 19:38:40,453 [viper] INFO: Dynamic universe: 122 stocks
+2026-04-20 19:38:46,026 [viper] INFO: Analyzed 118 / 36 stocks
+2026-04-20 19:39:33,991 [viper] INFO: CSP: 0 candidates
+2026-04-20 19:39:49,557 [viper] INFO: Momentum Calls: 0 candidates
+2026-04-20 19:39:49,557 [viper] INFO: IV Crush: 0 candidates
+2026-04-20 19:39:49,558 [viper] INFO: 
+2026-04-20 19:39:49,558 [viper] INFO: ============================================================
+2026-04-20 19:39:49,558 [viper] INFO:   SCAN RESULTS
+2026-04-20 19:39:49,558 [viper] INFO: ============================================================
+2026-04-20 19:39:49,559 [viper] INFO:   No opportunities found. Patience.
+2026-04-20 19:39:49,560 [viper] INFO: ============================================================
+2026-04-20 20:09:50,170 [viper] INFO: ============================================================
+2026-04-20 20:09:50,171 [viper] INFO: VIPER OPTIONS ENGINE v1.0 - 2026-04-20T20:09:50.171358
+2026-04-20 20:09:50,171 [viper] INFO: ============================================================
+2026-04-20 20:09:51,177 [viper] INFO: Account: equity=$106220.38  cash=$55322.64
+2026-04-20 20:09:51,298 [raptor.universe] INFO: Universe from cache: 122 symbols
+2026-04-20 20:09:51,299 [viper] INFO: Dynamic universe: 122 stocks
+2026-04-20 20:09:57,384 [viper] INFO: Analyzed 118 / 36 stocks
+2026-04-20 20:10:48,841 [viper] INFO: CSP: 0 candidates
+2026-04-20 20:11:04,820 [viper] INFO: Momentum Calls: 0 candidates
+2026-04-20 20:11:04,820 [viper] INFO: IV Crush: 0 candidates
+2026-04-20 20:11:04,821 [viper] INFO: 
+2026-04-20 20:11:04,821 [viper] INFO: ============================================================
+2026-04-20 20:11:04,821 [viper] INFO:   SCAN RESULTS
+2026-04-20 20:11:04,821 [viper] INFO: ============================================================
+2026-04-20 20:11:04,822 [viper] INFO:   No opportunities found. Patience.
+2026-04-20 20:11:04,822 [viper] INFO: ============================================================
+2026-04-20 20:41:06,156 [viper] INFO: ============================================================
+2026-04-20 20:41:06,157 [viper] INFO: VIPER OPTIONS ENGINE v1.0 - 2026-04-20T20:41:06.157040
+2026-04-20 20:41:06,157 [viper] INFO: ============================================================
+2026-04-20 20:41:07,368 [viper] INFO: Account: equity=$106570.15  cash=$55322.64
+2026-04-20 20:41:07,452 [raptor.universe] INFO: Universe from cache: 122 symbols
+2026-04-20 20:41:07,453 [viper] INFO: Dynamic universe: 122 stocks
+2026-04-20 20:41:14,040 [viper] INFO: Analyzed 118 / 36 stocks
+2026-04-20 20:42:04,587 [viper] INFO: CSP: 0 candidates
+2026-04-20 20:42:20,256 [viper] INFO: Momentum Calls: 0 candidates
+2026-04-20 20:42:20,256 [viper] INFO: IV Crush: 0 candidates
+2026-04-20 20:42:20,257 [viper] INFO: 
+2026-04-20 20:42:20,257 [viper] INFO: ============================================================
+2026-04-20 20:42:20,257 [viper] INFO:   SCAN RESULTS
+2026-04-20 20:42:20,258 [viper] INFO: ============================================================
+2026-04-20 20:42:20,258 [viper] INFO:   No opportunities found. Patience.
+2026-04-20 20:42:20,258 [viper] INFO: ============================================================
+2026-04-20 21:12:21,160 [viper] INFO: ============================================================
+2026-04-20 21:12:21,161 [viper] INFO: VIPER OPTIONS ENGINE v1.0 - 2026-04-20T21:12:21.161320
+2026-04-20 21:12:21,162 [viper] INFO: ============================================================
+2026-04-20 21:12:22,261 [viper] INFO: Account: equity=$106626.53  cash=$55322.64
+2026-04-20 21:12:22,324 [raptor.universe] INFO: Universe from cache: 122 symbols
+2026-04-20 21:12:22,324 [viper] INFO: Dynamic universe: 122 stocks
+2026-04-20 21:12:28,591 [viper] INFO: Analyzed 118 / 36 stocks
+2026-04-20 21:13:18,353 [viper] INFO: CSP: 0 candidates
+2026-04-20 21:13:34,227 [viper] INFO: Momentum Calls: 0 candidates
+2026-04-20 21:13:34,228 [viper] INFO: IV Crush: 0 candidates
+2026-04-20 21:13:34,229 [viper] INFO: 
+2026-04-20 21:13:34,230 [viper] INFO: ============================================================
+2026-04-20 21:13:34,231 [viper] INFO:   SCAN RESULTS
+2026-04-20 21:13:34,232 [viper] INFO: ============================================================
+2026-04-20 21:13:34,232 [viper] INFO:   No opportunities found. Patience.
+2026-04-20 21:13:34,233 [viper] INFO: ============================================================
+2026-04-20 21:43:34,894 [viper] INFO: ============================================================
+2026-04-20 21:43:34,895 [viper] INFO: VIPER OPTIONS ENGINE v1.0 - 2026-04-20T21:43:34.895501
+2026-04-20 21:43:34,896 [viper] INFO: ============================================================
+2026-04-20 21:43:36,238 [viper] INFO: Account: equity=$106757.19  cash=$55322.64
+2026-04-20 21:43:36,351 [raptor.universe] INFO: Universe from cache: 122 symbols
+2026-04-20 21:43:36,352 [viper] INFO: Dynamic universe: 122 stocks
+2026-04-20 21:43:43,030 [viper] INFO: Analyzed 118 / 36 stocks
+2026-04-20 21:44:33,889 [viper] INFO: CSP: 0 candidates
+2026-04-20 21:44:50,172 [viper] INFO: Momentum Calls: 0 candidates
+2026-04-20 21:44:50,173 [viper] INFO: IV Crush: 0 candidates
+2026-04-20 21:44:50,174 [viper] INFO: 
+2026-04-20 21:44:50,175 [viper] INFO: ============================================================
+2026-04-20 21:44:50,176 [viper] INFO:   SCAN RESULTS
+2026-04-20 21:44:50,176 [viper] INFO: ============================================================
+2026-04-20 21:44:50,177 [viper] INFO:   No opportunities found. Patience.
+2026-04-20 21:44:50,177 [viper] INFO: ============================================================
+2026-04-20 22:14:51,149 [viper] INFO: ============================================================
+2026-04-20 22:14:51,150 [viper] INFO: VIPER OPTIONS ENGINE v1.0 - 2026-04-20T22:14:51.150128
+2026-04-20 22:14:51,151 [viper] INFO: ============================================================
+2026-04-20 22:14:52,277 [viper] INFO: Account: equity=$106688.03  cash=$55322.64
+2026-04-20 22:14:52,358 [raptor.universe] INFO: Universe from cache: 122 symbols
+2026-04-20 22:14:52,358 [viper] INFO: Dynamic universe: 122 stocks
+2026-04-20 22:14:58,922 [viper] INFO: Analyzed 118 / 36 stocks
+2026-04-20 22:15:48,670 [viper] INFO: CSP: 0 candidates
+2026-04-20 22:16:04,542 [viper] INFO: Momentum Calls: 0 candidates
+2026-04-20 22:16:04,544 [viper] INFO: IV Crush: 0 candidates
+2026-04-20 22:16:04,544 [viper] INFO: 
+2026-04-20 22:16:04,545 [viper] INFO: ============================================================
+2026-04-20 22:16:04,546 [viper] INFO:   SCAN RESULTS
+2026-04-20 22:16:04,547 [viper] INFO: ============================================================
+2026-04-20 22:16:04,548 [viper] INFO:   No opportunities found. Patience.
+2026-04-20 22:16:04,548 [viper] INFO: ============================================================
+2026-04-20 22:46:05,354 [viper] INFO: ============================================================
+2026-04-20 22:46:05,355 [viper] INFO: VIPER OPTIONS ENGINE v1.0 - 2026-04-20T22:46:05.354996
+2026-04-20 22:46:05,356 [viper] INFO: ============================================================
+2026-04-20 22:46:07,648 [viper] INFO: Account: equity=$106703.03  cash=$55322.64
+2026-04-20 22:46:07,734 [raptor.universe] INFO: Universe from cache: 122 symbols
+2026-04-20 22:46:07,734 [viper] INFO: Dynamic universe: 122 stocks
+2026-04-20 22:46:14,057 [viper] INFO: Analyzed 118 / 36 stocks
+2026-04-20 22:47:03,325 [viper] INFO: CSP: 0 candidates
+2026-04-20 22:47:19,198 [viper] INFO: Momentum Calls: 0 candidates
+2026-04-20 22:47:19,199 [viper] INFO: IV Crush: 0 candidates
+2026-04-20 22:47:19,199 [viper] INFO: 
+2026-04-20 22:47:19,199 [viper] INFO: ============================================================
+2026-04-20 22:47:19,200 [viper] INFO:   SCAN RESULTS
+2026-04-20 22:47:19,200 [viper] INFO: ============================================================
+2026-04-20 22:47:19,200 [viper] INFO:   No opportunities found. Patience.
+2026-04-20 22:47:19,200 [viper] INFO: ============================================================
+2026-04-20 23:17:19,902 [viper] INFO: ============================================================
+2026-04-20 23:17:19,903 [viper] INFO: VIPER OPTIONS ENGINE v1.0 - 2026-04-20T23:17:19.903131
+2026-04-20 23:17:19,903 [viper] INFO: ============================================================
+2026-04-20 23:17:20,856 [viper] INFO: Account: equity=$106663.30  cash=$55322.64
+2026-04-20 23:17:20,938 [raptor.universe] INFO: Universe from cache: 122 symbols
+2026-04-20 23:17:20,939 [viper] INFO: Dynamic universe: 122 stocks
+2026-04-20 23:17:26,716 [viper] INFO: Analyzed 118 / 36 stocks
+2026-04-20 23:18:17,559 [viper] INFO: CSP: 0 candidates
+2026-04-20 23:18:33,637 [viper] INFO: Momentum Calls: 0 candidates
+2026-04-20 23:18:33,638 [viper] INFO: IV Crush: 0 candidates
+2026-04-20 23:18:33,639 [viper] INFO: 
+2026-04-20 23:18:33,640 [viper] INFO: ============================================================
+2026-04-20 23:18:33,641 [viper] INFO:   SCAN RESULTS
+2026-04-20 23:18:33,642 [viper] INFO: ============================================================
+2026-04-20 23:18:33,643 [viper] INFO:   No opportunities found. Patience.
+2026-04-20 23:18:33,644 [viper] INFO: ============================================================
+2026-04-20 23:48:34,418 [viper] INFO: ============================================================
+2026-04-20 23:48:34,419 [viper] INFO: VIPER OPTIONS ENGINE v1.0 - 2026-04-20T23:48:34.419577
+2026-04-20 23:48:34,420 [viper] INFO: ============================================================
+2026-04-20 23:48:35,607 [viper] INFO: Account: equity=$106681.60  cash=$55322.64
+2026-04-20 23:48:35,697 [raptor.universe] INFO: Universe from cache: 122 symbols
+2026-04-20 23:48:35,698 [viper] INFO: Dynamic universe: 122 stocks
+2026-04-20 23:48:41,296 [viper] INFO: Analyzed 118 / 36 stocks
+2026-04-20 23:49:31,788 [viper] INFO: CSP: 0 candidates
+2026-04-20 23:49:47,557 [viper] INFO: Momentum Calls: 0 candidates
+2026-04-20 23:49:47,559 [viper] INFO: IV Crush: 0 candidates
+2026-04-20 23:49:47,560 [viper] INFO: 
+2026-04-20 23:49:47,562 [viper] INFO: ============================================================
+2026-04-20 23:49:47,562 [viper] INFO:   SCAN RESULTS
+2026-04-20 23:49:47,563 [viper] INFO: ============================================================
+2026-04-20 23:49:47,563 [viper] INFO:   No opportunities found. Patience.
+2026-04-20 23:49:47,564 [viper] INFO: ============================================================

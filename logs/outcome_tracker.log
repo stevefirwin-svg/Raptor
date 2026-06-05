@@ -1,0 +1,72 @@
+[OutcomeTracker] Existing tagged trades : 115
+[OutcomeTracker] Entry veto records     : 58
+[OutcomeTracker] Hold decision records  : 877
+[OutcomeTracker] Filled sell orders from Alpaca: 116
+  [+] CVE      | exit: 2026-05-27 | pnl: -1.66%   | path: math_trim              | entry: no_record | hold: HOLD
+Traceback (most recent call last):
+  File "C:\Users\steve\OneDrive\Desktop\Raptor\outcome_tracker.py", line 448, in <module>
+    n = run_tracker(verbose=not args.quiet)
+  File "C:\Users\steve\OneDrive\Desktop\Raptor\outcome_tracker.py", line 367, in run_tracker
+    print(f"\n[OutcomeTracker] Tagged {len(new_records)} new trade(s) \u2192 {OUTCOME_LOG_PATH}")
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\steve\AppData\Local\Programs\Python\Python313\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2192' in position 41: character maps to <undefined>
+[OutcomeTracker] Existing tagged trades : 118
+[OutcomeTracker] Entry veto records     : 63
+[OutcomeTracker] Hold decision records  : 937
+[OutcomeTracker] Filled sell orders from Alpaca: 121
+  [+] PLTD     | exit: 2026-05-28 | pnl: -2.84%   | path: hard_stop              | entry: no_record | hold: HOLD
+  [+] CVE      | exit: 2026-05-28 | pnl: -2.47%   | path: math_exit              | entry: no_record | hold: HOLD
+  [+] DKNG     | exit: 2026-05-28 | pnl: -2.15%   | path: math_trim              | entry: PASS  | hold: HOLD
+Traceback (most recent call last):
+  File "C:\Users\steve\OneDrive\Desktop\Raptor\outcome_tracker.py", line 448, in <module>
+    n = run_tracker(verbose=not args.quiet)
+  File "C:\Users\steve\OneDrive\Desktop\Raptor\outcome_tracker.py", line 367, in run_tracker
+    print(f"\n[OutcomeTracker] Tagged {len(new_records)} new trade(s) \u2192 {OUTCOME_LOG_PATH}")
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\steve\AppData\Local\Programs\Python\Python313\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2192' in position 41: character maps to <undefined>
+[OutcomeTracker] Existing tagged trades : 124
+[OutcomeTracker] Pending sidecar records: 22
+[OutcomeTracker] Entry veto records     : 68
+[OutcomeTracker] Hold decision records  : 969
+[OutcomeTracker] Filled sell orders from Alpaca: 125
+  [+] STM      | exit: 2026-05-29 | pnl: +38.08%  | path: math_trim              | entry: no_record | hold: HOLD
+Traceback (most recent call last):
+  File "C:\Users\steve\OneDrive\Desktop\Raptor\outcome_tracker.py", line 481, in <module>
+    n = run_tracker(verbose=not args.quiet)
+  File "C:\Users\steve\OneDrive\Desktop\Raptor\outcome_tracker.py", line 400, in run_tracker
+    print(f"\n[OutcomeTracker] Tagged {len(new_records)} new trade(s) \u2192 {OUTCOME_LOG_PATH}")
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\steve\AppData\Local\Programs\Python\Python313\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2192' in position 41: character maps to <undefined>
+[OutcomeTracker] Existing tagged trades : 125
+[OutcomeTracker] Pending sidecar records: 22
+[OutcomeTracker] Entry veto records     : 73
+[OutcomeTracker] Hold decision records  : 997
+[OutcomeTracker] Filled sell orders from Alpaca: 125
+[OutcomeTracker] No new trades to tag.
+[OutcomeTracker] Existing tagged trades : 125
+[OutcomeTracker] Pending sidecar records: 22
+[OutcomeTracker] Entry veto records     : 78
+[OutcomeTracker] Hold decision records  : 1025
+[OutcomeTracker] Filled sell orders from Alpaca: 125
+[OutcomeTracker] No new trades to tag.
+[OutcomeTracker] Existing tagged trades : 125
+[OutcomeTracker] Pending sidecar records: 22
+[OutcomeTracker] Entry veto records     : 83
+[OutcomeTracker] Hold decision records  : 1060
+[OutcomeTracker] Filled sell orders from Alpaca: 125
+[OutcomeTracker] No new trades to tag.
+[OutcomeTracker] Existing tagged trades : 125
+[OutcomeTracker] Pending sidecar records: 22
+[OutcomeTracker] Entry veto records     : 83
+[OutcomeTracker] Hold decision records  : 1081
+[OutcomeTracker] Filled sell orders from Alpaca: 125
+[OutcomeTracker] No new trades to tag.

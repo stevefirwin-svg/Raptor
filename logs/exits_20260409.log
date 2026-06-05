@@ -1,0 +1,69 @@
+2026-04-09 19:30:11,055 [raptor.exits] INFO: ============================================================
+2026-04-09 19:30:11,056 [raptor.exits] INFO: RAPTOR v5.4 EXIT MONITOR - 2026-04-09T19:30:11.056377
+2026-04-09 19:30:11,057 [raptor.exits] INFO: ============================================================
+2026-04-09 19:30:11,059 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-04-09 19:30:11,703 [raptor.exits] INFO: Account: equity=$104882.30  positions=3
+2026-04-09 19:30:11,705 [raptor.universe] INFO: Universe from cache: 132 symbols
+2026-04-09 19:30:13,436 [raptor.data_feeds] INFO: Fetched bars for 132 / 132 symbols
+2026-04-09 19:30:13,466 [raptor.data_feeds] INFO: FRED regime: NEUTRAL (score=0.100)
+2026-04-09 19:30:18,631 [raptor.signals] INFO: v5.4 Signals: 5 from 132 | Macro=NEUTRAL Scale=0.8 | Micro={'TRENDING': 93, 'MIXED': 39}
+2026-04-09 19:30:18,632 [raptor.exits] INFO: Portfolio unrealized P&L: $810.93 (0.77%)
+2026-04-09 19:30:18,633 [raptor.exits] WARNING: No data for BAC — skipping
+2026-04-09 19:30:18,635 [raptor.exits] WARNING: No data for CRWV — skipping
+2026-04-09 19:30:18,636 [raptor.exits] WARNING: No data for MU — skipping
+2026-04-09 19:30:18,636 [raptor.exits] INFO: 
+2026-04-09 19:30:18,636 [raptor.exits] INFO: ============================================================
+2026-04-09 19:30:18,636 [raptor.exits] INFO:   EXIT MONITOR SUMMARY
+2026-04-09 19:30:18,636 [raptor.exits] INFO: ============================================================
+2026-04-09 19:30:18,637 [raptor.exits] INFO:   No exits triggered.
+2026-04-09 19:30:18,637 [raptor.exits] INFO:   HOLDS (3):
+2026-04-09 19:30:18,637 [raptor.exits] INFO:     BAC  pnl=+0.0%  held=0d  trail=$0.00  comp=0.0000
+2026-04-09 19:30:18,637 [raptor.exits] INFO:     CRWV  pnl=+0.0%  held=0d  trail=$0.00  comp=0.0000
+2026-04-09 19:30:18,637 [raptor.exits] INFO:     MU  pnl=+0.0%  held=0d  trail=$0.00  comp=0.0000
+2026-04-09 19:30:18,638 [raptor.exits] INFO: ============================================================
+2026-04-09 20:30:11,282 [raptor.exits] INFO: ============================================================
+2026-04-09 20:30:11,283 [raptor.exits] INFO: RAPTOR v5.4 EXIT MONITOR - 2026-04-09T20:30:11.283153
+2026-04-09 20:30:11,283 [raptor.exits] INFO: ============================================================
+2026-04-09 20:30:11,284 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-04-09 20:30:11,788 [raptor.exits] INFO: Account: equity=$104327.88  positions=3
+2026-04-09 20:30:11,792 [raptor.universe] INFO: Universe from cache: 132 symbols
+2026-04-09 20:30:13,102 [raptor.data_feeds] INFO: Fetched bars for 132 / 132 symbols
+2026-04-09 20:30:13,126 [raptor.data_feeds] INFO: FRED regime: NEUTRAL (score=0.100)
+2026-04-09 20:30:17,653 [raptor.signals] INFO: v5.4 Signals: 5 from 132 | Macro=NEUTRAL Scale=0.8 | Micro={'TRENDING': 93, 'MIXED': 39}
+2026-04-09 20:30:17,653 [raptor.exits] INFO: Portfolio unrealized P&L: $256.51 (0.25%)
+2026-04-09 20:30:17,654 [raptor.exits] WARNING: No data for BAC — skipping
+2026-04-09 20:30:17,654 [raptor.exits] WARNING: No data for CRWV — skipping
+2026-04-09 20:30:17,654 [raptor.exits] WARNING: No data for MU — skipping
+2026-04-09 20:30:17,655 [raptor.exits] INFO: 
+2026-04-09 20:30:17,655 [raptor.exits] INFO: ============================================================
+2026-04-09 20:30:17,655 [raptor.exits] INFO:   EXIT MONITOR SUMMARY
+2026-04-09 20:30:17,655 [raptor.exits] INFO: ============================================================
+2026-04-09 20:30:17,655 [raptor.exits] INFO:   No exits triggered.
+2026-04-09 20:30:17,655 [raptor.exits] INFO:   HOLDS (3):
+2026-04-09 20:30:17,655 [raptor.exits] INFO:     BAC  pnl=+0.0%  held=0d  trail=$0.00  comp=0.0000
+2026-04-09 20:30:17,656 [raptor.exits] INFO:     CRWV  pnl=+0.0%  held=0d  trail=$0.00  comp=0.0000
+2026-04-09 20:30:17,656 [raptor.exits] INFO:     MU  pnl=+0.0%  held=0d  trail=$0.00  comp=0.0000
+2026-04-09 20:30:17,656 [raptor.exits] INFO: ============================================================
+2026-04-09 22:06:10,893 [raptor.exits] INFO: ============================================================
+2026-04-09 22:06:10,895 [raptor.exits] INFO: RAPTOR v5.4 EXIT MONITOR - 2026-04-09T22:06:10.895221
+2026-04-09 22:06:10,896 [raptor.exits] INFO: ============================================================
+2026-04-09 22:06:10,898 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-04-09 22:06:11,638 [raptor.exits] INFO: Account: equity=$104715.89  positions=3
+2026-04-09 22:06:11,651 [raptor.universe] INFO: Universe from cache: 132 symbols
+2026-04-09 22:06:13,319 [raptor.data_feeds] INFO: Fetched bars for 132 / 132 symbols
+2026-04-09 22:06:13,363 [raptor.data_feeds] INFO: FRED regime: NEUTRAL (score=0.100)
+2026-04-09 22:06:18,027 [raptor.signals] INFO: v5.4 Signals: 5 from 132 | Macro=NEUTRAL Scale=0.8 | Micro={'TRENDING': 93, 'MIXED': 39}
+2026-04-09 22:06:18,029 [raptor.exits] INFO: Portfolio unrealized P&L: $644.52 (0.62%)
+2026-04-09 22:06:18,030 [raptor.exits] WARNING: No data for BAC — skipping
+2026-04-09 22:06:18,030 [raptor.exits] WARNING: No data for CRWV — skipping
+2026-04-09 22:06:18,031 [raptor.exits] WARNING: No data for MU — skipping
+2026-04-09 22:06:18,032 [raptor.exits] INFO: 
+2026-04-09 22:06:18,032 [raptor.exits] INFO: ============================================================
+2026-04-09 22:06:18,033 [raptor.exits] INFO:   EXIT MONITOR SUMMARY
+2026-04-09 22:06:18,033 [raptor.exits] INFO: ============================================================
+2026-04-09 22:06:18,034 [raptor.exits] INFO:   No exits triggered.
+2026-04-09 22:06:18,034 [raptor.exits] INFO:   HOLDS (3):
+2026-04-09 22:06:18,035 [raptor.exits] INFO:     BAC  pnl=+0.0%  held=0d  trail=$0.00  comp=0.0000
+2026-04-09 22:06:18,035 [raptor.exits] INFO:     CRWV  pnl=+0.0%  held=0d  trail=$0.00  comp=0.0000
+2026-04-09 22:06:18,036 [raptor.exits] INFO:     MU  pnl=+0.0%  held=0d  trail=$0.00  comp=0.0000
+2026-04-09 22:06:18,036 [raptor.exits] INFO: ============================================================

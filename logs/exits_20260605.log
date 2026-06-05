@@ -1,0 +1,69 @@
+2026-06-05 06:31:36,098 [raptor.exits] INFO: ============================================================
+2026-06-05 06:31:36,100 [raptor.exits] INFO: RAPTOR v5.4 EXIT MONITOR - 2026-06-05T06:31:36.100390
+2026-06-05 06:31:36,102 [raptor.exits] INFO: ============================================================
+2026-06-05 06:31:36,104 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-06-05 06:31:37,103 [raptor.exits] INFO: Account: equity=$107669.66  cash=$76566.30  positions=7
+2026-06-05 06:31:37,133 [raptor.universe] INFO: Building universe...
+2026-06-05 06:31:38,505 [raptor.universe] INFO: Alpaca tradeable assets: 7174 after initial filter
+2026-06-05 06:31:38,537 [raptor.universe] INFO: Step 1: 7174 tradeable assets from Alpaca
+2026-06-05 06:31:38,538 [raptor.universe] INFO: Step 2: Fetching bars for 7174 symbols (this takes 1-2 min)...
+2026-06-05 06:32:14,025 [raptor.universe] INFO: Step 2: Got bars for 7166 symbols
+2026-06-05 06:32:25,194 [raptor.universe] INFO: Step 3: 75 symbols passed all screens
+2026-06-05 06:32:26,743 [raptor.data_feeds] INFO: Fetched 79 new bars / 79 total cached
+2026-06-05 06:32:27,664 [raptor.data_feeds] INFO: FRED fetch OK: T10Y2Y (749 observations)
+2026-06-05 06:32:28,559 [raptor.data_feeds] INFO: FRED fetch OK: FEDFUNDS (36 observations)
+2026-06-05 06:32:29,481 [raptor.data_feeds] INFO: FRED fetch OK: ICSA (156 observations)
+2026-06-05 06:32:30,304 [raptor.data_feeds] INFO: FRED fetch OK: VIXCLS (773 observations)
+2026-06-05 06:32:31,129 [raptor.data_feeds] INFO: FRED fetch OK: BAMLC0A4CBBB (786 observations)
+2026-06-05 06:32:31,904 [raptor.data_feeds] INFO: FRED fetch OK: CPIAUCSL (34 observations)
+2026-06-05 06:32:32,759 [raptor.data_feeds] INFO: FRED fetch OK: IPMAN (35 observations)
+2026-06-05 06:32:33,583 [raptor.data_feeds] INFO: FRED fetch OK: M2SL (35 observations)
+2026-06-05 06:32:34,396 [raptor.data_feeds] INFO: FRED fetch OK: RSXFS (35 observations)
+2026-06-05 06:32:35,215 [raptor.data_feeds] INFO: FRED fetch OK: UNRATE (34 observations)
+2026-06-05 06:32:35,220 [raptor.data_feeds] INFO: FRED regime: BULLISH (score=0.300)
+2026-06-05 06:32:37,184 [raptor.signals] INFO: v5.4 Signals: 5 from 78 | Macro=RISK_ON Scale=1.0 | Micro={'MIXED': 58, 'REVERTING': 6, 'TRENDING': 14} | SNR min=1.25 max=1.81
+2026-06-05 06:32:37,193 [raptor.exits] INFO: Portfolio unrealized: $7528.09 (6.99%)
+2026-06-05 06:32:37,216 [raptor.exits] INFO: EXIT 1 [HARD STOP] AMD $511.07 <= $514.74
+2026-06-05 06:32:37,242 [raptor.main] INFO: COOLDOWN: AMD added — blocked for 5 trading days
+2026-06-05 06:32:37,246 [raptor.exits] INFO: EXIT 1 [HARD STOP] HPQ $26.16 <= $26.50
+2026-06-05 06:32:37,264 [raptor.main] INFO: COOLDOWN: HPQ added — blocked for 5 trading days
+2026-06-05 06:32:37,266 [raptor.exits] INFO: EXIT 1 [HARD STOP] INTC $109.01 <= $112.02
+2026-06-05 06:32:37,280 [raptor.main] INFO: COOLDOWN: INTC added — blocked for 5 trading days
+2026-06-05 06:32:37,284 [raptor.exits] INFO: EXIT 1 [HARD STOP] SMCI $45.86 <= $47.33
+2026-06-05 06:32:37,299 [raptor.main] INFO: COOLDOWN: SMCI added — blocked for 5 trading days
+2026-06-05 06:32:37,301 [raptor.exits] INFO: EXIT 1 [HARD STOP] STM $74.67 <= $76.13
+2026-06-05 06:32:37,316 [raptor.main] INFO: COOLDOWN: STM added — blocked for 5 trading days
+2026-06-05 06:32:37,318 [raptor.exits] INFO: EXIT 1 [HARD STOP] TSLA $419.31 <= $422.41
+2026-06-05 06:32:37,332 [raptor.main] INFO: COOLDOWN: TSLA added — blocked for 5 trading days
+2026-06-05 06:32:37,334 [raptor.exits] INFO: 
+2026-06-05 06:32:37,334 [raptor.exits] INFO: ============================================================
+2026-06-05 06:32:37,334 [raptor.exits] INFO:   EXIT SUMMARY
+2026-06-05 06:32:37,334 [raptor.exits] INFO: ============================================================
+2026-06-05 06:32:37,334 [raptor.exits] INFO:   EXITS (6):
+2026-06-05 06:32:37,334 [raptor.exits] INFO:     AMD  hard_stop  pnl=+67.9%  comp=0.1236
+2026-06-05 06:32:37,334 [raptor.exits] INFO:     HPQ  hard_stop  pnl=-2.6%  comp=0.1204
+2026-06-05 06:32:37,334 [raptor.exits] INFO:     INTC  hard_stop  pnl=+24.2%  comp=-0.2841
+2026-06-05 06:32:37,335 [raptor.exits] INFO:     SMCI  hard_stop  pnl=+34.5%  comp=0.1885
+2026-06-05 06:32:37,335 [raptor.exits] INFO:     STM  hard_stop  pnl=+48.8%  comp=0.1987
+2026-06-05 06:32:37,335 [raptor.exits] INFO:     TSLA  hard_stop  pnl=+7.2%  comp=0.1327
+2026-06-05 06:32:37,335 [raptor.exits] INFO:   HOLDS (1):
+2026-06-05 06:32:37,335 [raptor.exits] INFO:     KDP  pnl=+5.3%  trail=$29.88  comp=0.1983
+2026-06-05 06:32:37,335 [raptor.exits] INFO: ============================================================
+2026-06-05 06:32:37,353 [raptor.exits] INFO: AGENT [advisory] TRIM NVDA — 3+ deteriorating dimensions and unrealized_pct>5 (conf=0.60, from 2026-05-15T13:05:37.330779) [not executed — math trim governs]
+2026-06-05 06:32:37,353 [raptor.exits] INFO: AGENT [advisory] HOLD AMD — insufficient history: 0 days (conf=0.90, from 2026-06-04T16:30:16.530141)
+2026-06-05 06:32:37,354 [raptor.exits] INFO: AGENT [advisory] HOLD CVE — insufficient history: 0 days (conf=0.90, from 2026-05-28T15:50:34.277447)
+2026-06-05 06:32:37,354 [raptor.exits] INFO: AGENT [advisory] HOLD FXI — insufficient history: 0 days (conf=0.90, from 2026-05-19T16:30:29.205147)
+2026-06-05 06:32:37,354 [raptor.exits] INFO: AGENT [advisory] HOLD CSX — insufficient history: 0 days (conf=0.90, from 2026-05-29T09:52:09.312909)
+2026-06-05 06:32:37,354 [raptor.exits] INFO: AGENT [advisory] HOLD INTC — insufficient history: 0 days (conf=0.90, from 2026-06-04T16:30:16.530166)
+2026-06-05 06:32:37,354 [raptor.exits] INFO: AGENT [advisory] HOLD KDP — insufficient history: 0 days (conf=0.90, from 2026-06-04T16:30:16.530170)
+2026-06-05 06:32:37,354 [raptor.exits] INFO: AGENT [advisory] HOLD OWL — insufficient history: 0 days (conf=0.90, from 2026-05-17T15:50:38.416296)
+2026-06-05 06:32:37,354 [raptor.exits] INFO: AGENT [advisory] HOLD KRE — insufficient history: 0 days (conf=0.90, from 2026-05-18T21:00:50.566737)
+2026-06-05 06:32:37,355 [raptor.exits] INFO: AGENT [advisory] HOLD PLTD — insufficient history: 0 days (conf=0.90, from 2026-05-28T15:50:34.277463)
+2026-06-05 06:32:37,355 [raptor.exits] INFO: AGENT [advisory] HOLD STM — insufficient history: 0 days (conf=0.90, from 2026-06-04T16:30:16.530175)
+2026-06-05 06:32:37,355 [raptor.exits] INFO: AGENT [advisory] HOLD SMCI — insufficient history: 0 days (conf=0.90, from 2026-06-04T16:30:16.530172)
+2026-06-05 06:32:37,355 [raptor.exits] INFO: AGENT [advisory] HOLD TSLA — insufficient history: 0 days (conf=0.90, from 2026-06-04T16:30:16.530178)
+2026-06-05 06:32:37,355 [raptor.exits] INFO: AGENT [advisory] HOLD TSLL — insufficient history: 0 days (conf=0.90, from 2026-05-19T16:30:29.205168)
+2026-06-05 06:32:37,355 [raptor.exits] INFO: AGENT [advisory] HOLD TTD — insufficient history: 0 days (conf=0.90, from 2026-05-19T16:30:29.205175)
+2026-06-05 06:32:37,356 [raptor.exits] INFO: AGENT [advisory] HOLD DKNG — insufficient history: 0 days (conf=0.90, from 2026-05-29T09:52:09.312915)
+2026-06-05 06:32:37,356 [raptor.exits] INFO: AGENT [advisory] HOLD HPQ — insufficient history: 0 days (conf=0.90, from 2026-06-04T16:30:16.530162)
+2026-06-05 06:32:37,356 [raptor.exits] INFO: DRY RUN - no orders submitted

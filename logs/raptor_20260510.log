@@ -1,0 +1,25 @@
+2026-05-10 09:35:04,417 [raptor.main] INFO: ============================================================
+2026-05-10 09:35:04,418 [raptor.main] INFO: RAPTOR v5.4 DAILY SCAN - 2026-05-10T09:35:04.418248
+2026-05-10 09:35:04,418 [raptor.main] INFO: ============================================================
+2026-05-10 09:35:04,419 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-05-10 09:35:04,860 [raptor.main] INFO: Account: equity=$109220.03  my_allocation=$109220.03  positions=14
+2026-05-10 09:35:04,863 [raptor.universe] INFO: Universe from cache: 131 symbols
+2026-05-10 09:35:04,864 [raptor.main] INFO: Dynamic universe: 131 symbols
+2026-05-10 09:35:06,002 [raptor.data_feeds] INFO: Fetched 132 new bars / 132 total cached
+2026-05-10 09:35:06,026 [raptor.data_feeds] INFO: FRED regime: NEUTRAL (score=-0.050)
+2026-05-10 09:35:07,027 [raptor.main] INFO: Data: 132 symbols | Macro: NEUTRAL (-0.050)
+2026-05-10 09:35:09,326 [raptor.signals] INFO: v5.4 Signals: 5 from 131 | Macro=NEUTRAL Scale=1.0 | Micro={'TRENDING': 84, 'MIXED': 47}
+2026-05-10 09:35:09,327 [raptor.main] INFO: Signals:
+2026-05-10 09:35:09,327 [raptor.main] INFO:   1. DKNG  t=0.427  pctl=99%  entry=$25.51  stop=$22.47  tp=$0.00  kelly=0.096  hold~22d
+2026-05-10 09:35:09,328 [raptor.main] INFO:   2. IREN  t=0.299  pctl=98%  entry=$61.19  stop=$46.79  tp=$0.00  kelly=0.090  hold~5d
+2026-05-10 09:35:09,328 [raptor.main] INFO:   3. TSLG  t=0.309  pctl=98%  entry=$7.69  stop=$6.41  tp=$0.00  kelly=0.090  hold~24d
+2026-05-10 09:35:09,328 [raptor.main] INFO:   4. XBI  t=0.541  pctl=97%  entry=$134.70  stop=$126.18  tp=$0.00  kelly=0.102  hold~12d
+2026-05-10 09:36:14,976 [AgentLayer] INFO: EntryAgent | RAW: '{"decision": "PASS", "confidence": 1.0, "veto_reason": null, "flags": []}'
+2026-05-10 09:36:54,889 [AgentLayer] INFO: EntryAgent | RAW: '{"decision": "PASS", "confidence": 1.0, "veto_reason": null, "flags": []}'
+2026-05-10 09:37:49,061 [AgentLayer] INFO: EntryAgent | RAW: '{"decision": "VETO", "confidence": 1.0, "veto_reason": "kelly_fraction > 0.10 AND atr_pct > 3.5"}'
+2026-05-10 09:38:38,164 [AgentLayer] INFO: EntryAgent | RAW: '{"decision": "VETO", "confidence": 1.0, "veto_reason": "kelly_fraction > 0.10 AND atr_pct > 3.5"}'
+2026-05-10 09:38:38,428 [AgentLayer] INFO: EntryAgent | Flushed 4 decisions -> entry_vetoes.json
+2026-05-10 09:38:38,538 [raptor.main] INFO: EntryAgent vetoed 2 candidate(s).
+2026-05-10 09:38:38,543 [raptor.main] INFO: SKIP DKNG — insufficient cash ($10510.12 needed, $-47836.13 available)
+2026-05-10 09:38:38,601 [raptor.main] INFO: SKIP IREN — insufficient cash ($9790.40 needed, $-47836.13 available)
+2026-05-10 09:38:38,602 [raptor.main] INFO: Scan complete. 0 orders placed for v5.4.

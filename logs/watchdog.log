@@ -1,0 +1,43 @@
+2026-04-01 12:01:24 [WATCHDOG] ============================================================
+2026-04-01 12:01:24 [WATCHDOG] RAPTOR WATCHDOG v4.0
+2026-04-01 12:01:24 [WATCHDOG] ============================================================
+2026-04-01 12:01:24 [WATCHDOG] Starting Raptor v4.0 (attempt #1)
+2026-04-01 12:01:29 [WATCHDOG] Bot CRASHED after 4.4s (code 1)
+2026-04-01 12:01:29 [WATCHDOG] Crash log: crash_20260401_120129.log
+2026-04-01 12:01:29 [WATCHDOG] RAPID CRASH — increasing delay to 45s
+2026-04-01 12:01:29 [WATCHDOG] Restarting in 45s (1/5)
+2026-04-01 12:02:14 [WATCHDOG] Starting Raptor v4.0 (attempt #2)
+2026-04-01 12:02:18 [WATCHDOG] Bot CRASHED after 4.2s (code 1)
+2026-04-01 12:02:18 [WATCHDOG] Crash log: crash_20260401_120218.log
+2026-04-01 12:02:18 [WATCHDOG] RAPID CRASH — increasing delay to 45s
+2026-04-01 12:02:18 [WATCHDOG] Restarting in 45s (2/5)
+2026-04-01 12:02:21 [WATCHDOG] Watchdog stopped by user
+2026-04-01 12:02:21 [WATCHDOG] Finished. Uptime: 0h 0m
+2026-04-01 12:02:26 [WATCHDOG] ============================================================
+2026-04-01 12:02:26 [WATCHDOG] RAPTOR WATCHDOG v4.0
+2026-04-01 12:02:26 [WATCHDOG] ============================================================
+2026-04-01 12:02:26 [WATCHDOG] Starting Raptor v4.0 (attempt #1)
+2026-04-01 12:02:31 [WATCHDOG] Bot CRASHED after 4.6s (code 1)
+2026-04-01 12:02:31 [WATCHDOG] Crash log: crash_20260401_120231.log
+2026-04-01 12:02:31 [WATCHDOG] RAPID CRASH — increasing delay to 45s
+2026-04-01 12:02:31 [WATCHDOG] Restarting in 45s (1/5)
+2026-04-01 12:03:16 [WATCHDOG] Starting Raptor v4.0 (attempt #2)
+2026-04-01 12:03:20 [WATCHDOG] Bot CRASHED after 4.3s (code 1)
+2026-04-01 12:03:20 [WATCHDOG] Crash log: crash_20260401_120320.log
+2026-04-01 12:03:20 [WATCHDOG] RAPID CRASH — increasing delay to 45s
+2026-04-01 12:03:20 [WATCHDOG] Restarting in 45s (2/5)
+2026-04-01 12:04:05 [WATCHDOG] Starting Raptor v4.0 (attempt #3)
+2026-04-01 12:04:10 [WATCHDOG] Bot CRASHED after 4.8s (code 1)
+2026-04-01 12:04:10 [WATCHDOG] Crash log: crash_20260401_120410.log
+2026-04-01 12:04:10 [WATCHDOG] RAPID CRASH — increasing delay to 45s
+2026-04-01 12:04:10 [WATCHDOG] Restarting in 45s (3/5)
+2026-04-01 12:04:55 [WATCHDOG] Starting Raptor v4.0 (attempt #4)
+2026-04-01 12:04:59 [WATCHDOG] Bot CRASHED after 4.4s (code 1)
+2026-04-01 12:04:59 [WATCHDOG] Crash log: crash_20260401_120459.log
+2026-04-01 12:04:59 [WATCHDOG] RAPID CRASH — increasing delay to 45s
+2026-04-01 12:04:59 [WATCHDOG] Restarting in 45s (4/5)
+2026-04-01 12:05:44 [WATCHDOG] Starting Raptor v4.0 (attempt #5)
+2026-04-01 12:05:50 [WATCHDOG] Bot CRASHED after 5.3s (code 1)
+2026-04-01 12:05:50 [WATCHDOG] Crash log: crash_20260401_120550.log
+2026-04-01 12:05:50 [WATCHDOG] Too many crashes (5/5). Stopping.
+2026-04-01 12:05:50 [WATCHDOG] Finished. Uptime: 0h 3m

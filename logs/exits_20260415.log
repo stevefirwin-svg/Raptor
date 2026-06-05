@@ -1,0 +1,52 @@
+2026-04-15 09:30:46,447 [raptor.exits] INFO: ============================================================
+2026-04-15 09:30:46,448 [raptor.exits] INFO: RAPTOR v5.4 EXIT MONITOR - 2026-04-15T09:30:46.448238
+2026-04-15 09:30:46,449 [raptor.exits] INFO: ============================================================
+2026-04-15 09:30:46,450 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-04-15 09:30:47,461 [raptor.exits] INFO: Account: equity=$105279.36  cash=$94230.09  positions=2
+2026-04-15 09:30:47,466 [raptor.universe] INFO: Universe from cache: 127 symbols
+2026-04-15 09:30:52,066 [raptor.data_feeds] INFO: Fetched bars for 127 / 127 symbols
+2026-04-15 09:30:52,111 [raptor.data_feeds] INFO: FRED regime: NEUTRAL (score=0.100)
+2026-04-15 09:31:01,984 [raptor.signals] INFO: v5.4 Signals: 5 from 127 | Macro=NEUTRAL Scale=1.0 | Micro={'TRENDING': 79, 'MIXED': 48}
+2026-04-15 09:31:01,985 [raptor.exits] INFO: Portfolio unrealized: $1133.05 (1.08%)
+2026-04-15 09:31:01,988 [raptor.exits] INFO: EXIT 3 [THESIS] RSP composite=-1.0000 (strongly negative)
+2026-04-15 09:31:01,991 [raptor.exits] INFO: EXIT 3 [THESIS] SOXL composite=-1.0000 (strongly negative)
+2026-04-15 09:31:01,991 [raptor.exits] INFO: 
+2026-04-15 09:31:01,992 [raptor.exits] INFO: ============================================================
+2026-04-15 09:31:01,992 [raptor.exits] INFO:   EXIT SUMMARY
+2026-04-15 09:31:01,992 [raptor.exits] INFO: ============================================================
+2026-04-15 09:31:01,992 [raptor.exits] INFO:   EXITS (2):
+2026-04-15 09:31:01,993 [raptor.exits] INFO:     RSP  thesis_invalid  pnl=+0.6%  comp=-1.0000
+2026-04-15 09:31:01,993 [raptor.exits] INFO:     SOXL  thesis_invalid  pnl=+12.1%  comp=-1.0000
+2026-04-15 09:31:01,993 [raptor.exits] INFO: ============================================================
+2026-04-15 09:31:01,993 [raptor.exits] INFO: SELL 3.0 RSP [thesis_invalid]
+2026-04-15 09:31:02,022 [raptor.data_feeds] ERROR: Order submission failed: {"available":"0","code":40310000,"existing_qty":"3","held_for_orders":"3","message":"insufficient qty available for order (requested: 3, available: 0)","related_orders":["6270d8d2-26d6-4877-b406-e6e0a0861558"],"symbol":"RSP"}
+2026-04-15 09:31:02,022 [raptor.exits] ERROR:   FAILED: {"available":"0","code":40310000,"existing_qty":"3","held_for_orders":"3","message":"insufficient qty available for order (requested: 3, available: 0)","related_orders":["6270d8d2-26d6-4877-b406-e6e0a0861558"],"symbol":"RSP"}
+2026-04-15 09:31:02,023 [raptor.exits] INFO: SELL 124.0 SOXL [thesis_invalid]
+2026-04-15 09:31:02,048 [raptor.data_feeds] ERROR: Order submission failed: {"available":"0","code":40310000,"existing_qty":"124","held_for_orders":"124","message":"insufficient qty available for order (requested: 124, available: 0)","related_orders":["4be0fa39-46e4-4e40-a928-074bbafbee45"],"symbol":"SOXL"}
+2026-04-15 09:31:02,049 [raptor.exits] ERROR:   FAILED: {"available":"0","code":40310000,"existing_qty":"124","held_for_orders":"124","message":"insufficient qty available for order (requested: 124, available: 0)","related_orders":["4be0fa39-46e4-4e40-a928-074bbafbee45"],"symbol":"SOXL"}
+2026-04-15 15:50:59,955 [raptor.exits] INFO: ============================================================
+2026-04-15 15:50:59,963 [raptor.exits] INFO: RAPTOR v5.4 EXIT MONITOR - 2026-04-15T15:50:59.963510
+2026-04-15 15:50:59,964 [raptor.exits] INFO: ============================================================
+2026-04-15 15:50:59,965 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-04-15 15:51:00,820 [raptor.exits] INFO: Account: equity=$105229.44  cash=$95050.26  positions=1
+2026-04-15 15:51:00,826 [raptor.universe] INFO: Universe from cache: 127 symbols
+2026-04-15 15:51:04,059 [raptor.data_feeds] INFO: Fetched bars for 127 / 127 symbols
+2026-04-15 15:51:04,197 [raptor.data_feeds] INFO: FRED regime: NEUTRAL (score=0.100)
+2026-04-15 15:51:10,366 [raptor.signals] INFO: v5.4 Signals: 5 from 127 | Macro=NEUTRAL Scale=1.0 | Micro={'TRENDING': 88, 'MIXED': 39}
+2026-04-15 15:51:10,367 [raptor.exits] INFO: Portfolio unrealized: $-82.17 (-0.08%)
+2026-04-15 15:51:10,370 [raptor.exits] INFO: EXIT 3 [THESIS] XLB composite=-1.0000 (strongly negative)
+2026-04-15 15:51:10,370 [raptor.exits] INFO: 
+2026-04-15 15:51:10,371 [raptor.exits] INFO: ============================================================
+2026-04-15 15:51:10,371 [raptor.exits] INFO:   EXIT SUMMARY
+2026-04-15 15:51:10,371 [raptor.exits] INFO: ============================================================
+2026-04-15 15:51:10,371 [raptor.exits] INFO:   EXITS (1):
+2026-04-15 15:51:10,371 [raptor.exits] INFO:     XLB  thesis_invalid  pnl=-0.8%  comp=-1.0000
+2026-04-15 15:51:10,372 [raptor.exits] INFO: ============================================================
+2026-04-15 15:51:10,372 [raptor.exits] INFO: SELL 198.0 XLB [thesis_invalid]
+2026-04-15 15:51:10,545 [raptor.data_feeds] INFO: Order submitted: SELL 198.0 XLB @ None
+2026-04-15 15:51:10,546 [raptor.exits] INFO:   OK: OrderStatus.PENDING_NEW
+2026-04-15 15:54:08,758 [raptor.exits] INFO: ============================================================
+2026-04-15 15:54:08,759 [raptor.exits] INFO: RAPTOR v5.4 EXIT MONITOR - 2026-04-15T15:54:08.759898
+2026-04-15 15:54:08,761 [raptor.exits] INFO: ============================================================
+2026-04-15 15:54:08,762 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-04-15 15:54:10,883 [raptor.exits] INFO: No open positions. Nothing to monitor.

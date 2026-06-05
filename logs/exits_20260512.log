@@ -1,0 +1,98 @@
+2026-05-12 09:52:07,590 [raptor.exits] INFO: ============================================================
+2026-05-12 09:52:07,591 [raptor.exits] INFO: RAPTOR v5.4 EXIT MONITOR - 2026-05-12T09:52:07.591403
+2026-05-12 09:52:07,592 [raptor.exits] INFO: ============================================================
+2026-05-12 09:52:07,593 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-05-12 09:52:08,000 [raptor.exits] INFO: Account: equity=$107544.87  cash=$-68505.56  positions=15
+2026-05-12 09:52:08,007 [raptor.universe] INFO: Universe from cache: 134 symbols
+2026-05-12 09:52:09,442 [raptor.data_feeds] INFO: Fetched 136 new bars / 136 total cached
+2026-05-12 09:52:09,477 [raptor.data_feeds] INFO: FRED regime: NEUTRAL (score=-0.050)
+2026-05-12 09:52:13,207 [raptor.signals] INFO: v5.4 Signals: 5 from 135 | Macro=NEUTRAL Scale=1.0 | Micro={'TRENDING': 96, 'MIXED': 39}
+2026-05-12 09:52:13,207 [raptor.exits] INFO: Portfolio unrealized: $9970.17 (9.27%)
+2026-05-12 09:52:13,216 [raptor.exits] INFO: EXIT 3 [THESIS] KRE composite=-1.0000 pnl=-3.7% (negative thesis + losing)
+2026-05-12 09:52:13,218 [raptor.exits] INFO: EXIT 3 [THESIS] OWL composite=-1.0000 pnl=-5.2% (negative thesis + losing)
+2026-05-12 09:52:13,220 [raptor.exits] INFO: EXIT 3 [THESIS] SMCI composite=-1.0000 pnl=-3.9% (negative thesis + losing)
+2026-05-12 09:52:13,224 [raptor.exits] INFO: EXIT 3 [THESIS] TTD composite=-1.0000 pnl=-7.8% (negative thesis + losing)
+2026-05-12 09:52:13,225 [raptor.exits] INFO: 
+2026-05-12 09:52:13,225 [raptor.exits] INFO: ============================================================
+2026-05-12 09:52:13,225 [raptor.exits] INFO:   EXIT SUMMARY
+2026-05-12 09:52:13,225 [raptor.exits] INFO: ============================================================
+2026-05-12 09:52:13,225 [raptor.exits] INFO:   EXITS (4):
+2026-05-12 09:52:13,226 [raptor.exits] INFO:     KRE  thesis_invalid  pnl=-3.7%  comp=-1.0000
+2026-05-12 09:52:13,226 [raptor.exits] INFO:     OWL  thesis_invalid  pnl=-5.2%  comp=-1.0000
+2026-05-12 09:52:13,226 [raptor.exits] INFO:     SMCI  thesis_invalid  pnl=-3.9%  comp=-1.0000
+2026-05-12 09:52:13,226 [raptor.exits] INFO:     TTD  thesis_invalid  pnl=-7.8%  comp=-1.0000
+2026-05-12 09:52:13,226 [raptor.exits] INFO:   HOLDS (11):
+2026-05-12 09:52:13,226 [raptor.exits] INFO:     AMD  pnl=+49.7%  trail=$428.64  comp=-1.0
+2026-05-12 09:52:13,226 [raptor.exits] INFO:     CSX  pnl=-2.1%  trail=$43.61  comp=-1.0
+2026-05-12 09:52:13,226 [raptor.exits] INFO:     CVE  pnl=+1.9%  trail=$27.43  comp=-1.0
+2026-05-12 09:52:13,227 [raptor.exits] INFO:     DKNG  pnl=-0.3%  trail=$22.96  comp=-1.0
+2026-05-12 09:52:13,227 [raptor.exits] INFO:     FXI  pnl=-0.2%  trail=$36.45  comp=-1.0
+2026-05-12 09:52:13,227 [raptor.exits] INFO:     INTC  pnl=+43.1%  trail=$117.0  comp=-1.0
+2026-05-12 09:52:13,227 [raptor.exits] INFO:     KDP  pnl=+0.7%  trail=$27.15  comp=-1.0
+2026-05-12 09:52:13,227 [raptor.exits] INFO:     PLTD  pnl=+2.6%  trail=$7.34  comp=-1.0
+2026-05-12 09:52:13,228 [raptor.exits] INFO:     STM  pnl=+15.4%  trail=$53.98  comp=-1.0
+2026-05-12 09:52:13,228 [raptor.exits] INFO:     TSLA  pnl=+11.9%  trail=$414.48  comp=-1.0
+2026-05-12 09:52:13,228 [raptor.exits] INFO:     TSLL  pnl=+13.9%  trail=$14.2  comp=-1.0
+2026-05-12 09:52:13,228 [raptor.exits] INFO: ============================================================
+2026-05-12 09:54:11,192 [AgentLayer] INFO: HoldAgent | RAW: '{"decision": "HOLD", "confidence": 0.8, "reasoning": "Although momentum is losing, it\'s not extreme and the position is still profitable. The health score is stable and there are no clear deterioration drivers identified."}'
+2026-05-12 09:55:51,058 [AgentLayer] INFO: HoldAgent | RAW: '{"decision": "EXIT", "confidence": 1.0, "reasoning": "clear confluence of deterioration — health DECAYING, momentum negative, volume distributing, composite_slope negative, and position is losing money.", "trim_pct": null}'
+2026-05-12 09:57:22,605 [AgentLayer] INFO: HoldAgent | RAW: '{"decision": "TRIM", "confidence": 0.7, "reasoning": "Multiple dimensions are deteriorating: health DECAYING, momentum losing, and volume distributing.", "trim_pct": 5}'
+2026-05-12 09:58:48,930 [AgentLayer] INFO: HoldAgent | RAW: '{"decision": "HOLD", "confidence": 0.6, "reasoning": "Health score is slightly negative but not in DECAYING tier, and data history is insufficient for reliable factor scores."}'
+2026-05-12 10:00:32,179 [AgentLayer] INFO: HoldAgent | RAW: '{"decision": "HOLD", "confidence": 0.7, "reasoning": "Although momentum is losing and volume is distributing, the health score is still stable (-0.02) and the position has not yet reached the unrealized_pct threshold of 5%. The factor coherence is also low, which may indicate thin data history."}'
+2026-05-12 10:02:12,205 [AgentLayer] INFO: HoldAgent | RAW: '{"decision": "HOLD", "confidence": 0.6, "reasoning": "Although momentum is losing and volume is distributing, the health score is stable, composite slope is neutral, and stop distance is not very close. Given the thin data history, it\'s best to hold for now."}'
+2026-05-12 10:04:01,331 [AgentLayer] INFO: HoldAgent | RAW: '{"decision": "EXIT", "confidence": 1.0, "reasoning": "clear confluence of deterioration — health DECAYING, momentum negative, volume distributing, composite_slope negative, and position is losing money.", "trim_pct": null}'
+2026-05-12 10:05:46,227 [AgentLayer] INFO: HoldAgent | RAW: '{"decision": "HOLD", "confidence": 0.7, "reasoning": "Although momentum is losing and volume is distributing, the health score is still stable and the position is not yet losing money. The data history is also sufficient."}'
+2026-05-12 15:50:07,739 [raptor.exits] INFO: ============================================================
+2026-05-12 15:50:07,741 [raptor.exits] INFO: RAPTOR v5.4 EXIT MONITOR - 2026-05-12T15:50:07.741513
+2026-05-12 15:50:07,742 [raptor.exits] INFO: ============================================================
+2026-05-12 15:50:07,743 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-05-12 15:50:08,647 [raptor.exits] INFO: Account: equity=$106680.41  cash=$-68505.56  positions=15
+2026-05-12 15:50:08,665 [raptor.universe] INFO: Universe from cache: 134 symbols
+2026-05-12 15:50:11,526 [raptor.data_feeds] INFO: Fetched 136 new bars / 136 total cached
+2026-05-12 15:50:12,239 [raptor.data_feeds] INFO: FRED fetch OK: T10Y2Y (747 observations)
+2026-05-12 15:50:12,660 [raptor.data_feeds] INFO: FRED fetch OK: FEDFUNDS (36 observations)
+2026-05-12 15:50:13,107 [raptor.data_feeds] INFO: FRED fetch OK: ICSA (156 observations)
+2026-05-12 15:50:13,638 [raptor.data_feeds] INFO: FRED fetch OK: VIXCLS (772 observations)
+2026-05-12 15:50:14,079 [raptor.data_feeds] INFO: FRED fetch OK: BAMLC0A4CBBB (784 observations)
+2026-05-12 15:50:14,537 [raptor.data_feeds] INFO: FRED fetch OK: CPIAUCSL (35 observations)
+2026-05-12 15:50:15,090 [raptor.data_feeds] INFO: FRED fetch OK: MANEMP (36 observations)
+2026-05-12 15:50:15,619 [raptor.data_feeds] INFO: FRED fetch OK: M2SL (35 observations)
+2026-05-12 15:50:16,009 [raptor.data_feeds] ERROR: FRED fetch failed for RSXFS: 500 Server Error: Internal Server Error for url: https://api.stlouisfed.org/fred/series/observations?series_id=RSXFS&api_key=da7dbeb2fb38addc5865122252685cee&file_type=json&observation_start=2023-05-13&observation_end=2026-05-12&sort_order=asc
+2026-05-12 15:50:16,441 [raptor.data_feeds] ERROR: FRED fetch failed for UNRATE: 500 Server Error: Internal Server Error for url: https://api.stlouisfed.org/fred/series/observations?series_id=UNRATE&api_key=da7dbeb2fb38addc5865122252685cee&file_type=json&observation_start=2023-05-13&observation_end=2026-05-12&sort_order=asc
+2026-05-12 15:50:16,444 [raptor.data_feeds] INFO: FRED regime: NEUTRAL (score=-0.050)
+2026-05-12 15:50:20,289 [raptor.signals] INFO: v5.4 Signals: 5 from 135 | Macro=NEUTRAL Scale=1.0 | Micro={'TRENDING': 95, 'MIXED': 40}
+2026-05-12 15:50:20,291 [raptor.exits] INFO: Portfolio unrealized: $9101.82 (8.53%)
+2026-05-12 15:50:20,319 [raptor.exits] INFO: EXIT 5 [TIME] KRE flat (20d ret=-1.3%) while losing (-2.4%)
+2026-05-12 15:50:20,326 [raptor.exits] INFO: EXIT 3 [THESIS] OWL composite=-1.0000 pnl=-4.8% (negative thesis + losing)
+2026-05-12 15:50:20,333 [raptor.exits] INFO: EXIT 3 [THESIS] SMCI composite=-1.0000 pnl=-4.0% (negative thesis + losing)
+2026-05-12 15:50:20,341 [raptor.exits] INFO: EXIT 3 [THESIS] TTD composite=-1.0000 pnl=-8.6% (negative thesis + losing)
+2026-05-12 15:50:20,342 [raptor.exits] INFO: 
+2026-05-12 15:50:20,342 [raptor.exits] INFO: ============================================================
+2026-05-12 15:50:20,343 [raptor.exits] INFO:   EXIT SUMMARY
+2026-05-12 15:50:20,343 [raptor.exits] INFO: ============================================================
+2026-05-12 15:50:20,343 [raptor.exits] INFO:   EXITS (4):
+2026-05-12 15:50:20,343 [raptor.exits] INFO:     KRE  time_decay  pnl=-2.4%  comp=-1.0000
+2026-05-12 15:50:20,344 [raptor.exits] INFO:     OWL  thesis_invalid  pnl=-4.8%  comp=-1.0000
+2026-05-12 15:50:20,344 [raptor.exits] INFO:     SMCI  thesis_invalid  pnl=-4.0%  comp=-1.0000
+2026-05-12 15:50:20,344 [raptor.exits] INFO:     TTD  thesis_invalid  pnl=-8.6%  comp=-1.0000
+2026-05-12 15:50:20,345 [raptor.exits] INFO:   HOLDS (11):
+2026-05-12 15:50:20,345 [raptor.exits] INFO:     AMD  pnl=+46.4%  trail=$417.31  comp=-1.0
+2026-05-12 15:50:20,345 [raptor.exits] INFO:     CSX  pnl=-2.0%  trail=$43.59  comp=-1.0
+2026-05-12 15:50:20,346 [raptor.exits] INFO:     CVE  pnl=+4.3%  trail=$28.03  comp=-1.0
+2026-05-12 15:50:20,346 [raptor.exits] INFO:     DKNG  pnl=-1.5%  trail=$22.88  comp=-1.0
+2026-05-12 15:50:20,346 [raptor.exits] INFO:     FXI  pnl=-0.1%  trail=$36.43  comp=-1.0
+2026-05-12 15:50:20,347 [raptor.exits] INFO:     INTC  pnl=+37.2%  trail=$106.66  comp=-1.0
+2026-05-12 15:50:20,347 [raptor.exits] INFO:     KDP  pnl=+1.8%  trail=$27.4  comp=-1.0
+2026-05-12 15:50:20,347 [raptor.exits] INFO:     PLTD  pnl=+2.2%  trail=$7.29  comp=-1.0
+2026-05-12 15:50:20,348 [raptor.exits] INFO:     STM  pnl=+15.2%  trail=$53.64  comp=-1.0
+2026-05-12 15:50:20,348 [raptor.exits] INFO:     TSLA  pnl=+11.2%  trail=$410.2  comp=-1.0
+2026-05-12 15:50:20,349 [raptor.exits] INFO:     TSLL  pnl=+12.5%  trail=$13.83  comp=-1.0
+2026-05-12 15:50:20,349 [raptor.exits] INFO: ============================================================
+2026-05-12 15:52:17,623 [AgentLayer] INFO: HoldAgent | RAW: '{"decision": "HOLD", "confidence": 0.8, "reasoning": "Although momentum is losing and volume is distributing, the health score is still stable, and the position is profitable. The data history is also sufficient."}'
+2026-05-12 15:53:54,023 [AgentLayer] INFO: HoldAgent | RAW: '{"decision": "EXIT", "confidence": 1.0, "reasoning": "clear confluence of deterioration — health DECAYING, momentum negative, volume distributing, composite_slope negative, and position is losing money.", "trim_pct": null}'
+2026-05-12 15:55:38,715 [AgentLayer] INFO: HoldAgent | RAW: '{"decision": "TRIM", "confidence": 0.8, "reasoning": "Multiple dimensions are deteriorating (health DECAYING, momentum negative, volume distributing) and unrealized_pct is above the threshold of 5%." , "trim_pct": null}'
+2026-05-12 15:57:18,031 [AgentLayer] INFO: HoldAgent | RAW: '{"decision": "HOLD", "confidence": 0.6, "reasoning": "Although momentum is negative and volume score is positive, the health score is still relatively close to neutral (-0.15), and there\'s insufficient data (days_history: 1) to make a definitive decision."}'
+2026-05-12 15:58:56,870 [AgentLayer] INFO: HoldAgent | RAW: '{"decision": "HOLD", "confidence": 0.7, "reasoning": "Although momentum is losing and volume is distributing, the health score is still stable, and the position is not yet losing money. The data history is also insufficient for a definitive decision."}'
+2026-05-12 16:00:51,845 [AgentLayer] INFO: HoldAgent | RAW: '{"decision": "HOLD", "confidence": 0.7, "reasoning": "Although momentum is losing and volume is distributing, the health score is still stable, and the position has not yet reached a stop distance of 1.5 ATR. The data history is also insufficient for reliable factor scores."}'
+2026-05-12 16:02:39,418 [AgentLayer] INFO: HoldAgent | RAW: '{"decision": "EXIT", "confidence": 1.0, "reasoning": "clear confluence of deterioration — health DECAYING, momentum negative, volume distributing, composite_slope negative, and position is losing money.", "trim_pct": null}'
+2026-05-12 16:04:18,605 [AgentLayer] INFO: HoldAgent | RAW: '{"decision": "HOLD", "confidence": 0.6, "reasoning": "Although momentum is losing and volume is distributing, the health score is still stable and unrealized P&L is only 2.2%. The position has a short history of 3 days, so factor scores may not be reliable."}'

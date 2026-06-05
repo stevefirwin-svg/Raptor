@@ -1,0 +1,28 @@
+2026-04-25 09:51:44,608 [raptor.exits] INFO: ============================================================
+2026-04-25 09:51:44,609 [raptor.exits] INFO: RAPTOR v5.4 EXIT MONITOR - 2026-04-25T09:51:44.609449
+2026-04-25 09:51:44,610 [raptor.exits] INFO: ============================================================
+2026-04-25 09:51:44,612 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-04-25 09:51:45,507 [raptor.exits] INFO: Account: equity=$104499.05  cash=$34040.11  positions=7
+2026-04-25 09:51:45,512 [raptor.universe] INFO: Universe from cache: 118 symbols
+2026-04-25 09:51:47,724 [raptor.data_feeds] INFO: Fetched bars for 118 / 118 symbols
+2026-04-25 09:51:47,919 [raptor.data_feeds] INFO: FRED regime: NEUTRAL (score=0.100)
+2026-04-25 09:51:55,188 [raptor.signals] INFO: v5.4 Signals: 5 from 118 | Macro=NEUTRAL Scale=1.0 | Micro={'TRENDING': 77, 'MIXED': 41}
+2026-04-25 09:51:55,189 [raptor.exits] INFO: Portfolio unrealized: $2179.55 (2.09%)
+2026-04-25 09:51:55,230 [raptor.exits] INFO: EXIT 3 [THESIS] CMCSA composite=-1.0000 pnl=-5.9% (negative thesis + losing)
+2026-04-25 09:51:55,242 [raptor.exits] INFO: 
+2026-04-25 09:51:55,243 [raptor.exits] INFO: ============================================================
+2026-04-25 09:51:55,243 [raptor.exits] INFO:   EXIT SUMMARY
+2026-04-25 09:51:55,243 [raptor.exits] INFO: ============================================================
+2026-04-25 09:51:55,244 [raptor.exits] INFO:   EXITS (1):
+2026-04-25 09:51:55,244 [raptor.exits] INFO:     CMCSA  thesis_invalid  pnl=-5.9%  comp=-1.0000
+2026-04-25 09:51:55,244 [raptor.exits] INFO:   HOLDS (6):
+2026-04-25 09:51:55,245 [raptor.exits] INFO:     AMD  pnl=+14.3%  trail=$327.52  comp=0.6154
+2026-04-25 09:51:55,245 [raptor.exits] INFO:     HIMS  pnl=+9.1%  trail=$25.68  comp=-1.0
+2026-04-25 09:51:55,245 [raptor.exits] INFO:     KDP  pnl=+1.9%  trail=$27.79  comp=0.5891
+2026-04-25 09:51:55,245 [raptor.exits] INFO:     PYPL  pnl=+1.0%  trail=$47.72  comp=0.3922
+2026-04-25 09:51:55,246 [raptor.exits] INFO:     SMCI  pnl=+2.5%  trail=$25.88  comp=0.6514
+2026-04-25 09:51:55,246 [raptor.exits] INFO:     STM  pnl=+0.6%  trail=$46.93  comp=-1.0
+2026-04-25 09:51:55,246 [raptor.exits] INFO: ============================================================
+2026-04-25 09:51:55,246 [raptor.exits] INFO: SELL 345.0 CMCSA [thesis_invalid]
+2026-04-25 09:51:55,336 [raptor.data_feeds] INFO: Order submitted: SELL 345.0 CMCSA @ None
+2026-04-25 09:51:55,336 [raptor.exits] INFO:   OK: OrderStatus.ACCEPTED
