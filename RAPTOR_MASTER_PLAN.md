@@ -49,6 +49,8 @@ session confirming it. Documented-but-unverified fixes are NOT done.
 |----|---------------|
 | 2026-06-05 | submit_order missing `def` line in data_feeds.py — method existed as floating dead code inside get_portfolio_history, never registered on AlpacaDataFeed. Every order submission since ~2026-05-25 raised AttributeError, crashed execute loop silently. 11 days of exits and trims never reached Alpaca. Fixed: def line restored, execute loop wrapped in try/except per-order so one failure doesn't abort remaining positions. |
 | 2026-06-05 | logs/ removed from .gitignore — runtime logs now tracked in git for diagnostic analysis. |
+| 2026-06-05 | _trail_mult() profit tiers corrected: profit_atr>=4.0 was 1.0x (too tight, fires on any daily move), now 2.5x. All tiers raised to be consistent with 3.0x ATR entry stop logic. TODO:DERIVE remains for final calibration at 60+ exits (GAP-B). |
+| 2026-06-05 | position_ledger.json stops reset: all 7 positions had stops ratcheted above or within 1 ATR of current price. Reset to max(hw-2.5*ATR, price-2.5*ATR). Logged with stop_reset_reason field. |
 | CRIT-0 | outcome_tracker: trades backfilled, parse_ts UTC-aware, atomic writes |
 | CRIT-1 | Velocity gate wired into main.py |
 | CRIT-2 | Cooldown gate wired into main.py |
@@ -141,7 +143,7 @@ Fix: Reduce n_prior 50 to 20 in kelly_engine.py
 
 | Issue | Impact | Priority |
 |-------|--------|----------|
-| Trail multiplier profit_atr≥4.0→1.0× ATR (round number, no derivation) | Stops ratchet too tight on winning positions — EXIT 1 fires on normal pullback days, wiping multiple positions simultaneously | GAP-B: derive from backtest drawdown analysis |
+| Trail multiplier tiers (2.5/2.0/2.5×) — interim values, not yet derived | Improved from 1.0/1.5/2.0× but still TODO:DERIVE. Gate: GAP-B (60+ exits) | GAP-B: derive from backtest drawdown analysis (Thorp 2006) |
 | INTC ledger stop=112.02 (stale backfill value) above current price | EXIT 1 fires every run, position can never trim | Fix ledger stop manually to ATR-based value |
 | UnicodeEncodeError on → character in log output (cp1252 encoding) | Cosmetic logging error, execution continues | Low priority |
 

@@ -90,15 +90,24 @@ def _trail_mult(days_held, profit_atr, rcfg, composite=0.0, health=0.0):
     else:
         t = rcfg.trail_final_atr
 
-    # Profit-based multiplier
+    # Profit-based multiplier — floor on trail width so winning positions
+    # get room proportional to how far they have run.
+    # Logic: a position that has moved 4+ ATR in our favour has proven its
+    # thesis. Collapsing the trail to 1.0x ATR at that point is inconsistent
+    # with the 3.0x ATR entry stop and fires on any normal daily move.
+    # Anchored to entry stop logic: trail should never be tighter than the
+    # daily noise band (empirically ~2.0x ATR for swing holds).
+    # TODO:DERIVE — tiers (2.5/2.0/2.5) are interim; calibrate from backtest
+    # drawdown analysis once 60+ full-exit outcomes are tagged (Thorp 2006,
+    # Bertsimas & Lo 1998). Gate: GAP-B.
     if profit_atr >= 4.0:
-        p = 1.0
+        p = 2.5   # Large winner — give room, consistent with entry stop width
     elif profit_atr >= 2.0:
-        p = 1.5
+        p = 2.0   # Moderate winner — standard swing trail
     elif profit_atr >= 1.0:
-        p = 2.0
+        p = 2.5   # Small winner — protect but not so tight it fires on noise
     else:
-        p = 99.0
+        p = 99.0  # Not yet profitable — no trail cap, time/signal governs
 
     base = min(t, p)
 

@@ -7,14 +7,15 @@
       "entry_price": 50.189944,
       "entry_date": "2026-05-15",
       "metadata": {
-        "stop": 76.1336,
+        "stop": 70.1022,
         "regime": "BACKFILL",
         "t_stat": null,
         "kelly_fraction": null,
         "composite_score": null,
         "note": "Backfilled from Alpaca \u2014 entry_date approximate",
         "high_water": 80.15,
-        "last_trim_ts": "2026-05-29T15:50:24.136926"
+        "last_trim_ts": "2026-05-29T15:50:24.136926",
+        "stop_reset_reason": "reset_2026-06-05: corrected from ratchet-overtightened value to 2.5x ATR from high_water"
       },
       "trims": [
         {
@@ -46,13 +47,14 @@
       "entry_price": 391.11,
       "entry_date": "2026-05-22",
       "metadata": {
-        "stop": 422.4061,
+        "stop": 408.4185,
         "regime": "BACKFILL",
         "t_stat": null,
         "kelly_fraction": null,
         "composite_score": null,
         "note": "Backfilled from Alpaca \u2014 entry_date approximate",
-        "high_water": 443.18
+        "high_water": 443.18,
+        "stop_reset_reason": "reset_2026-06-05: corrected from ratchet-overtightened value to 2.5x ATR from high_water"
       }
     },
     "v5.4:AMD": {
@@ -62,13 +64,14 @@
       "entry_price": 304.32,
       "entry_date": "2026-05-22",
       "metadata": {
-        "stop": 514.7361,
+        "stop": 469.3551,
         "regime": "BACKFILL",
         "t_stat": null,
         "kelly_fraction": null,
         "composite_score": null,
         "note": "Restored by backfill_positions.py 2026-05-27 \u2014 position was incorrectly closed in ledger by math_trim routing bug",
-        "high_water": 541.95
+        "high_water": 541.95,
+        "stop_reset_reason": "reset_2026-06-05: corrected from ratchet-overtightened value to 2.5x ATR from high_water"
       }
     },
     "v5.4:INTC": {
@@ -78,13 +81,14 @@
       "entry_price": 87.74,
       "entry_date": "2026-05-22",
       "metadata": {
-        "stop": 112.0218,
+        "stop": 100.8102,
         "regime": "BACKFILL",
         "t_stat": null,
         "kelly_fraction": null,
         "composite_score": null,
         "note": "Restored by backfill_positions.py 2026-05-27 \u2014 position was incorrectly closed in ledger by math_trim routing bug",
-        "high_water": 121.655
+        "high_water": 121.655,
+        "stop_reset_reason": "reset_2026-06-05: corrected from ratchet-overtightened value to 2.5x ATR from high_water"
       }
     },
     "v5.4:KDP": {
@@ -94,13 +98,14 @@
       "entry_price": 28.670593,
       "entry_date": "2026-05-24",
       "metadata": {
-        "stop": 29.8825,
+        "stop": 29.1428,
         "regime": "BACKFILL",
         "t_stat": null,
         "kelly_fraction": null,
         "composite_score": null,
         "note": "Restored by backfill_positions.py 2026-05-27 \u2014 position was incorrectly closed in ledger by math_trim routing bug",
-        "high_water": 30.835
+        "high_water": 30.835,
+        "stop_reset_reason": "reset_2026-06-05: corrected from ratchet-overtightened value to 2.5x ATR from high_water"
       }
     },
     "v5.4:SMCI": {
@@ -110,13 +115,14 @@
       "entry_price": 34.096966,
       "entry_date": "2026-05-22",
       "metadata": {
-        "stop": 47.3302,
+        "stop": 42.2872,
         "regime": "BACKFILL",
         "t_stat": null,
         "kelly_fraction": null,
         "composite_score": null,
         "note": "Restored by backfill_positions.py 2026-05-27 \u2014 position was incorrectly closed in ledger by math_trim routing bug",
-        "high_water": 50.2695
+        "high_water": 50.2695,
+        "stop_reset_reason": "reset_2026-06-05: corrected from ratchet-overtightened value to 2.5x ATR from high_water"
       }
     },
     "v5.4:HPQ": {
@@ -127,13 +133,14 @@
       "entry_date": "2026-05-29",
       "metadata": {
         "t_stat": 0.0,
-        "stop": 26.4971,
+        "stop": 25.3713,
         "tp": 0.0,
         "regime": "RISK_ON/MIXED",
         "kelly_fraction": 0.06,
         "composite_score": 0.0,
         "velocity": 0.0,
-        "high_water": 29.33
+        "high_water": 29.33,
+        "stop_reset_reason": "reset_2026-06-05: corrected from ratchet-overtightened value to 2.5x ATR from high_water"
       }
     }
   },
