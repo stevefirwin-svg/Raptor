@@ -1,96 +1,5 @@
 {
   "positions": {
-    "v5.4:STM": {
-      "model": "v5.4",
-      "symbol": "STM",
-      "shares": 98,
-      "entry_price": 50.189944,
-      "entry_date": "2026-05-15",
-      "metadata": {
-        "stop": 70.1022,
-        "regime": "BACKFILL",
-        "t_stat": null,
-        "kelly_fraction": null,
-        "composite_score": null,
-        "note": "Backfilled from Alpaca \u2014 entry_date approximate",
-        "high_water": 80.15,
-        "last_trim_ts": "2026-05-29T15:50:24.136926",
-        "stop_reset_reason": "reset_2026-06-05: corrected from ratchet-overtightened value to 2.5x ATR from high_water"
-      },
-      "trims": [
-        {
-          "date": "2026-05-29",
-          "reason": "math_trim_22%",
-          "shares_sold": 38,
-          "trim_price": 70.825,
-          "pnl_pct": 41.1139,
-          "pnl_abs": 784.13,
-          "shares_before": 177,
-          "shares_after": 139
-        },
-        {
-          "date": "2026-05-29",
-          "reason": "math_trim_30%",
-          "shares_sold": 41,
-          "trim_price": 69.29,
-          "pnl_pct": 38.0555,
-          "pnl_abs": 783.1,
-          "shares_before": 139,
-          "shares_after": 98
-        }
-      ]
-    },
-    "v5.4:TSLA": {
-      "model": "v5.4",
-      "symbol": "TSLA",
-      "shares": 1,
-      "entry_price": 391.11,
-      "entry_date": "2026-05-22",
-      "metadata": {
-        "stop": 408.4185,
-        "regime": "BACKFILL",
-        "t_stat": null,
-        "kelly_fraction": null,
-        "composite_score": null,
-        "note": "Backfilled from Alpaca \u2014 entry_date approximate",
-        "high_water": 443.18,
-        "stop_reset_reason": "reset_2026-06-05: corrected from ratchet-overtightened value to 2.5x ATR from high_water"
-      }
-    },
-    "v5.4:AMD": {
-      "model": "v5.4",
-      "symbol": "AMD",
-      "shares": 18,
-      "entry_price": 304.32,
-      "entry_date": "2026-05-22",
-      "metadata": {
-        "stop": 469.3551,
-        "regime": "BACKFILL",
-        "t_stat": null,
-        "kelly_fraction": null,
-        "composite_score": null,
-        "note": "Restored by backfill_positions.py 2026-05-27 \u2014 position was incorrectly closed in ledger by math_trim routing bug",
-        "high_water": 541.95,
-        "stop_reset_reason": "reset_2026-06-05: corrected from ratchet-overtightened value to 2.5x ATR from high_water"
-      }
-    },
-    "v5.4:INTC": {
-      "model": "v5.4",
-      "symbol": "INTC",
-      "shares": 47,
-      "entry_price": 87.74,
-      "entry_date": "2026-05-22",
-      "metadata": {
-        "stop": 100.8102,
-        "regime": "BACKFILL",
-        "t_stat": null,
-        "kelly_fraction": null,
-        "composite_score": null,
-        "note": "Restored by backfill_positions.py 2026-05-27 \u2014 position was incorrectly closed in ledger by math_trim routing bug",
-        "high_water": 121.655,
-        "stop_reset_reason": "reset_2026-06-05: corrected from ratchet-overtightened value to 2.5x ATR from high_water"
-      }
-    },
     "v5.4:KDP": {
       "model": "v5.4",
       "symbol": "KDP",
@@ -98,7 +7,7 @@
       "entry_price": 28.670593,
       "entry_date": "2026-05-24",
       "metadata": {
-        "stop": 29.1428,
+        "stop": 29.807,
         "regime": "BACKFILL",
         "t_stat": null,
         "kelly_fraction": null,
@@ -108,39 +17,55 @@
         "stop_reset_reason": "reset_2026-06-05: corrected from ratchet-overtightened value to 2.5x ATR from high_water"
       }
     },
-    "v5.4:SMCI": {
+    "v5.4:KRE": {
       "model": "v5.4",
-      "symbol": "SMCI",
-      "shares": 43,
-      "entry_price": 34.096966,
-      "entry_date": "2026-05-22",
+      "symbol": "KRE",
+      "shares": 178,
+      "entry_price": 70.11,
+      "entry_date": "2026-06-05",
       "metadata": {
-        "stop": 42.2872,
-        "regime": "BACKFILL",
-        "t_stat": null,
-        "kelly_fraction": null,
-        "composite_score": null,
-        "note": "Restored by backfill_positions.py 2026-05-27 \u2014 position was incorrectly closed in ledger by math_trim routing bug",
-        "high_water": 50.2695,
-        "stop_reset_reason": "reset_2026-06-05: corrected from ratchet-overtightened value to 2.5x ATR from high_water"
+        "t_stat": 1.4261,
+        "stop": 67.65,
+        "tp": 0.0,
+        "regime": "RISK_ON/REVERTING",
+        "kelly_fraction": 0.117,
+        "composite_score": 0.2835,
+        "velocity": 0.0,
+        "high_water": 70.355
       }
     },
-    "v5.4:HPQ": {
+    "v5.4:WFC": {
       "model": "v5.4",
-      "symbol": "HPQ",
-      "shares": 238,
-      "entry_price": 27.255,
-      "entry_date": "2026-05-29",
+      "symbol": "WFC",
+      "shares": 142,
+      "entry_price": 81.84,
+      "entry_date": "2026-06-05",
       "metadata": {
-        "t_stat": 0.0,
-        "stop": 25.3713,
+        "t_stat": 1.2234,
+        "stop": 76.53,
+        "tp": 0.0,
+        "regime": "RISK_ON/TRENDING",
+        "kelly_fraction": 0.1089,
+        "composite_score": 0.4768,
+        "velocity": 0.0,
+        "high_water": 82.085
+      }
+    },
+    "v5.4:MRVL": {
+      "model": "v5.4",
+      "symbol": "MRVL",
+      "shares": 39,
+      "entry_price": 296.355,
+      "entry_date": "2026-06-05",
+      "metadata": {
+        "t_stat": 1.2131,
+        "stop": 236.98,
         "tp": 0.0,
         "regime": "RISK_ON/MIXED",
-        "kelly_fraction": 0.06,
-        "composite_score": 0.0,
+        "kelly_fraction": 0.1085,
+        "composite_score": 0.3123,
         "velocity": 0.0,
-        "high_water": 29.33,
-        "stop_reset_reason": "reset_2026-06-05: corrected from ratchet-overtightened value to 2.5x ATR from high_water"
+        "high_water": 294.21
       }
     }
   },
@@ -781,6 +706,168 @@
       "pnl_pct": 0.0,
       "reason": "ledger_ghost_removed",
       "note": "Position never filled at Alpaca \u2014 removed during manual reconcile"
+    },
+    {
+      "model": "v5.4",
+      "symbol": "AMD",
+      "shares": 18,
+      "entry_price": 304.32,
+      "entry_date": "2026-05-22",
+      "metadata": {
+        "stop": 469.3551,
+        "regime": "BACKFILL",
+        "t_stat": null,
+        "kelly_fraction": null,
+        "composite_score": null,
+        "note": "Restored by backfill_positions.py 2026-05-27 \u2014 position was incorrectly closed in ledger by math_trim routing bug",
+        "high_water": 541.95,
+        "stop_reset_reason": "reset_2026-06-05: corrected from ratchet-overtightened value to 2.5x ATR from high_water"
+      },
+      "exit_price": 489.855,
+      "exit_date": "2026-06-05",
+      "exit_reason": "trailing_stop",
+      "exit_path": "trailing_stop",
+      "pnl": 3339.6300000000006,
+      "pnl_pct": 60.967074132492115
+    },
+    {
+      "model": "v5.4",
+      "symbol": "HPQ",
+      "shares": 238,
+      "entry_price": 27.255,
+      "entry_date": "2026-05-29",
+      "metadata": {
+        "t_stat": 0.0,
+        "stop": 25.3713,
+        "tp": 0.0,
+        "regime": "RISK_ON/MIXED",
+        "kelly_fraction": 0.06,
+        "composite_score": 0.0,
+        "velocity": 0.0,
+        "high_water": 29.33,
+        "stop_reset_reason": "reset_2026-06-05: corrected from ratchet-overtightened value to 2.5x ATR from high_water"
+      },
+      "exit_price": 26.015,
+      "exit_date": "2026-06-05",
+      "exit_reason": "trailing_stop",
+      "exit_path": "trailing_stop",
+      "pnl": -295.1199999999996,
+      "pnl_pct": -4.549623922216107
+    },
+    {
+      "model": "v5.4",
+      "symbol": "INTC",
+      "shares": 47,
+      "entry_price": 87.74,
+      "entry_date": "2026-05-22",
+      "metadata": {
+        "stop": 100.8102,
+        "regime": "BACKFILL",
+        "t_stat": null,
+        "kelly_fraction": null,
+        "composite_score": null,
+        "note": "Restored by backfill_positions.py 2026-05-27 \u2014 position was incorrectly closed in ledger by math_trim routing bug",
+        "high_water": 121.655,
+        "stop_reset_reason": "reset_2026-06-05: corrected from ratchet-overtightened value to 2.5x ATR from high_water"
+      },
+      "exit_price": 104.52,
+      "exit_date": "2026-06-05",
+      "exit_reason": "trailing_stop",
+      "exit_path": "trailing_stop",
+      "pnl": 788.6600000000001,
+      "pnl_pct": 19.124686573968553
+    },
+    {
+      "model": "v5.4",
+      "symbol": "SMCI",
+      "shares": 43,
+      "entry_price": 34.096966,
+      "entry_date": "2026-05-22",
+      "metadata": {
+        "stop": 42.2872,
+        "regime": "BACKFILL",
+        "t_stat": null,
+        "kelly_fraction": null,
+        "composite_score": null,
+        "note": "Restored by backfill_positions.py 2026-05-27 \u2014 position was incorrectly closed in ledger by math_trim routing bug",
+        "high_water": 50.2695,
+        "stop_reset_reason": "reset_2026-06-05: corrected from ratchet-overtightened value to 2.5x ATR from high_water"
+      },
+      "exit_price": 43.495,
+      "exit_date": "2026-06-05",
+      "exit_reason": "trailing_stop",
+      "exit_path": "trailing_stop",
+      "pnl": 404.1154619999998,
+      "pnl_pct": 27.562669358910096
+    },
+    {
+      "model": "v5.4",
+      "symbol": "STM",
+      "shares": 98,
+      "entry_price": 50.189944,
+      "entry_date": "2026-05-15",
+      "metadata": {
+        "stop": 70.1022,
+        "regime": "BACKFILL",
+        "t_stat": null,
+        "kelly_fraction": null,
+        "composite_score": null,
+        "note": "Backfilled from Alpaca \u2014 entry_date approximate",
+        "high_water": 80.15,
+        "last_trim_ts": "2026-05-29T15:50:24.136926",
+        "stop_reset_reason": "reset_2026-06-05: corrected from ratchet-overtightened value to 2.5x ATR from high_water"
+      },
+      "trims": [
+        {
+          "date": "2026-05-29",
+          "reason": "math_trim_22%",
+          "shares_sold": 38,
+          "trim_price": 70.825,
+          "pnl_pct": 41.1139,
+          "pnl_abs": 784.13,
+          "shares_before": 177,
+          "shares_after": 139
+        },
+        {
+          "date": "2026-05-29",
+          "reason": "math_trim_30%",
+          "shares_sold": 41,
+          "trim_price": 69.29,
+          "pnl_pct": 38.0555,
+          "pnl_abs": 783.1,
+          "shares_before": 139,
+          "shares_after": 98
+        }
+      ],
+      "exit_price": 73.03,
+      "exit_date": "2026-06-05",
+      "exit_reason": "trailing_stop",
+      "exit_path": "trailing_stop",
+      "pnl": 2238.3254880000004,
+      "pnl_pct": 45.50723547330517
+    },
+    {
+      "model": "v5.4",
+      "symbol": "TSLA",
+      "shares": 1,
+      "entry_price": 391.11,
+      "entry_date": "2026-05-22",
+      "metadata": {
+        "stop": 408.4185,
+        "regime": "BACKFILL",
+        "t_stat": null,
+        "kelly_fraction": null,
+        "composite_score": null,
+        "note": "Backfilled from Alpaca \u2014 entry_date approximate",
+        "high_water": 443.18,
+        "stop_reset_reason": "reset_2026-06-05: corrected from ratchet-overtightened value to 2.5x ATR from high_water"
+      },
+      "exit_price": 411.48,
+      "exit_date": "2026-06-05",
+      "exit_reason": "trailing_stop",
+      "exit_path": "trailing_stop",
+      "pnl": 20.370000000000005,
+      "pnl_pct": 5.208253432538168
     }
   ]
 }

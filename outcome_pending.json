@@ -218,5 +218,65 @@
     "entry_reasoning": null,
     "entry_flags": [],
     "submitted_at": "2026-05-29T15:50:24.120793"
+  },
+  "a42e8916-9b01-49fe-9647-ca2cf488775e": {
+    "symbol": "AMD",
+    "exit_reason": "trailing_stop",
+    "composite": 0.1264,
+    "entry_decision": null,
+    "entry_confidence": null,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-06-05T09:52:16.160133"
+  },
+  "fcf340ae-f112-44d0-ad32-df0b3a9e3ed1": {
+    "symbol": "HPQ",
+    "exit_reason": "trailing_stop",
+    "composite": -0.273,
+    "entry_decision": "PASS",
+    "entry_confidence": 0.8,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-06-05T09:52:16.338657"
+  },
+  "96ee90aa-ae3d-42cc-93f5-7ff7258c6923": {
+    "symbol": "INTC",
+    "exit_reason": "trailing_stop",
+    "composite": -0.176,
+    "entry_decision": null,
+    "entry_confidence": null,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-06-05T09:52:16.425461"
+  },
+  "9cd767d5-c29e-48bc-b7b8-d56717e72bbd": {
+    "symbol": "SMCI",
+    "exit_reason": "trailing_stop",
+    "composite": 0.1484,
+    "entry_decision": null,
+    "entry_confidence": null,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-06-05T09:52:16.542759"
+  },
+  "fbf98d57-a5be-4c4a-a137-5274195b344e": {
+    "symbol": "STM",
+    "exit_reason": "trailing_stop",
+    "composite": 0.2599,
+    "entry_decision": null,
+    "entry_confidence": null,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-06-05T09:52:16.651017"
+  },
+  "8631c535-13f8-4130-9655-91f6f070f1e6": {
+    "symbol": "TSLA",
+    "exit_reason": "trailing_stop",
+    "composite": 0.1433,
+    "entry_decision": null,
+    "entry_confidence": null,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-06-05T09:52:16.741955"
   }
 }

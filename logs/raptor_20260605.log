@@ -1,0 +1,29 @@
+2026-06-05 09:35:03,839 [raptor.main] INFO: ============================================================
+2026-06-05 09:35:03,840 [raptor.main] INFO: RAPTOR v5.4 DAILY SCAN - 2026-06-05T09:35:03.840093
+2026-06-05 09:35:03,840 [raptor.main] INFO: ============================================================
+2026-06-05 09:35:03,842 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-06-05 09:35:04,371 [raptor.main] INFO: Account: equity=$107073.13  cap=none (compound)  sizing_base=$107073.13  positions=7
+2026-06-05 09:35:04,378 [raptor.main] INFO: [MarketAgent] SCAN | scalar=1.00 | Macro regime is RISK_ON with calm VIX and sector breadth indicating a mixed environment.
+2026-06-05 09:35:04,467 [raptor.margin_guard] INFO: MARGIN GUARD: equity=$107,068  cap=none (compound)  cash=$76,566  positions=7
+2026-06-05 09:35:04,467 [raptor.margin_guard] INFO: MARGIN GUARD: market_value=$30,504  utilization=28.5% of base  margin=NO
+2026-06-05 09:35:04,470 [raptor.universe] INFO: Universe from cache: 75 symbols
+2026-06-05 09:35:04,471 [raptor.main] INFO: Dynamic universe: 75 symbols
+2026-06-05 09:35:07,191 [raptor.data_feeds] INFO: Fetched 76 new bars / 76 total cached
+2026-06-05 09:35:07,226 [raptor.data_feeds] INFO: FRED regime: BULLISH (score=0.300)
+2026-06-05 09:35:07,237 [raptor.main] INFO: Data: 76 symbols | Macro: RISK_ON (0.300)
+2026-06-05 09:35:08,563 [raptor.signals] INFO: v5.4 Signals: 5 from 75 | Macro=RISK_ON Scale=1.0 | Micro={'MIXED': 54, 'REVERTING': 7, 'TRENDING': 14} | SNR min=1.10 max=1.43
+2026-06-05 09:35:08,580 [raptor.main] INFO: Velocity gate: 4 signals remain | velocities: {'KRE': '+0.000', 'WFC': '+0.000', 'MRVL': '+0.000', 'PFE': '+0.000'}
+2026-06-05 09:35:08,593 [raptor.main] INFO: Signals:
+2026-06-05 09:35:08,594 [raptor.main] INFO:   1. KRE  t=1.426  pctl=96%  entry=$70.11  stop=$67.65  tp=$0.00  kelly=0.117  hold~27d
+2026-06-05 09:35:08,594 [raptor.main] INFO:   2. WFC  t=1.223  pctl=100%  entry=$81.84  stop=$76.53  tp=$0.00  kelly=0.109  hold~25d
+2026-06-05 09:35:08,594 [raptor.main] INFO:   3. MRVL  t=1.213  pctl=97%  entry=$296.36  stop=$236.98  tp=$0.00  kelly=0.108  hold~2d
+2026-06-05 09:35:08,594 [raptor.main] INFO:   4. PFE  t=1.123  pctl=88%  entry=$25.96  stop=$25.13  tp=$0.00  kelly=0.105  hold~29d
+2026-06-05 09:35:10,702 [raptor.main] WARNING: EntryAgent unavailable ('"decision"') — proceeding without screening.
+2026-06-05 09:35:10,702 [raptor.main] INFO: Deployable: cap=none  market_value=$30512  cash=$76566  headroom=$72738  available=$72738  (margin=OFF)
+2026-06-05 09:35:10,735 [raptor.data_feeds] INFO: Order submitted: BUY 178 KRE @ 70.18
+2026-06-05 09:35:10,741 [raptor.main] INFO: ORDER [v5.4]: BUY 178 KRE @ $70.18
+2026-06-05 09:35:10,841 [raptor.data_feeds] INFO: Order submitted: BUY 142 WFC @ 81.92
+2026-06-05 09:35:10,847 [raptor.main] INFO: ORDER [v5.4]: BUY 142 WFC @ $81.92
+2026-06-05 09:35:10,876 [raptor.data_feeds] INFO: Order submitted: BUY 39 MRVL @ 296.65
+2026-06-05 09:35:10,882 [raptor.main] INFO: ORDER [v5.4]: BUY 39 MRVL @ $296.65
+2026-06-05 09:35:10,883 [raptor.main] INFO: Scan complete. 3 orders placed for v5.4.
