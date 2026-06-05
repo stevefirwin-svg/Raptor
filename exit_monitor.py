@@ -561,10 +561,15 @@ def run_exit_monitor(dry_run=False):
                     if alp and _sym not in {e["symbol"] for e in exits}:
                         # Double-trim guard: skip if this symbol was trimmed within the last 30 min.
                         # hold_health.json trim recommendation persists until hold_monitor re-runs.
-                        # Without this guard, exit_monitor could fire the same trim recommendation
-                        # twice in one cycle (or across two rapid cycles), selling more than intended.
-                        _trim_meta = _ledger_map.get(_sym, {}).get("metadata", {})
-                        _last_trim_ts = _trim_meta.get("last_trim_ts")
+                        # Without this guard, exit_monitor fires the same trim twice per cycle
+                        # (morning + afternoon runs), causing Alpaca insufficient_qty rejections.
+                        # Read last_trim_ts from live _ledger object (updated during execute loop),
+                        # NOT from _ledger_map which is a stale snapshot built before the loop.
+                        try:
+                            _tk_guard = f"v5.4:{_sym}"
+                            _last_trim_ts = _ledger.data["positions"].get(_tk_guard, {}).get("metadata", {}).get("last_trim_ts")
+                        except Exception:
+                            _last_trim_ts = _ledger_map.get(_sym, {}).get("metadata", {}).get("last_trim_ts")
                         if _last_trim_ts:
                             try:
                                 _elapsed = (datetime.now() - datetime.fromisoformat(_last_trim_ts)).total_seconds()

@@ -51,6 +51,8 @@ session confirming it. Documented-but-unverified fixes are NOT done.
 | 2026-06-05 | logs/ removed from .gitignore — runtime logs now tracked in git for diagnostic analysis. |
 | 2026-06-05 | _trail_mult() profit tiers corrected: profit_atr>=4.0 was 1.0x (too tight, fires on any daily move), now 2.5x. All tiers raised to be consistent with 3.0x ATR entry stop logic. TODO:DERIVE remains for final calibration at 60+ exits (GAP-B). |
 | 2026-06-05 | position_ledger.json stops reset: all 7 positions had stops ratcheted above or within 1 ATR of current price. Reset to max(hw-2.5*ATR, price-2.5*ATR). Logged with stop_reset_reason field. |
+| 2026-06-05 | Double-trim guard fixed: was reading stale _ledger_map snapshot (built before execute loop), so last_trim_ts written during loop was invisible to the guard. 36 Alpaca insufficient_qty rejections across 9 dates back to 2026-04-10. Fixed: guard now reads from live _ledger.data object updated in-loop. |
+| 2026-06-05 | Log analysis added as Step 3 in RAPTOR_STARTUP.md — logs are ground truth, read before code every session. |
 | CRIT-0 | outcome_tracker: trades backfilled, parse_ts UTC-aware, atomic writes |
 | CRIT-1 | Velocity gate wired into main.py |
 | CRIT-2 | Cooldown gate wired into main.py |

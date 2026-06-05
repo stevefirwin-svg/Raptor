@@ -32,9 +32,43 @@ Remove-Item -Recurse -Force __pycache__ -ErrorAction SilentlyContinue
 
 ---
 
-## STEP 3 — INFRASTRUCTURE INTEGRITY CHECK
+## STEP 3 — LOG ANALYSIS (run before anything else)
 
-**Run this first, before health check, before any code work. These are not optional.**
+**The logs are the ground truth. Read them before reading code. Every session.**
+
+```bash
+python3 - << 'PYEOF'
+import os, re
+
+log_dir = "logs"
+exit_logs = sorted([f for f in os.listdir(log_dir) if f.startswith("exits_") and f.endswith(".log")])[-10:]
+
+print(f"{'DATE':<12} {'SELL':>5} {'OK':>5} {'FAILED':>7} {'INSUF_QTY':>10} {'REASONS'}")
+print("-"*80)
+for lf in exit_logs:
+    content = open(os.path.join(log_dir, lf), errors="replace").read()
+    date = lf.replace("exits_","").replace(".log","")
+    date_fmt = f"{date[:4]}-{date[4:6]}-{date[6:]}"
+    sell  = len(re.findall(r"INFO: SELL ", content))
+    ok    = len(re.findall(r"INFO:   OK:", content))
+    fail  = len(re.findall(r"ERROR:   FAILED:", content))
+    insuf = len(re.findall(r"insufficient qty", content))
+    reasons = ", ".join(sorted(set(re.findall(r"SELL \S+ \S+ \[(\S+)\]", content))))[:40]
+    broken = " <-- NO EXECUTION" if sell > 0 and ok == 0 else ""
+    print(f"{date_fmt:<12} {sell:>5} {ok:>5} {fail:>7} {insuf:>10}  {reasons}{broken}")
+PYEOF
+```
+
+**Red flags that require investigation before any other work:**
+- `SELL > 0` and `OK == 0` → order submission failing (check for AttributeError or crash)
+- `INSUF_QTY > 0` → double-trim firing, shares held for prior queued order
+- `SELL == 0` for multiple consecutive days when positions are held → exit_monitor not running
+
+---
+
+## STEP 4 — INFRASTRUCTURE INTEGRITY CHECK
+
+**Run after log analysis, before any code work. These are not optional.**
 
 ```bash
 # 1. AlpacaDataFeed has submit_order — the method that actually submits trades
@@ -78,7 +112,7 @@ never reached Alpaca.
 
 ---
 
-## STEP 4 — HEALTH CHECK
+## STEP 5 — HEALTH CHECK
 
 ```powershell
 python outcome_tracker.py --summary
@@ -105,7 +139,7 @@ python factor_lab.py
 
 ---
 
-## STEP 5 — CONTEXT CHECK
+## STEP 6 — CONTEXT CHECK
 
 1. What positions are held? Run `python check_account.py` or paste portfolio.
 2. What did hold monitor say last run? Check `hold_health.json`.
