@@ -179,18 +179,32 @@ def run_exit_monitor(dry_run=False):
     macro = dataset["macro"]
     spy_bars = bars.get("SPY")
 
-    # P0-8: override macro["regime"] with canonical {RISK_ON,NEUTRAL,RISK_OFF,CRISIS}
-    # label from macro_context.json — same fix as main.py.
+    # P0-8 + INTRADAY-REGIME: Refresh macro_context.json inline so regime reflects
+    # current VIX/SPY state, not a pre-market snapshot that goes stale mid-crash.
+    # build_macro_context() takes ~3s (yfinance + FRED calls) — acceptable per cycle.
+    # Falls back to cached JSON if the live fetch fails (network outage, rate limit).
     try:
-        _mc = json.loads(open("macro_context.json").read())
-        _label = _mc.get("macro_regime") or _mc.get("regime")
+        from macro_context import build_macro_context as _bmc
+        _mc_fresh = _bmc()
+        _label = _mc_fresh.get("macro_regime")
         if _label in ("RISK_ON", "NEUTRAL", "RISK_OFF", "CRISIS"):
             macro["regime"] = _label
-            logger.info("[MacroOverride] regime → %s (from macro_context.json)", _label)
+            logger.info("[MacroOverride] regime → %s (live refresh, score=%.3f, VIX=%.1f)",
+                        _label,
+                        _mc_fresh.get("macro_score", 0),
+                        (_mc_fresh.get("signals", {}).get("vix") or {}).get("value") or 0)
         else:
-            logger.warning("[MacroOverride] macro_context.json unrecognised label %r — keeping data_feeds value", _label)
+            logger.warning("[MacroOverride] live macro returned unrecognised label %r", _label)
     except Exception as _mce:
-        logger.warning("[MacroOverride] Could not load macro_context.json (%s) — using data_feeds regime", _mce)
+        logger.warning("[MacroOverride] live refresh failed (%s) — falling back to cached macro_context.json", _mce)
+        try:
+            _mc = json.loads(open("macro_context.json").read())
+            _label = _mc.get("macro_regime") or _mc.get("regime")
+            if _label in ("RISK_ON", "NEUTRAL", "RISK_OFF", "CRISIS"):
+                macro["regime"] = _label
+                logger.info("[MacroOverride] regime → %s (cached fallback)", _label)
+        except Exception as _mce2:
+            logger.warning("[MacroOverride] cached fallback also failed (%s) — keeping data_feeds regime", _mce2)
 
     # Run signal engine for thesis check (current composite scores)
     signals = engine.generate_signals(bars, macro, dataset["sentiment"], spy_bars)
@@ -241,6 +255,38 @@ def run_exit_monitor(dry_run=False):
             logger.warning("No bar data for %s - skipping", sym)
             holds.append({"symbol": sym, "reason": "no_data", "pnl_pct": pnl_pct})
             continue
+
+        # PENDING-EXIT GUARD: skip positions where an exit order was already submitted
+        # this run or a prior run that hasn't been confirmed filled yet.
+        # Prevents the same stop from re-firing every 6-hour cycle while the order
+        # works through Alpaca (partial fill, market closed, pending_new state).
+        # Cleared automatically when ledger.record_exit() removes the position,
+        # or after 2 calendar days as a safety release valve.
+        _pe_meta = (_ledger_map.get(sym) or {}).get("metadata", {})
+        _pe_flag = _pe_meta.get("pending_exit", False)
+        if _pe_flag:
+            _pe_ts_raw = _pe_meta.get("pending_exit_ts")
+            _pe_stale  = True  # default: treat missing ts as stale → allow exit
+            if _pe_ts_raw:
+                try:
+                    _pe_age_h = (datetime.now() - datetime.fromisoformat(_pe_ts_raw)).total_seconds() / 3600
+                    _pe_stale = _pe_age_h > 48  # release after 2 calendar days
+                except Exception:
+                    _pe_stale = True
+            if not _pe_stale:
+                logger.info("PENDING-EXIT GUARD [skip] %s — exit order already submitted, waiting for fill", sym)
+                holds.append({"symbol": sym, "reason": "pending_exit", "pnl_pct": pnl_pct})
+                continue
+            else:
+                logger.warning("PENDING-EXIT GUARD [expired] %s — pending_exit flag >48h old, clearing and re-evaluating", sym)
+                try:
+                    _tk_pe = f"v5.4:{sym}"
+                    if _tk_pe in _ledger.data["positions"]:
+                        _ledger.data["positions"][_tk_pe]["metadata"]["pending_exit"] = False
+                        _ledger.data["positions"][_tk_pe]["metadata"]["pending_exit_ts"] = None
+                        _ledger._save()
+                except Exception:
+                    pass
 
         bar_data = bars[sym]
         atr = _atr(bar_data, CONFIG.risk.atr_period)
@@ -704,6 +750,19 @@ def run_exit_monitor(dry_run=False):
                         )
                 except Exception as _pe:
                     logger.warning("outcome_pending write failed for %s: %s", ex["symbol"], _pe)
+                # PENDING-EXIT FLAG: mark position so the next run skips re-evaluating it.
+                # Cleared by ledger.record_exit() (position removed) or after 48h stale check.
+                # Only set for full exits (not trims — trims reduce qty but position stays open).
+                if "trim" not in ex.get("reason", ""):
+                    try:
+                        _pe_tk = f"v5.4:{ex['symbol']}"
+                        if _pe_tk in _ledger.data["positions"]:
+                            _ledger.data["positions"][_pe_tk]["metadata"]["pending_exit"]    = True
+                            _ledger.data["positions"][_pe_tk]["metadata"]["pending_exit_ts"] = datetime.now().isoformat()
+                            _ledger._save()
+                            logger.info("PENDING-EXIT FLAG set for %s", ex["symbol"])
+                    except Exception as _pef:
+                        logger.warning("pending_exit flag write failed for %s: %s", ex["symbol"], _pef)
                 # Update ledger — route partial trims to record_trim, full exits to record_exit.
                 # Previously all paths called record_exit, which closed the full position in the
                 # ledger even when only a fraction of shares were sold. This caused 8 positions

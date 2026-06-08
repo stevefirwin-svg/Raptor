@@ -7,13 +7,13 @@
       "entry_price": 28.670593,
       "entry_date": "2026-05-24",
       "metadata": {
-        "stop": 29.807,
+        "stop": 29.8221,
         "regime": "BACKFILL",
         "t_stat": null,
         "kelly_fraction": null,
         "composite_score": null,
         "note": "Restored by backfill_positions.py 2026-05-27 \u2014 position was incorrectly closed in ledger by math_trim routing bug",
-        "high_water": 30.835,
+        "high_water": 30.855,
         "stop_reset_reason": "reset_2026-06-05: corrected from ratchet-overtightened value to 2.5x ATR from high_water"
       }
     },
@@ -31,7 +31,7 @@
         "kelly_fraction": 0.117,
         "composite_score": 0.2835,
         "velocity": 0.0,
-        "high_water": 70.355
+        "high_water": 70.71
       }
     },
     "v5.4:WFC": {
@@ -48,7 +48,7 @@
         "kelly_fraction": 0.1089,
         "composite_score": 0.4768,
         "velocity": 0.0,
-        "high_water": 82.085
+        "high_water": 82.13
       }
     },
     "v5.4:MRVL": {

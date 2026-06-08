@@ -1,0 +1,12 @@
+2026-06-08 09:35:14,556 [raptor.main] INFO: ============================================================
+2026-06-08 09:35:14,557 [raptor.main] INFO: RAPTOR v5.4 DAILY SCAN - 2026-06-08T09:35:14.557489
+2026-06-08 09:35:14,558 [raptor.main] INFO: ============================================================
+2026-06-08 09:35:14,560 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-06-08 09:35:15,506 [raptor.main] INFO: Account: equity=$106714.22  cap=none (compound)  sizing_base=$106714.22  positions=4
+2026-06-08 09:35:15,512 [raptor.main] INFO: [MarketAgent] SCAN | scalar=1.00 | Neutral macro conditions with no extreme signals present.
+2026-06-08 09:35:15,711 [raptor.margin_guard] INFO: MARGIN GUARD: equity=$106,716  cap=none (compound)  cash=$70,374  positions=4
+2026-06-08 09:35:15,712 [raptor.margin_guard] INFO: MARGIN GUARD: market_value=$36,353  utilization=34.1% of base  margin=NO
+2026-06-08 09:35:15,723 [raptor.universe] INFO: Building universe...
+2026-06-08 09:35:17,015 [raptor.universe] INFO: Alpaca tradeable assets: 7171 after initial filter
+2026-06-08 09:35:17,039 [raptor.universe] INFO: Step 1: 7171 tradeable assets from Alpaca
+2026-06-08 09:35:17,042 [raptor.universe] INFO: Step 2: Fetching bars for 7171 symbols (this takes 1-2 min)...
