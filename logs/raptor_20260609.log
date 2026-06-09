@@ -1,0 +1,25 @@
+2026-06-09 09:35:03,704 [raptor.main] INFO: ============================================================
+2026-06-09 09:35:03,705 [raptor.main] INFO: RAPTOR v5.4 DAILY SCAN - 2026-06-09T09:35:03.705287
+2026-06-09 09:35:03,705 [raptor.main] INFO: ============================================================
+2026-06-09 09:35:03,707 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-06-09 09:35:04,409 [raptor.main] INFO: Account: equity=$106770.48  cap=none (compound)  sizing_base=$106770.48  positions=4
+2026-06-09 09:35:04,413 [raptor.main] INFO: [MarketAgent] SCAN | scalar=1.00 | Neutral macro conditions with no extreme signals present.
+2026-06-09 09:35:04,719 [raptor.margin_guard] INFO: MARGIN GUARD: equity=$106,761  cap=none (compound)  cash=$70,374  positions=4
+2026-06-09 09:35:04,719 [raptor.margin_guard] INFO: MARGIN GUARD: market_value=$36,387  utilization=34.1% of base  margin=NO
+2026-06-09 09:35:04,735 [raptor.universe] INFO: Universe from cache: 76 symbols
+2026-06-09 09:35:04,736 [raptor.main] INFO: Dynamic universe: 76 symbols
+2026-06-09 09:35:06,648 [raptor.data_feeds] INFO: Fetched 77 new bars / 77 total cached
+2026-06-09 09:35:06,822 [raptor.data_feeds] INFO: FRED regime: NEUTRAL (score=0.000)
+2026-06-09 09:35:06,868 [raptor.main] INFO: Data: 77 symbols | Macro: NEUTRAL (0.000)
+2026-06-09 09:35:08,360 [raptor.signals] INFO: v5.4 Signals: 5 from 76 | Macro=NEUTRAL Scale=0.8 | Micro={'MIXED': 54, 'TRENDING': 19, 'REVERTING': 3} | SNR min=1.42 max=2.12
+2026-06-09 09:35:08,380 [raptor.main] INFO: Velocity gate: 2 signals remain | velocities: {'SQQQ': '+0.000', 'XLE': '+0.000'}
+2026-06-09 09:35:08,393 [raptor.main] INFO: Signals:
+2026-06-09 09:35:08,394 [raptor.main] INFO:   1. SQQQ  t=1.558  pctl=99%  entry=$40.45  stop=$34.72  tp=$0.00  kelly=0.098  hold~27d
+2026-06-09 09:35:08,394 [raptor.main] INFO:   2. XLE  t=1.463  pctl=95%  entry=$57.97  stop=$54.87  tp=$0.00  kelly=0.095  hold~25d
+2026-06-09 09:35:10,485 [raptor.main] WARNING: EntryAgent unavailable ('"decision"') — proceeding without screening.
+2026-06-09 09:35:10,485 [raptor.main] INFO: Deployable: cap=none  market_value=$36381  cash=$70374  headroom=$66855  available=$66855  (margin=OFF)
+2026-06-09 09:35:10,522 [raptor.data_feeds] INFO: Order submitted: BUY 258 SQQQ @ 40.49
+2026-06-09 09:35:10,528 [raptor.main] INFO: ORDER [v5.4]: BUY 258 SQQQ @ $40.49
+2026-06-09 09:35:10,582 [raptor.data_feeds] INFO: Order submitted: BUY 174 XLE @ 58.03
+2026-06-09 09:35:10,587 [raptor.main] INFO: ORDER [v5.4]: BUY 174 XLE @ $58.03
+2026-06-09 09:35:10,588 [raptor.main] INFO: Scan complete. 2 orders placed for v5.4.

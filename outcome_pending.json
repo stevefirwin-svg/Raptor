@@ -278,5 +278,15 @@
     "entry_reasoning": null,
     "entry_flags": [],
     "submitted_at": "2026-06-05T09:52:16.741955"
+  },
+  "8cd4ece7-73c4-4646-ae56-4899db775548": {
+    "symbol": "MRVL",
+    "exit_reason": "math_trim_45%",
+    "composite": 0.4869,
+    "entry_decision": "PASS",
+    "entry_confidence": 0.95,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-06-09T15:50:30.321650"
   }
 }

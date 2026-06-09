@@ -726,5 +726,18 @@
     "agent_decision": "HOLD",
     "agent_conf": 0.9,
     "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-06-09T15:50:30.348317",
+    "symbol": "MRVL",
+    "trim_qty": 18,
+    "price": 260.3572,
+    "pnl_pct": -11.51,
+    "reason": "math_trim_45%",
+    "composite": 0.4869,
+    "trim_detail": "severity=0.147 x stop_mult=1.50 x far_mult=1.02 x pnl_mult=1.40 + slope_adj=0.138 = 0.452 -> 45.2% (18 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
   }
 ]

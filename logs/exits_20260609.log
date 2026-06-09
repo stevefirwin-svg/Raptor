@@ -1,0 +1,92 @@
+2026-06-09 09:52:11,501 [raptor.exits] INFO: ============================================================
+2026-06-09 09:52:11,501 [raptor.exits] INFO: RAPTOR v5.4 EXIT MONITOR - 2026-06-09T09:52:11.501618
+2026-06-09 09:52:11,502 [raptor.exits] INFO: ============================================================
+2026-06-09 09:52:11,504 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-06-09 09:52:11,911 [raptor.exits] INFO: Account: equity=$106710.28  cash=$49914.14  positions=6
+2026-06-09 09:52:11,917 [raptor.universe] INFO: Universe from cache: 76 symbols
+2026-06-09 09:52:13,370 [raptor.data_feeds] INFO: Fetched 78 new bars / 78 total cached
+2026-06-09 09:52:13,393 [raptor.data_feeds] INFO: FRED regime: NEUTRAL (score=0.000)
+2026-06-09 09:52:19,366 [raptor.signals] INFO: v5.4 Signals: 5 from 77 | Macro=RISK_ON Scale=0.8 | Micro={'MIXED': 56, 'TRENDING': 18, 'REVERTING': 3} | SNR min=1.47 max=2.31
+2026-06-09 09:52:19,371 [raptor.exits] INFO: Portfolio unrealized: $-20.25 (-0.02%)
+2026-06-09 09:52:19,432 [raptor.exits] INFO: 
+2026-06-09 09:52:19,433 [raptor.exits] INFO: ============================================================
+2026-06-09 09:52:19,433 [raptor.exits] INFO:   EXIT SUMMARY
+2026-06-09 09:52:19,434 [raptor.exits] INFO: ============================================================
+2026-06-09 09:52:19,434 [raptor.exits] INFO:   No exits triggered.
+2026-06-09 09:52:19,434 [raptor.exits] INFO:   HOLDS (6):
+2026-06-09 09:52:19,434 [raptor.exits] INFO:     KDP  pnl=+8.1%  trail=$30.03  comp=0.1262
+2026-06-09 09:52:19,434 [raptor.exits] INFO:     KRE  pnl=+2.9%  trail=$68.69  comp=0.4504
+2026-06-09 09:52:19,435 [raptor.exits] INFO:     MRVL  pnl=-3.0%  trail=$238.62  comp=0.5413
+2026-06-09 09:52:19,435 [raptor.exits] INFO:     SQQQ  pnl=-1.2%  trail=$34.72  comp=0.4732
+2026-06-09 09:52:19,435 [raptor.exits] INFO:     WFC  pnl=+0.5%  trail=$77.44  comp=0.8125
+2026-06-09 09:52:19,435 [raptor.exits] INFO:     XLE  pnl=-0.3%  trail=$54.87  comp=0.2545
+2026-06-09 09:52:19,435 [raptor.exits] INFO: ============================================================
+2026-06-09 09:52:19,450 [raptor.exits] INFO: AGENT [advisory] TRIM NVDA — 3+ deteriorating dimensions and unrealized_pct>5 (conf=0.60, from 2026-05-15T13:05:37.330779) [not executed — math trim governs]
+2026-06-09 09:52:19,451 [raptor.exits] INFO: AGENT [advisory] HOLD AMD — insufficient history: 0 days (conf=0.90, from 2026-06-05T09:52:08.933229)
+2026-06-09 09:52:19,451 [raptor.exits] INFO: AGENT [advisory] HOLD CVE — insufficient history: 0 days (conf=0.90, from 2026-05-28T15:50:34.277447)
+2026-06-09 09:52:19,451 [raptor.exits] INFO: AGENT [advisory] HOLD FXI — insufficient history: 0 days (conf=0.90, from 2026-05-19T16:30:29.205147)
+2026-06-09 09:52:19,452 [raptor.exits] INFO: AGENT [advisory] HOLD CSX — insufficient history: 0 days (conf=0.90, from 2026-05-29T09:52:09.312909)
+2026-06-09 09:52:19,452 [raptor.exits] INFO: AGENT [advisory] HOLD INTC — insufficient history: 0 days (conf=0.90, from 2026-06-05T09:52:08.933275)
+2026-06-09 09:52:19,452 [raptor.exits] INFO: AGENT [advisory] HOLD KDP — insufficient history: 0 days (conf=0.90, from 2026-06-09T09:52:08.040887)
+2026-06-09 09:52:19,452 [raptor.exits] INFO: AGENT [advisory] HOLD OWL — insufficient history: 0 days (conf=0.90, from 2026-05-17T15:50:38.416296)
+2026-06-09 09:52:19,452 [raptor.exits] INFO: AGENT [advisory] HOLD KRE — insufficient history: 0 days (conf=0.90, from 2026-06-09T09:52:08.040910)
+2026-06-09 09:52:19,452 [raptor.exits] INFO: AGENT [advisory] HOLD PLTD — insufficient history: 0 days (conf=0.90, from 2026-05-28T15:50:34.277463)
+2026-06-09 09:52:19,452 [raptor.exits] INFO: AGENT [advisory] HOLD STM — insufficient history: 0 days (conf=0.90, from 2026-06-05T09:52:08.933304)
+2026-06-09 09:52:19,453 [raptor.exits] INFO: AGENT [advisory] HOLD SMCI — insufficient history: 0 days (conf=0.90, from 2026-06-05T09:52:08.933299)
+2026-06-09 09:52:19,453 [raptor.exits] INFO: AGENT [advisory] HOLD TSLA — insufficient history: 0 days (conf=0.90, from 2026-06-05T09:52:08.933310)
+2026-06-09 09:52:19,453 [raptor.exits] INFO: AGENT [advisory] HOLD TSLL — insufficient history: 0 days (conf=0.90, from 2026-05-19T16:30:29.205168)
+2026-06-09 09:52:19,453 [raptor.exits] INFO: AGENT [advisory] HOLD TTD — insufficient history: 0 days (conf=0.90, from 2026-05-19T16:30:29.205175)
+2026-06-09 09:52:19,453 [raptor.exits] INFO: AGENT [advisory] HOLD DKNG — insufficient history: 0 days (conf=0.90, from 2026-05-29T09:52:09.312915)
+2026-06-09 09:52:19,453 [raptor.exits] INFO: AGENT [advisory] HOLD HPQ — insufficient history: 0 days (conf=0.90, from 2026-06-05T09:52:08.933265)
+2026-06-09 09:52:19,453 [raptor.exits] INFO: AGENT [advisory] HOLD MRVL — insufficient history: 0 days (conf=0.90, from 2026-06-09T09:52:08.040914)
+2026-06-09 09:52:19,454 [raptor.exits] INFO: AGENT [advisory] HOLD WFC — insufficient history: 0 days (conf=0.90, from 2026-06-09T09:52:08.040920)
+2026-06-09 09:52:19,454 [raptor.exits] INFO: AGENT [advisory] HOLD SQQQ — insufficient history: 0 days (conf=0.90, from 2026-06-09T09:52:08.040918)
+2026-06-09 09:52:19,454 [raptor.exits] INFO: AGENT [advisory] HOLD XLE — insufficient history: 0 days (conf=0.90, from 2026-06-09T09:52:08.040924)
+2026-06-09 15:50:22,195 [raptor.exits] INFO: ============================================================
+2026-06-09 15:50:22,197 [raptor.exits] INFO: RAPTOR v5.4 EXIT MONITOR - 2026-06-09T15:50:22.197116
+2026-06-09 15:50:22,198 [raptor.exits] INFO: ============================================================
+2026-06-09 15:50:22,200 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-06-09 15:50:22,623 [raptor.exits] INFO: Account: equity=$106386.68  cash=$49914.14  positions=6
+2026-06-09 15:50:22,633 [raptor.universe] INFO: Universe from cache: 76 symbols
+2026-06-09 15:50:24,116 [raptor.data_feeds] INFO: Fetched 78 new bars / 78 total cached
+2026-06-09 15:50:24,217 [raptor.data_feeds] INFO: FRED regime: BULLISH (score=0.200)
+2026-06-09 15:50:30,202 [raptor.signals] INFO: v5.4 Signals: 5 from 77 | Macro=NEUTRAL Scale=0.8 | Micro={'MIXED': 54, 'TRENDING': 20, 'REVERTING': 3} | SNR min=1.61 max=2.49
+2026-06-09 15:50:30,207 [raptor.exits] INFO: Portfolio unrealized: $-344.92 (-0.32%)
+2026-06-09 15:50:30,250 [raptor.exits] WARNING: MATH TRIM [TRIM_MODERATE] MRVL — 18 of 39 shares (45%) — Moderate trim 45% — thesis weakening
+2026-06-09 15:50:30,251 [raptor.exits] INFO: 
+2026-06-09 15:50:30,251 [raptor.exits] INFO: ============================================================
+2026-06-09 15:50:30,252 [raptor.exits] INFO:   EXIT SUMMARY
+2026-06-09 15:50:30,252 [raptor.exits] INFO: ============================================================
+2026-06-09 15:50:30,253 [raptor.exits] INFO:   EXITS (1):
+2026-06-09 15:50:30,254 [raptor.exits] INFO:     MRVL  math_trim_45%  pnl=-11.5%  comp=0.4869
+2026-06-09 15:50:30,254 [raptor.exits] INFO:   HOLDS (5):
+2026-06-09 15:50:30,255 [raptor.exits] INFO:     KDP  pnl=+9.8%  trail=$30.16  comp=0.2832
+2026-06-09 15:50:30,256 [raptor.exits] INFO:     KRE  pnl=+1.5%  trail=$68.69  comp=0.3431
+2026-06-09 15:50:30,257 [raptor.exits] INFO:     SQQQ  pnl=+7.7%  trail=$35.86  comp=0.7551
+2026-06-09 15:50:30,258 [raptor.exits] INFO:     WFC  pnl=+0.1%  trail=$77.44  comp=0.8656
+2026-06-09 15:50:30,258 [raptor.exits] INFO:     XLE  pnl=-1.0%  trail=$54.87  comp=0.234
+2026-06-09 15:50:30,259 [raptor.exits] INFO: ============================================================
+2026-06-09 15:50:30,274 [raptor.exits] INFO: AGENT [advisory] TRIM NVDA — 3+ deteriorating dimensions and unrealized_pct>5 (conf=0.60, from 2026-05-15T13:05:37.330779) [not executed — math trim governs]
+2026-06-09 15:50:30,275 [raptor.exits] INFO: AGENT [advisory] HOLD AMD — insufficient history: 0 days (conf=0.90, from 2026-06-05T09:52:08.933229)
+2026-06-09 15:50:30,276 [raptor.exits] INFO: AGENT [advisory] HOLD CVE — insufficient history: 0 days (conf=0.90, from 2026-05-28T15:50:34.277447)
+2026-06-09 15:50:30,277 [raptor.exits] INFO: AGENT [advisory] HOLD FXI — insufficient history: 0 days (conf=0.90, from 2026-05-19T16:30:29.205147)
+2026-06-09 15:50:30,277 [raptor.exits] INFO: AGENT [advisory] HOLD CSX — insufficient history: 0 days (conf=0.90, from 2026-05-29T09:52:09.312909)
+2026-06-09 15:50:30,278 [raptor.exits] INFO: AGENT [advisory] HOLD INTC — insufficient history: 0 days (conf=0.90, from 2026-06-05T09:52:08.933275)
+2026-06-09 15:50:30,278 [raptor.exits] INFO: AGENT [advisory] HOLD KDP — insufficient history: 0 days (conf=0.90, from 2026-06-09T15:50:17.727242)
+2026-06-09 15:50:30,278 [raptor.exits] INFO: AGENT [advisory] HOLD OWL — insufficient history: 0 days (conf=0.90, from 2026-05-17T15:50:38.416296)
+2026-06-09 15:50:30,278 [raptor.exits] INFO: AGENT [advisory] HOLD KRE — insufficient history: 0 days (conf=0.90, from 2026-06-09T15:50:17.727262)
+2026-06-09 15:50:30,279 [raptor.exits] INFO: AGENT [advisory] HOLD PLTD — insufficient history: 0 days (conf=0.90, from 2026-05-28T15:50:34.277463)
+2026-06-09 15:50:30,279 [raptor.exits] INFO: AGENT [advisory] HOLD STM — insufficient history: 0 days (conf=0.90, from 2026-06-05T09:52:08.933304)
+2026-06-09 15:50:30,279 [raptor.exits] INFO: AGENT [advisory] HOLD SMCI — insufficient history: 0 days (conf=0.90, from 2026-06-05T09:52:08.933299)
+2026-06-09 15:50:30,279 [raptor.exits] INFO: AGENT [advisory] HOLD TSLA — insufficient history: 0 days (conf=0.90, from 2026-06-05T09:52:08.933310)
+2026-06-09 15:50:30,279 [raptor.exits] INFO: AGENT [advisory] HOLD TSLL — insufficient history: 0 days (conf=0.90, from 2026-05-19T16:30:29.205168)
+2026-06-09 15:50:30,280 [raptor.exits] INFO: AGENT [advisory] HOLD TTD — insufficient history: 0 days (conf=0.90, from 2026-05-19T16:30:29.205175)
+2026-06-09 15:50:30,280 [raptor.exits] INFO: AGENT [advisory] HOLD DKNG — insufficient history: 0 days (conf=0.90, from 2026-05-29T09:52:09.312915)
+2026-06-09 15:50:30,281 [raptor.exits] INFO: AGENT [advisory] HOLD HPQ — insufficient history: 0 days (conf=0.90, from 2026-06-05T09:52:08.933265)
+2026-06-09 15:50:30,281 [raptor.exits] INFO: AGENT [advisory] HOLD MRVL — insufficient history: 0 days (conf=0.90, from 2026-06-09T15:50:17.727266)
+2026-06-09 15:50:30,281 [raptor.exits] INFO: AGENT [advisory] HOLD WFC — insufficient history: 0 days (conf=0.90, from 2026-06-09T15:50:17.727271)
+2026-06-09 15:50:30,282 [raptor.exits] INFO: AGENT [advisory] HOLD SQQQ — insufficient history: 0 days (conf=0.90, from 2026-06-09T15:50:17.727269)
+2026-06-09 15:50:30,282 [raptor.exits] INFO: AGENT [advisory] HOLD XLE — insufficient history: 0 days (conf=0.90, from 2026-06-09T15:50:17.727274)
+2026-06-09 15:50:30,283 [raptor.exits] INFO: SELL 18 MRVL [math_trim_45%]
+2026-06-09 15:50:30,316 [raptor.data_feeds] INFO: Order submitted: SELL 18 MRVL @ None
+2026-06-09 15:50:30,317 [raptor.exits] INFO:   OK: OrderStatus.PENDING_NEW

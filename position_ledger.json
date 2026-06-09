@@ -7,13 +7,13 @@
       "entry_price": 28.670593,
       "entry_date": "2026-05-24",
       "metadata": {
-        "stop": 29.8221,
+        "stop": 30.1617,
         "regime": "BACKFILL",
         "t_stat": null,
         "kelly_fraction": null,
         "composite_score": null,
         "note": "Restored by backfill_positions.py 2026-05-27 \u2014 position was incorrectly closed in ledger by math_trim routing bug",
-        "high_water": 30.855,
+        "high_water": 31.48,
         "stop_reset_reason": "reset_2026-06-05: corrected from ratchet-overtightened value to 2.5x ATR from high_water"
       }
     },
@@ -25,13 +25,13 @@
       "entry_date": "2026-06-05",
       "metadata": {
         "t_stat": 1.4261,
-        "stop": 67.65,
+        "stop": 68.6894,
         "tp": 0.0,
         "regime": "RISK_ON/REVERTING",
         "kelly_fraction": 0.117,
         "composite_score": 0.2835,
         "velocity": 0.0,
-        "high_water": 70.71
+        "high_water": 72.1
       }
     },
     "v5.4:WFC": {
@@ -42,30 +42,77 @@
       "entry_date": "2026-06-05",
       "metadata": {
         "t_stat": 1.2234,
-        "stop": 76.53,
+        "stop": 77.4354,
         "tp": 0.0,
         "regime": "RISK_ON/TRENDING",
         "kelly_fraction": 0.1089,
         "composite_score": 0.4768,
         "velocity": 0.0,
-        "high_water": 82.13
+        "high_water": 82.16
       }
     },
     "v5.4:MRVL": {
       "model": "v5.4",
       "symbol": "MRVL",
-      "shares": 39,
+      "shares": 21,
       "entry_price": 296.355,
       "entry_date": "2026-06-05",
       "metadata": {
         "t_stat": 1.2131,
-        "stop": 236.98,
+        "stop": 238.6229,
         "tp": 0.0,
         "regime": "RISK_ON/MIXED",
         "kelly_fraction": 0.1085,
         "composite_score": 0.3123,
         "velocity": 0.0,
-        "high_water": 294.21
+        "high_water": 294.21,
+        "last_trim_ts": "2026-06-09T15:50:30.342429"
+      },
+      "trims": [
+        {
+          "date": "2026-06-09",
+          "reason": "math_trim_45%",
+          "shares_sold": 18,
+          "trim_price": 260.3572,
+          "pnl_pct": -12.1469,
+          "pnl_abs": -647.96,
+          "shares_before": 39,
+          "shares_after": 21
+        }
+      ]
+    },
+    "v5.4:SQQQ": {
+      "model": "v5.4",
+      "symbol": "SQQQ",
+      "shares": 258,
+      "entry_price": 40.45,
+      "entry_date": "2026-06-09",
+      "metadata": {
+        "t_stat": 1.558,
+        "stop": 35.8567,
+        "tp": 0.0,
+        "regime": "NEUTRAL/TRENDING",
+        "kelly_fraction": 0.0979,
+        "composite_score": 0.5171,
+        "velocity": 0.0,
+        "high_water": 43.37
+      }
+    },
+    "v5.4:XLE": {
+      "model": "v5.4",
+      "symbol": "XLE",
+      "shares": 174,
+      "entry_price": 57.97,
+      "entry_date": "2026-06-09",
+      "metadata": {
+        "t_stat": 1.4634,
+        "stop": 54.87,
+        "tp": 0.0,
+        "regime": "NEUTRAL/MIXED",
+        "kelly_fraction": 0.0948,
+        "composite_score": 0.3612,
+        "velocity": 0.0,
+        "high_water": 57.8565
       }
     }
   },
