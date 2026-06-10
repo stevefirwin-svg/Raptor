@@ -401,6 +401,17 @@ def run_tracker(verbose: bool = True) -> int:
     else:
         print("[OutcomeTracker] No new trades to tag.")
 
+    # Backfill any pending-fill slippage records (market orders that were still
+    # pending_new when exit_monitor ran — fill price available by end of day).
+    try:
+        from slippage_tracker import backfill_slippage as _bf_slip
+        _n_backfilled = _bf_slip(alpaca_headers, BASE_URL)
+        if _n_backfilled and verbose:
+            print(f"[SlippageTracker] Backfilled {_n_backfilled} pending fill(s)")
+    except Exception as _se:
+        if verbose:
+            print(f"[SlippageTracker] Backfill skipped: {_se}")
+
     return len(new_records)
 
 

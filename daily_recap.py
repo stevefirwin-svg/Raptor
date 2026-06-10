@@ -406,7 +406,18 @@ def get_portfolio_analytics(closed_trades, equity):
         "max_consec_loss": max_consec_loss,
         "current_streak": current_streak,
         "cap_efficiency": cap_eff,
+        # Implementation shortfall (added 2026-06-10)
+        "slippage": _get_slippage_analytics(),
     }
+
+
+def _get_slippage_analytics() -> dict:
+    """Load IS report from slippage_tracker. Returns empty dict on any failure."""
+    try:
+        from slippage_tracker import report as _slip_report
+        return _slip_report()
+    except Exception:
+        return {}
 
 
 def get_signals(dm):
@@ -564,6 +575,54 @@ def get_days_held(open_ledger, positions):
 # ─────────────────────────────────────────────────────────────────────────────
 # HTML BUILDER
 # ─────────────────────────────────────────────────────────────────────────────
+
+
+def _build_slippage_html(slip: dict) -> str:
+    """Render implementation shortfall section for daily recap email."""
+    if not slip or slip.get("n_fills", 0) == 0:
+        return (
+            '<div style="margin-top:6px;padding:6px;background:#0e0e20;'
+            'border:1px solid #1e1e34;border-radius:4px;font-size:11px;color:#6a6a8a">'
+            'Implementation Shortfall: no fills recorded yet — data accumulates from next trade.'
+            '</div>'
+        )
+    rt = slip.get("round_trip_bps")
+    rt_str   = f"{rt:+.1f} bps" if rt is not None else "N/A"
+    rt_color = "#00d4aa" if (rt or 0) < 5 else "#ffa502" if (rt or 0) < 15 else "#ff4757"
+    by_reason_parts = []
+    for reason, bps in sorted((slip.get("by_exit_reason") or {}).items(), key=lambda x: -x[1]):
+        col = "#ff4757" if bps > 10 else "#ffa502" if bps > 3 else "#00d4aa"
+        by_reason_parts.append(f'<span style="color:{col}">{reason}: {bps:+.1f}</span>')
+    by_reason_str = " | ".join(by_reason_parts) if by_reason_parts else "—"
+    n      = slip.get("n_fills", 0)
+    buy_is = slip.get("mean_buy_is_bps")
+    sel_is = slip.get("mean_sell_is_bps")
+    tot    = slip.get("total_is_dollars", 0)
+    p95    = slip.get("p95_is_bps")
+    buy_str = f"{buy_is:+.1f}" if buy_is is not None else "N/A"
+    sel_str = f"{sel_is:+.1f}" if sel_is is not None else "N/A"
+    p95_str = f"{p95:+.1f}" if p95 is not None else "N/A"
+    return (
+        f'<div style="margin-top:6px;padding:8px;background:#0e0e20;'
+        f'border:1px solid #1e1e34;border-radius:4px">'
+        f'<div style="font-size:11px;color:#6a6a8a;margin-bottom:4px">'
+        f'Implementation Shortfall (Perold 1988) — {n} fills</div>'
+        f'<table width="100%" cellpadding="0" cellspacing="0"><tr>'
+        f'<td style="font-size:12px;color:#e0e0e0;padding:2px 8px 2px 0">'
+        f'Mean BUY IS: <b>{buy_str} bps</b></td>'
+        f'<td style="font-size:12px;color:#e0e0e0;padding:2px 8px 2px 0">'
+        f'Mean SELL IS: <b>{sel_str} bps</b></td>'
+        f'<td style="font-size:12px;color:{rt_color};padding:2px 8px 2px 0">'
+        f'Round-trip: <b>{rt_str}</b></td>'
+        f'<td style="font-size:12px;color:#e0e0e0;padding:2px 8px 2px 0">'
+        f'Total IS cost: <b>${tot:+,.2f}</b></td>'
+        f'<td style="font-size:12px;color:#e0e0e0;padding:2px 0">'
+        f'P95: <b>{p95_str} bps</b></td>'
+        f'</tr></table>'
+        f'<div style="font-size:11px;color:#6a6a8a;margin-top:3px">'
+        f'By exit reason: {by_reason_str}</div></div>'
+    )
+
 
 def build_html(account, positions, entries, exits, signals, macro, scale,
                spy_price, spy_returns, spy_mas, analytics, open_ledger, portfolio_beta,
@@ -874,7 +933,8 @@ def build_html(account, positions, entries, exits, signals, macro, scale,
         </table>
         <div style="padding:6px 0 2px 2px;font-size:11px;color:#6a6a8a">
           Exit breakdown: {exit_breakdown_str}
-        </div>"""
+        </div>
+        {_build_slippage_html(analytics.get("slippage", {}))}"""
     else:
         analytics_html = '<div style="color:#6a6a8a;font-size:12px;padding:8px 0">Insufficient trade history for analytics (need ≥ 3 closed trades)</div>'
 

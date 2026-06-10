@@ -726,6 +726,18 @@ def run_exit_monitor(dry_run=False):
                 continue
             if "error" not in result:
                 logger.info("  OK: %s", result.get("status", "submitted"))
+                # Implementation shortfall: log decision price vs fill price (Perold 1988)
+                # decision_price = current_price at the time the stop/exit fired (ex["price"])
+                try:
+                    from slippage_tracker import record_fill as _record_fill
+                    _record_fill(
+                        symbol=ex["symbol"], side="SELL", qty=ex["qty"],
+                        decision_price=float(ex.get("price", 0) or 0),
+                        order_result=result,
+                        exit_reason=ex.get("reason"),
+                    )
+                except Exception as _se:
+                    logger.warning("Slippage log failed for %s: %s", ex["symbol"], _se)
                 # P0-1: Write outcome_pending sidecar — keyed by Alpaca order ID.
                 # outcome_tracker reads this to populate entry_decision on new records
                 # without relying on fragile timestamp matching against entry_vetoes.

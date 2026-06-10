@@ -361,6 +361,15 @@ def run_daily_scan():
                                  "composite_score": sig.composite_score,
                                  "velocity": velocities.get(sig.symbol)})
             logger.info("ORDER [%s]: BUY %d %s @ $%.2f", MODEL_ID, shares, sig.symbol, limit or sig.entry_price)
+            # Implementation shortfall: log decision price vs fill price (Perold 1988)
+            try:
+                from slippage_tracker import record_fill as _record_fill
+                _record_fill(
+                    symbol=sig.symbol, side="BUY", qty=shares,
+                    decision_price=sig.entry_price, order_result=result,
+                )
+            except Exception as _se:
+                logger.warning("Slippage log failed for %s: %s", sig.symbol, _se)
         else:
             logger.error("FAILED: %s - %s", sig.symbol, result["error"])
 
