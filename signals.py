@@ -438,6 +438,69 @@ class QuantSignalEngine:
                 v=vals[i]
                 if isinstance(v,float) and np.isnan(v): zmat.setdefault(s,{})[fn]=0.0
                 else: zmat.setdefault(s,{})[fn]=float(np.clip((v-mu)/sig,-3,3))
+        # ── Cross-sectional sector neutralization (2026-06-10) ──────────────
+        # Mathematical basis (Grinold & Kahn 2000, ch. 5):
+        #   raw composite score = alpha + beta_sector + residual_alpha
+        # If we rank on raw composite in a RISK_ON regime, we systematically
+        # select high-beta names — the "alpha" is partly market/sector timing,
+        # not stock selection.  Sector-neutralized z-scores measure each stock
+        # *relative to its sector peers*, so the IC we compute reflects true
+        # cross-sectional stock selection skill.
+        #
+        # Method: for each factor, subtract the sector median z-score from
+        # each symbol's z-score.  Median (not mean) is robust to outliers and
+        # avoids inflating residuals when one extreme outlier dominates a small
+        # sector.  Sectors with fewer than MIN_SECTOR_SIZE peers fall back to
+        # the cross-sectional median (universe-level neutralization) to avoid
+        # single-stock "sector" comparisons.
+        #
+        # Effect on downstream math:
+        #   - SNR denominator unchanged (still w^T Σ w, but Σ now reflects
+        #     residual factor covariance, which is tighter — SNR goes up on
+        #     genuine stock-level signals)
+        #   - Composite score magnitude decreases (expected — beta removed)
+        #   - Ranking is preserved within sector; cross-sector ranking is
+        #     now on a level playing field
+        #   - IC measurement gains: factor IC now measures stock selection,
+        #     not sector/market timing
+        #
+        # MIN_SECTOR_SIZE = 3: fewer peers means the sector median is unstable.
+        # TODO:DERIVE — validate via IC comparison (neutralized vs raw) once
+        # 60+ IC-valid exits accumulate (GAP-B gate).  If neutralized IC is
+        # systematically lower, the alpha IS the sector bet and the gate should
+        # be relaxed.
+        _MIN_SECTOR_SIZE = 3
+        try:
+            from sector_map import get_sector as _get_sector
+            # Build sector membership once per scan
+            _sym_sector = {s: _get_sector(s, bars_dict) for s in syms}
+            # Group symbols by sector
+            from collections import defaultdict as _dd
+            _sector_syms = _dd(list)
+            for _s, _sec in _sym_sector.items():
+                _sector_syms[_sec].append(_s)
+            # For each factor, subtract sector median z-score
+            for fn in FACTOR_NAMES:
+                for _sec, _members in _sector_syms.items():
+                    if len(_members) < _MIN_SECTOR_SIZE:
+                        # Fall back to universe-level neutralization
+                        _ref_syms = syms
+                    else:
+                        _ref_syms = _members
+                    _sector_zvals = [zmat[_m][fn] for _m in _ref_syms
+                                     if fn in zmat.get(_m, {})]
+                    if not _sector_zvals:
+                        continue
+                    _sector_med = float(np.median(_sector_zvals))
+                    for _m in _members:
+                        if fn in zmat.get(_m, {}):
+                            zmat[_m][fn] -= _sector_med
+            logger.debug("SectorNeutral: %d sectors, %d symbols neutralized",
+                         len(_sector_syms), len(syms))
+        except Exception as _sne:
+            logger.warning("Sector neutralization failed (%s) — using raw z-scores", _sne)
+        # ─────────────────────────────────────────────────────────────────────
+
         # Inverse-vol weighting
         fd={fn:np.std([zmat[s][fn] for s in syms])+1e-6 for fn in FACTOR_NAMES}
         ivw={fn:1.0/fd[fn] for fn in FACTOR_NAMES}
