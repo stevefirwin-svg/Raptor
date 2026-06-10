@@ -24,6 +24,8 @@ import logging
 import os
 import sys
 import smtplib
+from dotenv import load_dotenv
+load_dotenv()
 import json
 from datetime import datetime, timedelta, date
 from email.mime.text import MIMEText
@@ -41,7 +43,7 @@ logging.basicConfig(level=logging.WARNING)
 logger = logging.getLogger("raptor.recap")
 
 EMAIL_SENDER = "stevefirwin@gmail.com"
-EMAIL_PASSWORD = "trhy qqzo kylt jker"
+EMAIL_PASSWORD = os.getenv("EMAIL_APP_PASSWORD", "")   # SECURITY 2026-06-10: never hardcode — repo is public. Set EMAIL_APP_PASSWORD in .env
 EMAIL_RECEIVER = "stevefirwin@gmail.com"
 
 LEDGER_FILE = "position_ledger.json"

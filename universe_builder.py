@@ -73,6 +73,28 @@ EXCLUSIONS = {
     "BRK.A", "BRK.B",  # Berkshire doesn't behave like normal equities
 }
 
+# LEVERAGED / INVERSE ETP EXCLUSION (2026-06-10)
+# Mathematical basis, not opinion: a k-times daily-rebalanced ETP on an asset
+# with daily volatility sigma loses approximately (k^2 - k)/2 * sigma^2 per day
+# to variance drain relative to k-times the underlying's cumulative return
+# (Cheng & Madhavan 2009, "The Dynamics of Leveraged and Inverse ETFs").
+# Raptor's multi-day momentum signals, ATR stops, and hold-target math all
+# assume the instrument's multi-day return compounds like the underlying.
+# Leveraged/inverse ETPs structurally violate that assumption — the system was
+# buying SQQQ (-3x) and TSLL (+2x) as if they were ordinary momentum equities.
+# Sector/index 1x ETFs (XLE, KRE, SPY...) remain eligible.
+_LEVERAGED_NAME_PAT = None  # compiled lazily below
+
+def _is_leveraged_or_inverse(symbol: str, name: str) -> bool:
+    global _LEVERAGED_NAME_PAT
+    if _LEVERAGED_NAME_PAT is None:
+        import re as _re
+        _LEVERAGED_NAME_PAT = _re.compile(
+            r"(\b[123](\.5)?x\b|ultra|inverse|\bbear\b|\bbull\b|daily target|"
+            r"leveraged|short (s&p|qqq|dow|russell|nasdaq)|-1x|-2x|-3x|2x |3x )",
+            _re.IGNORECASE)
+    return bool(name and _LEVERAGED_NAME_PAT.search(name))
+
 
 class UniverseBuilder:
     """
@@ -116,6 +138,8 @@ class UniverseBuilder:
                 continue
             if a.symbol in EXCLUSIONS:
                 continue
+            if _is_leveraged_or_inverse(a.symbol, a.name or ""):
+                continue  # leveraged/inverse ETP — variance drain breaks multi-day hold math
             if "." in a.symbol:  # Skip class shares like BRK.B
                 continue
             candidates.append({

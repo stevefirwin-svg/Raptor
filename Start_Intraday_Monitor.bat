@@ -3,7 +3,7 @@ chcp 65001 >nul
 title Raptor Intraday Monitor
 cd /d "C:\Users\steve\OneDrive\Desktop\Raptor"
 
-echo [%date% %time%] Intraday monitor loop started >> logs\auto_start.log
+echo [%date% %time%] Intraday monitor loop started >> logs\raptor_auto_start.log
 
 :LOOP
     :: Get current hour and minute (24h)
@@ -30,7 +30,7 @@ echo [%date% %time%] Intraday monitor loop started >> logs\auto_start.log
     )
 
     if %TOTAL_MIN% GTR %CLOSE_MIN% (
-        echo [%date% %time%] Market closed. Intraday monitor shutting down. >> logs\auto_start.log
+        echo [%date% %time%] Market closed. Intraday monitor shutting down. >> logs\raptor_auto_start.log
         echo Market closed (past 3:50 PM). Monitor complete.
         goto DONE
     )
@@ -50,7 +50,7 @@ echo [%date% %time%] Intraday monitor loop started >> logs\auto_start.log
     python exit_monitor.py
     echo [%time%] Exit monitor complete.
 
-    echo [%date% %time%] Cycle complete >> logs\auto_start.log
+    echo [%date% %time%] Cycle complete >> logs\raptor_auto_start.log
 
     :: ── Wait 30 minutes (1800 seconds) then loop ─────────────────────────────
     echo.

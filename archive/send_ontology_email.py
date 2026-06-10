@@ -4,7 +4,7 @@ from email.mime.multipart import MIMEMultipart
 from datetime import datetime
 
 EMAIL_SENDER   = "stevefirwin@gmail.com"
-EMAIL_PASSWORD = "trhy qqzo kylt jker"
+EMAIL_PASSWORD = ""  # SECURITY 2026-06-10: hardcoded app password removed — archived file, do not use
 EMAIL_RECEIVER = "stevefirwin@gmail.com"
 
 html = """

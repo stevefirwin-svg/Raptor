@@ -114,6 +114,38 @@
         "velocity": 0.0,
         "high_water": 57.8565
       }
+    },
+    "v5.4:CSX": {
+      "model": "v5.4",
+      "symbol": "CSX",
+      "shares": 256,
+      "entry_price": 46.9,
+      "entry_date": "2026-06-10",
+      "metadata": {
+        "t_stat": 2.0151,
+        "stop": 44.57,
+        "tp": 0.0,
+        "regime": "NEUTRAL/MIXED",
+        "kelly_fraction": 0.1125,
+        "composite_score": 0.5192,
+        "velocity": 0.0
+      }
+    },
+    "v5.4:BAC": {
+      "model": "v5.4",
+      "symbol": "BAC",
+      "shares": 198,
+      "entry_price": 54.79,
+      "entry_date": "2026-06-10",
+      "metadata": {
+        "t_stat": 1.6713,
+        "stop": 51.59,
+        "tp": 0.0,
+        "regime": "NEUTRAL/TRENDING",
+        "kelly_fraction": 0.1015,
+        "composite_score": 0.6124,
+        "velocity": 0.0
+      }
     }
   },
   "closed": [

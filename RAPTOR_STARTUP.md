@@ -1,6 +1,6 @@
 # RAPTOR_STARTUP.md — Session Startup
 *Read first. Every session. No exceptions.*
-*Last updated: 2026-06-05 | Version: 6.0*
+*Last updated: 2026-06-10 | Version: 6.1*
 
 ---
 
@@ -63,6 +63,9 @@ PYEOF
 - `SELL > 0` and `OK == 0` → order submission failing (check for AttributeError or crash)
 - `INSUF_QTY > 0` → double-trim firing, shares held for prior queued order
 - `SELL == 0` for multiple consecutive days when positions are held → exit_monitor not running
+- Any `FATAL: uncaught exception` line in any log → read the traceback directly below it (added 2026-06-10: all three entry points now write tracebacks to the log before dying)
+- A daily log that **ends mid-run** (no EXIT SUMMARY / no completion line) → the process died. Before 2026-06-10 this was invisible (06-01..04 hard stops, 06-08 universe build); now a FATAL line should accompany it — if a log truncates with NO FATAL line, the process was killed externally (Task Scheduler stop-after-timeout, reboot, OneDrive lock)
+- `AGENT_OVERRIDE` lines → LLM disagreed with deterministic entry rules; expected occasionally, math governed. A high rate means the agent layer is adding noise — review whether to keep it
 
 ---
 
@@ -103,6 +106,19 @@ grep -n "_velocity_filter\|_cooldown_filter" main.py | head -4
 
 # 8. Spearman IC in AdaptiveWeights
 grep -n "spearmanr" signals.py | head -3
+
+# 9. Deterministic entry gate present and correct (added 2026-06-10)
+python3 -c "
+from agent_layer import _eval_entry_rules
+r = _eval_entry_rules({'regime':'TRENDING','composite_score':1.5,'kelly_fraction':0.05,'atr_pct':2.0,'days_since_earnings':30,'vix_regime':'NORMAL','market_momentum_scalar':1.0,'macro_regime':'RISK_ON'})
+assert r == (False, None, None), r
+r = _eval_entry_rules({'regime':'TRENDING','composite_score':1.5,'kelly_fraction':0.08,'atr_pct':2.0,'days_since_earnings':30,'vix_regime':'NORMAL','market_momentum_scalar':1.0,'macro_regime':'RISK_OFF'})
+assert r[0] and r[1] == 6, r
+print('OK: deterministic entry rules')
+"
+
+# 10. No hardcoded credentials anywhere
+grep -rn 'EMAIL_PASSWORD = "' --include="*.py" . | grep -v 'EMAIL_PASSWORD = ""' && echo "CRITICAL: hardcoded password present" || echo "OK: no hardcoded credentials"
 ```
 
 **If submit_order check fails: STOP. Do not run exit_monitor live. Fix data_feeds.py first.**

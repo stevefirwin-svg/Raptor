@@ -6,6 +6,7 @@ Agents run in a thread pool — failure always defaults to PASS/HOLD.
 """
 
 import json
+import os
 import re
 import logging
 import urllib.request
@@ -311,9 +312,103 @@ hold_agent  = OllamaAgent("HoldAgent",  HOLD_PROMPT,  "hold_decisions.json")
 
 # ── Public API ─────────────────────────────────────────────────────────────────
 
+# ── Deterministic Entry Rules (2026-06-10) ────────────────────────────────────
+# All six entry veto rules are exact boolean predicates over the candidate's
+# literal field values. Delegating their evaluation to an LLM violated the
+# system's first principle (math and logic only): despite two prompt-tightening
+# passes, llama3.2 was still emitting fabricated vetoes — e.g. 2026-06-01..03 it
+# vetoed candidates with reason macro_regime="RISK_OFF" while the logged macro
+# regime was RISK_ON, and those vetoes were BINDING (signals removed in main.py).
+#
+# Design: math governs, agent advises.
+#   - The rules below are evaluated exactly in Python.
+#   - The LLM is still called and its decision logged to entry_vetoes.json for
+#     calibration (agent-vs-math disagreement rate), but it cannot veto a
+#     candidate the math passes, and it cannot pass a candidate the math vetoes.
+
+def _eval_entry_rules(c: dict):
+    """Evaluate the six deterministic veto rules. Returns (vetoed, rule, reason)."""
+    regime       = c.get("regime", "")
+    comp         = float(c.get("composite_score", 0.0))
+    kelly        = float(c.get("kelly_fraction", 0.0))
+    atr_pct      = float(c.get("atr_pct", 0.0))
+    dse          = int(c.get("days_since_earnings", 999))
+    vix_regime   = c.get("vix_regime", "NORMAL")
+    mms          = float(c.get("market_momentum_scalar", 1.0))
+    macro_regime = c.get("macro_regime", "NEUTRAL")
+
+    if regime == "MIXED" and comp < 1.0:
+        return True, 1, f'regime="MIXED" AND composite_score {comp:.4f} < 1.0'
+    if kelly > 0.10 and atr_pct > 3.5:
+        return True, 2, f"kelly_fraction {kelly:.4f} > 0.10 AND atr_pct {atr_pct:.2f} > 3.5"
+    if dse < 5:
+        return True, 3, f"days_since_earnings {dse} < 5"
+    if vix_regime == "SPIKE" and mms < 0.6:
+        return True, 4, f'vix_regime="SPIKE" AND market_momentum_scalar {mms:.2f} < 0.6'
+    if macro_regime == "CRISIS":
+        return True, 5, 'macro_regime="CRISIS"'
+    if macro_regime == "RISK_OFF" and kelly > 0.07:
+        return True, 6, f'macro_regime="RISK_OFF" AND kelly_fraction {kelly:.4f} > 0.07'
+    return False, None, None
+
+
 def run_entry_screening(candidates: list) -> dict:
-    """Screen ranked entry candidates. Returns {symbol: decision_dict}."""
-    return entry_agent.evaluate_batch(candidates)
+    """Screen ranked entry candidates. Returns {symbol: decision_dict}.
+
+    Deterministic rules are authoritative. LLM output is advisory and is
+    reconciled against the math; any disagreement is logged and overridden.
+    """
+    llm_decisions = {}
+    try:
+        llm_decisions = entry_agent.evaluate_batch(candidates)
+    except Exception as e:
+        logger.warning("EntryAgent batch failed (%s) — deterministic rules only.", e)
+
+    final = {}
+    for c in candidates:
+        sym = c.get("symbol")
+        vetoed, rule, reason = _eval_entry_rules(c)
+        llm = llm_decisions.get(sym, {})
+        llm_dec = llm.get("decision", "PASS")
+
+        math_dec = "VETO" if vetoed else "PASS"
+        if llm_dec != math_dec:
+            logger.warning(
+                "AGENT_OVERRIDE %s: math=%s (rule %s: %s) vs agent=%s (%s) — math governs",
+                sym, math_dec, rule, reason, llm_dec, llm.get("veto_reason"))
+
+        final[sym] = {
+            "symbol":           sym,
+            "decision":         math_dec,
+            "confidence":       1.0,
+            "veto_reason":      f"rule {rule}: {reason}" if vetoed else None,
+            "decision_source":  "deterministic",
+            "agent_decision":   llm_dec,
+            "agent_confidence": llm.get("confidence"),
+            "agent_veto_reason": llm.get("veto_reason"),
+            "agent_math_disagree": llm_dec != math_dec,
+            "flags":            llm.get("flags", []),
+            "timestamp":        datetime.now().isoformat(),
+        }
+
+    # Persist reconciled decisions so entry_vetoes.json reflects what actually
+    # governed execution (with the raw agent view kept for calibration).
+    try:
+        existing = []
+        p = Path("entry_vetoes.json")
+        if p.exists():
+            try:
+                existing = json.loads(p.read_text())
+            except Exception:
+                existing = []
+        existing.extend(final.values())
+        tmp = p.with_suffix(".tmp")
+        tmp.write_text(json.dumps(existing, indent=2))
+        os.replace(tmp, p)
+    except Exception as e:
+        logger.warning("entry_vetoes.json write failed: %s", e)
+
+    return final
 
 
 def run_hold_screening(positions: list) -> dict:

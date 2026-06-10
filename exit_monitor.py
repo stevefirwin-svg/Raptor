@@ -856,4 +856,15 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()
-    run_exit_monitor(dry_run=args.dry_run)
+    # CRASH VISIBILITY (2026-06-10): June 1-4 hard-stop submissions died on an
+    # uncaught AttributeError with zero log output — the exits log simply ended
+    # at the SELL line. Any uncaught exception must be written to the exits log
+    # with full traceback before the process dies.
+    import sys as _sys
+    try:
+        run_exit_monitor(dry_run=args.dry_run)
+    except SystemExit:
+        raise
+    except BaseException:
+        logger.exception("FATAL: uncaught exception — exit monitor aborted")
+        _sys.exit(1)

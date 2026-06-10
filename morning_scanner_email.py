@@ -15,6 +15,8 @@ import json
 import os
 import sys
 import smtplib
+from dotenv import load_dotenv
+load_dotenv()
 from datetime import datetime, date
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
@@ -22,7 +24,7 @@ from email.mime.multipart import MIMEMultipart
 # ── Config ─────────────────────────────────────────────────────────────────────
 EMAIL_SENDER   = "stevefirwin@gmail.com"
 EMAIL_RECEIVER = "stevefirwin@gmail.com"
-EMAIL_PASSWORD = "trhy qqzo kylt jker"
+EMAIL_PASSWORD = os.getenv("EMAIL_APP_PASSWORD", "")   # SECURITY 2026-06-10: never hardcode — repo is public. Set EMAIL_APP_PASSWORD in .env
 
 LEDGER_FILE    = "position_ledger.json"
 TRIM_LOG_FILE  = "trim_log.json"

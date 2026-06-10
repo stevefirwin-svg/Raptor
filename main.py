@@ -368,4 +368,16 @@ def run_daily_scan():
 
 
 if __name__ == "__main__":
-    run_daily_scan()
+    # CRASH VISIBILITY (2026-06-10): uncaught exceptions previously went only to
+    # the console window, which closes — the daily log just truncated mid-run
+    # (raptor_20260608.log died silently during universe build with no trace).
+    # Every fatal error must land in the log file. Non-zero exit code lets the
+    # watchdog/Task Scheduler see the failure.
+    import sys, logging
+    try:
+        run_daily_scan()
+    except SystemExit:
+        raise
+    except BaseException:
+        logging.getLogger("raptor.main").exception("FATAL: uncaught exception — daily scan aborted")
+        sys.exit(1)

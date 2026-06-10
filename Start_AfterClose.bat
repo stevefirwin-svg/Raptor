@@ -2,7 +2,7 @@
 chcp 65001 >nul
 title Raptor After-Close
 cd /d "C:\Users\steve\OneDrive\Desktop\Raptor"
-echo [%date% %time%] After-close sequence starting >> logs\auto_start.log
+echo [%date% %time%] After-close sequence starting >> logs\raptor_auto_start.log
 
 echo.
 echo [%time%] Step 1: Tagging closed trades (outcome_tracker)...
@@ -27,5 +27,5 @@ git push
 echo [%time%] GitHub push complete.
 
 echo.
-echo [%date% %time%] After-close sequence complete >> logs\auto_start.log
+echo [%date% %time%] After-close sequence complete >> logs\raptor_auto_start.log
 echo Reports: factor_ic_report.json + kelly_estimates.json + outcome_log.json

@@ -9,7 +9,7 @@ echo  RAPTOR v5.4 - %date% %time%
 echo ========================================
 echo.
 
-echo [%date% %time%] Raptor v5.4 starting >> logs\auto_start.log
+echo [%date% %time%] Raptor v5.4 starting >> logs\raptor_auto_start.log
 
 echo [1/2] Entry Scan...
 echo --------------------
@@ -21,7 +21,7 @@ echo ----------------------
 python exit_monitor.py
 echo.
 
-echo [%date% %time%] Raptor v5.4 complete >> logs\auto_start.log
+echo [%date% %time%] Raptor v5.4 complete >> logs\raptor_auto_start.log
 
 echo.
 echo ========================================

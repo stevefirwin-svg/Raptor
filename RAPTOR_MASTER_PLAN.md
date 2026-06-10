@@ -1,5 +1,5 @@
 # Raptor — Master Priority Plan
-*Last updated: 2026-06-05 (session 3). Source of truth: GitHub + live code audit.*
+*Last updated: 2026-06-10 (session 4 — full-stack audit). Source of truth: GitHub + live code audit.*
 *Supersedes all prior versions.*
 
 ---
@@ -30,6 +30,45 @@ session confirming it. Documented-but-unverified fixes are NOT done.
 | MATH items | 2 open (MATH-1, MATH-5) |
 | ARCH items | Gated on data |
 | HYGIENE items | 0 open (all closed 2026-05-29) |
+
+---
+
+## SESSION 4 AUDIT — 2026-06-10 (full-stack, log-driven)
+
+### Found in logs (last 2 weeks)
+
+| Date(s) | Finding | Root cause | Status |
+|---------|---------|-----------|--------|
+| 06-01 to 06-04 | Hard stops on AMD/INTC/HPQ/TSLA logged SELL then **zero execution, zero error** — exits log truncated mid-run all 4 days. Cash frozen at $76,566.30. | Tail of the submit_order missing-`def` bug. Pre-06-05 EXECUTE block had **no try/except** around submit_order; AttributeError killed the process between the SELL log line and any error output. | Explained — fixed by 06-05 commits. Crash-visibility handlers added 06-10 so this class can never be invisible again. |
+| 06-01 to 06-03 | EntryAgent emitted **binding** vetoes citing `macro_regime="RISK_OFF"` while logged regime was RISK_ON. Valid candidates blocked 3 days despite a second prompt-tightening pass. | Stochastic LLM evaluating deterministic boolean rules — hallucination cannot be prompted away. | **FIXED 2026-06-10**: six entry rules now evaluated exactly in Python (`_eval_entry_rules`); LLM demoted to advisory; disagreements logged as `AGENT_OVERRIDE` and persisted (`agent_math_disagree` field) for calibration. 8/8 unit tests pass incl. the 06-01 scenario. |
+| 06-08 | Entry scan died silently mid-universe-rebuild ("Fetching bars for 7171 symbols" then nothing). No entry scan ran 06-08. | Unknown — no traceback was capturable (see crash visibility fix). Candidate causes: Python exception in fetch loop outside per-batch handler, OR Task Scheduler "stop task if it runs longer than" killing the process. | Crash handler now logs traceback; **STEVE ACTION**: check Task Scheduler task settings → Settings tab → "Stop the task if it runs longer than" for the entry task. |
+| 06-05 | All 6 positions exited simultaneously via trailing_stop at 09:52 — the collapsed-trail bug fired the moment execution came back online, before the tier fix landed later that day. | Known (trail tiers). | Already fixed 06-05; noting sequence for the record. |
+| 06-09 | System bought **SQQQ (-3x QQQ)** 258 shares as a momentum position; TSLL / PLTD held previously. | Universe had no leveraged/inverse ETP filter. Variance drain ≈ (k²−k)/2·σ² per day (Cheng & Madhavan 2009) breaks every multi-day hold assumption in the stack (ATR stops, hold targets, momentum persistence). | **FIXED 2026-06-10**: name-pattern exclusion in universe_builder, 10/10 pattern tests pass. **SQQQ position currently open — Steve decides whether to exit manually or let exit math close it.** |
+| ongoing | `outcome_log.json`: post-05-29 records mostly `entry_decision: None` (3 of 11 populated). | NOT a sidecar bug — sidecar works (MRVL 06-09 = PASS). Entries made during the broken-JSON-parse era (pre-06-03 sanitize fix) never had PASS records written to entry_vetoes.json; nothing exists to join. | Unrecoverable data loss for those positions; labels self-heal as the book turns over. Documented, no action possible. |
+| ongoing | Bat files still wrote to `logs\auto_start.log` — the raptor_auto_start.log rename agreed in a prior session **never landed in the repo** (fix-not-in-live-code failure class). | Session output not committed. | **FIXED 2026-06-10**: all 9 bat files now write `logs\raptor_auto_start.log`. |
+| security | Gmail app password was **still hardcoded** in daily_recap.py + morning_scanner_email.py in the public repo (send_ontology_email.py was fixed; other two were not). | Partial application of prior fix. | Code **FIXED 2026-06-10** (env var). **STEVE ACTION — URGENT, cannot be done by Claude:** the old app password is burned (public git history). Revoke it at myaccount.google.com → Security → App passwords, generate a new one, put it in `.env` as `EMAIL_APP_PASSWORD`. Until then recap/scanner emails will not send. |
+
+### Fixed this session (all syntax-verified + unit-tested in container; Rule 11 requires paste-confirmed verification on Steve's machine)
+
+| ID | Fix |
+|----|-----|
+| S4-1 | Crash-visibility handlers: main.py, exit_monitor.py, hold_monitor.py entry points now `logger.exception` full traceback to the log file and exit 1 on any uncaught error. The silent-death class (06-01..04, 06-08) is now structurally impossible to miss. |
+| S4-2 | Deterministic entry gate: `_eval_entry_rules()` in agent_layer.py — math governs, agent advises. Reconciled decisions written to entry_vetoes.json with `decision_source="deterministic"`, raw agent view preserved (`agent_decision`, `agent_math_disagree`) → enables the agent-vs-math disagreement metric for daily_recap. |
+| S4-3 | Hardcoded Gmail app password removed from daily_recap.py + morning_scanner_email.py → `os.getenv("EMAIL_APP_PASSWORD")` with dotenv load. |
+| S4-4 | 9 bat files: `auto_start.log` → `raptor_auto_start.log` (Ares isolation, finally in-repo). |
+| S4-5 | universe_builder: leveraged/inverse ETP exclusion, math-derived (variance drain), 1x sector ETFs unaffected. |
+
+### Cannot be done by Claude — Steve's queue
+
+1. **Revoke + rotate Gmail app password** (above). The committed password must be treated as public.
+2. **Task Scheduler check** for the 06-08 kill: every Raptor task → Settings → confirm "Stop the task if it runs longer than" is OFF or ≥ 2 hours for the entry task (universe rebuild day takes minutes, not seconds).
+3. **Decide on the open SQQQ position** (entered 06-09, pre-filter). Exit math will manage it, but it now sits outside the instrument class the math was built for.
+4. **Verify S4 fixes live** per Rule 11: run the Step 4 checks + `python -c "from agent_layer import _eval_entry_rules; print(_eval_entry_rules({'regime':'TRENDING','composite_score':1.5,'kelly_fraction':0.05,'atr_pct':2,'days_since_earnings':30,'vix_regime':'NORMAL','market_momentum_scalar':1.0,'macro_regime':'RISK_ON'}))"` → expect `(False, None, None)`. Paste output next session.
+
+### Metrics gaps confirmed against the required daily_recap list
+
+Present: exit-reason breakdown, rolling win rate, trim efficiency, capital efficiency, consecutive-loss streak, hold-days.
+Missing: **agent-vs-math disagreement rate** (data now flows via S4-2 — implement once a week of reconciled records exists) and **macro regime at entry vs exit per position** (requires regime stamped into ledger metadata at entry; stamp exists for new entries via `metadata.regime`, but exit-side regime is not recorded in outcome records — add `exit_regime` field to build_outcome_record, ~5 lines, queued for next session to keep this session's diff reviewable).
 
 ---
 
