@@ -20,6 +20,11 @@ python kelly_engine.py
 echo [%time%] Kelly engine complete.
 
 echo.
+echo [%time%] Step 4: Deflated Sharpe Ratio...
+python dsr.py
+echo [%time%] DSR complete.
+
+echo.
 echo [%time%] Step 4: GitHub push...
 git add -A
 git commit -m "Daily update %date:~10,4%-%date:~4,2%-%date:~7,2%"

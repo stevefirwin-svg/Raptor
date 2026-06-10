@@ -408,7 +408,18 @@ def get_portfolio_analytics(closed_trades, equity):
         "cap_efficiency": cap_eff,
         # Implementation shortfall (added 2026-06-10)
         "slippage": _get_slippage_analytics(),
+        # Deflated Sharpe Ratio (added 2026-06-10)
+        "dsr": _get_dsr(),
     }
+
+
+def _get_dsr() -> dict:
+    """Compute Deflated Sharpe Ratio. Returns empty dict on failure."""
+    try:
+        from dsr import compute_dsr as _compute_dsr
+        return _compute_dsr(n_trials=10)
+    except Exception:
+        return {}
 
 
 def _get_slippage_analytics() -> dict:
@@ -575,6 +586,40 @@ def get_days_held(open_ledger, positions):
 # ─────────────────────────────────────────────────────────────────────────────
 # HTML BUILDER
 # ─────────────────────────────────────────────────────────────────────────────
+
+
+def _build_dsr_html(dsr: dict) -> str:
+    """Render Deflated Sharpe Ratio section for daily recap email."""
+    if not dsr or dsr.get("verdict") == "INSUFFICIENT":
+        n = dsr.get("n_trades", 0) if dsr else 0
+        note = dsr.get("note", "") if dsr else ""
+        return (
+            '<div style="margin-top:6px;padding:6px;background:#0e0e20;'
+            'border:1px solid #1e1e34;border-radius:4px;font-size:11px;color:#6a6a8a">'
+            f'DSR: {note or "Insufficient trades — accumulating data."}</div>'
+        )
+    verdict_colors = {"STRONG": "#00d4aa", "MODERATE": "#a0e0c0", "WEAK": "#ffa502", "NOISE": "#ff4757"}
+    vc = verdict_colors.get(dsr.get("verdict", "NOISE"), "#ffa502")
+    return (
+        f'<div style="margin-top:6px;padding:8px;background:#0e0e20;'
+        f'border:1px solid #1e1e34;border-radius:4px">'
+        f'<div style="font-size:11px;color:#6a6a8a;margin-bottom:4px">'
+        f'Deflated Sharpe Ratio (Bailey &amp; López de Prado 2014) — {dsr.get("n_trades",0)} IC-valid trades</div>'
+        f'<table width="100%" cellpadding="0" cellspacing="0"><tr>'
+        f'<td style="font-size:12px;padding:2px 8px 2px 0">'
+        f'Verdict: <b style="color:{vc}">{dsr.get("verdict","?")}</b></td>'
+        f'<td style="font-size:12px;color:#e0e0e0;padding:2px 8px 2px 0">'
+        f'DSR: <b style="color:{vc}">{dsr.get("dsr_pct",0):.1f}%</b></td>'
+        f'<td style="font-size:12px;color:#e0e0e0;padding:2px 8px 2px 0">'
+        f'Observed SR: <b>{dsr.get("sr_obs",0):.3f}</b></td>'
+        f'<td style="font-size:12px;color:#e0e0e0;padding:2px 8px 2px 0">'
+        f'SR* ({dsr.get("n_trials",0)} trials): <b>{dsr.get("sr_star",0):.3f}</b></td>'
+        f'<td style="font-size:12px;color:#a0a0b0;padding:2px 0">'
+        f'Skew: {dsr.get("skewness",0):+.2f} | XKurt: {dsr.get("excess_kurtosis",0):+.2f}</td>'
+        f'</tr></table>'
+        f'<div style="font-size:11px;color:#6a6a8a;margin-top:3px">{dsr.get("note","")}</div>'
+        f'</div>'
+    )
 
 
 def _build_slippage_html(slip: dict) -> str:
@@ -934,7 +979,8 @@ def build_html(account, positions, entries, exits, signals, macro, scale,
         <div style="padding:6px 0 2px 2px;font-size:11px;color:#6a6a8a">
           Exit breakdown: {exit_breakdown_str}
         </div>
-        {_build_slippage_html(analytics.get("slippage", {}))}"""
+        {_build_slippage_html(analytics.get("slippage", {}))}
+        {_build_dsr_html(analytics.get("dsr", {}))}"""
     else:
         analytics_html = '<div style="color:#6a6a8a;font-size:12px;padding:8px 0">Insufficient trade history for analytics (need ≥ 3 closed trades)</div>'
 
