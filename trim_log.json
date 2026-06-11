@@ -739,5 +739,44 @@
     "agent_decision": "HOLD",
     "agent_conf": 0.9,
     "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-06-11T09:52:20.379663",
+    "symbol": "MRVL",
+    "trim_qty": 10,
+    "price": 264.45,
+    "pnl_pct": -10.12,
+    "reason": "math_trim_47%",
+    "composite": 0.4344,
+    "trim_detail": "severity=0.159 x stop_mult=1.50 x far_mult=1.00 x pnl_mult=1.40 + slope_adj=0.140 = 0.473 -> 47.3% (10 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-06-11T09:52:20.379717",
+    "symbol": "WFC",
+    "trim_qty": 83,
+    "price": 81.38,
+    "pnl_pct": -0.45,
+    "reason": "math_trim_59%",
+    "composite": -0.0355,
+    "trim_detail": "severity=0.367 x stop_mult=0.75 x far_mult=1.17 x pnl_mult=1.20 + slope_adj=0.200 = 0.585 -> 58.5% (83 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-06-11T09:52:20.379746",
+    "symbol": "XLE",
+    "trim_qty": 20,
+    "price": 58.3458,
+    "pnl_pct": 0.85,
+    "reason": "math_trim_12%",
+    "composite": 0.1072,
+    "trim_detail": "severity=0.015 x stop_mult=0.75 x far_mult=1.17 x pnl_mult=1.00 + slope_adj=0.103 = 0.116 -> 11.6% (20 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
   }
 ]

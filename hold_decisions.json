@@ -10181,5 +10181,165 @@
     "symbol": "XLE",
     "timestamp": "2026-06-10T16:49:39.007633",
     "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "BAC",
+    "timestamp": "2026-06-11T09:52:08.421399",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "CSX",
+    "timestamp": "2026-06-11T09:52:08.421418",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "KDP",
+    "timestamp": "2026-06-11T09:52:08.421423",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "KRE",
+    "timestamp": "2026-06-11T09:52:08.421426",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "MRVL",
+    "timestamp": "2026-06-11T09:52:08.421429",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "PFE",
+    "timestamp": "2026-06-11T09:52:08.421431",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "SQQQ",
+    "timestamp": "2026-06-11T09:52:08.421434",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "WFC",
+    "timestamp": "2026-06-11T09:52:08.421436",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "WULF",
+    "timestamp": "2026-06-11T09:52:08.421439",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "XLE",
+    "timestamp": "2026-06-11T09:52:08.421441",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "BAC",
+    "timestamp": "2026-06-11T16:30:47.233705",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "CSX",
+    "timestamp": "2026-06-11T16:30:47.233730",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "KDP",
+    "timestamp": "2026-06-11T16:30:47.233734",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "KRE",
+    "timestamp": "2026-06-11T16:30:47.233737",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "MRVL",
+    "timestamp": "2026-06-11T16:30:47.233740",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "PFE",
+    "timestamp": "2026-06-11T16:30:47.233743",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "SQQQ",
+    "timestamp": "2026-06-11T16:30:47.233746",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "WFC",
+    "timestamp": "2026-06-11T16:30:47.233749",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "WULF",
+    "timestamp": "2026-06-11T16:30:47.233752",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "XLE",
+    "timestamp": "2026-06-11T16:30:47.233755",
+    "agent": "HoldAgent"
   }
 ]

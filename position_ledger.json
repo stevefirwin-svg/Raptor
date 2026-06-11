@@ -7,7 +7,7 @@
       "entry_price": 28.670593,
       "entry_date": "2026-05-24",
       "metadata": {
-        "stop": 30.1617,
+        "stop": 30.407,
         "regime": "BACKFILL",
         "t_stat": null,
         "kelly_fraction": null,
@@ -25,7 +25,7 @@
       "entry_date": "2026-06-05",
       "metadata": {
         "t_stat": 1.4261,
-        "stop": 68.6894,
+        "stop": 69.6343,
         "tp": 0.0,
         "regime": "RISK_ON/REVERTING",
         "kelly_fraction": 0.117,
@@ -37,24 +37,37 @@
     "v5.4:WFC": {
       "model": "v5.4",
       "symbol": "WFC",
-      "shares": 142,
+      "shares": 59,
       "entry_price": 81.84,
       "entry_date": "2026-06-05",
       "metadata": {
         "t_stat": 1.2234,
-        "stop": 77.4354,
+        "stop": 78.6479,
         "tp": 0.0,
         "regime": "RISK_ON/TRENDING",
         "kelly_fraction": 0.1089,
         "composite_score": 0.4768,
         "velocity": 0.0,
-        "high_water": 82.16
-      }
+        "high_water": 82.16,
+        "last_trim_ts": "2026-06-11T09:52:20.176672"
+      },
+      "trims": [
+        {
+          "date": "2026-06-11",
+          "reason": "math_trim_59%",
+          "shares_sold": 83,
+          "trim_price": 81.38,
+          "pnl_pct": -0.5621,
+          "pnl_abs": -38.18,
+          "shares_before": 142,
+          "shares_after": 59
+        }
+      ]
     },
     "v5.4:MRVL": {
       "model": "v5.4",
       "symbol": "MRVL",
-      "shares": 21,
+      "shares": 11,
       "entry_price": 296.355,
       "entry_date": "2026-06-05",
       "metadata": {
@@ -66,7 +79,7 @@
         "composite_score": 0.3123,
         "velocity": 0.0,
         "high_water": 294.21,
-        "last_trim_ts": "2026-06-09T15:50:30.342429"
+        "last_trim_ts": "2026-06-11T09:52:20.087552"
       },
       "trims": [
         {
@@ -78,6 +91,16 @@
           "pnl_abs": -647.96,
           "shares_before": 39,
           "shares_after": 21
+        },
+        {
+          "date": "2026-06-11",
+          "reason": "math_trim_47%",
+          "shares_sold": 10,
+          "trim_price": 264.45,
+          "pnl_pct": -10.7658,
+          "pnl_abs": -319.05,
+          "shares_before": 21,
+          "shares_after": 11
         }
       ]
     },
@@ -89,7 +112,7 @@
       "entry_date": "2026-06-09",
       "metadata": {
         "t_stat": 1.558,
-        "stop": 35.8567,
+        "stop": 37.3414,
         "tp": 0.0,
         "regime": "NEUTRAL/TRENDING",
         "kelly_fraction": 0.0979,
@@ -101,19 +124,32 @@
     "v5.4:XLE": {
       "model": "v5.4",
       "symbol": "XLE",
-      "shares": 174,
+      "shares": 154,
       "entry_price": 57.97,
       "entry_date": "2026-06-09",
       "metadata": {
         "t_stat": 1.4634,
-        "stop": 54.87,
+        "stop": 55.3208,
         "tp": 0.0,
         "regime": "NEUTRAL/MIXED",
         "kelly_fraction": 0.0948,
         "composite_score": 0.3612,
         "velocity": 0.0,
-        "high_water": 57.8565
-      }
+        "high_water": 58.3458,
+        "last_trim_ts": "2026-06-11T09:52:20.373989"
+      },
+      "trims": [
+        {
+          "date": "2026-06-11",
+          "reason": "math_trim_12%",
+          "shares_sold": 20,
+          "trim_price": 58.3458,
+          "pnl_pct": 0.6483,
+          "pnl_abs": 7.52,
+          "shares_before": 174,
+          "shares_after": 154
+        }
+      ]
     },
     "v5.4:CSX": {
       "model": "v5.4",
@@ -128,7 +164,8 @@
         "regime": "NEUTRAL/MIXED",
         "kelly_fraction": 0.1125,
         "composite_score": 0.5192,
-        "velocity": 0.0
+        "velocity": 0.0,
+        "high_water": 46.93
       }
     },
     "v5.4:BAC": {
@@ -139,12 +176,47 @@
       "entry_date": "2026-06-10",
       "metadata": {
         "t_stat": 1.6713,
-        "stop": 51.59,
+        "stop": 52.177,
         "tp": 0.0,
         "regime": "NEUTRAL/TRENDING",
         "kelly_fraction": 0.1015,
         "composite_score": 0.6124,
-        "velocity": 0.0
+        "velocity": 0.0,
+        "high_water": 54.81
+      }
+    },
+    "v5.4:PFE": {
+      "model": "v5.4",
+      "symbol": "PFE",
+      "shares": 331,
+      "entry_price": 26.18,
+      "entry_date": "2026-06-11",
+      "metadata": {
+        "t_stat": 2.5529,
+        "stop": 25.28,
+        "tp": 0.0,
+        "regime": "NEUTRAL/REVERTING",
+        "kelly_fraction": 0.0811,
+        "composite_score": 0.4389,
+        "velocity": 0.0,
+        "high_water": 26.1078
+      }
+    },
+    "v5.4:WULF": {
+      "model": "v5.4",
+      "symbol": "WULF",
+      "shares": 319,
+      "entry_price": 23.66,
+      "entry_date": "2026-06-11",
+      "metadata": {
+        "t_stat": 2.0358,
+        "stop": 19.5,
+        "tp": 0.0,
+        "regime": "NEUTRAL/REVERTING",
+        "kelly_fraction": 0.0707,
+        "composite_score": 0.35,
+        "velocity": 0.0,
+        "high_water": 23.805
       }
     }
   },

@@ -1,1 +1,77 @@
-[]
+[
+  {
+    "ts": "2026-06-11T13:35:12.080666+00:00",
+    "symbol": "PFE",
+    "side": "BUY",
+    "qty": 331,
+    "decision_price": 26.18,
+    "fill_price": 26.1078,
+    "is_bps": -27.59,
+    "is_dollars": -23.9101,
+    "order_id": "f8678c85-cca5-48d4-ba3b-87cdba1fb822",
+    "exit_reason": null,
+    "notional": 8665.58,
+    "status": "OrderStatus.PENDING_NEW",
+    "backfilled": true
+  },
+  {
+    "ts": "2026-06-11T13:35:12.142669+00:00",
+    "symbol": "WULF",
+    "side": "BUY",
+    "qty": 319,
+    "decision_price": 23.66,
+    "fill_price": 23.6062,
+    "is_bps": -22.72,
+    "is_dollars": -17.1501,
+    "order_id": "1f44fe63-0e77-4cc4-8019-846549388db5",
+    "exit_reason": null,
+    "notional": 7547.54,
+    "status": "OrderStatus.PENDING_NEW",
+    "backfilled": true
+  },
+  {
+    "ts": "2026-06-11T13:52:20.017944+00:00",
+    "symbol": "MRVL",
+    "side": "SELL",
+    "qty": 10,
+    "decision_price": 264.45,
+    "fill_price": 264.4075,
+    "is_bps": 1.61,
+    "is_dollars": 0.425,
+    "order_id": "f25f5622-90f4-44c9-b40f-44f9019e4633",
+    "exit_reason": "math_trim_47%",
+    "notional": 2644.5,
+    "status": "OrderStatus.PENDING_NEW",
+    "backfilled": true
+  },
+  {
+    "ts": "2026-06-11T13:52:20.128366+00:00",
+    "symbol": "WFC",
+    "side": "SELL",
+    "qty": 83,
+    "decision_price": 81.38,
+    "fill_price": 81.31,
+    "is_bps": 8.6,
+    "is_dollars": 5.81,
+    "order_id": "eedd5f0f-ab95-4624-9171-5b3ed8b5604d",
+    "exit_reason": "math_trim_59%",
+    "notional": 6754.54,
+    "status": "OrderStatus.PENDING_NEW",
+    "backfilled": true
+  },
+  {
+    "ts": "2026-06-11T13:52:20.323171+00:00",
+    "symbol": "XLE",
+    "side": "SELL",
+    "qty": 20,
+    "decision_price": 58.3458,
+    "fill_price": 58.39,
+    "is_bps": -7.58,
+    "is_dollars": -0.884,
+    "order_id": "fad4281a-f618-420f-aff9-4cbf72504d9a",
+    "exit_reason": "math_trim_12%",
+    "notional": 1166.92,
+    "status": "OrderStatus.PENDING_NEW",
+    "backfilled": true
+  }
+]

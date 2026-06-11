@@ -288,5 +288,35 @@
     "entry_reasoning": null,
     "entry_flags": [],
     "submitted_at": "2026-06-09T15:50:30.321650"
+  },
+  "f25f5622-90f4-44c9-b40f-44f9019e4633": {
+    "symbol": "MRVL",
+    "exit_reason": "math_trim_47%",
+    "composite": 0.4344,
+    "entry_decision": "PASS",
+    "entry_confidence": 0.95,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-06-11T09:52:20.066349"
+  },
+  "eedd5f0f-ab95-4624-9171-5b3ed8b5604d": {
+    "symbol": "WFC",
+    "exit_reason": "math_trim_59%",
+    "composite": -0.0355,
+    "entry_decision": null,
+    "entry_confidence": null,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-06-11T09:52:20.153920"
+  },
+  "fad4281a-f618-420f-aff9-4cbf72504d9a": {
+    "symbol": "XLE",
+    "exit_reason": "math_trim_12%",
+    "composite": 0.1072,
+    "entry_decision": null,
+    "entry_confidence": null,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-06-11T09:52:20.353396"
   }
 }

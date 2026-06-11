@@ -94,3 +94,21 @@ UnicodeEncodeError: 'charmap' codec can't encode character '\u2192' in position 
 [OutcomeTracker] Hold decision records  : 1157
 [OutcomeTracker] Filled sell orders from Alpaca: 132
 [OutcomeTracker] No new trades to tag.
+[OutcomeTracker] Existing tagged trades : 132
+[OutcomeTracker] Pending sidecar records: 32
+[OutcomeTracker] Entry veto records     : 88
+[OutcomeTracker] Hold decision records  : 1191
+[OutcomeTracker] Filled sell orders from Alpaca: 135
+  [+] MRVL     | exit: 2026-06-11 | pnl: -10.14%  | path: math_trim              | entry: PASS  | hold: HOLD
+  [+] WFC      | exit: 2026-06-11 | pnl: -0.54%   | path: math_trim              | entry: no_record | hold: HOLD
+  [+] XLE      | exit: 2026-06-11 | pnl: +0.92%   | path: math_trim              | entry: no_record | hold: HOLD
+Traceback (most recent call last):
+  File "C:\Users\steve\OneDrive\Desktop\Raptor\outcome_tracker.py", line 492, in <module>
+    n = run_tracker(verbose=not args.quiet)
+  File "C:\Users\steve\OneDrive\Desktop\Raptor\outcome_tracker.py", line 400, in run_tracker
+    print(f"\n[OutcomeTracker] Tagged {len(new_records)} new trade(s) \u2192 {OUTCOME_LOG_PATH}")
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\steve\AppData\Local\Programs\Python\Python313\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2192' in position 41: character maps to <undefined>

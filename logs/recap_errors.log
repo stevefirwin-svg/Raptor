@@ -52,3 +52,18 @@ PermissionError: [WinError 32] The process cannot access the file because it is 
 [2026-06-10T16:30:15.424558] Recap email sent OK.
 [2026-06-10T16:30:15.775605] Recap email sent OK.
 [2026-06-10T16:49:40.471567] Recap email sent OK.
+[2026-06-11T16:30:45.106282] run_monitor() failed: [WinError 32] The process cannot access the file because it is being used by another process: 'hold_history.json.tmp' -> 'hold_history.json'
+Traceback (most recent call last):
+  File "C:\Users\steve\OneDrive\Desktop\Raptor\daily_recap.py", line 1229, in main
+    run_monitor()
+    ~~~~~~~~~~~^^
+  File "C:\Users\steve\OneDrive\Desktop\Raptor\hold_monitor.py", line 756, in run_monitor
+    save_history(history)
+    ~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\steve\OneDrive\Desktop\Raptor\hold_monitor.py", line 94, in save_history
+    os.replace(tmp, HISTORY_FILE)
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'hold_history.json.tmp' -> 'hold_history.json'
+
+[2026-06-11T16:30:47.610859] Recap email sent OK.
+[2026-06-11T16:30:49.174962] Recap email sent OK.

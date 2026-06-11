@@ -823,5 +823,44 @@
     "agent_math_disagree": false,
     "flags": [],
     "timestamp": "2026-06-10T11:59:57.512935"
+  },
+  {
+    "symbol": "PFE",
+    "decision": "PASS",
+    "confidence": 1.0,
+    "veto_reason": null,
+    "decision_source": "deterministic",
+    "agent_decision": "PASS",
+    "agent_confidence": null,
+    "agent_veto_reason": null,
+    "agent_math_disagree": false,
+    "flags": [],
+    "timestamp": "2026-06-11T09:35:11.975154"
+  },
+  {
+    "symbol": "WULF",
+    "decision": "PASS",
+    "confidence": 1.0,
+    "veto_reason": null,
+    "decision_source": "deterministic",
+    "agent_decision": "PASS",
+    "agent_confidence": null,
+    "agent_veto_reason": null,
+    "agent_math_disagree": false,
+    "flags": [],
+    "timestamp": "2026-06-11T09:35:11.975171"
+  },
+  {
+    "symbol": "SCHW",
+    "decision": "PASS",
+    "confidence": 1.0,
+    "veto_reason": null,
+    "decision_source": "deterministic",
+    "agent_decision": "PASS",
+    "agent_confidence": null,
+    "agent_veto_reason": null,
+    "agent_math_disagree": false,
+    "flags": [],
+    "timestamp": "2026-06-11T09:35:11.975176"
   }
 ]
