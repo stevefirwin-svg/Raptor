@@ -446,6 +446,36 @@ class Backtester:
         daily_ret = eq.pct_change().dropna()
         metrics = self._compute_metrics(all_trades, eq, daily_ret, bench)
 
+        # ── SURVIVORSHIP BIAS WARNING ─────────────────────────────────────────
+        # The backtest universe is generated from today's list of Alpaca-tradeable
+        # symbols. Stocks that were delisted, halted, acquired, or went bankrupt
+        # between the backtest start date and today are ABSENT from this universe.
+        # This biases backtest results upward — we are implicitly selecting only
+        # survivors.
+        #
+        # Magnitude estimate: Shumway (1997) found ~3% of NYSE/AMEX firms delist
+        # per year for performance reasons. Over a 2-year backtest window, the
+        # upward bias is approximately 6-8% on annualised return (Brown, Goetzmann
+        # & Ross 1995). Sharpe ratio bias is harder to bound without point-in-time
+        # data but is material at short lookbacks.
+        #
+        # Mitigation plan (ARCH-5 gate):
+        #   1. Obtain a point-in-time universe list (e.g. historical S&P 500
+        #      constituents from Quandl/Sharadar, or CRSP if available).
+        #   2. Replace backtest_universe.txt with date-stamped constituent files.
+        #   3. Add a delisting event file so the simulator can force-exit at
+        #      delisting price (typically -50 to -80% from last price).
+        # Until ARCH-5 is complete, treat all backtest Sharpe/return figures as
+        # UPPER BOUNDS on out-of-sample performance.
+        #
+        # TODO: ARCH-5 — point-in-time universe. No data gate; requires data source.
+        metrics["_SURVIVORSHIP_BIAS_WARNING"] = (
+            "UPPER BOUND: universe is today's tradeable list. "
+            "Delisted/bankrupt stocks absent — return bias est. +6-8% annualised "
+            "over 2yr window (Brown, Goetzmann & Ross 1995; Shumway 1997). "
+            "Treat Sharpe and return as upper bounds until ARCH-5 point-in-time "
+            "universe is implemented."
+        )
         return {"trades": all_trades, "equity": eq, "benchmark": bench,
                 "daily_returns": daily_ret, "metrics": metrics}
 

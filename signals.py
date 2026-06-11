@@ -612,11 +612,46 @@ class QuantSignalEngine:
             if lev and abs(s["t"])>=2.0: kelly=min(kelly*2.0,0.20)
             pctile=scipy_stats.percentileofscore(comp_arr,s["comp"])/100.0
             atr_p=raw[sym].get("atr_pctile",0)
-            # TODO:DERIVE — hold_target formula uses atr_pctile (volatility rank) as proxy
-            # for hold duration. This conflates volatility with OU reversion speed.
-            # Correct: hold_target = ln(2)/theta where theta is per-stock OU speed
-            # (Leung & Zhang 2019). Constants 16 and 14 are also round numbers.
-            hold=max(1,min(30,int(16+14*(atr_p if not(isinstance(atr_p,float) and np.isnan(atr_p)) else 0))))
+            # ── OU-derived hold target (Leung & Zhang 2019) ─────────────────────
+            # Previous formula: hold = 16 + 14 * atr_pctile
+            # Problem: conflates volatility rank with mean-reversion speed.
+            # A high-vol trending stock (high atr_pctile) got a LONGER hold target,
+            # when in fact it should be held until the thesis decays — trend stocks
+            # should hold until momentum dies, not exit at a fixed vol-derived day count.
+            #
+            # Correct formulation (Leung & Zhang 2019, eq. 4):
+            #   theta = OU mean-reversion speed (1/day) estimated via AR(1) OLS
+            #   hold_target = ln(2) / theta  (half-life of mean reversion)
+            #
+            # For TRENDING stocks (theta ≈ 0): hold_target → max_days (30).
+            #   Time stop governs; composite decay / trailing stop triggers exit.
+            # For REVERTING stocks (theta large): hold_target is short (3-10d).
+            #   Exit quickly once the reversion impulse is consumed.
+            #
+            # OLS estimation: dX_t = a + b*X_t + eps  where X = log(price)
+            #   b = -theta*dt → theta = -b/dt, clamped to [0, inf)
+            #
+            # TODO:DERIVE at GAP-B (60+ exits): regress realized hold_days vs
+            # theta estimate to calibrate the min/max bounds (3, 30).
+            _bars_c = bars["close"]
+            _log_p  = np.log(_bars_c.values + 1e-10)
+            _n_ou   = len(_log_p)
+            _hold_ou = 15  # fallback: neutral prior (midpoint of old 1-30 range)
+            if _n_ou >= 20:
+                _x_t  = _log_p[:-1]
+                _dx_t = _log_p[1:] - _log_p[:-1]
+                _Xm   = np.column_stack([np.ones(_n_ou - 1), _x_t])
+                try:
+                    _b     = np.linalg.lstsq(_Xm, _dx_t, rcond=None)[0][1]
+                    _theta = float(max(-_b, 0.0))   # clamp: trending stocks → 0
+                    if _theta > 1e-4:
+                        _half_life = float(np.log(2) / _theta)
+                        _hold_ou   = int(np.clip(round(_half_life), 3, 30))
+                    else:
+                        _hold_ou = 30   # trending — time stop governs
+                except np.linalg.LinAlgError:
+                    pass
+            hold = _hold_ou
             rev_m=raw[sym].get("rev_momentum",0)
             conf="reversal" if(isinstance(rev_m,(int,float)) and not np.isnan(rev_m) and rev_m>0.5) else "adaptive"
             signals.append(Signal(

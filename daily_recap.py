@@ -410,7 +410,56 @@ def get_portfolio_analytics(closed_trades, equity):
         "slippage": _get_slippage_analytics(),
         # Deflated Sharpe Ratio (added 2026-06-10)
         "dsr": _get_dsr(),
+        # Macro regime at entry vs exit (added 2026-06-11)
+        "regime_drift": _get_regime_drift(trades),
     }
+
+
+
+def _get_regime_drift(trades: list) -> dict:
+    """
+    Compute macro regime transition matrix: what regime were positions entered in
+    vs what regime they exited in.
+
+    Answers: "Are we holding through regime shifts that should have triggered exits?"
+
+    Returns dict: {entry_regime: {exit_regime: count}} plus a flat summary.
+    Only uses records where both entry_regime (from ledger metadata.regime) and
+    exit_regime (from outcome_log, added 2026-06-11) are populated.
+    """
+    try:
+        import json, collections
+        recs = json.load(open("outcome_log.json"))
+        # entry regime lives in ledger at entry time (metadata.regime field)
+        # For outcome records: check metadata stored in ledger at entry, or
+        # use the 'regime' field embedded in older records
+        matrix = collections.defaultdict(lambda: collections.defaultdict(int))
+        n_both = 0
+        for r in recs:
+            er = r.get("entry_regime") or r.get("regime")  # fallback to bare regime field
+            xr = r.get("exit_regime")
+            if er and xr:
+                matrix[er][xr] += 1
+                n_both += 1
+        if not n_both:
+            return {"n": 0, "note": "No records with both entry_regime and exit_regime yet — accumulating from 2026-06-11 onwards."}
+        # Flatten for display
+        flat = {}
+        for er, exits in matrix.items():
+            for xr, cnt in exits.items():
+                flat[f"{er}→{xr}"] = cnt
+        # Count regime changes (entry != exit)
+        changed = sum(v for k, v in flat.items() if k.split("→")[0] != k.split("→")[1])
+        pct_changed = round(100 * changed / n_both, 1) if n_both else 0
+        return {
+            "n": n_both,
+            "matrix": {k: dict(v) for k, v in matrix.items()},
+            "flat": flat,
+            "pct_regime_changed": pct_changed,
+            "note": f"{pct_changed}% of trades held through a macro regime change ({changed}/{n_both})",
+        }
+    except Exception:
+        return {"n": 0, "note": "Regime drift unavailable."}
 
 
 def _get_dsr() -> dict:

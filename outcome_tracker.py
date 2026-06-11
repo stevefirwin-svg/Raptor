@@ -142,7 +142,10 @@ def normalize_decision(record, agent_type: str) -> dict:
 
 # ── Core tagging ──────────────────────────────────────────────────────────────
 
-def build_outcome_record(sell_order, buy_order, entry_decision, hold_decision) -> dict:
+def build_outcome_record(sell_order, buy_order, entry_decision, hold_decision,
+                         exit_regime: str = None) -> dict:
+    # exit_regime: macro regime label at exit time (RISK_ON/NEUTRAL/RISK_OFF/CRISIS).
+    # Enables "macro regime at entry vs exit" metric. Added 2026-06-11.
     symbol     = sell_order["symbol"]
     exit_ts    = sell_order["filled_at"]
     exit_price = float(sell_order.get("filled_avg_price") or 0)
@@ -197,6 +200,7 @@ def build_outcome_record(sell_order, buy_order, entry_decision, hold_decision) -
         **normalize_decision(entry_decision, "entry"),
         **normalize_decision(hold_decision,  "hold"),
         "tagged_at": datetime.now(timezone.utc).isoformat(),
+        "exit_regime":      exit_regime,
     }
 
 
@@ -381,7 +385,18 @@ def run_tracker(verbose: bool = True) -> int:
         else:
             entry_dec = last_decision_before(entry_vetoes, symbol, exit_ts)
         hold_dec  = last_decision_before(hold_decisions, symbol, exit_ts)
-        record    = build_outcome_record(sell, buy, entry_dec, hold_dec)
+        # Stamp exit-time macro regime (added 2026-06-11)
+        _exit_regime = None
+        try:
+            import json as _json
+            from pathlib import Path as _Path
+            _mc = _Path("macro_context.json")
+            if _mc.exists():
+                _exit_regime = _json.loads(_mc.read_text()).get("regime")
+        except Exception:
+            pass
+        record    = build_outcome_record(sell, buy, entry_dec, hold_dec,
+                                         exit_regime=_exit_regime)
         new_records.append(record)
 
         if verbose:
