@@ -1,0 +1,24 @@
+2026-06-12 09:35:07,366 [raptor.main] INFO: ============================================================
+2026-06-12 09:35:07,367 [raptor.main] INFO: RAPTOR v5.4 DAILY SCAN - 2026-06-12T09:35:07.367089
+2026-06-12 09:35:07,367 [raptor.main] INFO: ============================================================
+2026-06-12 09:35:07,368 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-06-12 09:35:08,108 [raptor.main] INFO: Account: equity=$107635.10  cap=none (compound)  sizing_base=$107635.10  positions=10
+2026-06-12 09:35:08,112 [raptor.main] INFO: [MarketAgent] SCAN | scalar=1.00 | Neutral macro conditions with no extreme signals present.
+2026-06-12 09:35:08,251 [raptor.margin_guard] INFO: MARGIN GUARD: equity=$107,626  cap=none (compound)  cash=$26,132  positions=10
+2026-06-12 09:35:08,251 [raptor.margin_guard] INFO: MARGIN GUARD: market_value=$81,494  utilization=75.7% of base  margin=NO
+2026-06-12 09:35:08,252 [raptor.margin_guard] WARNING: MARGIN GUARD: WARNING — utilization 75.7% of base
+2026-06-12 09:35:08,273 [raptor.universe] INFO: Universe from cache: 76 symbols
+2026-06-12 09:35:08,274 [raptor.main] INFO: Dynamic universe: 76 symbols
+2026-06-12 09:35:13,109 [raptor.data_feeds] INFO: Fetched 76 new bars / 76 total cached
+2026-06-12 09:35:13,266 [raptor.data_feeds] INFO: FRED regime: NEUTRAL (score=0.000)
+2026-06-12 09:35:13,318 [raptor.main] INFO: Data: 76 symbols | Macro: NEUTRAL (0.000)
+2026-06-12 09:35:14,523 [raptor.signals] INFO: v5.4 Signals: 5 from 75 | Macro=NEUTRAL Scale=0.8 | Micro={'MIXED': 51, 'TRENDING': 20, 'REVERTING': 4} | SNR min=1.46 max=2.40
+2026-06-12 09:35:14,540 [raptor.main] INFO: Velocity gate: 4 signals remain | velocities: {'CCL': '+0.000', 'XLU': '+0.000', 'STM': '+0.000', 'INTC': '+0.000'}
+2026-06-12 09:35:14,541 [raptor.main] INFO: Signals:
+2026-06-12 09:35:14,542 [raptor.main] INFO:   1. CCL  t=2.402  pctl=100%  entry=$28.96  stop=$26.14  tp=$0.00  kelly=0.120  hold~9d
+2026-06-12 09:35:14,542 [raptor.main] INFO:   2. XLU  t=1.742  pctl=99%  entry=$44.48  stop=$42.83  tp=$0.00  kelly=0.104  hold~11d
+2026-06-12 09:35:14,542 [raptor.main] INFO:   3. STM  t=1.572  pctl=97%  entry=$76.99  stop=$63.91  tp=$0.00  kelly=0.098  hold~30d
+2026-06-12 09:35:14,542 [raptor.main] INFO:   4. INTC  t=1.457  pctl=95%  entry=$117.32  stop=$94.34  tp=$0.00  kelly=0.095  hold~30d
+2026-06-12 09:35:16,615 [AgentLayer] WARNING: EntryAgent batch failed ('"decision"') — deterministic rules only.
+2026-06-12 09:35:16,638 [raptor.main] INFO: Deployable: cap=none  market_value=$81503  cash=$26132  headroom=$24826  available=$24826  (margin=OFF)
+2026-06-12 09:35:16,638 [raptor.main] INFO: Scan complete. 0 orders placed for v5.4.

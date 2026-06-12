@@ -318,5 +318,55 @@
     "entry_reasoning": null,
     "entry_flags": [],
     "submitted_at": "2026-06-11T09:52:20.353396"
+  },
+  "31d8cc1e-7d75-4565-88af-e92b29707707": {
+    "symbol": "BAC",
+    "exit_reason": "math_trim_25%",
+    "composite": 0.0063,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-06-12T09:52:23.324521"
+  },
+  "9b124ff6-50ab-43f0-852b-ece71a543e7a": {
+    "symbol": "KDP",
+    "exit_reason": "math_trim_36%",
+    "composite": -0.0141,
+    "entry_decision": null,
+    "entry_confidence": null,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-06-12T09:52:23.499621"
+  },
+  "daa8d3cb-866e-4939-980f-59cf144c7bc2": {
+    "symbol": "SQQQ",
+    "exit_reason": "math_trim_29%",
+    "composite": 0.3165,
+    "entry_decision": null,
+    "entry_confidence": null,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-06-12T09:52:23.591946"
+  },
+  "a6998c6e-0a52-46fc-9e68-24e9c5f23cce": {
+    "symbol": "WFC",
+    "exit_reason": "math_trim_37%",
+    "composite": -0.1056,
+    "entry_decision": null,
+    "entry_confidence": null,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-06-12T09:52:23.693835"
+  },
+  "f58245e2-c24a-4c4f-ae3a-bb2c92a77980": {
+    "symbol": "XLE",
+    "exit_reason": "math_trim_78%",
+    "composite": -0.0154,
+    "entry_decision": null,
+    "entry_confidence": null,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-06-12T09:52:23.808136"
   }
 }

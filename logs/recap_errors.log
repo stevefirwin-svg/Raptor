@@ -67,3 +67,21 @@ PermissionError: [WinError 32] The process cannot access the file because it is 
 
 [2026-06-11T16:30:47.610859] Recap email sent OK.
 [2026-06-11T16:30:49.174962] Recap email sent OK.
+[2026-06-12T16:30:55.480466] FATAL: daily_recap.py crashed
+Traceback (most recent call last):
+  File "C:\Users\steve\OneDrive\Desktop\Raptor\daily_recap.py", line 1288, in main
+    analytics = get_portfolio_analytics(closed_trades, float(account["equity"]))
+  File "C:\Users\steve\OneDrive\Desktop\Raptor\daily_recap.py", line 414, in get_portfolio_analytics
+    "regime_drift": _get_regime_drift(trades),
+                                      ^^^^^^
+NameError: name 'trades' is not defined
+
+[2026-06-12T16:30:55.507060] FATAL: daily_recap.py crashed
+Traceback (most recent call last):
+  File "C:\Users\steve\OneDrive\Desktop\Raptor\daily_recap.py", line 1288, in main
+    analytics = get_portfolio_analytics(closed_trades, float(account["equity"]))
+  File "C:\Users\steve\OneDrive\Desktop\Raptor\daily_recap.py", line 414, in get_portfolio_analytics
+    "regime_drift": _get_regime_drift(trades),
+                                      ^^^^^^
+NameError: name 'trades' is not defined
+

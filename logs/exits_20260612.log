@@ -1,0 +1,81 @@
+2026-06-12 09:52:13,099 [raptor.exits] INFO: ============================================================
+2026-06-12 09:52:13,100 [raptor.exits] INFO: RAPTOR v5.4 EXIT MONITOR - 2026-06-12T09:52:13.100162
+2026-06-12 09:52:13,101 [raptor.exits] INFO: ============================================================
+2026-06-12 09:52:13,102 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-06-12 09:52:13,726 [raptor.exits] INFO: Account: equity=$107653.70  cash=$26132.44  positions=10
+2026-06-12 09:52:13,732 [raptor.universe] INFO: Universe from cache: 76 symbols
+2026-06-12 09:52:15,716 [raptor.data_feeds] INFO: Fetched 78 new bars / 78 total cached
+2026-06-12 09:52:15,737 [raptor.data_feeds] INFO: FRED regime: NEUTRAL (score=0.000)
+2026-06-12 09:52:22,928 [raptor.signals] INFO: v5.4 Signals: 5 from 77 | Macro=NEUTRAL Scale=0.8 | Micro={'MIXED': 52, 'TRENDING': 21, 'REVERTING': 4} | SNR min=1.57 max=2.43
+2026-06-12 09:52:22,932 [raptor.exits] INFO: Portfolio unrealized: $1841.60 (1.71%)
+2026-06-12 09:52:23,024 [raptor.exits] WARNING: MATH TRIM [TRIM_MODERATE] BAC — 50 of 198 shares (25%) — Moderate trim 25% — thesis weakening
+2026-06-12 09:52:23,025 [raptor.exits] WARNING: MATH TRIM [TRIM_MODERATE] KDP — 10 of 28 shares (36%) — Moderate trim 36% — thesis weakening
+2026-06-12 09:52:23,026 [raptor.exits] WARNING: MATH TRIM [TRIM_MODERATE] SQQQ — 74 of 258 shares (29%) — Moderate trim 29% — thesis weakening
+2026-06-12 09:52:23,026 [raptor.exits] WARNING: MATH TRIM [TRIM_MODERATE] WFC — 22 of 59 shares (37%) — Moderate trim 37% — thesis weakening
+2026-06-12 09:52:23,027 [raptor.exits] WARNING: MATH TRIM [TRIM_MAJOR] XLE — 120 of 154 shares (78%) — Major trim 78% — significant thesis decay
+2026-06-12 09:52:23,027 [raptor.exits] INFO: 
+2026-06-12 09:52:23,028 [raptor.exits] INFO: ============================================================
+2026-06-12 09:52:23,028 [raptor.exits] INFO:   EXIT SUMMARY
+2026-06-12 09:52:23,028 [raptor.exits] INFO: ============================================================
+2026-06-12 09:52:23,029 [raptor.exits] INFO:   EXITS (5):
+2026-06-12 09:52:23,029 [raptor.exits] INFO:     BAC  math_trim_25%  pnl=+1.3%  comp=0.0063
+2026-06-12 09:52:23,030 [raptor.exits] INFO:     KDP  math_trim_36%  pnl=+8.9%  comp=-0.0141
+2026-06-12 09:52:23,030 [raptor.exits] INFO:     SQQQ  math_trim_29%  pnl=+3.0%  comp=0.3165
+2026-06-12 09:52:23,031 [raptor.exits] INFO:     WFC  math_trim_37%  pnl=+1.3%  comp=-0.1056
+2026-06-12 09:52:23,031 [raptor.exits] INFO:     XLE  math_trim_78%  pnl=-0.5%  comp=-0.0154
+2026-06-12 09:52:23,031 [raptor.exits] INFO:   HOLDS (5):
+2026-06-12 09:52:23,032 [raptor.exits] INFO:     CSX  pnl=+1.4%  trail=$44.57  comp=0.3836
+2026-06-12 09:52:23,032 [raptor.exits] INFO:     KRE  pnl=+4.0%  trail=$70.31  comp=0.0588
+2026-06-12 09:52:23,032 [raptor.exits] INFO:     MRVL  pnl=-6.8%  trail=$238.62  comp=0.333
+2026-06-12 09:52:23,033 [raptor.exits] INFO:     PFE  pnl=+0.8%  trail=$25.28  comp=0.277
+2026-06-12 09:52:23,033 [raptor.exits] INFO:     WULF  pnl=+10.3%  trail=$20.66  comp=0.3164
+2026-06-12 09:52:23,033 [raptor.exits] INFO: ============================================================
+2026-06-12 09:52:23,051 [raptor.exits] INFO: AGENT [advisory] TRIM NVDA — 3+ deteriorating dimensions and unrealized_pct>5 (conf=0.60, from 2026-05-15T13:05:37.330779) [not executed — math trim governs]
+2026-06-12 09:52:23,052 [raptor.exits] INFO: AGENT [advisory] HOLD AMD — insufficient history: 0 days (conf=0.90, from 2026-06-05T09:52:08.933229)
+2026-06-12 09:52:23,052 [raptor.exits] INFO: AGENT [advisory] HOLD CVE — insufficient history: 0 days (conf=0.90, from 2026-05-28T15:50:34.277447)
+2026-06-12 09:52:23,052 [raptor.exits] INFO: AGENT [advisory] HOLD FXI — insufficient history: 0 days (conf=0.90, from 2026-05-19T16:30:29.205147)
+2026-06-12 09:52:23,052 [raptor.exits] INFO: AGENT [advisory] HOLD CSX — insufficient history: 0 days (conf=0.90, from 2026-06-12T09:52:09.568512)
+2026-06-12 09:52:23,053 [raptor.exits] INFO: AGENT [advisory] HOLD INTC — insufficient history: 0 days (conf=0.90, from 2026-06-05T09:52:08.933275)
+2026-06-12 09:52:23,053 [raptor.exits] INFO: AGENT [advisory] HOLD KDP — insufficient history: 0 days (conf=0.90, from 2026-06-12T09:52:09.568518)
+2026-06-12 09:52:23,053 [raptor.exits] INFO: AGENT [advisory] HOLD OWL — insufficient history: 0 days (conf=0.90, from 2026-05-17T15:50:38.416296)
+2026-06-12 09:52:23,054 [raptor.exits] INFO: AGENT [advisory] HOLD KRE — insufficient history: 0 days (conf=0.90, from 2026-06-12T09:52:09.568523)
+2026-06-12 09:52:23,054 [raptor.exits] INFO: AGENT [advisory] HOLD PLTD — insufficient history: 0 days (conf=0.90, from 2026-05-28T15:50:34.277463)
+2026-06-12 09:52:23,054 [raptor.exits] INFO: AGENT [advisory] HOLD STM — insufficient history: 0 days (conf=0.90, from 2026-06-05T09:52:08.933304)
+2026-06-12 09:52:23,054 [raptor.exits] INFO: AGENT [advisory] HOLD SMCI — insufficient history: 0 days (conf=0.90, from 2026-06-05T09:52:08.933299)
+2026-06-12 09:52:23,054 [raptor.exits] INFO: AGENT [advisory] HOLD TSLA — insufficient history: 0 days (conf=0.90, from 2026-06-05T09:52:08.933310)
+2026-06-12 09:52:23,055 [raptor.exits] INFO: AGENT [advisory] HOLD TSLL — insufficient history: 0 days (conf=0.90, from 2026-05-19T16:30:29.205168)
+2026-06-12 09:52:23,055 [raptor.exits] INFO: AGENT [advisory] HOLD TTD — insufficient history: 0 days (conf=0.90, from 2026-05-19T16:30:29.205175)
+2026-06-12 09:52:23,055 [raptor.exits] INFO: AGENT [advisory] HOLD DKNG — insufficient history: 0 days (conf=0.90, from 2026-05-29T09:52:09.312915)
+2026-06-12 09:52:23,056 [raptor.exits] INFO: AGENT [advisory] HOLD HPQ — insufficient history: 0 days (conf=0.90, from 2026-06-05T09:52:08.933265)
+2026-06-12 09:52:23,056 [raptor.exits] INFO: AGENT [advisory] HOLD MRVL — insufficient history: 0 days (conf=0.90, from 2026-06-12T09:52:09.568527)
+2026-06-12 09:52:23,056 [raptor.exits] INFO: AGENT [advisory] HOLD WFC — insufficient history: 0 days (conf=0.90, from 2026-06-12T09:52:09.568538)
+2026-06-12 09:52:23,056 [raptor.exits] INFO: AGENT [advisory] HOLD SQQQ — insufficient history: 0 days (conf=0.90, from 2026-06-12T09:52:09.568534)
+2026-06-12 09:52:23,057 [raptor.exits] INFO: AGENT [advisory] HOLD XLE — insufficient history: 0 days (conf=0.90, from 2026-06-12T09:52:09.568545)
+2026-06-12 09:52:23,057 [raptor.exits] INFO: AGENT [advisory] HOLD BAC — insufficient history: 0 days (conf=0.90, from 2026-06-12T09:52:09.568488)
+2026-06-12 09:52:23,057 [raptor.exits] INFO: AGENT [advisory] HOLD PFE — insufficient history: 0 days (conf=0.90, from 2026-06-12T09:52:09.568531)
+2026-06-12 09:52:23,057 [raptor.exits] INFO: AGENT [advisory] HOLD WULF — insufficient history: 0 days (conf=0.90, from 2026-06-12T09:52:09.568542)
+2026-06-12 09:52:23,058 [raptor.exits] INFO: SELL 50 BAC [math_trim_25%]
+2026-06-12 09:52:23,259 [raptor.data_feeds] INFO: Order submitted: SELL 50 BAC @ None
+2026-06-12 09:52:23,259 [raptor.exits] INFO:   OK: OrderStatus.PENDING_NEW
+2026-06-12 09:52:23,286 [raptor.slippage] INFO: SLIPPAGE SELL 50 BAC: decision=$55.5200 fill=PENDING (order 31d8cc1e)
+2026-06-12 09:52:23,351 [raptor.exits] INFO: SELL 10 KDP [math_trim_36%]
+2026-06-12 09:52:23,464 [raptor.data_feeds] INFO: Order submitted: SELL 10 KDP @ None
+2026-06-12 09:52:23,464 [raptor.exits] INFO:   OK: OrderStatus.PENDING_NEW
+2026-06-12 09:52:23,483 [raptor.slippage] INFO: SLIPPAGE SELL 10 KDP: decision=$31.2250 fill=PENDING (order 9b124ff6)
+2026-06-12 09:52:23,525 [raptor.exits] INFO: SELL 74 SQQQ [math_trim_29%]
+2026-06-12 09:52:23,558 [raptor.data_feeds] INFO: Order submitted: SELL 74 SQQQ @ None
+2026-06-12 09:52:23,558 [raptor.exits] INFO:   OK: OrderStatus.PENDING_NEW
+2026-06-12 09:52:23,577 [raptor.slippage] INFO: SLIPPAGE SELL 74 SQQQ: decision=$41.4900 fill=PENDING (order daa8d3cb)
+2026-06-12 09:52:23,622 [raptor.exits] INFO: SELL 22 WFC [math_trim_37%]
+2026-06-12 09:52:23,659 [raptor.data_feeds] INFO: Order submitted: SELL 22 WFC @ None
+2026-06-12 09:52:23,659 [raptor.exits] INFO:   OK: OrderStatus.PENDING_NEW
+2026-06-12 09:52:23,676 [raptor.slippage] INFO: SLIPPAGE SELL 22 WFC: decision=$82.8500 fill=PENDING (order a6998c6e)
+2026-06-12 09:52:23,724 [raptor.exits] INFO: SELL 120 XLE [math_trim_78%]
+2026-06-12 09:52:23,771 [raptor.data_feeds] INFO: Order submitted: SELL 120 XLE @ None
+2026-06-12 09:52:23,771 [raptor.exits] INFO:   OK: OrderStatus.PENDING_NEW
+2026-06-12 09:52:23,790 [raptor.slippage] INFO: SLIPPAGE SELL 120 XLE: decision=$57.5900 fill=PENDING (order f58245e2)
+2026-06-12 09:52:25,350 [raptor.slippage] INFO: SLIPPAGE BACKFILL BAC 31d8cc1e: IS=+5.4 bps
+2026-06-12 09:52:25,731 [raptor.slippage] INFO: SLIPPAGE BACKFILL KDP 9b124ff6: IS=+1.6 bps
+2026-06-12 09:52:26,083 [raptor.slippage] INFO: SLIPPAGE BACKFILL SQQQ daa8d3cb: IS=+14.4 bps
+2026-06-12 09:52:26,439 [raptor.slippage] INFO: SLIPPAGE BACKFILL WFC a6998c6e: IS=+6.0 bps
+2026-06-12 09:52:26,770 [raptor.slippage] INFO: SLIPPAGE BACKFILL XLE f58245e2: IS=+1.7 bps
