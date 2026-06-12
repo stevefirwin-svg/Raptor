@@ -1,29 +1,35 @@
 # Raptor Trading System — Development Skill
-*Last updated: 2026-06-05*
+*Last updated: 2026-06-12 | Version: 7.0*
 
 ---
 
 ## System Overview
 
 Raptor v5.4 is a quantitative swing trading system on Alpaca paper (~$107K equity).
+US equities only, 0–10 positions, typical hold 5–20 trading days.
+Math governs every decision. LLM is advisory only.
 
 ---
 
 ## Architecture
 
 ```
-data_feeds.py       AlpacaDataFeed — submit_order, get_positions, get_account, get_daily_bars
-signals.py          Dual-book signal engine — FACTOR_NAMES list drives all scoring
-config.py           All parameters
-main.py             Entry scanner — 9:35 AM, velocity + cooldown gates
-exit_monitor.py     Position manager — 5 exit paths + math trim block
-hold_monitor.py     8-layer health scoring — LAYER_WEIGHTS dict
-outcome_tracker.py  Trade labeling — --backfill, --relabel flags
-kelly_engine.py     Bootstrap Kelly (shadow until 100 trades)
-factor_lab.py       Spearman IC validation per factor
-macro_context.py    Regime classifier → continuous macro_score [-1,1]
-backtest.py         Walk-forward backtester
-universe_builder.py Screens 6800 assets → dynamic count (~75–150 symbols)
+data_feeds.py        AlpacaDataFeed — submit_order, get_positions, get_account, get_daily_bars
+signals.py           Dual-book engine — sector neutralization, OU hold target, SNR ranking
+config.py            All parameters
+main.py              Entry scanner — 9:35 AM, deterministic gate + velocity + cooldown
+exit_monitor.py      Position manager — 5 exit paths + math trim
+hold_monitor.py      8-layer health scoring
+outcome_tracker.py   Trade labeling — --backfill, --relabel flags
+slippage_tracker.py  Implementation shortfall recording (Perold 1988)
+dsr.py               Deflated Sharpe Ratio (Bailey & López de Prado 2014)
+kelly_engine.py      Bootstrap Kelly (shadow until DATA-100)
+factor_lab.py        Spearman IC validation per factor
+macro_context.py     Vote-count regime classifier → continuous macro_score [-1,1]
+backtest.py          Walk-forward backtester (survivorship bias warning in output)
+universe_builder.py  Screens 6800 assets → ~75–150 symbols (excl. leveraged ETPs)
+agent_layer.py       _eval_entry_rules() deterministic gate + LLM advisory
+position_outcomes.json  27 independent positions — authoritative gate counter
 ```
 
 Dead files removed 2026-05-29: raptor_state.json, diagnose.py, diagnose_regime.py, Start_Raptor_Recap.bat
@@ -32,33 +38,53 @@ Dead files removed 2026-05-29: raptor_state.json, diagnose.py, diagnose_regime.p
 
 ## Critical Infrastructure — Verify Every Session
 
-**AlpacaDataFeed.submit_order** is the single method responsible for all order execution.
-It was missing its `def` line from ~2026-05-25 to 2026-06-05, causing every exit and trim
-to fail silently for 11 days. No log output, no Alpaca orders, no ledger updates.
-
-**Always verify before any live run:**
+**1. AlpacaDataFeed.submit_order**
+Missing its `def` line from ~2026-05-25 to 2026-06-05 — 11 days of silent execution failure.
 ```bash
 python3 -c "
-from data_feeds import AlpacaDataFeed
-assert 'submit_order' in dir(AlpacaDataFeed), 'CRITICAL: submit_order MISSING'
-print('OK: submit_order present')
+import ast
+src = open('data_feeds.py').read()
+tree = ast.parse(src)
+for n in ast.walk(tree):
+    if isinstance(n, ast.ClassDef) and n.name == 'AlpacaDataFeed':
+        assert 'submit_order' in [m.name for m in n.body if isinstance(m, ast.FunctionDef)]
+        print('OK: submit_order present')
+"
+```
+After any edit to data_feeds.py: re-run. Non-negotiable.
+
+**2. Deterministic entry gate**
+All six entry veto rules are exact boolean predicates in Python.
+LLM (Ollama) is advisory — it cannot bind a veto or pass any candidate.
+Disagreements logged as `AGENT_OVERRIDE` in entry_vetoes.json.
+```bash
+python3 -c "
+from agent_layer import _eval_entry_rules
+r = _eval_entry_rules({'regime':'TRENDING','composite_score':1.5,'kelly_fraction':0.05,
+    'atr_pct':2.0,'days_since_earnings':30,'vix_regime':'NORMAL',
+    'market_momentum_scalar':1.0,'macro_regime':'RISK_ON'})
+assert r == (False, None, None)
+print('OK: deterministic entry rules')
 "
 ```
 
-After any edit to data_feeds.py: re-run this check. Non-negotiable.
+**3. Data independence rule**
+`outcome_log.json` contains multiple trim events per position. These are NOT independent.
+All IC, DSR, and gate calculations MUST use `position_outcomes.json`.
+position_outcomes.json: 27 records = 27 independent position entries.
+Data integrity reminder: PLTD had 9 trim events from 1 entry. AMD had 4. 49/76 were non-independent.
 
 ---
 
-## Factor System — Extensible by Design
+## Factor System
 
-Factors are registered in two places in signals.py. To add a new factor:
+Factors registered in two places in signals.py. To add:
+1. Implement static method in `class Factors` — takes DataFrame, returns float
+2. Register in `FACTOR_NAMES` list
+3. Assign cluster in `FACTOR_CLUSTERS` — one of: `mr, trend, vol, volat, rev`
+4. Gate for production: IC > 0.03, |t| > 1.0, ICIR > 0.3 over 60-day rolling window
 
-1. **Implement** the static method in `class Factors` — takes a DataFrame, returns a float
-2. **Register** in `FACTOR_NAMES` list
-3. **Assign cluster** in `FACTOR_CLUSTERS` dict — one of: `mr, trend, vol, volat, rev`
-4. **Gate for production:** IC > 0.03, |t| > 1.0, ICIR > 0.3 over 60-day rolling window before entering composite
-
-To remove a factor: delete from FACTOR_NAMES and FACTOR_CLUSTERS. All downstream scoring auto-adjusts.
+To remove: delete from FACTOR_NAMES and FACTOR_CLUSTERS. Downstream auto-adjusts.
 
 **Current factors (16):**
 
@@ -70,100 +96,114 @@ To remove a factor: delete from FACTOR_NAMES and FACTOR_CLUSTERS. All downstream
 | volat | atr_pctile, bb_squeeze, rel_strength |
 | rev | rev_momentum |
 
-**vol_ratio status:** IC = -0.11 — WATCH. Remove if IC < 0.03 and t < 1.0 for 3+ consecutive weeks.
+**Factor status:**
+- `vol_ratio`: IC = -0.11 — WATCH. Remove if IC < 0.03 and |t| < 1.0 for 3+ consecutive weeks.
+- `hurst`: DFA-1 (Kantelhardt et al. 2002). Requires ≥ 60 bars.
+- `sentiment_score`: always 0.0 — dead path. Remove or fix (P1-15).
 
-**hurst estimator:** DFA-1 (Kantelhardt et al. 2002) as of 2026-05-29 — replaces R/S. Requires ≥ 60 bars.
+**Signal lifecycle:**
+PROPOSED → SHADOW (IC provisional) → LIVE (IC > 0.03, |t| > 1.0, ICIR > 0.3 over 30 trades) → DEPRECATED
 
 ---
 
-## Trim and Exit Execution Chain
-
-Understanding this chain prevents the class of bugs that hid for 11 days:
+## Execution Chain
 
 ```
 hold_monitor.py
   compute_health_score() → 8 layers → tier + health score
-  compute_trim()         → trim% formula → trim_shares, action
+  compute_trim()         → trim% → trim_shares, action
   save_health()          → hold_health.json
 
 exit_monitor.py
   EXIT 1–5 checks        → hard stop, trail, thesis, lev cap, time decay
   EXIT 4 portfolio heat  → 25% trim if portfolio_dd < -12%
-  Math trim block        → reads hold_health.json, adds to exits list
-  EXECUTE loop           → dm.alpaca.submit_order() for each exit
+  Math trim block        → reads hold_health.json → exits list
+  EXECUTE loop           → dm.alpaca.submit_order() per exit
+    → slippage_tracker.record_fill() [IS logging, Perold 1988]
     → outcome_pending.json (keyed by order ID)
     → ledger.record_trim() or ledger.record_exit()
     → trim_log.json
-  outcome_tracker.run_tracker() → outcome_log.json
+
+outcome_tracker.py
+  Reads outcome_pending.json → joins with buy order → outcome_log.json
+  Backfills pending slippage fills via slippage_tracker.backfill_slippage()
 ```
 
-**Failure points that have occurred:**
-- submit_order missing def line → AttributeError on first call → entire execute loop aborts silently
-- hold_monitor crash → stale hold_health.json → exit_monitor uses yesterday's health scores
-- Ledger stop above current price (stale backfill) → EXIT 1 fires every run → position never trims
+**Known failure modes:**
+- submit_order missing def line → AttributeError → execute loop aborts silently (happened Jun 1-4)
+- hold_monitor crash → stale hold_health.json → exit_monitor uses old health scores
+- Ledger stop above current price → EXIT 1 fires every run → position never trims
+
+---
+
+## Trim and Exit: What each path means
+
+| Path | Meaning | IC-valid? |
+|------|---------|-----------|
+| `math_trim` | hold_monitor partial trim — position still open | NO (partial, not terminal) |
+| `trailing_stop` | Trail ratchet hit — full exit | YES |
+| `hard_stop` | Fixed stop hit — full exit | YES |
+| `math_exit` | Thesis fully decayed — full exit | YES |
+| `pre_label` | Historical, no factor scores | NO |
+| `crypto` | Crypto system — separate | NO |
+
+**position_outcomes.json logic:** a position's `final_exit_path` is the LAST event.
+A position with 4 math_trims followed by a trailing_stop → `final_exit_path = "trailing_stop"`.
 
 ---
 
 ## Immutable Rules
 
-1. **Math-first.** Every constant needs a derivation or `# TODO:DERIVE`. Round numbers without derivation are bugs.
-2. **No fabricated fallbacks.** Missing data → skip with warning logged. Never substitute invented values.
-3. **Not scored today ≠ failing thesis.** comp=0.0 (neutral) for unscored held positions, never -1.0.
-4. **Momentum clustering is intentional alpha.** Do not add correlation gates.
-5. **Kelly is SHADOW until 100 trades.** Do not override sizing.
+1. **Math-first.** Every constant needs derivation or `# TODO:DERIVE`. Round numbers without derivation are bugs.
+2. **No fabricated fallbacks.** Missing data → skip with warning. Never substitute invented values.
+3. **comp=0.0 for unscored held positions.** Never -1.0.
+4. **Momentum clustering is intentional alpha.** Do not add correlation gates. CRIT-9 cancelled permanently.
+5. **Kelly is SHADOW until DATA-100.** Do not override sizing.
 6. **Syntax check every file before committing.**
-7. **After every edit to data_feeds.py: verify submit_order exists as a method.**
+7. **After every edit to data_feeds.py: AST-verify submit_order.**
 8. **Update ONTOLOGY same session as any architecture change.**
 9. **Never change code in intraday window 9:35–3:50 PM ET without explicit intent.**
-10. **Clear __pycache__ before every test:** `Remove-Item -Recurse -Force __pycache__`
+10. **Clear __pycache__ before every test.**
 11. **Real data or skip.** When a position cannot be evaluated → log warning, skip. Never substitute.
-12. **Logs are tracked in git.** logs/ is not gitignored. Every session push includes today's logs.
+12. **Logs are tracked in git.** logs/ not gitignored. Every push includes today's logs.
+13. **All gate counts use position_outcomes.json.** Never raw outcome_log.json.
+14. **position_outcomes.json must be rebuilt after every new position closes.** (TODO: automate in AfterClose)
+15. **Backtest Sharpe figures are upper bounds** until ARCH-5 point-in-time universe is implemented.
 
 ---
 
 ## What Must Never Be Violated
 
-- Do NOT add factors to signals.py without IC validation gate
-- Do NOT propose HMM regime detection (overfits at current data scale — use ARCH-2 gate)
-- Do NOT propose online RandomForest retraining (can't incrementally learn)
+- Do NOT add factors without IC validation gate
+- Do NOT propose HMM at current data scale (wait for ARCH-2 gate — exception: macro_context.py replacement is approved at any time as it requires no trade data)
+- Do NOT propose online RandomForest retraining
 - Do NOT redesign architecture — iterate on what works
 - Do NOT use CMD syntax — use PowerShell
 - Do NOT assume order execution worked without checking outcome_pending.json for the order ID
+- Do NOT compute DSR, win rate, or IC from raw outcome_log.json — use position_outcomes.json
 
 ---
 
-## Audit Lessons Learned (2026-06-05)
-
-**Why submit_order was missed across multiple audit sessions:**
-- Code read as complete — docstring + body present, just missing `def` line
-- Audits focused on math layer (trim %, health scoring, IC) not infrastructure layer
-- Failure was silent — `AttributeError` crashed execute loop with no `FAILED:` log line
-- trim_log.json had real entries from before the break, creating false confidence
-- hold_health showed TRIM_MAJOR recommendations that appeared to be "not executing" — actually they were being preempted by EXIT 1, but EXIT 1 was also silently failing
-
-**Prevention:**
-- Infrastructure integrity check is now Step 3 of every session startup (before health check)
-- submit_order check added as explicit Rule 7
-- logs/ tracked in git so execution logs are available for analysis
-- execute loop now has try/except so one order failure doesn't abort remaining positions
-
----
-
-## Performance Reference
+## Performance Reference (backtest, survivorship-biased upper bounds)
 
 | Universe | Return | CAGR | Sortino | PF |
 |----------|--------|------|---------|-----|
 | 120-symbol | 1008% | 56% | 4.64 | 1.73 |
 | 47-symbol | 201% | 22.6% | 2.17 | 1.43 |
 
-Signal engine: 16 factors, 5 clusters, cross-sectional z-scoring, soft shrinkage, inverse-vol weighting, Spearman IC + WLS adaptive weights, Ledoit-Wolf SNR entry ranking.
+**Live performance (2026-06-12):**
+- Independent positions: 27 (position_outcomes.json)
+- Win rate: 59.1% (13W/9L, clean positions)
+- Mean position PnL: 5.47%
+- DSR: 59.8% WEAK (n=24, SR=1.42 vs SR*=1.22)
+- Note: DSR rises toward STRONG as n grows if alpha is genuine. Current sample too small to distinguish from luck.
 
 ---
 
 ## Steve's Preferences
 
-- Math-first, PhD-level rigor
-- Direct critical feedback, no softening
-- PowerShell commands
+- Math-first, PhD-level rigor, research-backed decisions
+- Direct critical feedback — no softening
+- PowerShell commands on Windows
 - Explicit step-by-step instructions
-- Family financially depending on this
+- Challenge any assumption that looks like a default or round number

@@ -1,6 +1,6 @@
 # Raptor v5.4 — Complete System Ontology
 *Full decision logic, mathematics, and feedback loops. No code.*
-*Last updated: 2026-05-22*
+*Last updated: 2026-06-12 | Reflects all session 4–5 changes*
 
 ---
 
@@ -1037,3 +1037,63 @@ Until Tuesday 2026-05-26, the velocity gate will log "skipped — only N days of
 ---
 
 *This document describes Raptor v5.4 as of 2026-05-22. The authoritative implementation is in the GitHub repository: github.com/stevefirwin-svg/Raptor.*
+
+---
+
+## 15. Session 4–5 Additions (2026-06-10 to 2026-06-12)
+
+### 15.1 Cross-Sectional Sector Neutralization
+Before composite scoring, each factor's z-score is demeaned by its sector median.
+Math: for each factor f and sector S, z[sym][f] -= median({z[m][f] : m in S}).
+Median (not mean) for outlier robustness. Sectors with <3 members use universe median.
+Effect: stock selection alpha decoupled from sector beta. IC now measures stock-level skill.
+Reference: Grinold & Kahn 2000, ch. 5.
+
+### 15.2 OU Hold Target
+hold_target = ln(2) / θ where θ = -b/dt, b from OLS: dX_t = a + b*X_t + eps, X = log(price).
+θ clamped to [0, ∞): trending stocks (θ<0) → hold_target=30 (time stop governs).
+Reference: Leung & Zhang 2019, eq. 4.
+TODO:DERIVE min/max bounds (3, 30) at DATA-40 gate.
+
+### 15.3 Implementation Shortfall Tracking
+Every BUY and SELL fill records decision price vs Alpaca filled_avg_price.
+IS_bps = side_sign * (fill - decision) / decision * 10,000.
+Positive IS = cost against us. Accumulated in slippage_log.json.
+Reference: Perold 1988, Almgren & Chriss 2000.
+
+### 15.4 Deflated Sharpe Ratio
+DSR = Φ((SR_obs - SR*) / sqrt(V[SR])) where:
+  SR* = expected maximum SR from N_trials independent random strategies
+  V[SR] = Mertens (2002) variance accounting for skewness and fat tails
+Computed on position-level returns (position_outcomes.json), not trim events.
+Current: SR=1.42, SR*=1.22, DSR=59.8% WEAK (n=24 independent positions).
+Reference: Bailey & López de Prado 2014.
+
+### 15.5 Position-Level Outcome Aggregation
+outcome_log.json records every trim event. Multiple trims from one position entry
+share entry signal, regime, and factor scores — they are NOT independent.
+position_outcomes.json: one record per (symbol, entry_price) group.
+position_pnl_pct = dollar-weighted return across all trims.
+All gating, IC, DSR calculations use position_outcomes.json exclusively.
+
+### 15.6 Deterministic Entry Gate
+Six entry veto rules evaluated as exact boolean predicates in _eval_entry_rules().
+Rule 1: regime=="MIXED" AND composite < 1.0
+Rule 2: kelly > 0.10 AND atr_pct > 3.5
+Rule 3: days_since_earnings < 5
+Rule 4: vix_regime=="SPIKE" AND mms < 0.6
+Rule 5: macro_regime=="CRISIS"
+Rule 6: macro_regime=="RISK_OFF" AND kelly > 0.07
+LLM veto (Ollama) demoted to advisory. Disagreements logged as AGENT_OVERRIDE.
+
+### 15.7 Leveraged/Inverse ETP Exclusion
+k-times daily-rebalanced ETPs bleed ≈ (k²-k)/2·σ² per day to variance drain.
+This invalidates multi-day hold assumptions (ATR stops, hold targets, momentum persistence).
+Excluded via name-pattern matching in universe_builder._get_tradeable_assets().
+1x sector ETFs (XLE, KRE, SPY) remain eligible.
+Reference: Cheng & Madhavan 2009.
+
+---
+
+*This document describes Raptor v5.4 as of 2026-06-12.*
+*Authoritative implementation: github.com/stevefirwin-svg/Raptor*
