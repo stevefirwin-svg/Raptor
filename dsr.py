@@ -89,7 +89,8 @@ from scipy import stats as scipy_stats
 
 logger = logging.getLogger("raptor.dsr")
 
-OUTCOME_LOG_PATH = Path("outcome_log.json")
+OUTCOME_LOG_PATH  = Path("outcome_log.json")
+POSITION_LOG_PATH = Path("position_outcomes.json")
 
 # ── Number of strategy-altering iterations (N_trials) ────────────────────────
 # Conservative count: each structural fix that changed signal logic, exit math,
@@ -119,49 +120,63 @@ N_TRIALS_DEFAULT = 10
 
 def load_ic_valid_returns() -> np.ndarray:
     """
-    Load per-trade PnL% from outcome_log.json, IC-valid trades only.
-    Excludes: pre_label era, crypto, unknown exit path, null PnL.
-    Returns array of returns as decimals (pct / 100).
+    Load per-POSITION PnL% from position_outcomes.json (independent positions only).
+
+    Uses position_outcomes.json rather than outcome_log.json because individual
+    trim events from the same position entry are NOT independent observations —
+    they share the same entry signal, entry regime, and factor scores. Using raw
+    outcome_log records inflated n=24 independent positions to n=76 trim events,
+    producing a false DSR of 99.9% (true DSR: ~60% at current sample size).
+
+    Excludes leveraged/inverse ETPs (pre-universe-filter era contamination).
+    Returns array of position-level returns as decimals (pct / 100).
     """
-    if not OUTCOME_LOG_PATH.exists():
-        return np.array([])
+    path = POSITION_LOG_PATH if POSITION_LOG_PATH.exists() else OUTCOME_LOG_PATH
 
     try:
-        recs = json.loads(OUTCOME_LOG_PATH.read_text())
+        recs = json.loads(path.read_text())
     except Exception:
         return np.array([])
 
-    ic_valid = [
-        r for r in recs
-        if r.get("actual_exit_path") not in ("unknown", "pre_label", "crypto")
-        and r.get("actual_pnl_pct") is not None
-    ]
-
-    if not ic_valid:
-        return np.array([])
-
-    return np.array([r["actual_pnl_pct"] / 100.0 for r in ic_valid])
+    if POSITION_LOG_PATH.exists():
+        # position_outcomes.json: use position_pnl_pct, exclude leveraged ETPs
+        ic_valid = [
+            r for r in recs
+            if r.get("position_pnl_pct") is not None
+            and "leveraged_or_inverse_etp" not in r.get("flags", [])
+        ]
+        return np.array([r["position_pnl_pct"] / 100.0 for r in ic_valid])
+    else:
+        # Fallback to outcome_log.json (legacy)
+        ic_valid = [
+            r for r in recs
+            if r.get("actual_exit_path") not in ("unknown", "pre_label", "crypto")
+            and r.get("actual_pnl_pct") is not None
+        ]
+        return np.array([r["actual_pnl_pct"] / 100.0 for r in ic_valid])
 
 
 def _estimate_trades_per_year(returns: np.ndarray) -> float:
     """
-    Estimate annualisation factor from outcome_log hold_days distribution.
-    Falls back to 252 / median_hold_days if direct count unavailable.
+    Estimate annualisation factor from position_outcomes hold_days distribution.
+    Falls back to 252 / 12 (median 12-day hold observed) if unavailable.
     """
     try:
-        recs = json.loads(OUTCOME_LOG_PATH.read_text())
-        ic_valid = [
-            r for r in recs
-            if r.get("actual_exit_path") not in ("unknown", "pre_label", "crypto")
-            and r.get("hold_days") is not None
-        ]
-        hold_days = [r["hold_days"] for r in ic_valid if r["hold_days"] and r["hold_days"] > 0]
+        if POSITION_LOG_PATH.exists():
+            recs = json.loads(POSITION_LOG_PATH.read_text())
+            hold_days = [r["position_hold_days"] for r in recs
+                         if r.get("position_hold_days") and r["position_hold_days"] > 0
+                         and "leveraged_or_inverse_etp" not in r.get("flags", [])]
+        else:
+            recs = json.loads(OUTCOME_LOG_PATH.read_text())
+            hold_days = [r["hold_days"] for r in recs
+                         if r.get("hold_days") and r["hold_days"] > 0]
         if not hold_days:
-            return 252.0 / 5.0   # fallback: assume 5-day average hold
+            return 252.0 / 12.0
         median_hold = float(np.median(hold_days))
         return round(252.0 / max(median_hold, 1.0), 2)
     except Exception:
-        return 252.0 / 5.0
+        return 252.0 / 12.0
 
 
 # ── SR* (expected maximum SR from N_trials) ───────────────────────────────────
