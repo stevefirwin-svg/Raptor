@@ -320,3 +320,6 @@ Remove-Item -Recurse -Force __pycache__ -ErrorAction SilentlyContinue
 16. When evaluation is impossible → log warning, skip. Never substitute.
 17. After any edit to data_feeds.py: re-run AST submit_order check. Non-negotiable.
 18. All gate calculations use position_outcomes.json (independent positions), never raw outcome_log.json.
+19. FILE SYNC IS MANDATORY. GitHub is source of truth. Run `python sync_to_claude.py` after every push and upload all listed files to Claude Project. Never start a session with stale project files.
+20. CLAUDE FIXES CODE AUTOMATICALLY. Bug found → Claude writes fixed file, validates with ast.parse(), delivers via present_files. Steve downloads, copies to Raptor folder, pushes. Claude never asks Steve to edit manually.
+21. CLAUDE PROMPTS SYNC AFTER FILE CHANGES. At the end of any session where files were delivered, Claude shows only: `python sync_to_claude.py`

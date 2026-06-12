@@ -207,3 +207,6 @@ A position with 4 math_trims followed by a trailing_stop → `final_exit_path = 
 - PowerShell commands on Windows
 - Explicit step-by-step instructions
 - Challenge any assumption that looks like a default or round number
+- **Claude fixes bugs directly.** No manual edits, no diffs. Claude writes the fixed file, validates syntax, delivers via present_files. Steve downloads and pushes.
+- **Claude Project must mirror GitHub.** Run sync_to_claude.py after every push and upload all listed files.
+- **Claude prompts sync after any session where files changed.** Show only: `python sync_to_claude.py` — nothing else.

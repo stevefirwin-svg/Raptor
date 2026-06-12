@@ -85,3 +85,22 @@ Traceback (most recent call last):
                                       ^^^^^^
 NameError: name 'trades' is not defined
 
+[2026-06-12T17:44:53.110451] FATAL: daily_recap.py crashed
+Traceback (most recent call last):
+  File "C:\Users\steve\OneDrive\Desktop\Raptor\daily_recap.py", line 1288, in main
+    analytics = get_portfolio_analytics(closed_trades, float(account["equity"]))
+  File "C:\Users\steve\OneDrive\Desktop\Raptor\daily_recap.py", line 414, in get_portfolio_analytics
+    "regime_drift": _get_regime_drift(trades),
+                                      ^^^^^^
+NameError: name 'trades' is not defined
+
+[2026-06-12T17:46:27.119699] FATAL: daily_recap.py crashed
+Traceback (most recent call last):
+  File "C:\Users\steve\OneDrive\Desktop\Raptor\daily_recap.py", line 1288, in main
+    analytics = get_portfolio_analytics(closed_trades, float(account["equity"]))
+  File "C:\Users\steve\OneDrive\Desktop\Raptor\daily_recap.py", line 414, in get_portfolio_analytics
+    "regime_drift": _get_regime_drift(trades),
+                                      ^^^^^^
+NameError: name 'trades' is not defined
+
+[2026-06-12T17:48:03.496723] Recap email sent OK.
