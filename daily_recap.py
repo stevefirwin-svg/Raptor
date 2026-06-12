@@ -411,7 +411,7 @@ def get_portfolio_analytics(closed_trades, equity):
         # Deflated Sharpe Ratio (added 2026-06-10)
         "dsr": _get_dsr(),
         # Macro regime at entry vs exit (added 2026-06-11)
-        "regime_drift": _get_regime_drift(trades),
+        "regime_drift": _get_regime_drift(closed_trades),
     }
 
 
