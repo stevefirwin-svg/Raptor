@@ -160,3 +160,11 @@ To https://github.com/stevefirwin-svg/Raptor.git
    f4ca32b..1a233ef  main -> main
 [Thu 06/11/2026 18:00:06.95] Push complete. 
 [Fri 06/12/2026 18:16:55.26] Starting daily GitHub push... 
+[main bc6e0ff] Daily update 2026-06-12
+ 12 files changed, 998 insertions(+), 443 deletions(-)
+ create mode 100644 Sync_To_Claude_Project.ps1
+ create mode 100644 sync_manifest.json
+ create mode 100644 sync_to_claude.py
+To https://github.com/stevefirwin-svg/Raptor.git
+   1df3870..bc6e0ff  main -> main
+[Fri 06/12/2026 18:16:58.19] Push complete. 
