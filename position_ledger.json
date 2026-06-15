@@ -3,19 +3,19 @@
     "v5.4:KDP": {
       "model": "v5.4",
       "symbol": "KDP",
-      "shares": 18,
+      "shares": 10,
       "entry_price": 28.670593,
       "entry_date": "2026-05-24",
       "metadata": {
-        "stop": 30.4396,
+        "stop": 30.9864,
         "regime": "BACKFILL",
         "t_stat": null,
         "kelly_fraction": null,
         "composite_score": null,
         "note": "Restored by backfill_positions.py 2026-05-27 \u2014 position was incorrectly closed in ledger by math_trim routing bug",
-        "high_water": 31.48,
+        "high_water": 31.655,
         "stop_reset_reason": "reset_2026-06-05: corrected from ratchet-overtightened value to 2.5x ATR from high_water",
-        "last_trim_ts": "2026-06-12T09:52:23.520396"
+        "last_trim_ts": "2026-06-15T09:52:19.099400"
       },
       "trims": [
         {
@@ -27,6 +27,16 @@
           "pnl_abs": 25.54,
           "shares_before": 28,
           "shares_after": 18
+        },
+        {
+          "date": "2026-06-15",
+          "reason": "math_trim_42%",
+          "shares_sold": 8,
+          "trim_price": 31.655,
+          "pnl_pct": 10.4093,
+          "pnl_abs": 23.88,
+          "shares_before": 18,
+          "shares_after": 10
         }
       ]
     },
@@ -38,31 +48,31 @@
       "entry_date": "2026-06-05",
       "metadata": {
         "t_stat": 1.4261,
-        "stop": 70.3064,
+        "stop": 71.5414,
         "tp": 0.0,
         "regime": "RISK_ON/REVERTING",
         "kelly_fraction": 0.117,
         "composite_score": 0.2835,
         "velocity": 0.0,
-        "high_water": 72.92
+        "high_water": 74.13
       }
     },
     "v5.4:WFC": {
       "model": "v5.4",
       "symbol": "WFC",
-      "shares": 37,
+      "shares": 29,
       "entry_price": 81.84,
       "entry_date": "2026-06-05",
       "metadata": {
         "t_stat": 1.2234,
-        "stop": 79.1943,
+        "stop": 80.2636,
         "tp": 0.0,
         "regime": "RISK_ON/TRENDING",
         "kelly_fraction": 0.1089,
         "composite_score": 0.4768,
         "velocity": 0.0,
-        "high_water": 82.85,
-        "last_trim_ts": "2026-06-12T09:52:23.719463"
+        "high_water": 84.02,
+        "last_trim_ts": "2026-06-15T09:52:19.455576"
       },
       "trims": [
         {
@@ -84,13 +94,23 @@
           "pnl_abs": 22.22,
           "shares_before": 59,
           "shares_after": 37
+        },
+        {
+          "date": "2026-06-15",
+          "reason": "math_trim_21%",
+          "shares_sold": 8,
+          "trim_price": 84.02,
+          "pnl_pct": 2.6637,
+          "pnl_abs": 17.44,
+          "shares_before": 37,
+          "shares_after": 29
         }
       ]
     },
     "v5.4:MRVL": {
       "model": "v5.4",
       "symbol": "MRVL",
-      "shares": 11,
+      "shares": 7,
       "entry_price": 296.355,
       "entry_date": "2026-06-05",
       "metadata": {
@@ -101,8 +121,8 @@
         "kelly_fraction": 0.1085,
         "composite_score": 0.3123,
         "velocity": 0.0,
-        "high_water": 294.21,
-        "last_trim_ts": "2026-06-11T09:52:20.087552"
+        "high_water": 295.42,
+        "last_trim_ts": "2026-06-15T09:52:19.228045"
       },
       "trims": [
         {
@@ -124,6 +144,16 @@
           "pnl_abs": -319.05,
           "shares_before": 21,
           "shares_after": 11
+        },
+        {
+          "date": "2026-06-15",
+          "reason": "math_trim_40%",
+          "shares_sold": 4,
+          "trim_price": 295.42,
+          "pnl_pct": -0.3155,
+          "pnl_abs": -3.74,
+          "shares_before": 11,
+          "shares_after": 7
         }
       ]
     },
@@ -142,7 +172,9 @@
         "composite_score": 0.5171,
         "velocity": 0.0,
         "high_water": 43.37,
-        "last_trim_ts": "2026-06-12T09:52:23.617404"
+        "last_trim_ts": "2026-06-12T09:52:23.617404",
+        "pending_exit": true,
+        "pending_exit_ts": "2026-06-15T09:52:18.807550"
       },
       "trims": [
         {
@@ -157,46 +189,6 @@
         }
       ]
     },
-    "v5.4:XLE": {
-      "model": "v5.4",
-      "symbol": "XLE",
-      "shares": 34,
-      "entry_price": 57.97,
-      "entry_date": "2026-06-09",
-      "metadata": {
-        "t_stat": 1.4634,
-        "stop": 55.3208,
-        "tp": 0.0,
-        "regime": "NEUTRAL/MIXED",
-        "kelly_fraction": 0.0948,
-        "composite_score": 0.3612,
-        "velocity": 0.0,
-        "high_water": 58.3458,
-        "last_trim_ts": "2026-06-12T09:52:23.829154"
-      },
-      "trims": [
-        {
-          "date": "2026-06-11",
-          "reason": "math_trim_12%",
-          "shares_sold": 20,
-          "trim_price": 58.3458,
-          "pnl_pct": 0.6483,
-          "pnl_abs": 7.52,
-          "shares_before": 174,
-          "shares_after": 154
-        },
-        {
-          "date": "2026-06-12",
-          "reason": "math_trim_78%",
-          "shares_sold": 120,
-          "trim_price": 57.59,
-          "pnl_pct": -0.6555,
-          "pnl_abs": -45.6,
-          "shares_before": 154,
-          "shares_after": 34
-        }
-      ]
-    },
     "v5.4:CSX": {
       "model": "v5.4",
       "symbol": "CSX",
@@ -205,7 +197,7 @@
       "entry_date": "2026-06-10",
       "metadata": {
         "t_stat": 2.0151,
-        "stop": 44.57,
+        "stop": 45.6507,
         "tp": 0.0,
         "regime": "NEUTRAL/MIXED",
         "kelly_fraction": 0.1125,
@@ -217,19 +209,19 @@
     "v5.4:BAC": {
       "model": "v5.4",
       "symbol": "BAC",
-      "shares": 148,
+      "shares": 106,
       "entry_price": 54.79,
       "entry_date": "2026-06-10",
       "metadata": {
         "t_stat": 1.6713,
-        "stop": 52.7289,
+        "stop": 53.8057,
         "tp": 0.0,
         "regime": "NEUTRAL/TRENDING",
         "kelly_fraction": 0.1015,
         "composite_score": 0.6124,
         "velocity": 0.0,
-        "high_water": 55.52,
-        "last_trim_ts": "2026-06-12T09:52:23.346654"
+        "high_water": 56.11,
+        "last_trim_ts": "2026-06-15T09:52:19.012392"
       },
       "trims": [
         {
@@ -241,6 +233,16 @@
           "pnl_abs": 36.5,
           "shares_before": 198,
           "shares_after": 148
+        },
+        {
+          "date": "2026-06-15",
+          "reason": "math_trim_28%",
+          "shares_sold": 42,
+          "trim_price": 56.11,
+          "pnl_pct": 2.4092,
+          "pnl_abs": 55.44,
+          "shares_before": 148,
+          "shares_after": 106
         }
       ]
     },
@@ -252,7 +254,7 @@
       "entry_date": "2026-06-11",
       "metadata": {
         "t_stat": 2.5529,
-        "stop": 25.28,
+        "stop": 25.3707,
         "tp": 0.0,
         "regime": "NEUTRAL/REVERTING",
         "kelly_fraction": 0.0811,
@@ -269,13 +271,13 @@
       "entry_date": "2026-06-11",
       "metadata": {
         "t_stat": 2.0358,
-        "stop": 20.6627,
+        "stop": 23.3457,
         "tp": 0.0,
         "regime": "NEUTRAL/REVERTING",
         "kelly_fraction": 0.0707,
         "composite_score": 0.35,
         "velocity": 0.0,
-        "high_water": 26.035
+        "high_water": 27.53
       }
     }
   },
@@ -1078,6 +1080,54 @@
       "exit_path": "trailing_stop",
       "pnl": 20.370000000000005,
       "pnl_pct": 5.208253432538168
+    },
+    {
+      "model": "v5.4",
+      "symbol": "XLE",
+      "shares": 34,
+      "entry_price": 57.97,
+      "entry_date": "2026-06-09",
+      "metadata": {
+        "t_stat": 1.4634,
+        "stop": 55.3208,
+        "tp": 0.0,
+        "regime": "NEUTRAL/MIXED",
+        "kelly_fraction": 0.0948,
+        "composite_score": 0.3612,
+        "velocity": 0.0,
+        "high_water": 58.3458,
+        "last_trim_ts": "2026-06-12T09:52:23.829154",
+        "pending_exit": true,
+        "pending_exit_ts": "2026-06-15T09:52:18.902474"
+      },
+      "trims": [
+        {
+          "date": "2026-06-11",
+          "reason": "math_trim_12%",
+          "shares_sold": 20,
+          "trim_price": 58.3458,
+          "pnl_pct": 0.6483,
+          "pnl_abs": 7.52,
+          "shares_before": 174,
+          "shares_after": 154
+        },
+        {
+          "date": "2026-06-12",
+          "reason": "math_trim_78%",
+          "shares_sold": 120,
+          "trim_price": 57.59,
+          "pnl_pct": -0.6555,
+          "pnl_abs": -45.6,
+          "shares_before": 154,
+          "shares_after": 34
+        }
+      ],
+      "exit_price": 55.44,
+      "exit_date": "2026-06-15",
+      "exit_reason": "trailing_stop",
+      "exit_path": "trailing_stop",
+      "pnl": -86.02000000000004,
+      "pnl_pct": -4.36432637571158
     }
   ]
 }

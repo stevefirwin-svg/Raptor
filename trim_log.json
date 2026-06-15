@@ -843,5 +843,57 @@
     "agent_decision": "HOLD",
     "agent_conf": 0.9,
     "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-06-15T09:52:19.462422",
+    "symbol": "BAC",
+    "trim_qty": 42,
+    "price": 56.11,
+    "pnl_pct": 2.37,
+    "reason": "math_trim_28%",
+    "composite": -0.084,
+    "trim_detail": "severity=0.087 x stop_mult=0.75 x far_mult=1.28 x pnl_mult=1.00 + slope_adj=0.200 = 0.283 -> 28.3% (42 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-06-15T09:52:19.462481",
+    "symbol": "KDP",
+    "trim_qty": 8,
+    "price": 31.655,
+    "pnl_pct": 10.41,
+    "reason": "math_trim_42%",
+    "composite": -0.163,
+    "trim_detail": "severity=0.234 x stop_mult=1.00 x far_mult=1.17 x pnl_mult=0.80 + slope_adj=0.200 = 0.418 -> 41.8% (8 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-06-15T09:52:19.462509",
+    "symbol": "MRVL",
+    "trim_qty": 4,
+    "price": 295.42,
+    "pnl_pct": 0.41,
+    "reason": "math_trim_40%",
+    "composite": 0.0066,
+    "trim_detail": "severity=0.169 x stop_mult=1.00 x far_mult=1.17 x pnl_mult=1.00 + slope_adj=0.200 = 0.397 -> 39.7% (4 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-06-15T09:52:19.462532",
+    "symbol": "WFC",
+    "trim_qty": 8,
+    "price": 84.02,
+    "pnl_pct": 2.78,
+    "reason": "math_trim_21%",
+    "composite": -0.1718,
+    "trim_detail": "severity=0.016 x stop_mult=0.75 x far_mult=1.17 x pnl_mult=1.00 + slope_adj=0.200 = 0.214 -> 21.4% (8 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
   }
 ]

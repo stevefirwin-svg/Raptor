@@ -1,0 +1,24 @@
+2026-06-15 09:35:03,973 [raptor.main] INFO: ============================================================
+2026-06-15 09:35:03,973 [raptor.main] INFO: RAPTOR v5.4 DAILY SCAN - 2026-06-15T09:35:03.973826
+2026-06-15 09:35:03,974 [raptor.main] INFO: ============================================================
+2026-06-15 09:35:03,975 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-06-15 09:35:04,547 [raptor.main] INFO: Account: equity=$107770.75  cap=none (compound)  sizing_base=$107770.75  positions=10
+2026-06-15 09:35:04,555 [raptor.main] INFO: [MarketAgent] SCAN | scalar=1.00 | Neutral macro conditions with no extreme signals present.
+2026-06-15 09:35:04,611 [raptor.margin_guard] INFO: MARGIN GUARD: equity=$107,772  cap=none (compound)  cash=$41,016  positions=10
+2026-06-15 09:35:04,612 [raptor.margin_guard] INFO: MARGIN GUARD: market_value=$66,756  utilization=61.9% of base  margin=NO
+2026-06-15 09:35:04,741 [raptor.universe] INFO: Universe from cache: 75 symbols
+2026-06-15 09:35:04,748 [raptor.main] INFO: Dynamic universe: 75 symbols
+2026-06-15 09:35:06,736 [raptor.data_feeds] INFO: Fetched 75 new bars / 75 total cached
+2026-06-15 09:35:06,944 [raptor.data_feeds] INFO: FRED regime: BULLISH (score=0.200)
+2026-06-15 09:35:07,007 [raptor.main] INFO: Data: 75 symbols | Macro: NEUTRAL (0.200)
+2026-06-15 09:35:09,737 [raptor.signals] INFO: v5.4 Signals: 5 from 74 | Macro=NEUTRAL Scale=0.8 | Micro={'MIXED': 54, 'TRENDING': 16, 'REVERTING': 4} | SNR min=1.60 max=1.98
+2026-06-15 09:35:09,763 [raptor.main] INFO: Velocity gate: 5 signals remain | velocities: {'HOOD': '+0.000', 'AAL': '+0.000', 'GOOGL': '+0.000', 'NEE': '+0.000', 'SCHW': '+0.000'}
+2026-06-15 09:35:09,766 [raptor.main] INFO: Signals:
+2026-06-15 09:35:09,767 [raptor.main] INFO:   1. HOOD  t=1.985  pctl=100%  entry=$99.95  stop=$82.29  tp=$0.00  kelly=0.112  hold~10d
+2026-06-15 09:35:09,768 [raptor.main] INFO:   2. AAL  t=1.877  pctl=99%  entry=$15.74  stop=$14.18  tp=$0.00  kelly=0.108  hold~18d
+2026-06-15 09:35:09,771 [raptor.main] INFO:   3. GOOGL  t=1.819  pctl=97%  entry=$369.56  stop=$341.90  tp=$0.00  kelly=0.106  hold~30d
+2026-06-15 09:35:09,773 [raptor.main] INFO:   4. NEE  t=1.646  pctl=96%  entry=$85.41  stop=$81.55  tp=$0.00  kelly=0.101  hold~8d
+2026-06-15 09:35:09,774 [raptor.main] INFO:   5. SCHW  t=1.597  pctl=93%  entry=$91.35  stop=$87.09  tp=$0.00  kelly=0.099  hold~11d
+2026-06-15 09:35:11,881 [AgentLayer] WARNING: EntryAgent batch failed ('"decision"') — deterministic rules only.
+2026-06-15 09:35:11,923 [raptor.main] INFO: Deployable: cap=none  market_value=$66755  cash=$41016  headroom=$38965  available=$38965  (margin=OFF)
+2026-06-15 09:35:11,924 [raptor.main] INFO: Scan complete. 0 orders placed for v5.4.
