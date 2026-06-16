@@ -428,5 +428,57 @@
     "entry_reasoning": null,
     "entry_flags": [],
     "submitted_at": "2026-06-15T09:52:19.433597"
+  },
+  "53f338d4-7546-441c-bd9a-1eba9b820baa": {
+    "symbol": "BAC",
+    "exit_reason": "math_trim_26%",
+    "composite": 0.0239,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-06-16T09:52:19.362961"
+  },
+  "fd060472-e314-4292-a079-334384a50172": {
+    "symbol": "CSX",
+    "exit_reason": "math_trim_39%",
+    "composite": 0.0422,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-06-16T09:52:19.552851"
+  },
+  "fc110a9a-492b-4d42-8b9c-b80f7cfbe4c2": {
+    "symbol": "KDP",
+    "exit_reason": "math_trim_33%",
+    "composite": -0.1265,
+    "entry_decision": null,
+    "entry_confidence": null,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-06-16T09:52:19.673200"
+  },
+  "fb30efbc-9d05-4a5c-8c0d-4de66474dfa8": {
+    "symbol": "KRE",
+    "exit_reason": "math_trim_14%",
+    "composite": 0.1446,
+    "entry_decision": "PASS",
+    "entry_confidence": 0.5,
+    "entry_reasoning": "Agent unavailable \u2014 passthrough default",
+    "entry_flags": [
+      "agent_error"
+    ],
+    "submitted_at": "2026-06-16T09:52:19.763545"
+  },
+  "7b432be1-21a9-4993-a140-b478aeae221a": {
+    "symbol": "WFC",
+    "exit_reason": "math_trim_35%",
+    "composite": -0.1402,
+    "entry_decision": null,
+    "entry_confidence": null,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-06-16T09:52:19.866581"
   }
 }

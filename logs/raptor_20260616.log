@@ -1,0 +1,29 @@
+2026-06-16 09:35:03,914 [raptor.main] INFO: ============================================================
+2026-06-16 09:35:03,914 [raptor.main] INFO: RAPTOR v5.4 DAILY SCAN - 2026-06-16T09:35:03.914740
+2026-06-16 09:35:03,915 [raptor.main] INFO: ============================================================
+2026-06-16 09:35:03,916 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-06-16 09:35:04,566 [raptor.main] INFO: Account: equity=$107902.71  cap=none (compound)  sizing_base=$107902.71  positions=8
+2026-06-16 09:35:04,586 [raptor.main] INFO: [MarketAgent] SCAN | scalar=1.00 | Neutral macro regime with calm VIX and mixed trend in SPY, no extreme signals present.
+2026-06-16 09:35:04,832 [raptor.margin_guard] INFO: MARGIN GUARD: equity=$107,902  cap=none (compound)  cash=$54,099  positions=8
+2026-06-16 09:35:04,832 [raptor.margin_guard] INFO: MARGIN GUARD: market_value=$53,805  utilization=49.9% of base  margin=NO
+2026-06-16 09:35:04,855 [raptor.universe] INFO: Universe from cache: 76 symbols
+2026-06-16 09:35:04,856 [raptor.main] INFO: Dynamic universe: 76 symbols
+2026-06-16 09:35:08,108 [raptor.data_feeds] INFO: Fetched 76 new bars / 76 total cached
+2026-06-16 09:35:08,325 [raptor.data_feeds] INFO: FRED regime: BULLISH (score=0.200)
+2026-06-16 09:35:08,394 [raptor.main] INFO: Data: 76 symbols | Macro: NEUTRAL (0.200)
+2026-06-16 09:35:10,976 [raptor.signals] INFO: v5.4 Signals: 5 from 75 | Macro=NEUTRAL Scale=1.0 | Micro={'MIXED': 56, 'TRENDING': 15, 'REVERTING': 4} | SNR min=1.41 max=2.20
+2026-06-16 09:35:11,035 [raptor.main] INFO: Velocity gate: 4 signals remain | velocities: {'UBER': '+0.000', 'AAL': '+0.000', 'CRWV': '+0.000', 'HOOD': '+0.000'}
+2026-06-16 09:35:11,053 [raptor.main] INFO: Signals:
+2026-06-16 09:35:11,053 [raptor.main] INFO:   1. UBER  t=1.935  pctl=97%  entry=$73.16  stop=$68.74  tp=$0.00  kelly=0.120  hold~6d
+2026-06-16 09:35:11,054 [raptor.main] INFO:   2. AAL  t=1.794  pctl=99%  entry=$16.07  stop=$14.48  tp=$0.00  kelly=0.120  hold~21d
+2026-06-16 09:35:11,054 [raptor.main] INFO:   3. CRWV  t=1.487  pctl=95%  entry=$112.11  stop=$89.41  tp=$0.00  kelly=0.119  hold~9d
+2026-06-16 09:35:11,054 [raptor.main] INFO:   4. HOOD  t=1.408  pctl=93%  entry=$99.10  stop=$81.24  tp=$0.00  kelly=0.116  hold~10d
+2026-06-16 09:35:13,176 [AgentLayer] WARNING: EntryAgent batch failed ('"decision"') — deterministic rules only.
+2026-06-16 09:35:13,197 [raptor.main] INFO: Deployable: cap=none  market_value=$53805  cash=$54099  headroom=$51394  available=$51394  (margin=OFF)
+2026-06-16 09:35:13,283 [raptor.data_feeds] INFO: Order submitted: BUY 176 UBER @ 73.23
+2026-06-16 09:35:13,289 [raptor.main] INFO: ORDER [v5.4]: BUY 176 UBER @ $73.23
+2026-06-16 09:35:13,313 [raptor.slippage] INFO: SLIPPAGE BUY 176 UBER: decision=$73.1600 fill=PENDING (order 51e18eba)
+2026-06-16 09:35:13,357 [raptor.data_feeds] INFO: Order submitted: BUY 805 AAL @ 16.09
+2026-06-16 09:35:13,363 [raptor.main] INFO: ORDER [v5.4]: BUY 805 AAL @ $16.09
+2026-06-16 09:35:13,379 [raptor.slippage] INFO: SLIPPAGE BUY 805 AAL: decision=$16.0700 fill=PENDING (order b6058eb1)
+2026-06-16 09:35:13,380 [raptor.main] INFO: Scan complete. 2 orders placed for v5.4.

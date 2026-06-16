@@ -2,8 +2,8 @@
   "decision": "SCAN",
   "risk_scalar": 1.0,
   "confidence": null,
-  "reasoning": "Neutral macro conditions with no extreme signals present.",
+  "reasoning": "Neutral macro regime with calm VIX and mixed trend in SPY, no extreme signals present.",
   "source": "rule+llama3.2",
   "macro_regime": "NEUTRAL",
-  "timestamp": "2026-06-15T13:15:23.555393+00:00"
+  "timestamp": "2026-06-16T13:15:25.563789+00:00"
 }
