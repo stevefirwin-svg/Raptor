@@ -1,5 +1,5 @@
 # Raptor — Master Priority Plan
-*Last updated: 2026-06-12 (session 5 — position-level data audit + OU hold target + full markdown refresh)*
+*Last updated: 2026-06-17 (session 7 — Kelly drawdown-budget rework: replaces heuristic σ√T constraint with derived excursion-probability formula)*
 *Supersedes all prior versions. This is the single source of truth.*
 
 ---
@@ -112,7 +112,29 @@ At current pace (~7 positions/week): DATA-40 in ~2 weeks, DATA-60 in ~5 weeks.
 | S5-5 | position_outcomes.json — 27 independent positions aggregated from 76 trim events |
 | S5-6 | dsr.py updated to use position_outcomes.json — true DSR 59.8% (was falsely 99.9%) |
 
----
+## Session 6 Fixes (2026-06-17)
+
+| ID | Fix |
+|----|-----|
+| S6-1 | OU hold target rework: θ fit on market-residual log-price (not raw), not raw I(1)-contaminated series (see RAPTOR_ONTOLOGY.md §16) |
+| S6-2 | ADF-style unit-root pre-test gates hold_target — falls back to time-stop branch with `reliable=False` instead of fabricating a number on trending/random-walk names |
+| S6-3 | Marriott-Pope (1941) bias correction on φ̂ before θ conversion — corrects early-exit bias from finite-sample OLS bias |
+| S6-4 | Parametric bootstrap CI (`hold_target_low`/`hold_target_high`) replaces unreliable delta-method interval; new `Signal` fields are backward-compatible (defaults + existing `getattr` call sites unaffected) |
+| S6-5 | Citation correction: ln(2)/θ documented as half-life heuristic, not Leung & Zhang (2019)'s actual optimal-stopping result |
+| S6-6 | Documentation/code drift fix: ontology §9 wrongly described an "OU-theta derived" trailing stop that was never implemented; corrected to match live time/profit-tiered `_trail_mult()` in exit_monitor.py |
+
+## Session 7 Fixes (2026-06-17)
+
+| ID | Fix |
+|----|-----|
+| S7-1 | `kelly_engine.py::_dd_constrained_f` rewritten: replaces ad hoc `dd_tolerance/(σ√252)` heuristic with derived drawdown-excursion-probability formula `P(breach β) = β^((2−λ)/λ)`, inverted for λ (fraction of full Kelly) given a target tolerance and breach probability. See RAPTOR_ONTOLOGY.md §17. |
+| S7-2 | `dd_budget_lambda` field added to `kelly_estimates.json` per book — exposes the implied fraction-of-full-Kelly the drawdown budget allows (currently ~0.10 for MOMENTUM book, vs the 0.50 half-Kelly haircut actually applied upstream of it in the pipeline) |
+| S7-3 | `P_TOL` (target probability of ever breaching `MAX_DD`) added as an explicit, flagged `TODO:DERIVE` constant — was previously absent; the old heuristic had no probabilistic interpretation at all, so there was nothing to flag. Placeholder = 0.05 (conventional tail, not yet fit to Raptor's own equity curve). Gated at DATA-60. |
+| S7-4 | Diagnostic-only fat-tail correction factor (`f_star_correction_factor_DIAGNOSTIC_ONLY`) added to `return_diagnostics()` — surfaces the skew-vs-kurtosis directional correction to naive Kelly (η* = s/κ crossover) without feeding it into production sizing, per the 4th-order Taylor expansion's unreliability at κ≈8-10 |
+| S7-5 | Verified via unit tests (lambda formula matches hand-derived session value 0.0819 for 12%/5% inputs; boundary/degenerate guard rejects p_tol ≥ β; fail-open behavior confirmed) and a full run against live `outcome_log.json` (53 trades) — `f_dd_constrained` moved from 3.83% (old heuristic) to 5.07% (new formula), still the binding constraint ahead of half-Kelly's 13.17% |
+| S7-6 | Zero breaking changes confirmed: diffed `kelly_estimates.json` output keys old vs new — all prior keys retained, only additive fields. `get_recommended_kelly()` (sole downstream consumer) reads only `f_recommended`/`mode`, both unchanged in shape. Kelly remains SHADOW mode — no live sizing affected by this change (Rule 5). |
+
+
 
 ## Open Priority Queue
 
@@ -128,6 +150,7 @@ At current pace (~7 positions/week): DATA-40 in ~2 weeks, DATA-60 in ~5 weeks.
 | 6 | P2-9: Stop distance layer zero signal | hold_monitor.py | Zero stop distance should be strong negative, not neutral |
 | 7 | P1-15: Sentiment dead path | signals.py | sentiment_score always 0.0 — remove or fix the pipeline |
 | 8 | raptor_session4_fixes.zip in repo | repo root | `del raptor_session4_fixes.zip` + `git rm` if present |
+| 9 | Consume hold_target_low/high/reliable downstream | hold_monitor.py, daily_recap.py | New fields exist on Signal (S6-4) but time-exit logic and recap email don't read them yet — a `reliable=False` position is currently treated identically to a high-confidence one |
 
 ### DATA-40 gate (≥40 independent positions in position_outcomes.json)
 
@@ -162,12 +185,13 @@ At current pace (~7 positions/week): DATA-40 in ~2 weeks, DATA-60 in ~5 weeks.
 | signals.py | Kelly SNR normalizer /3.0 | Bootstrap Kelly percentile distribution | DATA-40 |
 | signals.py | Kelly clip 0.02/0.12 | EVT tail on closed position returns | DATA-40 |
 | signals.py | Regime blend sigma 0.25 | Historical regime transition frequency | None — derive from macro_context history |
-| signals.py | OU hold_target min=3, max=30 | Regress realized hold_days vs theta estimate | DATA-40 |
+| signals.py | OU hold_target min=3, max=30 | Regress realized hold_days vs theta estimate (estimator reworked 2026-06-17, see ontology §16 — bounds calibration still pending data) | DATA-40 |
 | hold_monitor.py | LAYER_WEIGHTS (hand-picked) | Spearman IC per layer vs PnL | DATA-60 (ARCH-1) |
 | hold_monitor.py | TIER_STRONG=0.20, TIER_STABLE=-0.15 | Health score vs forward return distribution | DATA-40 |
 | exit_monitor.py | Trail modifier 0.3/1.3/0.75 | Backtest trail width sensitivity | DATA-40 (GAP-B) |
 | config.py | initial_stop_atr_mult 3.0 | EVT-derived — gate: DATA-60 | DATA-60 |
 | config.py | max_portfolio_drawdown 0.12 | EVT tail on portfolio return distribution | DATA-60 |
+| kelly_engine.py | P_TOL = 0.05 (target probability of ever breaching MAX_DD) | Calibrate against margin_guard.py trigger cost / Steve's explicit ruin-cost function once enough live drawdown episodes exist (session 7, 2026-06-17 — see ontology §17) | DATA-60 |
 | macro_context.py | Vote thresholds 3/0/-2 | Replace with HMM probability vector (ARCH-2) | None |
 | dsr.py | N_TRIALS_DEFAULT = 10 | Count of strategy-altering commits — update each session | Rolling |
 
@@ -179,9 +203,9 @@ At current pace (~7 positions/week): DATA-40 in ~2 weeks, DATA-60 in ~5 weeks.
 |----|-------------|--------|
 | P1-1 | Kalman macro classifier | NOT BUILT — replaced by Gaussian regime blend in signals.py |
 | P1-2 | Vol-regime hard stop | ✅ CONFIRMED |
-| P1-3 | OU trailing stop | ✅ CONFIRMED |
+| P1-3 | OU trailing stop | ❌ NEVER BUILT — was documentation-only; live trail is time-tier + profit-ATR (`exit_monitor._trail_mult`). Corrected 2026-06-17. |
 | P1-4 | Bayesian Kelly | ✅ CONFIRMED — bootstrap live, SHADOW mode |
-| P1-5 | OU hold target | ✅ FIXED 2026-06-11 — ln(2)/θ AR(1) OLS (Leung & Zhang 2019) |
+| P1-5 | OU hold target | ⚠️ REWORKED 2026-06-17 — market-residual series, unit-root gate, bias correction, bootstrap CI added (S6-1..S6-4). CI/reliability flag not yet consumed downstream (see queue item below). |
 | P1-6 | IC layer weights hold monitor | GATED — DATA-60 (currently 27 positions) |
 | P1-7 | Continuous trim | ✅ CONFIRMED |
 | P1-8 | Regime-relative thesis threshold | ✅ CONFIRMED |

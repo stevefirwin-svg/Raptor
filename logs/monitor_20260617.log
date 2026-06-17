@@ -1,0 +1,70 @@
+2026-06-17 05:56:38,708 [monitor] INFO: ============================================================
+2026-06-17 05:56:38,709 [monitor] INFO: RAPTOR MONITOR — 2026-06-17 05:56 ET
+2026-06-17 05:56:38,710 [monitor] INFO: ============================================================
+2026-06-17 05:56:38,710 [monitor] INFO: Connecting to Alpaca...
+2026-06-17 05:56:44,639 [monitor] INFO: Running L1-Infrastructure...
+2026-06-17 05:56:44,685 [monitor] INFO:   L1-Infrastructure: 7 findings (2 non-OK)
+2026-06-17 05:56:44,686 [monitor] INFO: Running L2-Reconciliation...
+2026-06-17 05:56:44,719 [monitor] INFO:   L2-Reconciliation: 2 findings (2 non-OK)
+2026-06-17 05:56:44,721 [monitor] INFO: Running L3-PositionRisk...
+2026-06-17 05:56:44,737 [monitor] INFO:   L3-PositionRisk: 8 findings (6 non-OK)
+2026-06-17 05:56:44,737 [monitor] INFO: Running L4-Operations...
+2026-06-17 05:56:44,814 [monitor] INFO:   L4-Operations: 5 findings (4 non-OK)
+2026-06-17 05:56:44,814 [monitor] INFO: Running L5-Macro...
+2026-06-17 05:56:44,830 [monitor] INFO:   L5-Macro: 4 findings (1 non-OK)
+2026-06-17 05:56:44,830 [monitor] INFO: Running L6-Opportunity...
+2026-06-17 05:56:44,845 [monitor] INFO:   L6-Opportunity: 0 findings (0 non-OK)
+2026-06-17 05:56:44,845 [monitor] INFO: ============================================================
+2026-06-17 05:56:44,845 [monitor] INFO: SUMMARY: 0 CRITICAL  1 ALERT  11 WARN  26 total findings
+2026-06-17 05:56:45,483 [monitor] INFO: ============================================================
+2026-06-17 05:56:45,483 [monitor] INFO: RAPTOR MONITOR — 2026-06-17 05:56 ET
+2026-06-17 05:56:45,483 [monitor] INFO: ============================================================
+2026-06-17 05:56:45,484 [monitor] INFO: Connecting to Alpaca...
+2026-06-17 05:56:47,298 [monitor] INFO: Running L1-Infrastructure...
+2026-06-17 05:56:47,309 [monitor] INFO:   L1-Infrastructure: 7 findings (2 non-OK)
+2026-06-17 05:56:47,310 [monitor] INFO: Running L2-Reconciliation...
+2026-06-17 05:56:47,312 [monitor] INFO:   L2-Reconciliation: 2 findings (2 non-OK)
+2026-06-17 05:56:47,312 [monitor] INFO: Running L3-PositionRisk...
+2026-06-17 05:56:47,314 [monitor] INFO:   L3-PositionRisk: 8 findings (6 non-OK)
+2026-06-17 05:56:47,314 [monitor] INFO: Running L4-Operations...
+2026-06-17 05:56:47,317 [monitor] INFO:   L4-Operations: 5 findings (4 non-OK)
+2026-06-17 05:56:47,317 [monitor] INFO: Running L5-Macro...
+2026-06-17 05:56:47,319 [monitor] INFO:   L5-Macro: 4 findings (1 non-OK)
+2026-06-17 05:56:47,319 [monitor] INFO: Running L6-Opportunity...
+2026-06-17 05:56:47,320 [monitor] INFO:   L6-Opportunity: 0 findings (0 non-OK)
+2026-06-17 05:56:47,321 [monitor] INFO: ============================================================
+2026-06-17 05:56:47,321 [monitor] INFO: SUMMARY: 0 CRITICAL  1 ALERT  11 WARN  26 total findings
+2026-06-17 05:56:47,323 [monitor] INFO: Preview saved to logs\monitor_preview.html
+2026-06-17 05:56:47,899 [monitor] INFO: ============================================================
+2026-06-17 05:56:47,900 [monitor] INFO: RAPTOR MONITOR — 2026-06-17 05:56 ET
+2026-06-17 05:56:47,901 [monitor] INFO: ============================================================
+2026-06-17 05:56:47,901 [monitor] INFO: Connecting to Alpaca...
+2026-06-17 05:56:49,839 [monitor] INFO: Running L1-Infrastructure...
+2026-06-17 05:56:49,851 [monitor] INFO:   L1-Infrastructure: 7 findings (2 non-OK)
+2026-06-17 05:56:49,852 [monitor] INFO: Running L2-Reconciliation...
+2026-06-17 05:56:49,856 [monitor] INFO:   L2-Reconciliation: 2 findings (2 non-OK)
+2026-06-17 05:56:49,856 [monitor] INFO: Running L3-PositionRisk...
+2026-06-17 05:56:49,859 [monitor] INFO:   L3-PositionRisk: 8 findings (6 non-OK)
+2026-06-17 05:56:49,859 [monitor] INFO: Running L4-Operations...
+2026-06-17 05:56:49,861 [monitor] INFO:   L4-Operations: 5 findings (4 non-OK)
+2026-06-17 05:56:49,862 [monitor] INFO: Running L5-Macro...
+2026-06-17 05:56:49,863 [monitor] INFO:   L5-Macro: 4 findings (1 non-OK)
+2026-06-17 05:56:49,863 [monitor] INFO: Running L6-Opportunity...
+2026-06-17 05:56:49,873 [monitor] INFO:   L6-Opportunity: 0 findings (0 non-OK)
+2026-06-17 05:56:49,874 [monitor] INFO: ============================================================
+2026-06-17 05:56:49,875 [monitor] INFO: SUMMARY: 0 CRITICAL  1 ALERT  11 WARN  26 total findings
+2026-06-17 05:56:51,677 [monitor] INFO: Monitor email sent: RAPTOR Monitor 🟠 ALERT (1) — 2026-06-17
+2026-06-17 05:56:51,681 [monitor] INFO: Findings log written: logs\monitor_20260617.json
+[Wed 06/17/2026  6:18:59.09] Starting Raptor Monitor 
+Traceback (most recent call last):
+  File "C:\Users\steve\OneDrive\Desktop\Raptor\raptor_monitor.py", line 87, in <module>
+    logging.FileHandler(LOG_DIR / f"monitor_{TODAY_STR}.log", encoding="utf-8"),
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\steve\AppData\Local\Programs\Python\Python313\Lib\logging\__init__.py", line 1219, in __init__
+    StreamHandler.__init__(self, self._open())
+                                 ~~~~~~~~~~^^
+  File "C:\Users\steve\AppData\Local\Programs\Python\Python313\Lib\logging\__init__.py", line 1248, in _open
+    return open_func(self.baseFilename, self.mode,
+                     encoding=self.encoding, errors=self.errors)
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\steve\\OneDrive\\Desktop\\Raptor\\logs\\monitor_20260617.log'
+[Wed 06/17/2026  6:18:59.66] Monitor complete (exit code 1) 

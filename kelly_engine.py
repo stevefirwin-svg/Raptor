@@ -24,11 +24,85 @@ Bootstrap Kelly (2026-05-24):
   With exponential decay weighting, recent trades are sampled more often,
   so the estimate reflects the current regime rather than pooled history.
 
+Drawdown-constraint rework (2026-06-17, session 7):
+  PRIOR BUG: _dd_constrained_f used f_max = dd_tolerance / (sigma * sqrt(T)),
+  an ad hoc volatility-scaling heuristic with no probabilistic meaning — it
+  does not say what it limits the *probability* of, only a rough magnitude.
+
+  REPLACEMENT: derived from first principles via the continuous (GBM)
+  approximation to fractional-Kelly betting. Betting fraction lambda of
+  full Kelly makes log-wealth a drifted Brownian motion with
+      drift     m = gamma * lambda * (1 - lambda/2)
+      variance  v = gamma * lambda^2,      gamma = mu^2 / sigma^2
+  The probability that an equity excursion from a peak ever reaches a
+  drawdown depth d = -ln(beta) (beta = 1 - dd_tolerance), via the
+  exponential martingale and optional stopping, collapses to:
+
+      P(drawdown episode reaches beta) = beta ** ((2 - lambda) / lambda)
+
+  Note mu, sigma, and gamma all cancel — the drawdown PROFILE of
+  fractional-Kelly betting depends only on lambda, not on the edge size.
+  This lets us invert the formula: given a target tolerance on how deep a
+  drawdown is acceptable (beta) and a target probability of ever breaching
+  it (p_tol), solve directly for the lambda (fraction of full Kelly) that
+  is consistent with that risk budget:
+
+      lambda* = 2 / (1 + ln(p_tol)/ln(beta))
+
+  f_dd_constrained = lambda* * f_star  (f_star = naive empirical mu/sigma^2,
+  NOT the Bayesian-shrunk f — the lambda fraction is defined relative to
+  full Kelly, so it must scale the full-Kelly point estimate, not an
+  already-shrunk one. Mixing the two would double-apply conservatism in an
+  unprincipled way and make the resulting number impossible to interpret
+  against the derivation above.)
+
+  Verified consequence (worked by hand before being coded — see chat log
+  2026-06-17): with dd_tolerance=0.12, p_tol=0.05, lambda* ~ 0.082 — i.e.
+  half-Kelly (lambda=0.5) is roughly 6x too aggressive for a hard 12%
+  drawdown cap at any reasonable breach tolerance. Half-Kelly alone is
+  mathematically inconsistent with a tight drawdown cap; the old Bayesian
+  shrinkage toward F_PRIOR was doing the real risk-limiting work by
+  accident, and that protection decays as n grows and the prior's grip
+  weakens. This rewrite makes the drawdown budget an explicit, persistent
+  constraint instead of an artifact of small-sample shrinkage.
+
+  TODO:DERIVE — P_TOL (target probability of ever breaching dd_tolerance)
+  is NOT yet derived from data. It is currently a placeholder consistent
+  with conventional risk-budget practice (95% confidence / 5% tail,
+  mirroring the dsr.py and EVT-tail conventions already used elsewhere in
+  this codebase), not a number fit to Raptor's own equity curve. A proper
+  derivation requires either (a) an explicit utility/ruin-cost function from
+  Steve, or (b) enough live drawdown episodes to calibrate p_tol against
+  the actual cost of triggering margin_guard.py / drawdown_reduction_factor.
+  Gated at DATA-60 (enough independent positions to estimate sigma on
+  paths long enough to observe real excursion behavior, not just
+  per-trade return dispersion). Flagged explicitly rather than hidden in a
+  default — do not treat P_TOL as settled.
+
+  Fat-tail correction to f* — diagnostic only, NOT in the production path:
+  A fourth-order Taylor expansion of E[ln(1+fR)] gives
+      f* ~= f_kelly_naive * (1 + s*eta - kappa*eta^2),   eta = mu/sigma
+  where s = skewness, kappa = (full, not excess) kurtosis. Positive skew
+  raises true Kelly above the naive mu/sigma^2 estimate; fat tails (kappa)
+  lower it; they cross at eta* = s/kappa. This is reported alongside the
+  diagnostics as `f_star_correction_factor` so Steve can see which way the
+  empirical bootstrap *should* lean, but it is NOT used to adjust
+  production sizing: at kappa~8-10 the expansion's own convergence
+  condition (|fR| < 1) is marginal, the 5th moment barely exists, and
+  resampling actual bounded (post-stop) outcomes — which the bootstrap
+  already does — sidesteps the truncation problem entirely rather than
+  trusting a 4th-order polynomial near its breakdown point.
+
 Research basis:
   - Kelly (1956) — original criterion
   - Thorp (2006) — half-Kelly, bootstrap under parameter uncertainty
   - Grinold & Kahn — Bayesian shrinkage toward prior
-  - Vince (1992) — drawdown-constrained Kelly
+  - Vince (1992) — drawdown-constrained Kelly (informal originator of the
+    concept; the exact closed-form excursion probability used here is the
+    standard first-passage / exponential-martingale result for drifted
+    Brownian motion under optional stopping, applied to fractional-Kelly
+    log-wealth — see e.g. Browne (1999) "Reaching goals and survival" for
+    the general apparatus)
   - Asness, Moskowitz & Pedersen (2013) — exponential decay half-life
 """
 
@@ -53,7 +127,10 @@ HALF_KELLY   = 0.50
 F_CAP_MOM    = 0.12
 F_CAP_MR     = 0.08
 F_FLOOR      = 0.01
-MAX_DD       = 0.15    # 15% max portfolio drawdown tolerance
+MAX_DD       = 0.15    # dd_tolerance: drawdown depth we are budgeting against
+P_TOL        = 0.05    # TODO:DERIVE — target probability of ever breaching MAX_DD.
+                        # Placeholder at conventional 5% tail; see module docstring.
+                        # Gated at DATA-60 for proper derivation from live equity curve.
 DECAY_LAMBDA = 0.005   # half-life ≈ 139 days (same as AdaptiveWeights)
 N_BOOTSTRAP  = 10_000  # bootstrap resamples
 
@@ -135,17 +212,87 @@ def _bayesian_f(returns: np.ndarray, f_prior: float = F_PRIOR,
     return float((n * f_star + n_prior * f_prior) / (n + n_prior))
 
 
+def _fat_tail_correction_factor(skewness: float, kurtosis: float, eta: float) -> float:
+    """
+    DIAGNOSTIC ONLY — see module docstring. Fourth-order correction factor
+    to naive Kelly from skew/kurtosis of the per-trade return distribution:
+
+        correction = 1 + s*eta - kappa*eta^2
+
+    s = skewness, kappa = FULL kurtosis (not excess; normal = 3.0),
+    eta = per-trade Sharpe (mu/sigma). Crossover where skew and tail risk
+    exactly offset is eta* = s/kappa.
+
+    Returned for visibility in diagnostics; NEVER multiplied into a
+    production f. Production sizing relies on the bootstrap, which
+    captures these moments empirically without the 4th-order truncation
+    risk this formula carries at high kurtosis.
+    """
+    if kurtosis <= 1e-8:
+        return 1.0
+    return float(1.0 + skewness * eta - kurtosis * (eta ** 2))
+
+
+def _lambda_for_drawdown_budget(dd_tolerance: float, p_tol: float) -> float:
+    """
+    Solve beta**((2-lambda)/lambda) = p_tol for lambda, where
+    beta = 1 - dd_tolerance.
+
+    lambda is the fraction of FULL Kelly (f*) consistent with: "the
+    probability that any single drawdown excursion from a new equity high
+    ever reaches depth dd_tolerance is at most p_tol."
+
+    Derivation: see module docstring. Closed form:
+        r      = ln(p_tol) / ln(beta)
+        lambda = 2 / (r + 1)
+
+    Requires 0 < p_tol < beta < 1 for the result to be economically
+    meaningful (p_tol must be a tail probability strictly below the
+    unconstrained per-episode breach probability beta itself; p_tol >= beta
+    would mean "I'm fine with this happening at least as often as it would
+    at full Kelly," which defeats the purpose of a budget). Returns None
+    if the inputs are out of that range rather than emitting a number that
+    doesn't mean what it claims to mean.
+    """
+    beta = 1.0 - dd_tolerance
+    if not (0.0 < p_tol < beta < 1.0):
+        logger.warning(
+            "_lambda_for_drawdown_budget: inputs out of range "
+            "(dd_tolerance=%.4f -> beta=%.4f, p_tol=%.4f) — "
+            "p_tol must be strictly less than beta. Returning None.",
+            dd_tolerance, beta, p_tol)
+        return None
+    r = math.log(p_tol) / math.log(beta)
+    lam = 2.0 / (r + 1.0)
+    return float(lam)
+
+
 def _dd_constrained_f(returns: np.ndarray,
-                       dd_tolerance: float = MAX_DD) -> float:
+                       dd_tolerance: float = MAX_DD,
+                       p_tol: float = P_TOL) -> float:
     """
-    f_max = dd_tolerance / (σ × √T_horizon)
-    Limits expected max drawdown to dd_tolerance over T_horizon=252 days.
-    Reference: Vince (1992).
+    f_dd = lambda* x f_star
+
+    where lambda* is the fraction of full Kelly consistent with at most
+    p_tol probability of any drawdown excursion ever reaching dd_tolerance
+    (see _lambda_for_drawdown_budget and module docstring for the full
+    first-passage derivation). Scales f_star (naive full-Kelly point
+    estimate), not the Bayesian-shrunk f — lambda is defined relative to
+    full Kelly, so mixing scales would make the result uninterpretable
+    against its own derivation.
+
+    Falls back to f_star itself (no constraint applied, i.e. lambda=1) if
+    the lambda solve is out of range — this can only happen if dd_tolerance
+    or p_tol are misconfigured (see _lambda_for_drawdown_budget), and
+    failing open to "unconstrained" rather than silently clamping to zero
+    makes a misconfiguration visible in the output instead of masking it
+    as an aggressive-looking number that's actually a math error.
     """
-    sigma = float(np.std(returns, ddof=1))
-    if sigma < 1e-8:
-        return dd_tolerance
-    return float(dd_tolerance / (sigma * math.sqrt(252)))
+    f_star = _empirical_f(returns)
+    lam = _lambda_for_drawdown_budget(dd_tolerance, p_tol)
+    if lam is None:
+        return float(f_star)
+    return float(lam * f_star)
 
 
 def _recommended_f(returns: np.ndarray, f_cap: float) -> float:
@@ -231,6 +378,8 @@ def return_diagnostics(returns: np.ndarray) -> Dict:
     win_rate  = float((returns > 0).mean())
     avg_win   = float(returns[returns > 0].mean()) if (returns > 0).any() else 0.0
     avg_loss  = float(returns[returns <= 0].mean()) if (returns <= 0).any() else 0.0
+    eta       = float(mu / sigma)
+    f_correction = _fat_tail_correction_factor(skewness, kurtosis, eta)
     return {
         "n":         n,
         "mu_pct":    round(mu * 100, 3),
@@ -241,6 +390,12 @@ def return_diagnostics(returns: np.ndarray) -> Dict:
         "avg_win_pct":  round(avg_win * 100, 3),
         "avg_loss_pct": round(avg_loss * 100, 3),
         "normal_assumption_valid": kurtosis < 5.0 and abs(skewness) < 1.0,
+        "per_trade_sharpe_eta":    round(eta, 4),
+        # Diagnostic only — see _fat_tail_correction_factor docstring.
+        # Direction (>1 means skew dominates, true Kelly likely above naive
+        # f*; <1 means fat tails dominate, true Kelly likely below) is more
+        # trustworthy than the magnitude at this kurtosis level.
+        "f_star_correction_factor_DIAGNOSTIC_ONLY": round(f_correction, 3),
     }
 
 
@@ -278,6 +433,7 @@ def per_book_kelly(outcomes: List[Dict]) -> Dict:
         f_half  = f_bayes * HALF_KELLY
         f_dd    = _dd_constrained_f(returns)
         f_point = float(np.clip(min(f_half, f_dd), F_FLOOR, f_cap))
+        lam_dd  = _lambda_for_drawdown_budget(MAX_DD, P_TOL)
 
         # Bootstrap confidence interval on final recommended f
         boot    = bootstrap_kelly(returns, decay_probs, f_cap)
@@ -306,6 +462,9 @@ def per_book_kelly(outcomes: List[Dict]) -> Dict:
             "f_bayesian":        round(f_bayes, 4),
             "f_half_kelly":      round(f_half,  4),
             "f_dd_constrained":  round(f_dd,    4),
+            "dd_budget_lambda":  round(lam_dd, 4) if lam_dd is not None else None,
+            "dd_budget_inputs":  {"dd_tolerance": MAX_DD, "p_tol": P_TOL,
+                                   "p_tol_status": "TODO:DERIVE — see module docstring"},
             "f_point":           round(f_point, 4),
             # Bootstrap CI
             "bootstrap":         {k: round(v, 4) if isinstance(v, float) else v
@@ -365,6 +524,9 @@ def run_kelly_engine() -> Dict:
         "half_kelly":     HALF_KELLY,
         "f_prior":        F_PRIOR,
         "n_prior":        N_PRIOR,
+        "max_dd_tolerance": MAX_DD,
+        "p_tol":          P_TOL,
+        "p_tol_status":   "TODO:DERIVE — placeholder, see kelly_engine.py module docstring",
         "decay_lambda":   DECAY_LAMBDA,
         "n_bootstrap":    N_BOOTSTRAP,
         "books":          book_results,
@@ -382,6 +544,8 @@ def _print_report(report: Dict) -> None:
     print(f"  Generated: {report['generated_at'][:19]}")
     print(f"  Clean outcomes: {report['n_total']}  |  "
           f"Bootstrap resamples: {report['n_bootstrap']:,}")
+    print(f"  DD budget: tolerance={report['max_dd_tolerance']*100:.0f}%  "
+          f"p_tol={report['p_tol']*100:.0f}% ({report['p_tol_status']})")
     print("=" * 65)
 
     for book, r in report["books"].items():
@@ -400,12 +564,17 @@ def _print_report(report: Dict) -> None:
         print(f"    μ={d['mu_pct']:+.3f}%  σ={d['sigma_pct']:.3f}%  "
               f"Skew={d['skewness']:+.2f}  Kurt={d['kurtosis']:.2f}  "
               f"(normal={d['normal_assumption_valid']})")
+        print(f"    Per-trade Sharpe (η)={d['per_trade_sharpe_eta']:.3f}  "
+              f"Fat-tail f* correction (diagnostic only)="
+              f"{d['f_star_correction_factor_DIAGNOSTIC_ONLY']:.3f}x")
         print()
         print(f"    Point estimates:")
         print(f"      Empirical f*:     {r['f_empirical']*100:7.3f}%")
         print(f"      Bayesian f:       {r['f_bayesian']*100:7.3f}%")
         print(f"      Half-Kelly:       {r['f_half_kelly']*100:7.3f}%")
-        print(f"      DD-Constrained:   {r['f_dd_constrained']*100:7.3f}%")
+        lam_str = f"{r['dd_budget_lambda']:.4f}" if r['dd_budget_lambda'] is not None else "N/A"
+        print(f"      DD-Constrained:   {r['f_dd_constrained']*100:7.3f}%   "
+              f"(lambda*={lam_str} of full Kelly)")
         print(f"      Point f_rec:      {r['f_point']*100:7.3f}%")
         print()
         print(f"    Bootstrap CI (decay-weighted, {boot['n_boot']:,} resamples):")

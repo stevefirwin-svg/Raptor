@@ -20,6 +20,7 @@ class Signal:
     factors_positive: int; regime: str; sentiment_score: float; atr: float
     entry_price: float; stop_price: float; take_profit: float; kelly_fraction: float
     hold_target_days: int; leverage_qualified: bool; confirmation_type: str; timestamp: str
+    hold_target_low: int = 3; hold_target_high: int = 30; hold_target_reliable: bool = False
 
 class Factors:
     @staticmethod
@@ -404,6 +405,182 @@ class QuantSignalEngine:
         if roc_20>0.02: return 1.0
         elif roc_20>-0.02: return 0.8
         return 0.5
+    @staticmethod
+    def _estimate_ou_hold_target(bars, spy_bars, n_boot=400, rng_seed=None):
+        """
+        OU half-life hold target — corrected estimator (2026-06-17 rework).
+
+        Fixes vs. the original raw-log-price / point-estimate version:
+          (1) theta is fit on the market-residual log-price (stock log-price
+              minus OLS-beta * SPY log-price), not raw log-price. Raw equity
+              log-price is usually much closer to I(1) (a random walk) than
+              to a stationary OU process; fitting theta there risks pure
+              small-sample spurious mean reversion (see derivation, part a/b).
+          (2) An ADF-style unit-root pre-test gates whether a numeric
+              hold_target is trustworthy at all. If we cannot reject a unit
+              root, theta is not reliably > 0 and hold_target reverts to the
+              "trending, time-stop-governs" branch with reliable=False rather
+              than silently emitting a heuristic number.
+          (3) phi_hat is bias-corrected toward the unit root via the
+              Marriott-Pope (1941, finite-sample AR(1)) first-order
+              correction before converting to theta. OLS phi_hat is biased
+              toward zero in finite samples, which biases theta_hat upward
+              and hold_target downward (we'd tell the system to exit early).
+          (4) A parametric bootstrap (simulate OU paths at theta_hat/sigma_hat
+              over the same T, refit each, take the percentile interval of
+              ln(2)/theta_hat) replaces the delta-method CI, which is known
+              to be anti-informative exactly in the near-unit-root regime
+              (its formula sends Var(theta_hat) -> 0 as theta -> 0, which is
+              backwards).
+
+        Reference note: ln(2)/theta is the HALF-LIFE HEURISTIC from the
+        practitioner literature, not the optimal-stopping exit boundary that
+        Leung & Zhang (2019) actually derive. We keep using the heuristic
+        (it's cheap and has the right qualitative shape) but should not cite
+        it as if it were Leung & Zhang's main result. TODO: evaluate the
+        actual optimal-stopping boundary as a P2 upgrade once theta
+        estimation is trustworthy.
+
+        Returns dict: point (int days), low/high (int days, 90% bootstrap
+        interval), reliable (bool — False if unit-root test failed to
+        reject, i.e. theta is not distinguishable from zero), theta (float
+        or None), n_obs (int).
+        """
+        MIN_OBS = 30           # need enough bars for ADF lag terms + bootstrap stability
+        FALLBACK = {"point": 15, "low": 3, "high": 30, "reliable": False,
+                    "theta": None, "n_obs": 0}
+        if bars is None or len(bars) < MIN_OBS:
+            return FALLBACK
+
+        c = bars["close"].values.astype(float)
+        n = len(c)
+        log_p = np.log(c + 1e-10)
+
+        # --- Step 1: market-residual series (de-trend out the I(1) market factor) ---
+        if spy_bars is not None and len(spy_bars) >= n:
+            spy_c = spy_bars["close"].values.astype(float)[-n:]
+            log_spy = np.log(spy_c + 1e-10)
+            X = np.column_stack([np.ones(n), log_spy])
+            try:
+                beta_mkt = np.linalg.lstsq(X, log_p, rcond=None)[0]
+                resid = log_p - X @ beta_mkt          # market-residual log-price
+            except np.linalg.LinAlgError:
+                resid = log_p - log_p.mean()           # fallback: demeaned raw series
+        else:
+            resid = log_p - log_p.mean()
+
+        x_t  = resid[:-1]
+        dx_t = resid[1:] - resid[:-1]
+        m = len(x_t)
+
+        # --- Step 2: ADF-style unit-root test on the residual series ---
+        # Regression: dx_t = a + b*x_t + sum_k g_k * dx_{t-k} + eps   (1 lag, standard ADF(1))
+        # H0: b = 0 (unit root / no reversion). Reject H0 -> theta > 0 is credible.
+        # Using MacKinnon (1994) 5% critical value for the no-trend case, n>500 asymptotic: -2.86
+        # (conservative for our typical n ~ 80-250; slightly anti-conservative vs small-sample
+        # tables, which is the safer direction — we'd rather under- than over-trust theta>0).
+        ADF_CRIT_5PCT = -2.86
+        adf_reject = False
+        b_ols, se_b = 0.0, np.inf
+        if m >= 5:
+            lag_dx = np.zeros(m); lag_dx[1:] = dx_t[:-1]
+            Xa = np.column_stack([np.ones(m), x_t, lag_dx])
+            try:
+                coef, _, _, _ = np.linalg.lstsq(Xa, dx_t, rcond=None)
+                resid_a = dx_t - Xa @ coef
+                dof = m - Xa.shape[1]
+                if dof > 0:
+                    sigma2 = float(resid_a @ resid_a) / dof
+                    XtX_inv = np.linalg.pinv(Xa.T @ Xa)
+                    se_b = float(np.sqrt(sigma2 * XtX_inv[1, 1]))
+                    b_ols = float(coef[1])
+                    if se_b > 0:
+                        t_stat = b_ols / se_b
+                        adf_reject = t_stat < ADF_CRIT_5PCT
+            except np.linalg.LinAlgError:
+                pass
+
+        if not adf_reject:
+            # Cannot distinguish from a unit root -> no credible mean reversion speed.
+            # Time stop governs; flag as unreliable rather than emit a fabricated number.
+            return {"point": 30, "low": 15, "high": 30, "reliable": False,
+                    "theta": None, "n_obs": m}
+
+        # --- Step 3: plain OLS phi_hat on the (now validated-stationary) residual,
+        #             bias-corrected via Marriott-Pope (1941) toward the unit root ---
+        X_phi = np.column_stack([np.ones(m), x_t])
+        try:
+            coef_phi = np.linalg.lstsq(X_phi, dx_t, rcond=None)[0]
+            b_phi = float(coef_phi[1])           # dx_t = a + b_phi * x_t ; phi = 1 + b_phi
+        except np.linalg.LinAlgError:
+            return FALLBACK
+        phi_hat = 1.0 + b_phi
+        phi_hat = float(np.clip(phi_hat, -0.999, 0.999))   # keep inside stationary region
+
+        # Marriott-Pope first-order bias correction: E[phi_hat - phi] ~= -(1+3*phi)/T
+        # Solve phi_corrected ~= phi_hat + (1 + 3*phi_hat)/m  (plug-in, first order)
+        phi_corr = phi_hat + (1.0 + 3.0 * phi_hat) / m
+        phi_corr = float(np.clip(phi_corr, -0.999, 0.999))
+
+        dt = 1.0  # daily bars
+        if phi_corr <= 1e-6:
+            theta_hat = 0.0
+        else:
+            theta_hat = float(-np.log(phi_corr) / dt)
+
+        if theta_hat <= 1e-4:
+            return {"point": 30, "low": 15, "high": 30, "reliable": False,
+                    "theta": theta_hat, "n_obs": m}
+
+        half_life = float(np.log(2) / theta_hat)
+        point = int(np.clip(round(half_life), 3, 30))
+
+        # --- Step 4: parametric bootstrap CI (replaces delta-method, which is
+        #             anti-informative near the unit root) ---
+        resid_innov = dx_t - (coef_phi[0] + b_phi * x_t)
+        sigma_hat = float(np.std(resid_innov, ddof=2)) if m > 2 else float(np.std(resid_innov))
+        if sigma_hat <= 0 or not np.isfinite(sigma_hat):
+            return {"point": point, "low": max(3, point // 2),
+                    "high": min(30, point * 2), "reliable": True,
+                    "theta": theta_hat, "n_obs": m}
+
+        rng = np.random.default_rng(rng_seed)
+        boot_half_lives = []
+        x0 = float(x_t[-1])
+        for _ in range(n_boot):
+            path = np.empty(m + 1)
+            path[0] = x0
+            innov = rng.normal(0.0, sigma_hat, size=m)
+            for k in range(m):
+                path[k + 1] = path[k] + b_phi * path[k] + innov[k]  # dx = b_phi*x + eps
+            bx = path[:-1]
+            bdx = path[1:] - path[:-1]
+            Xb = np.column_stack([np.ones(m), bx])
+            try:
+                cb = np.linalg.lstsq(Xb, bdx, rcond=None)[0]
+                b_b = float(cb[1])
+            except np.linalg.LinAlgError:
+                continue
+            phi_b = float(np.clip(1.0 + b_b, -0.999, 0.999))
+            phi_b_corr = float(np.clip(phi_b + (1.0 + 3.0 * phi_b) / m, -0.999, 0.999))
+            if phi_b_corr <= 1e-6:
+                continue
+            theta_b = -np.log(phi_b_corr) / dt
+            if theta_b > 1e-4:
+                boot_half_lives.append(np.log(2) / theta_b)
+
+        if len(boot_half_lives) >= 30:
+            lo_pct, hi_pct = np.percentile(boot_half_lives, [5, 95])
+            low = int(np.clip(round(lo_pct), 3, 30))
+            high = int(np.clip(round(hi_pct), 3, 30))
+            if high < low:
+                low, high = high, low
+        else:
+            low, high = max(3, point // 2), min(30, point * 2)
+
+        return {"point": point, "low": low, "high": high, "reliable": True,
+                "theta": theta_hat, "n_obs": m}
+
     def generate_signals(self, bars_dict, macro_data, sentiment_dict, spy_bars=None):
         regime=macro_data.get("regime","NEUTRAL")
         # macro_score: continuous [-1,1] from macro_context.py classify_macro.
@@ -612,46 +789,17 @@ class QuantSignalEngine:
             if lev and abs(s["t"])>=2.0: kelly=min(kelly*2.0,0.20)
             pctile=scipy_stats.percentileofscore(comp_arr,s["comp"])/100.0
             atr_p=raw[sym].get("atr_pctile",0)
-            # ── OU-derived hold target (Leung & Zhang 2019) ─────────────────────
-            # Previous formula: hold = 16 + 14 * atr_pctile
-            # Problem: conflates volatility rank with mean-reversion speed.
-            # A high-vol trending stock (high atr_pctile) got a LONGER hold target,
-            # when in fact it should be held until the thesis decays — trend stocks
-            # should hold until momentum dies, not exit at a fixed vol-derived day count.
-            #
-            # Correct formulation (Leung & Zhang 2019, eq. 4):
-            #   theta = OU mean-reversion speed (1/day) estimated via AR(1) OLS
-            #   hold_target = ln(2) / theta  (half-life of mean reversion)
-            #
-            # For TRENDING stocks (theta ≈ 0): hold_target → max_days (30).
-            #   Time stop governs; composite decay / trailing stop triggers exit.
-            # For REVERTING stocks (theta large): hold_target is short (3-10d).
-            #   Exit quickly once the reversion impulse is consumed.
-            #
-            # OLS estimation: dX_t = a + b*X_t + eps  where X = log(price)
-            #   b = -theta*dt → theta = -b/dt, clamped to [0, inf)
-            #
+            # ── OU-derived hold target (corrected estimator, 2026-06-17) ────────
+            # See _estimate_ou_hold_target docstring for the full derivation and
+            # what changed vs. the original raw-log-price point-estimate version:
+            # market-residual series (not raw log-price), ADF unit-root pre-test,
+            # Marriott-Pope bias correction, parametric bootstrap CI.
+            # NOTE: ln(2)/theta is a half-life HEURISTIC, not the optimal-stopping
+            # exit boundary Leung & Zhang (2019) actually derive — see ontology.
             # TODO:DERIVE at GAP-B (60+ exits): regress realized hold_days vs
             # theta estimate to calibrate the min/max bounds (3, 30).
-            _bars_c = bars["close"]
-            _log_p  = np.log(_bars_c.values + 1e-10)
-            _n_ou   = len(_log_p)
-            _hold_ou = 15  # fallback: neutral prior (midpoint of old 1-30 range)
-            if _n_ou >= 20:
-                _x_t  = _log_p[:-1]
-                _dx_t = _log_p[1:] - _log_p[:-1]
-                _Xm   = np.column_stack([np.ones(_n_ou - 1), _x_t])
-                try:
-                    _b     = np.linalg.lstsq(_Xm, _dx_t, rcond=None)[0][1]
-                    _theta = float(max(-_b, 0.0))   # clamp: trending stocks → 0
-                    if _theta > 1e-4:
-                        _half_life = float(np.log(2) / _theta)
-                        _hold_ou   = int(np.clip(round(_half_life), 3, 30))
-                    else:
-                        _hold_ou = 30   # trending — time stop governs
-                except np.linalg.LinAlgError:
-                    pass
-            hold = _hold_ou
+            _ou = self._estimate_ou_hold_target(bars, spy_bars)
+            hold = _ou["point"]
             rev_m=raw[sym].get("rev_momentum",0)
             conf="reversal" if(isinstance(rev_m,(int,float)) and not np.isnan(rev_m) and rev_m>0.5) else "adaptive"
             signals.append(Signal(
@@ -665,6 +813,8 @@ class QuantSignalEngine:
                 kelly_fraction=round(kelly,4),hold_target_days=hold,
                 leverage_qualified=lev,confirmation_type=conf,
                 timestamp=str(bars.index[-1]),
+                hold_target_low=_ou["low"],hold_target_high=_ou["high"],
+                hold_target_reliable=_ou["reliable"],
             ))
         signals.sort(key=lambda x:x.t_statistic,reverse=True)
         signals=signals[:self.cfg.execution.max_orders_per_scan]

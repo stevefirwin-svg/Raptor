@@ -1,0 +1,39 @@
+[Wed 06/17/2026  6:21:20.98] Starting Raptor Monitor 
+2026-06-17 06:21:21,476 [monitor] INFO: ============================================================
+2026-06-17 06:21:21,477 [monitor] INFO: RAPTOR MONITOR — 2026-06-17 06:21 ET
+2026-06-17 06:21:21,478 [monitor] INFO: ============================================================
+2026-06-17 06:21:21,478 [monitor] INFO: Connecting to Alpaca...
+2026-06-17 06:21:24,334 [monitor] INFO: Running L1-Infrastructure...
+2026-06-17 06:21:24,361 [monitor] INFO:   L1-Infrastructure: 7 findings (2 non-OK)
+2026-06-17 06:21:24,361 [monitor] INFO: Running L2-Reconciliation...
+2026-06-17 06:21:24,364 [monitor] INFO:   L2-Reconciliation: 2 findings (2 non-OK)
+2026-06-17 06:21:24,365 [monitor] INFO: Running L3-PositionRisk...
+2026-06-17 06:21:24,368 [monitor] INFO:   L3-PositionRisk: 8 findings (6 non-OK)
+2026-06-17 06:21:24,368 [monitor] INFO: Running L4-Operations...
+2026-06-17 06:21:24,371 [monitor] INFO:   L4-Operations: 5 findings (4 non-OK)
+2026-06-17 06:21:24,371 [monitor] INFO: Running L5-Macro...
+2026-06-17 06:21:24,373 [monitor] INFO:   L5-Macro: 4 findings (1 non-OK)
+2026-06-17 06:21:24,373 [monitor] INFO: Running L6-Opportunity...
+2026-06-17 06:21:24,374 [monitor] INFO:   L6-Opportunity: 0 findings (0 non-OK)
+2026-06-17 06:21:24,375 [monitor] INFO: ============================================================
+2026-06-17 06:21:24,375 [monitor] INFO: SUMMARY: 0 CRITICAL  1 ALERT  11 WARN  26 total findings
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Users\steve\AppData\Local\Programs\Python\Python313\Lib\logging\__init__.py", line 1154, in emit
+    stream.write(msg + self.terminator)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\steve\AppData\Local\Programs\Python\Python313\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f7e0' in position 75: character maps to <undefined>
+Call stack:
+  File "C:\Users\steve\OneDrive\Desktop\Raptor\raptor_monitor.py", line 1184, in <module>
+    main()
+  File "C:\Users\steve\OneDrive\Desktop\Raptor\raptor_monitor.py", line 1165, in main
+    send_email(html, len(critical), len(alerts), len(warns))
+  File "C:\Users\steve\OneDrive\Desktop\Raptor\raptor_monitor.py", line 1081, in send_email
+    logger.info("Monitor email sent: %s", subject)
+Message: 'Monitor email sent: %s'
+Arguments: ('RAPTOR Monitor \U0001f7e0 ALERT (1) — 2026-06-17',)
+2026-06-17 06:21:26,129 [monitor] INFO: Findings log written: logs\monitor_20260617.json
+[Wed 06/17/2026  6:21:26.53] Monitor complete (exit code 0) 

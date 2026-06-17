@@ -1,0 +1,608 @@
+
+<html>
+<body style="margin:0;padding:0;background:#0a0a1a;font-family:'Segoe UI',Arial,sans-serif">
+<div style="max-width:720px;margin:0 auto;background:#12122a;border:1px solid #2a2a3e">
+
+  <!-- Header -->
+  <div style="background:linear-gradient(135deg,#1a1a3e,#0d0d2b);padding:20px 24px;border-bottom:2px solid #ff8c00">
+    <div style="color:#ff8c00;font-size:11px;letter-spacing:3px;text-transform:uppercase;font-weight:700">RAPTOR MONITOR</div>
+    <div style="color:#e0e0e0;font-size:20px;font-weight:700;margin-top:4px">End-of-Day System Check</div>
+    <div style="display:flex;gap:16px;margin-top:8px;flex-wrap:wrap">
+      <span style="color:#a0a0b0;font-size:12px">2026-06-17 05:56 ET</span>
+      <span style="background:#ff8c00;color:#000;font-size:11px;font-weight:700;padding:2px 8px;border-radius:3px">ALERT (1)</span>
+    </div>
+  </div>
+
+  <!-- Account summary -->
+  <div style="background:#0e0e20;padding:14px 24px;border-bottom:1px solid #1e1e34">
+    <table style="width:100%;border-collapse:collapse">
+      <tr>
+        <td style="text-align:center;padding:6px">
+          <div style="color:#6a6a8a;font-size:10px;text-transform:uppercase">Equity</div>
+          <div style="color:#e0e0e0;font-size:16px;font-weight:700">$107,185</div>
+        </td>
+        <td style="text-align:center;padding:6px">
+          <div style="color:#6a6a8a;font-size:10px;text-transform:uppercase">Cash</div>
+          <div style="color:#e0e0e0;font-size:16px;font-weight:700">$37,530</div>
+        </td>
+        <td style="text-align:center;padding:6px">
+          <div style="color:#6a6a8a;font-size:10px;text-transform:uppercase">Positions</div>
+          <div style="color:#e0e0e0;font-size:16px;font-weight:700">10</div>
+        </td>
+        <td style="text-align:center;padding:6px">
+          <div style="color:#6a6a8a;font-size:10px;text-transform:uppercase">Open P&L</div>
+          <div style="color:#00d4aa;font-size:16px;font-weight:700">$+1,691</div>
+        </td>
+        <td style="text-align:center;padding:6px">
+          <div style="color:#6a6a8a;font-size:10px;text-transform:uppercase">Findings</div>
+          <div style="color:#e0e0e0;font-size:16px;font-weight:700">
+            <span style="color:#ff4444">0C</span>&nbsp;
+            <span style="color:#ff8c00">1A</span>&nbsp;
+            <span style="color:#ffd700">11W</span>&nbsp;
+            <span style="color:#00aaff">3I</span>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- Findings -->
+  <div style="padding:0">
+    <div style="padding:12px 24px 6px;color:#6a6a8a;font-size:10px;text-transform:uppercase;letter-spacing:2px;border-bottom:1px solid #1e1e34">
+      Findings — 26 total
+    </div>
+    <table style="width:100%;border-collapse:collapse">
+      
+<tr>
+  <td style="padding:10px 14px;border-bottom:1px solid #1e1e34;background:#2a1500;vertical-align:top">
+    <div style="display:flex;align-items:flex-start;gap:10px">
+      <span style="font-size:14px;min-width:20px">🟠</span>
+      <div style="flex:1">
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <span style="background:#ff8c00;color:#000;font-size:10px;font-weight:700;
+                        padding:2px 6px;border-radius:3px;white-space:nowrap">ALERT</span>
+          <span style="color:#6a6a8a;font-size:10px">L2</span>
+          <span style="color:#e0e0e0;font-size:13px;font-weight:600">1 ledger position(s) not on Alpaca: ['SQQQ']</span>
+        </div>
+        <div style="color:#a0a0b0;font-size:11px;margin-top:4px">These may have been exited but ledger not updated, or manual close on Alpaca</div>
+        <div style="color:#00d4aa;font-size:11px;margin-top:4px;font-style:italic">→ Run: python backfill_ledger.py --write  then  python outcome_tracker.py</div>
+      </div>
+    </div>
+  </td>
+</tr>
+
+<tr>
+  <td style="padding:10px 14px;border-bottom:1px solid #1e1e34;background:#2a2200;vertical-align:top">
+    <div style="display:flex;align-items:flex-start;gap:10px">
+      <span style="font-size:14px;min-width:20px">🟡</span>
+      <div style="flex:1">
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <span style="background:#ffd700;color:#000;font-size:10px;font-weight:700;
+                        padding:2px 6px;border-radius:3px;white-space:nowrap">WARN</span>
+          <span style="color:#6a6a8a;font-size:10px">L1</span>
+          <span style="color:#e0e0e0;font-size:13px;font-weight:600">No exit log found for today (exits_20260617.log)</span>
+        </div>
+        <div style="color:#a0a0b0;font-size:11px;margin-top:4px">exit_monitor.py may not have run, or ran before midnight</div>
+        <div style="color:#00d4aa;font-size:11px;margin-top:4px;font-style:italic">→ Check Task Scheduler — confirm Start_AfterClose.bat fired</div>
+      </div>
+    </div>
+  </td>
+</tr>
+
+<tr>
+  <td style="padding:10px 14px;border-bottom:1px solid #1e1e34;background:#2a2200;vertical-align:top">
+    <div style="display:flex;align-items:flex-start;gap:10px">
+      <span style="font-size:14px;min-width:20px">🟡</span>
+      <div style="flex:1">
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <span style="background:#ffd700;color:#000;font-size:10px;font-weight:700;
+                        padding:2px 6px;border-radius:3px;white-space:nowrap">WARN</span>
+          <span style="color:#6a6a8a;font-size:10px">L1</span>
+          <span style="color:#e0e0e0;font-size:13px;font-weight:600">No main.py entry scan log found for today</span>
+        </div>
+        <div style="color:#a0a0b0;font-size:11px;margin-top:4px">Checked: raptor_20260617.log, raptor_v6_20260617.log</div>
+        <div style="color:#00d4aa;font-size:11px;margin-top:4px;font-style:italic">→ Confirm Task Scheduler fired Start_Entry.bat at 9:35 AM</div>
+      </div>
+    </div>
+  </td>
+</tr>
+
+<tr>
+  <td style="padding:10px 14px;border-bottom:1px solid #1e1e34;background:#2a2200;vertical-align:top">
+    <div style="display:flex;align-items:flex-start;gap:10px">
+      <span style="font-size:14px;min-width:20px">🟡</span>
+      <div style="flex:1">
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <span style="background:#ffd700;color:#000;font-size:10px;font-weight:700;
+                        padding:2px 6px;border-radius:3px;white-space:nowrap">WARN</span>
+          <span style="color:#6a6a8a;font-size:10px">L2</span>
+          <span style="color:#e0e0e0;font-size:13px;font-weight:600">KRE: stop is 0.32% below current price ($72.051 vs $72.28)</span>
+        </div>
+        <div style="color:#a0a0b0;font-size:11px;margin-top:4px">Normal if trail has tightened. Worth being aware of.</div>
+        
+      </div>
+    </div>
+  </td>
+</tr>
+
+<tr>
+  <td style="padding:10px 14px;border-bottom:1px solid #1e1e34;background:#2a2200;vertical-align:top">
+    <div style="display:flex;align-items:flex-start;gap:10px">
+      <span style="font-size:14px;min-width:20px">🟡</span>
+      <div style="flex:1">
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <span style="background:#ffd700;color:#000;font-size:10px;font-weight:700;
+                        padding:2px 6px;border-radius:3px;white-space:nowrap">WARN</span>
+          <span style="color:#6a6a8a;font-size:10px">L3</span>
+          <span style="color:#e0e0e0;font-size:13px;font-weight:600">CSX: 1.2 ATR from stop with DECAYING health (pnl=-0.4%)</span>
+        </div>
+        <div style="color:#a0a0b0;font-size:11px;margin-top:4px">health=-0.345 composite=0.1434</div>
+        <div style="color:#00d4aa;font-size:11px;margin-top:4px;font-style:italic">→ Monitor for hard stop trigger — consider whether math trim is already queued</div>
+      </div>
+    </div>
+  </td>
+</tr>
+
+<tr>
+  <td style="padding:10px 14px;border-bottom:1px solid #1e1e34;background:#2a2200;vertical-align:top">
+    <div style="display:flex;align-items:flex-start;gap:10px">
+      <span style="font-size:14px;min-width:20px">🟡</span>
+      <div style="flex:1">
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <span style="background:#ffd700;color:#000;font-size:10px;font-weight:700;
+                        padding:2px 6px;border-radius:3px;white-space:nowrap">WARN</span>
+          <span style="color:#6a6a8a;font-size:10px">L3</span>
+          <span style="color:#e0e0e0;font-size:13px;font-weight:600">KDP: 1.2 ATR from stop with DECAYING health (pnl=+11.2%)</span>
+        </div>
+        <div style="color:#a0a0b0;font-size:11px;margin-top:4px">health=-0.157 composite=-0.0053</div>
+        <div style="color:#00d4aa;font-size:11px;margin-top:4px;font-style:italic">→ Monitor for hard stop trigger — consider whether math trim is already queued</div>
+      </div>
+    </div>
+  </td>
+</tr>
+
+<tr>
+  <td style="padding:10px 14px;border-bottom:1px solid #1e1e34;background:#2a2200;vertical-align:top">
+    <div style="display:flex;align-items:flex-start;gap:10px">
+      <span style="font-size:14px;min-width:20px">🟡</span>
+      <div style="flex:1">
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <span style="background:#ffd700;color:#000;font-size:10px;font-weight:700;
+                        padding:2px 6px;border-radius:3px;white-space:nowrap">WARN</span>
+          <span style="color:#6a6a8a;font-size:10px">L3</span>
+          <span style="color:#e0e0e0;font-size:13px;font-weight:600">KRE: 0.3 ATR from stop with DECAYING health (pnl=+3.1%)</span>
+        </div>
+        <div style="color:#a0a0b0;font-size:11px;margin-top:4px">health=-0.339 composite=-0.0230</div>
+        <div style="color:#00d4aa;font-size:11px;margin-top:4px;font-style:italic">→ Monitor for hard stop trigger — consider whether math trim is already queued</div>
+      </div>
+    </div>
+  </td>
+</tr>
+
+<tr>
+  <td style="padding:10px 14px;border-bottom:1px solid #1e1e34;background:#2a2200;vertical-align:top">
+    <div style="display:flex;align-items:flex-start;gap:10px">
+      <span style="font-size:14px;min-width:20px">🟡</span>
+      <div style="flex:1">
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <span style="background:#ffd700;color:#000;font-size:10px;font-weight:700;
+                        padding:2px 6px;border-radius:3px;white-space:nowrap">WARN</span>
+          <span style="color:#6a6a8a;font-size:10px">L3</span>
+          <span style="color:#e0e0e0;font-size:13px;font-weight:600">MRVL: 0.5 ATR from stop with DECAYING health (pnl=-2.6%)</span>
+        </div>
+        <div style="color:#a0a0b0;font-size:11px;margin-top:4px">health=-0.370 composite=0.1048</div>
+        <div style="color:#00d4aa;font-size:11px;margin-top:4px;font-style:italic">→ Monitor for hard stop trigger — consider whether math trim is already queued</div>
+      </div>
+    </div>
+  </td>
+</tr>
+
+<tr>
+  <td style="padding:10px 14px;border-bottom:1px solid #1e1e34;background:#2a2200;vertical-align:top">
+    <div style="display:flex;align-items:flex-start;gap:10px">
+      <span style="font-size:14px;min-width:20px">🟡</span>
+      <div style="flex:1">
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <span style="background:#ffd700;color:#000;font-size:10px;font-weight:700;
+                        padding:2px 6px;border-radius:3px;white-space:nowrap">WARN</span>
+          <span style="color:#6a6a8a;font-size:10px">L3</span>
+          <span style="color:#e0e0e0;font-size:13px;font-weight:600">WFC: 1.8 ATR from stop with DECAYING health (pnl=+4.0%)</span>
+        </div>
+        <div style="color:#a0a0b0;font-size:11px;margin-top:4px">health=-0.271 composite=-0.0784</div>
+        <div style="color:#00d4aa;font-size:11px;margin-top:4px;font-style:italic">→ Monitor for hard stop trigger — consider whether math trim is already queued</div>
+      </div>
+    </div>
+  </td>
+</tr>
+
+<tr>
+  <td style="padding:10px 14px;border-bottom:1px solid #1e1e34;background:#2a2200;vertical-align:top">
+    <div style="display:flex;align-items:flex-start;gap:10px">
+      <span style="font-size:14px;min-width:20px">🟡</span>
+      <div style="flex:1">
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <span style="background:#ffd700;color:#000;font-size:10px;font-weight:700;
+                        padding:2px 6px;border-radius:3px;white-space:nowrap">WARN</span>
+          <span style="color:#6a6a8a;font-size:10px">L3</span>
+          <span style="color:#e0e0e0;font-size:13px;font-weight:600">KDP: Open gain +11.2% but health=-0.157 (DECAYING)</span>
+        </div>
+        <div style="color:#a0a0b0;font-size:11px;margin-top:4px">Open profit may be at risk — thesis deteriorating while still in the money</div>
+        <div style="color:#00d4aa;font-size:11px;margin-top:4px;font-style:italic">→ Trail stop will protect some gain. Verify trail has ratcheted appropriately.</div>
+      </div>
+    </div>
+  </td>
+</tr>
+
+<tr>
+  <td style="padding:10px 14px;border-bottom:1px solid #1e1e34;background:#2a2200;vertical-align:top">
+    <div style="display:flex;align-items:flex-start;gap:10px">
+      <span style="font-size:14px;min-width:20px">🟡</span>
+      <div style="flex:1">
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <span style="background:#ffd700;color:#000;font-size:10px;font-weight:700;
+                        padding:2px 6px;border-radius:3px;white-space:nowrap">WARN</span>
+          <span style="color:#6a6a8a;font-size:10px">L4</span>
+          <span style="color:#e0e0e0;font-size:13px;font-weight:600">32 outcome_pending sidecar(s) older than 5 days</span>
+        </div>
+        <div style="color:#a0a0b0;font-size:11px;margin-top:4px">FXI (28d, order 27fb88a1), TTD (28d, order 4509b8a1), AMD (28d, order f6cd266a), INTC (28d, order bfc204b8), PLTD (28d, order 91abf87c), SMCI (28d, order ae323251), TSLA (28d, order 8c4368e9), TSLL (28d, order 9f95525a), AMD (27d, order ad5a7d45), DKNG (27d, order 82fc477c), PLTD (27d, order f6b4ce09), TSLA (27d, order 54e98976), DKNG (27d, order 4e237b13), KDP (27d, order de55c354), TSLA (27d, order ffe094dd), DKNG (26d, order 18870de3), CVE (26d, order 271291a3), PLTD (26d, order 200f4604), CSX (19d, order c050ffd8), DKNG (19d, order 6260b373), STM (19d, order 24bd4502), STM (19d, order 6620229d), AMD (12d, order a42e8916), HPQ (12d, order fcf340ae), INTC (12d, order 96ee90aa), SMCI (12d, order 9cd767d5), STM (12d, order fbf98d57), TSLA (12d, order 8631c535), MRVL (8d, order 8cd4ece7), MRVL (6d, order f25f5622), WFC (6d, order eedd5f0f), XLE (6d, order fad4281a)</div>
+        <div style="color:#00d4aa;font-size:11px;margin-top:4px;font-style:italic">→ Run: python outcome_tracker.py  to close out stale records</div>
+      </div>
+    </div>
+  </td>
+</tr>
+
+<tr>
+  <td style="padding:10px 14px;border-bottom:1px solid #1e1e34;background:#2a2200;vertical-align:top">
+    <div style="display:flex;align-items:flex-start;gap:10px">
+      <span style="font-size:14px;min-width:20px">🟡</span>
+      <div style="flex:1">
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <span style="background:#ffd700;color:#000;font-size:10px;font-weight:700;
+                        padding:2px 6px;border-radius:3px;white-space:nowrap">WARN</span>
+          <span style="color:#6a6a8a;font-size:10px">L4</span>
+          <span style="color:#e0e0e0;font-size:13px;font-weight:600">1 expired cooldown block(s) still in cooldown_log.json: ['SQQQ']</span>
+        </div>
+        <div style="color:#a0a0b0;font-size:11px;margin-top:4px">These symbols are blocked from entry even though cooldown has passed</div>
+        <div style="color:#00d4aa;font-size:11px;margin-top:4px;font-style:italic">→ These should auto-clear on next main.py run. If not, manually remove from cooldown_log.json</div>
+      </div>
+    </div>
+  </td>
+</tr>
+
+<tr>
+  <td style="padding:10px 14px;border-bottom:1px solid #1e1e34;background:#001a2a;vertical-align:top">
+    <div style="display:flex;align-items:flex-start;gap:10px">
+      <span style="font-size:14px;min-width:20px">🔵</span>
+      <div style="flex:1">
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <span style="background:#00aaff;color:#000;font-size:10px;font-weight:700;
+                        padding:2px 6px;border-radius:3px;white-space:nowrap">INFO</span>
+          <span style="color:#6a6a8a;font-size:10px">L4</span>
+          <span style="color:#e0e0e0;font-size:13px;font-weight:600">Data gates: DATA-40 ⏳ 24/40 (16 to go)  |  DATA-60 ⏳ 24/60 (36 to go)  |  DATA-100 (Kelly active) ⏳ 24/100 (76 to go)</span>
+        </div>
+        <div style="color:#a0a0b0;font-size:11px;margin-top:4px">27 total positions in position_outcomes.json, 24 clean (excl. leveraged ETPs)</div>
+        
+      </div>
+    </div>
+  </td>
+</tr>
+
+<tr>
+  <td style="padding:10px 14px;border-bottom:1px solid #1e1e34;background:#001a2a;vertical-align:top">
+    <div style="display:flex;align-items:flex-start;gap:10px">
+      <span style="font-size:14px;min-width:20px">🔵</span>
+      <div style="flex:1">
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <span style="background:#00aaff;color:#000;font-size:10px;font-weight:700;
+                        padding:2px 6px;border-radius:3px;white-space:nowrap">INFO</span>
+          <span style="color:#6a6a8a;font-size:10px">L4</span>
+          <span style="color:#e0e0e0;font-size:13px;font-weight:600">Kelly: mode=SHADOW, n_trades=53/100, f_recommended=0.0192</span>
+        </div>
+        <div style="color:#a0a0b0;font-size:11px;margin-top:4px">Kelly becomes ACTIVE at 100 terminal exits. Currently in SHADOW mode (advisory only).</div>
+        
+      </div>
+    </div>
+  </td>
+</tr>
+
+<tr>
+  <td style="padding:10px 14px;border-bottom:1px solid #1e1e34;background:#001a2a;vertical-align:top">
+    <div style="display:flex;align-items:flex-start;gap:10px">
+      <span style="font-size:14px;min-width:20px">🔵</span>
+      <div style="flex:1">
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <span style="background:#00aaff;color:#000;font-size:10px;font-weight:700;
+                        padding:2px 6px;border-radius:3px;white-space:nowrap">INFO</span>
+          <span style="color:#6a6a8a;font-size:10px">L5</span>
+          <span style="color:#e0e0e0;font-size:13px;font-weight:600">Macro: regime=RISK_ON, score=+0.62, VIX=16.0, SPY vs 50MA=above, sector breadth=72.7%</span>
+        </div>
+        
+        
+      </div>
+    </div>
+  </td>
+</tr>
+
+<tr>
+  <td style="padding:10px 14px;border-bottom:1px solid #1e1e34;background:#001a15;vertical-align:top">
+    <div style="display:flex;align-items:flex-start;gap:10px">
+      <span style="font-size:14px;min-width:20px">✅</span>
+      <div style="flex:1">
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <span style="background:#00d4aa;color:#000;font-size:10px;font-weight:700;
+                        padding:2px 6px;border-radius:3px;white-space:nowrap">OK</span>
+          <span style="color:#6a6a8a;font-size:10px">L1</span>
+          <span style="color:#e0e0e0;font-size:13px;font-weight:600">hold_health.json is current (13.4h old)</span>
+        </div>
+        
+        
+      </div>
+    </div>
+  </td>
+</tr>
+
+<tr>
+  <td style="padding:10px 14px;border-bottom:1px solid #1e1e34;background:#001a15;vertical-align:top">
+    <div style="display:flex;align-items:flex-start;gap:10px">
+      <span style="font-size:14px;min-width:20px">✅</span>
+      <div style="flex:1">
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <span style="background:#00d4aa;color:#000;font-size:10px;font-weight:700;
+                        padding:2px 6px;border-radius:3px;white-space:nowrap">OK</span>
+          <span style="color:#6a6a8a;font-size:10px">L1</span>
+          <span style="color:#e0e0e0;font-size:13px;font-weight:600">macro_context.json is current (20.1h old)</span>
+        </div>
+        
+        
+      </div>
+    </div>
+  </td>
+</tr>
+
+<tr>
+  <td style="padding:10px 14px;border-bottom:1px solid #1e1e34;background:#001a15;vertical-align:top">
+    <div style="display:flex;align-items:flex-start;gap:10px">
+      <span style="font-size:14px;min-width:20px">✅</span>
+      <div style="flex:1">
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <span style="background:#00d4aa;color:#000;font-size:10px;font-weight:700;
+                        padding:2px 6px;border-radius:3px;white-space:nowrap">OK</span>
+          <span style="color:#6a6a8a;font-size:10px">L1</span>
+          <span style="color:#e0e0e0;font-size:13px;font-weight:600">composite_cache.json is current (13.4h old)</span>
+        </div>
+        
+        
+      </div>
+    </div>
+  </td>
+</tr>
+
+<tr>
+  <td style="padding:10px 14px;border-bottom:1px solid #1e1e34;background:#001a15;vertical-align:top">
+    <div style="display:flex;align-items:flex-start;gap:10px">
+      <span style="font-size:14px;min-width:20px">✅</span>
+      <div style="flex:1">
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <span style="background:#00d4aa;color:#000;font-size:10px;font-weight:700;
+                        padding:2px 6px;border-radius:3px;white-space:nowrap">OK</span>
+          <span style="color:#6a6a8a;font-size:10px">L1</span>
+          <span style="color:#e0e0e0;font-size:13px;font-weight:600">market_decision.json is current (20.7h old)</span>
+        </div>
+        
+        
+      </div>
+    </div>
+  </td>
+</tr>
+
+<tr>
+  <td style="padding:10px 14px;border-bottom:1px solid #1e1e34;background:#001a15;vertical-align:top">
+    <div style="display:flex;align-items:flex-start;gap:10px">
+      <span style="font-size:14px;min-width:20px">✅</span>
+      <div style="flex:1">
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <span style="background:#00d4aa;color:#000;font-size:10px;font-weight:700;
+                        padding:2px 6px;border-radius:3px;white-space:nowrap">OK</span>
+          <span style="color:#6a6a8a;font-size:10px">L1</span>
+          <span style="color:#e0e0e0;font-size:13px;font-weight:600">AlpacaDataFeed.submit_order confirmed present (AST)</span>
+        </div>
+        
+        
+      </div>
+    </div>
+  </td>
+</tr>
+
+<tr>
+  <td style="padding:10px 14px;border-bottom:1px solid #1e1e34;background:#001a15;vertical-align:top">
+    <div style="display:flex;align-items:flex-start;gap:10px">
+      <span style="font-size:14px;min-width:20px">✅</span>
+      <div style="flex:1">
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <span style="background:#00d4aa;color:#000;font-size:10px;font-weight:700;
+                        padding:2px 6px;border-radius:3px;white-space:nowrap">OK</span>
+          <span style="color:#6a6a8a;font-size:10px">L3</span>
+          <span style="color:#e0e0e0;font-size:13px;font-weight:600">No positions in triple-deterioration state</span>
+        </div>
+        
+        
+      </div>
+    </div>
+  </td>
+</tr>
+
+<tr>
+  <td style="padding:10px 14px;border-bottom:1px solid #1e1e34;background:#001a15;vertical-align:top">
+    <div style="display:flex;align-items:flex-start;gap:10px">
+      <span style="font-size:14px;min-width:20px">✅</span>
+      <div style="flex:1">
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <span style="background:#00d4aa;color:#000;font-size:10px;font-weight:700;
+                        padding:2px 6px;border-radius:3px;white-space:nowrap">OK</span>
+          <span style="color:#6a6a8a;font-size:10px">L3</span>
+          <span style="color:#e0e0e0;font-size:13px;font-weight:600">Capital utilization: 65.0% (RISK_ON)</span>
+        </div>
+        
+        
+      </div>
+    </div>
+  </td>
+</tr>
+
+<tr>
+  <td style="padding:10px 14px;border-bottom:1px solid #1e1e34;background:#001a15;vertical-align:top">
+    <div style="display:flex;align-items:flex-start;gap:10px">
+      <span style="font-size:14px;min-width:20px">✅</span>
+      <div style="flex:1">
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <span style="background:#00d4aa;color:#000;font-size:10px;font-weight:700;
+                        padding:2px 6px;border-radius:3px;white-space:nowrap">OK</span>
+          <span style="color:#6a6a8a;font-size:10px">L4</span>
+          <span style="color:#e0e0e0;font-size:13px;font-weight:600">slippage_log.json: 23 records, all fills confirmed</span>
+        </div>
+        
+        
+      </div>
+    </div>
+  </td>
+</tr>
+
+<tr>
+  <td style="padding:10px 14px;border-bottom:1px solid #1e1e34;background:#001a15;vertical-align:top">
+    <div style="display:flex;align-items:flex-start;gap:10px">
+      <span style="font-size:14px;min-width:20px">✅</span>
+      <div style="flex:1">
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <span style="background:#00d4aa;color:#000;font-size:10px;font-weight:700;
+                        padding:2px 6px;border-radius:3px;white-space:nowrap">OK</span>
+          <span style="color:#6a6a8a;font-size:10px">L5</span>
+          <span style="color:#e0e0e0;font-size:13px;font-weight:600">MarketAgent: SCAN — normal operation</span>
+        </div>
+        
+        
+      </div>
+    </div>
+  </td>
+</tr>
+
+<tr>
+  <td style="padding:10px 14px;border-bottom:1px solid #1e1e34;background:#001a15;vertical-align:top">
+    <div style="display:flex;align-items:flex-start;gap:10px">
+      <span style="font-size:14px;min-width:20px">✅</span>
+      <div style="flex:1">
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <span style="background:#00d4aa;color:#000;font-size:10px;font-weight:700;
+                        padding:2px 6px;border-radius:3px;white-space:nowrap">OK</span>
+          <span style="color:#6a6a8a;font-size:10px">L5</span>
+          <span style="color:#e0e0e0;font-size:13px;font-weight:600">VIX: 16.0 (normal range)</span>
+        </div>
+        
+        
+      </div>
+    </div>
+  </td>
+</tr>
+
+<tr>
+  <td style="padding:10px 14px;border-bottom:1px solid #1e1e34;background:#001a15;vertical-align:top">
+    <div style="display:flex;align-items:flex-start;gap:10px">
+      <span style="font-size:14px;min-width:20px">✅</span>
+      <div style="flex:1">
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <span style="background:#00d4aa;color:#000;font-size:10px;font-weight:700;
+                        padding:2px 6px;border-radius:3px;white-space:nowrap">OK</span>
+          <span style="color:#6a6a8a;font-size:10px">L5</span>
+          <span style="color:#e0e0e0;font-size:13px;font-weight:600">All positions entered under regime consistent with today (RISK_ON)</span>
+        </div>
+        
+        
+      </div>
+    </div>
+  </td>
+</tr>
+    </table>
+  </div>
+
+  <!-- Position table -->
+  <div style="padding:12px 24px 6px;color:#6a6a8a;font-size:10px;text-transform:uppercase;letter-spacing:2px;border-bottom:1px solid #1e1e34">Open Positions</div>
+  <table style="width:100%;border-collapse:collapse"><tr><th style="padding:6px 10px;text-align:left;color:#6a6a8a;font-size:10px;text-transform:uppercase">Symbol</th><th style="padding:6px 10px;text-align:right;color:#6a6a8a;font-size:10px;text-transform:uppercase">Qty</th><th style="padding:6px 10px;text-align:right;color:#6a6a8a;font-size:10px;text-transform:uppercase">Price</th><th style="padding:6px 10px;text-align:right;color:#6a6a8a;font-size:10px;text-transform:uppercase">P&L%</th><th style="padding:6px 10px;text-align:right;color:#6a6a8a;font-size:10px;text-transform:uppercase">P&L$</th></tr>
+<tr>
+  <td style="padding:6px 10px;border-bottom:1px solid #1e1e34;color:#e0e0e0;font-size:12px">WULF</td>
+  <td style="padding:6px 10px;border-bottom:1px solid #1e1e34;color:#a0a0b0;font-size:12px;text-align:right">319</td>
+  <td style="padding:6px 10px;border-bottom:1px solid #1e1e34;color:#a0a0b0;font-size:12px;text-align:right">$28.17</td>
+  <td style="padding:6px 10px;border-bottom:1px solid #1e1e34;color:#00d4aa;font-size:12px;text-align:right;font-weight:600">+19.3%</td>
+  <td style="padding:6px 10px;border-bottom:1px solid #1e1e34;color:#00d4aa;font-size:12px;text-align:right">$+1,456</td>
+</tr>
+<tr>
+  <td style="padding:6px 10px;border-bottom:1px solid #1e1e34;color:#e0e0e0;font-size:12px">KDP</td>
+  <td style="padding:6px 10px;border-bottom:1px solid #1e1e34;color:#a0a0b0;font-size:12px;text-align:right">7</td>
+  <td style="padding:6px 10px;border-bottom:1px solid #1e1e34;color:#a0a0b0;font-size:12px;text-align:right">$31.89</td>
+  <td style="padding:6px 10px;border-bottom:1px solid #1e1e34;color:#00d4aa;font-size:12px;text-align:right;font-weight:600">+11.2%</td>
+  <td style="padding:6px 10px;border-bottom:1px solid #1e1e34;color:#00d4aa;font-size:12px;text-align:right">$+23</td>
+</tr>
+<tr>
+  <td style="padding:6px 10px;border-bottom:1px solid #1e1e34;color:#e0e0e0;font-size:12px">WFC</td>
+  <td style="padding:6px 10px;border-bottom:1px solid #1e1e34;color:#a0a0b0;font-size:12px;text-align:right">19</td>
+  <td style="padding:6px 10px;border-bottom:1px solid #1e1e34;color:#a0a0b0;font-size:12px;text-align:right">$85.00</td>
+  <td style="padding:6px 10px;border-bottom:1px solid #1e1e34;color:#00d4aa;font-size:12px;text-align:right;font-weight:600">+4.0%</td>
+  <td style="padding:6px 10px;border-bottom:1px solid #1e1e34;color:#00d4aa;font-size:12px;text-align:right">$+62</td>
+</tr>
+<tr>
+  <td style="padding:6px 10px;border-bottom:1px solid #1e1e34;color:#e0e0e0;font-size:12px">BAC</td>
+  <td style="padding:6px 10px;border-bottom:1px solid #1e1e34;color:#a0a0b0;font-size:12px;text-align:right">78</td>
+  <td style="padding:6px 10px;border-bottom:1px solid #1e1e34;color:#a0a0b0;font-size:12px;text-align:right">$56.84</td>
+  <td style="padding:6px 10px;border-bottom:1px solid #1e1e34;color:#00d4aa;font-size:12px;text-align:right;font-weight:600">+3.7%</td>
+  <td style="padding:6px 10px;border-bottom:1px solid #1e1e34;color:#00d4aa;font-size:12px;text-align:right">$+158</td>
+</tr>
+<tr>
+  <td style="padding:6px 10px;border-bottom:1px solid #1e1e34;color:#e0e0e0;font-size:12px">KRE</td>
+  <td style="padding:6px 10px;border-bottom:1px solid #1e1e34;color:#a0a0b0;font-size:12px;text-align:right">152</td>
+  <td style="padding:6px 10px;border-bottom:1px solid #1e1e34;color:#a0a0b0;font-size:12px;text-align:right">$72.28</td>
+  <td style="padding:6px 10px;border-bottom:1px solid #1e1e34;color:#00d4aa;font-size:12px;text-align:right;font-weight:600">+3.1%</td>
+  <td style="padding:6px 10px;border-bottom:1px solid #1e1e34;color:#00d4aa;font-size:12px;text-align:right">$+333</td>
+</tr>
+<tr>
+  <td style="padding:6px 10px;border-bottom:1px solid #1e1e34;color:#e0e0e0;font-size:12px">UBER</td>
+  <td style="padding:6px 10px;border-bottom:1px solid #1e1e34;color:#a0a0b0;font-size:12px;text-align:right">176</td>
+  <td style="padding:6px 10px;border-bottom:1px solid #1e1e34;color:#a0a0b0;font-size:12px;text-align:right">$73.30</td>
+  <td style="padding:6px 10px;border-bottom:1px solid #1e1e34;color:#00d4aa;font-size:12px;text-align:right;font-weight:600">+0.2%</td>
+  <td style="padding:6px 10px;border-bottom:1px solid #1e1e34;color:#00d4aa;font-size:12px;text-align:right">$+32</td>
+</tr>
+<tr>
+  <td style="padding:6px 10px;border-bottom:1px solid #1e1e34;color:#e0e0e0;font-size:12px">PFE</td>
+  <td style="padding:6px 10px;border-bottom:1px solid #1e1e34;color:#a0a0b0;font-size:12px;text-align:right">331</td>
+  <td style="padding:6px 10px;border-bottom:1px solid #1e1e34;color:#a0a0b0;font-size:12px;text-align:right">$26.03</td>
+  <td style="padding:6px 10px;border-bottom:1px solid #1e1e34;color:#ff4444;font-size:12px;text-align:right;font-weight:600">-0.3%</td>
+  <td style="padding:6px 10px;border-bottom:1px solid #1e1e34;color:#ff4444;font-size:12px;text-align:right">$-26</td>
+</tr>
+<tr>
+  <td style="padding:6px 10px;border-bottom:1px solid #1e1e34;color:#e0e0e0;font-size:12px">CSX</td>
+  <td style="padding:6px 10px;border-bottom:1px solid #1e1e34;color:#a0a0b0;font-size:12px;text-align:right">155</td>
+  <td style="padding:6px 10px;border-bottom:1px solid #1e1e34;color:#a0a0b0;font-size:12px;text-align:right">$46.72</td>
+  <td style="padding:6px 10px;border-bottom:1px solid #1e1e34;color:#ff4444;font-size:12px;text-align:right;font-weight:600">-0.4%</td>
+  <td style="padding:6px 10px;border-bottom:1px solid #1e1e34;color:#ff4444;font-size:12px;text-align:right">$-33</td>
+</tr>
+<tr>
+  <td style="padding:6px 10px;border-bottom:1px solid #1e1e34;color:#e0e0e0;font-size:12px">AAL</td>
+  <td style="padding:6px 10px;border-bottom:1px solid #1e1e34;color:#a0a0b0;font-size:12px;text-align:right">805</td>
+  <td style="padding:6px 10px;border-bottom:1px solid #1e1e34;color:#a0a0b0;font-size:12px;text-align:right">$15.71</td>
+  <td style="padding:6px 10px;border-bottom:1px solid #1e1e34;color:#ff4444;font-size:12px;text-align:right;font-weight:600">-2.0%</td>
+  <td style="padding:6px 10px;border-bottom:1px solid #1e1e34;color:#ff4444;font-size:12px;text-align:right">$-261</td>
+</tr>
+<tr>
+  <td style="padding:6px 10px;border-bottom:1px solid #1e1e34;color:#e0e0e0;font-size:12px">MRVL</td>
+  <td style="padding:6px 10px;border-bottom:1px solid #1e1e34;color:#a0a0b0;font-size:12px;text-align:right">7</td>
+  <td style="padding:6px 10px;border-bottom:1px solid #1e1e34;color:#a0a0b0;font-size:12px;text-align:right">$286.53</td>
+  <td style="padding:6px 10px;border-bottom:1px solid #1e1e34;color:#ff4444;font-size:12px;text-align:right;font-weight:600">-2.6%</td>
+  <td style="padding:6px 10px;border-bottom:1px solid #1e1e34;color:#ff4444;font-size:12px;text-align:right">$-54</td>
+</tr></table>
+
+  <!-- Footer -->
+  <div style="padding:14px 24px;border-top:1px solid #2a2a3e;text-align:center">
+    <div style="color:#3a3a5e;font-size:10px">RAPTOR v5.4 Monitor | Paper Trading | Math-First</div>
+    <div style="color:#3a3a5e;font-size:10px;margin-top:2px">Generated 2026-06-17 05:56 ET</div>
+  </div>
+
+</div>
+</body>
+</html>

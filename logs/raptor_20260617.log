@@ -1,0 +1,22 @@
+2026-06-17 09:35:03,851 [raptor.main] INFO: ============================================================
+2026-06-17 09:35:03,852 [raptor.main] INFO: RAPTOR v5.4 DAILY SCAN - 2026-06-17T09:35:03.852276
+2026-06-17 09:35:03,852 [raptor.main] INFO: ============================================================
+2026-06-17 09:35:03,853 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-06-17 09:35:04,393 [raptor.main] INFO: Account: equity=$107544.65  cap=none (compound)  sizing_base=$107544.65  positions=10
+2026-06-17 09:35:04,424 [raptor.main] INFO: [MarketAgent] SCAN | scalar=1.00 | macro_regime is RISK_ON with VIX at 16.04 and no extreme signals present.
+2026-06-17 09:35:04,559 [raptor.margin_guard] INFO: MARGIN GUARD: equity=$107,546  cap=none (compound)  cash=$37,530  positions=10
+2026-06-17 09:35:04,560 [raptor.margin_guard] INFO: MARGIN GUARD: market_value=$70,016  utilization=65.1% of base  margin=NO
+2026-06-17 09:35:04,612 [raptor.universe] INFO: Universe from cache: 77 symbols
+2026-06-17 09:35:04,613 [raptor.main] INFO: Dynamic universe: 77 symbols
+2026-06-17 09:35:08,013 [raptor.data_feeds] INFO: Fetched 77 new bars / 77 total cached
+2026-06-17 09:35:08,237 [raptor.data_feeds] INFO: FRED regime: BULLISH (score=0.300)
+2026-06-17 09:35:08,259 [raptor.main] INFO: Data: 77 symbols | Macro: RISK_ON (0.300)
+2026-06-17 09:35:10,144 [raptor.signals] INFO: v5.4 Signals: 5 from 76 | Macro=RISK_ON Scale=1.0 | Micro={'MIXED': 57, 'REVERTING': 5, 'TRENDING': 14} | SNR min=1.40 max=2.34
+2026-06-17 09:35:10,166 [raptor.main] INFO: Velocity gate: 3 signals remain | velocities: {'CRWV': '+0.000', 'CCL': '+0.000', 'GOOGL': '+0.000'}
+2026-06-17 09:35:10,171 [raptor.main] INFO: Signals:
+2026-06-17 09:35:10,176 [raptor.main] INFO:   1. CRWV  t=2.340  pctl=100%  entry=$120.34  stop=$96.70  tp=$0.00  kelly=0.120  hold~6d
+2026-06-17 09:35:10,176 [raptor.main] INFO:   2. CCL  t=1.490  pctl=97%  entry=$31.13  stop=$28.32  tp=$0.00  kelly=0.120  hold~30d
+2026-06-17 09:35:10,177 [raptor.main] INFO:   3. GOOGL  t=1.402  pctl=95%  entry=$370.32  stop=$342.74  tp=$0.00  kelly=0.116  hold~30d
+2026-06-17 09:35:12,370 [AgentLayer] WARNING: EntryAgent batch failed ('"decision"') — deterministic rules only.
+2026-06-17 09:35:12,376 [raptor.main] INFO: Deployable: cap=none  market_value=$70011  cash=$37530  headroom=$35654  available=$35654  (margin=OFF)
+2026-06-17 09:35:12,377 [raptor.main] INFO: Scan complete. 0 orders placed for v5.4.

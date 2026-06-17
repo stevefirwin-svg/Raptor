@@ -343,5 +343,35 @@
     "notional": 845.0,
     "status": "OrderStatus.PENDING_NEW",
     "backfilled": true
+  },
+  {
+    "ts": "2026-06-17T13:52:56.437742+00:00",
+    "symbol": "CSX",
+    "side": "SELL",
+    "qty": 105,
+    "decision_price": 46.26,
+    "fill_price": 46.25,
+    "is_bps": 2.16,
+    "is_dollars": 1.05,
+    "order_id": "c795982a-a27e-47e8-afae-f0544f86e37d",
+    "exit_reason": "math_trim_68%",
+    "notional": 4857.3,
+    "status": "OrderStatus.PENDING_NEW",
+    "backfilled": true
+  },
+  {
+    "ts": "2026-06-17T13:52:56.531322+00:00",
+    "symbol": "MRVL",
+    "side": "SELL",
+    "qty": 5,
+    "decision_price": 290.6,
+    "fill_price": 289.57,
+    "is_bps": 35.44,
+    "is_dollars": 5.15,
+    "order_id": "1d8d4c85-b83e-4302-aed3-f62b7392b498",
+    "exit_reason": "math_trim_76%",
+    "notional": 1453.0,
+    "status": "OrderStatus.PENDING_NEW",
+    "backfilled": true
   }
 ]

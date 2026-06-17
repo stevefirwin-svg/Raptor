@@ -1,0 +1,65 @@
+2026-06-17 09:52:30,030 [raptor.exits] INFO: ============================================================
+2026-06-17 09:52:30,030 [raptor.exits] INFO: RAPTOR v5.4 EXIT MONITOR - 2026-06-17T09:52:30.030733
+2026-06-17 09:52:30,032 [raptor.exits] INFO: ============================================================
+2026-06-17 09:52:30,033 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-06-17 09:52:30,979 [raptor.exits] INFO: Account: equity=$107497.21  cash=$37530.06  positions=10
+2026-06-17 09:52:30,984 [raptor.universe] INFO: Universe from cache: 77 symbols
+2026-06-17 09:52:32,367 [raptor.data_feeds] INFO: Fetched 77 new bars / 77 total cached
+2026-06-17 09:52:32,390 [raptor.data_feeds] INFO: FRED regime: BULLISH (score=0.300)
+2026-06-17 09:52:55,911 [raptor.signals] INFO: v5.4 Signals: 5 from 76 | Macro=RISK_ON Scale=1.0 | Micro={'MIXED': 57, 'REVERTING': 5, 'TRENDING': 14} | SNR min=1.47 max=2.41
+2026-06-17 09:52:55,916 [raptor.exits] INFO: Portfolio unrealized: $2002.53 (1.86%)
+2026-06-17 09:52:55,991 [raptor.exits] WARNING: MATH TRIM [TRIM_MAJOR] CSX — 105 of 155 shares (68%) — Major trim 68% — significant thesis decay
+2026-06-17 09:52:56,342 [raptor.exits] WARNING: MATH TRIM [TRIM_MAJOR] MRVL — 5 of 7 shares (76%) — Major trim 76% — significant thesis decay
+2026-06-17 09:52:56,343 [raptor.exits] INFO: 
+2026-06-17 09:52:56,343 [raptor.exits] INFO: ============================================================
+2026-06-17 09:52:56,344 [raptor.exits] INFO:   EXIT SUMMARY
+2026-06-17 09:52:56,344 [raptor.exits] INFO: ============================================================
+2026-06-17 09:52:56,344 [raptor.exits] INFO:   EXITS (2):
+2026-06-17 09:52:56,345 [raptor.exits] INFO:     CSX  math_trim_68%  pnl=-1.4%  comp=0.0486
+2026-06-17 09:52:56,345 [raptor.exits] INFO:     MRVL  math_trim_76%  pnl=-1.2%  comp=-0.0812
+2026-06-17 09:52:56,345 [raptor.exits] INFO:   HOLDS (8):
+2026-06-17 09:52:56,345 [raptor.exits] INFO:     AAL  pnl=-0.4%  trail=$14.48  comp=0.3155
+2026-06-17 09:52:56,346 [raptor.exits] INFO:     BAC  pnl=+5.3%  trail=$55.45  comp=0.1088
+2026-06-17 09:52:56,346 [raptor.exits] INFO:     KDP  pnl=+11.7%  trail=$31.38  comp=0.0425
+2026-06-17 09:52:56,346 [raptor.exits] INFO:     KRE  pnl=+3.7%  trail=$72.08  comp=-0.0232
+2026-06-17 09:52:56,346 [raptor.exits] INFO:     PFE  pnl=-0.1%  trail=$25.37  comp=0.4625
+2026-06-17 09:52:56,347 [raptor.exits] INFO:     UBER  pnl=+0.0%  trail=$68.74  comp=0.2126
+2026-06-17 09:52:56,347 [raptor.exits] INFO:     WFC  pnl=+6.0%  trail=$83.9  comp=-0.0304
+2026-06-17 09:52:56,347 [raptor.exits] INFO:     WULF  pnl=+19.2%  trail=$25.0  comp=0.1217
+2026-06-17 09:52:56,348 [raptor.exits] INFO: ============================================================
+2026-06-17 09:52:56,366 [raptor.exits] INFO: AGENT [advisory] TRIM NVDA — 3+ deteriorating dimensions and unrealized_pct>5 (conf=0.60, from 2026-05-15T13:05:37.330779) [not executed — math trim governs]
+2026-06-17 09:52:56,366 [raptor.exits] INFO: AGENT [advisory] HOLD AMD — insufficient history: 0 days (conf=0.90, from 2026-06-05T09:52:08.933229)
+2026-06-17 09:52:56,366 [raptor.exits] INFO: AGENT [advisory] HOLD CVE — insufficient history: 0 days (conf=0.90, from 2026-05-28T15:50:34.277447)
+2026-06-17 09:52:56,366 [raptor.exits] INFO: AGENT [advisory] HOLD FXI — insufficient history: 0 days (conf=0.90, from 2026-05-19T16:30:29.205147)
+2026-06-17 09:52:56,367 [raptor.exits] INFO: AGENT [advisory] HOLD CSX — insufficient history: 0 days (conf=0.90, from 2026-06-17T09:52:26.912582)
+2026-06-17 09:52:56,367 [raptor.exits] INFO: AGENT [advisory] HOLD INTC — insufficient history: 0 days (conf=0.90, from 2026-06-05T09:52:08.933275)
+2026-06-17 09:52:56,367 [raptor.exits] INFO: AGENT [advisory] HOLD KDP — insufficient history: 0 days (conf=0.90, from 2026-06-17T09:52:26.912584)
+2026-06-17 09:52:56,367 [raptor.exits] INFO: AGENT [advisory] HOLD OWL — insufficient history: 0 days (conf=0.90, from 2026-05-17T15:50:38.416296)
+2026-06-17 09:52:56,367 [raptor.exits] INFO: AGENT [advisory] HOLD KRE — insufficient history: 0 days (conf=0.90, from 2026-06-17T09:52:26.912587)
+2026-06-17 09:52:56,368 [raptor.exits] INFO: AGENT [advisory] HOLD PLTD — insufficient history: 0 days (conf=0.90, from 2026-05-28T15:50:34.277463)
+2026-06-17 09:52:56,368 [raptor.exits] INFO: AGENT [advisory] HOLD STM — insufficient history: 0 days (conf=0.90, from 2026-06-05T09:52:08.933304)
+2026-06-17 09:52:56,368 [raptor.exits] INFO: AGENT [advisory] HOLD SMCI — insufficient history: 0 days (conf=0.90, from 2026-06-05T09:52:08.933299)
+2026-06-17 09:52:56,369 [raptor.exits] INFO: AGENT [advisory] HOLD TSLA — insufficient history: 0 days (conf=0.90, from 2026-06-05T09:52:08.933310)
+2026-06-17 09:52:56,369 [raptor.exits] INFO: AGENT [advisory] HOLD TSLL — insufficient history: 0 days (conf=0.90, from 2026-05-19T16:30:29.205168)
+2026-06-17 09:52:56,369 [raptor.exits] INFO: AGENT [advisory] HOLD TTD — insufficient history: 0 days (conf=0.90, from 2026-05-19T16:30:29.205175)
+2026-06-17 09:52:56,370 [raptor.exits] INFO: AGENT [advisory] HOLD DKNG — insufficient history: 0 days (conf=0.90, from 2026-05-29T09:52:09.312915)
+2026-06-17 09:52:56,372 [raptor.exits] INFO: AGENT [advisory] HOLD HPQ — insufficient history: 0 days (conf=0.90, from 2026-06-05T09:52:08.933265)
+2026-06-17 09:52:56,372 [raptor.exits] INFO: AGENT [advisory] HOLD MRVL — insufficient history: 0 days (conf=0.90, from 2026-06-17T09:52:26.912589)
+2026-06-17 09:52:56,372 [raptor.exits] INFO: AGENT [advisory] HOLD WFC — insufficient history: 0 days (conf=0.90, from 2026-06-17T09:52:26.912597)
+2026-06-17 09:52:56,372 [raptor.exits] INFO: AGENT [advisory] HOLD SQQQ — insufficient history: 0 days (conf=0.90, from 2026-06-15T09:52:08.207369)
+2026-06-17 09:52:56,373 [raptor.exits] INFO: AGENT [advisory] HOLD XLE — insufficient history: 0 days (conf=0.90, from 2026-06-15T09:52:08.207377)
+2026-06-17 09:52:56,373 [raptor.exits] INFO: AGENT [advisory] HOLD BAC — insufficient history: 0 days (conf=0.90, from 2026-06-17T09:52:26.912577)
+2026-06-17 09:52:56,373 [raptor.exits] INFO: AGENT [advisory] HOLD PFE — insufficient history: 0 days (conf=0.90, from 2026-06-17T09:52:26.912592)
+2026-06-17 09:52:56,374 [raptor.exits] INFO: AGENT [advisory] HOLD WULF — insufficient history: 0 days (conf=0.90, from 2026-06-17T09:52:26.912599)
+2026-06-17 09:52:56,374 [raptor.exits] INFO: AGENT [advisory] HOLD AAL — insufficient history: 0 days (conf=0.90, from 2026-06-17T09:52:26.912559)
+2026-06-17 09:52:56,374 [raptor.exits] INFO: AGENT [advisory] HOLD UBER — insufficient history: 0 days (conf=0.90, from 2026-06-17T09:52:26.912595)
+2026-06-17 09:52:56,374 [raptor.exits] INFO: SELL 105 CSX [math_trim_68%]
+2026-06-17 09:52:56,428 [raptor.data_feeds] INFO: Order submitted: SELL 105 CSX @ None
+2026-06-17 09:52:56,428 [raptor.exits] INFO:   OK: OrderStatus.PENDING_NEW
+2026-06-17 09:52:56,453 [raptor.slippage] INFO: SLIPPAGE SELL 105 CSX: decision=$46.2600 fill=PENDING (order c795982a)
+2026-06-17 09:52:56,499 [raptor.exits] INFO: SELL 5 MRVL [math_trim_76%]
+2026-06-17 09:52:56,529 [raptor.data_feeds] INFO: Order submitted: SELL 5 MRVL @ None
+2026-06-17 09:52:56,529 [raptor.exits] INFO:   OK: OrderStatus.PENDING_NEW
+2026-06-17 09:52:56,546 [raptor.slippage] INFO: SLIPPAGE SELL 5 MRVL: decision=$290.6000 fill=PENDING (order 1d8d4c85)
+2026-06-17 09:52:57,450 [raptor.slippage] INFO: SLIPPAGE BACKFILL CSX c795982a: IS=+2.2 bps
+2026-06-17 09:52:57,830 [raptor.slippage] INFO: SLIPPAGE BACKFILL MRVL 1d8d4c85: IS=+35.4 bps

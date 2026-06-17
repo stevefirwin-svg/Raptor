@@ -137,7 +137,7 @@ def get_todays_trades():
 
     exit_log = f"logs/exits_{today}.log"
     if os.path.exists(exit_log):
-        seen_exits = set()  # deduplicate same symbol appearing in multiple runs
+        seen_exits = set()  # dedupe same symbol re-logged across multiple intraday runs
         with open(exit_log) as f:
             for line in f:
                 # Only count real executions — "Order submitted" only fires on live orders,
@@ -145,8 +145,16 @@ def get_todays_trades():
                 # including dry-runs so we deliberately ignore them here.
                 if "SELL" in line and "Order submitted" in line:
                     parts = line.strip().split("Order submitted: ")[1] if "Order submitted: " in line else line.strip()
-                    # Deduplicate: extract symbol from client_order_id pattern
-                    sym = parts.split("_")[1] if "_" in parts else parts[:4]
+                    # Format is "SELL <qty> <SYMBOL> @ <price>" — symbol is always the
+                    # 3rd whitespace token. BUG FIX 2026-06-17: previous code did
+                    # parts.split("_")[1] if "_" in parts else parts[:4], but this line
+                    # never contains an underscore, so it always fell through to
+                    # parts[:4] == "SELL" for every single trim/exit. That made every
+                    # symbol's dedup key identical, so only the FIRST sell of the day
+                    # (whatever it was) ever made it into `exits` — every subsequent
+                    # trim that day was silently dropped before reaching the recap.
+                    tokens = parts.split()
+                    sym = tokens[2] if len(tokens) > 2 else parts[:4]
                     if sym not in seen_exits:
                         seen_exits.add(sym)
                         exits.append(parts)

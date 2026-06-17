@@ -755,13 +755,16 @@ Triggered if: `current_price ≤ hard_stop`
 
 *Rationale for wider stops in high vol: In high-volatility regimes, normal intraday noise is larger. A fixed 3× ATR stop would be triggered by noise rather than genuine adverse movement. Wider stops in high-vol reduce whipsaw while maintaining equivalent statistical protection.*
 
-**EXIT 2 — Trailing Stop (P1-3: OU-Theta Derived)**
+**EXIT 2 — Trailing Stop (time/profit-tiered — see DISCREPANCY note in §16)**
 
-The trail width is derived from the stock's estimated mean-reversion speed:
+The trail width is derived from time held and unrealized profit (NOT from θ — see §16
+for a documentation-accuracy correction; this section previously described an
+OU-theta-derived trail that was never implemented):
 
 ```
-theta = OU mean-reversion speed (see Section 4.7)
-trail_base = clip(1 / sqrt(theta), 1.0, 3.0)
+trail_base = time-tier ATR multiple, by days_held (early/mid/late/final tiers — config.py)
+profit_floor = 2.5x if profit_atr>=4, 2.0x if >=2, 2.5x if >=1, else uncapped (99.0)
+trail = min(trail_base, profit_floor)
 ```
 
 Then modified for profit state:
@@ -1049,11 +1052,45 @@ Median (not mean) for outlier robustness. Sectors with <3 members use universe m
 Effect: stock selection alpha decoupled from sector beta. IC now measures stock-level skill.
 Reference: Grinold & Kahn 2000, ch. 5.
 
-### 15.2 OU Hold Target
-hold_target = ln(2) / θ where θ = -b/dt, b from OLS: dX_t = a + b*X_t + eps, X = log(price).
-θ clamped to [0, ∞): trending stocks (θ<0) → hold_target=30 (time stop governs).
-Reference: Leung & Zhang 2019, eq. 4.
-TODO:DERIVE min/max bounds (3, 30) at DATA-40 gate.
+### 15.2 OU Hold Target (corrected 2026-06-17 — see §16 for full derivation)
+**Original formula (2026-06-11, now superseded):**
+hold_target = ln(2) / θ where θ = -b/dt, b from OLS: dX_t = a + b*X_t + eps, X = raw log(price).
+This was citation-mismatched (see below) and had three live defects: θ fit on raw log-price
+(which is closer to a random walk than to stationary OU for most equities — risk of pure
+small-sample spurious mean reversion), no unit-root pre-test (a trending/random-walk stock
+could still emit a specific numeric hold_target instead of "no detectable reversion"), and a
+bare point estimate with no uncertainty band, sized by an OLS estimator known to be biased
+in exactly the near-unit-root regime equities live in.
+
+**Corrected formula (`signals.py::QuantSignalEngine._estimate_ou_hold_target`):**
+1. Fit θ on the **market-residual** log-price (stock log-price minus OLS-beta × SPY
+   log-price), not raw log-price — removes the I(1) market factor before testing for
+   reversion in what's left.
+2. **ADF-style unit-root pre-test** (1-lag, MacKinnon 5% critical value ≈ -2.86) gates
+   whether θ>0 is credible at all. If the test fails to reject a unit root, hold_target
+   reverts to the trending/time-stop branch (30 days) with `reliable=False` rather than
+   emitting a fabricated number.
+3. φ̂ from OLS is **bias-corrected toward the unit root** via the Marriott-Pope (1941)
+   first-order finite-sample correction before converting to θ̂ — OLS φ̂ is biased toward
+   zero in finite samples, which biases θ̂ upward and the half-life downward (early-exit bias).
+4. A **parametric bootstrap** (400 simulated OU paths at θ̂/σ̂ over the same sample length,
+   refit each, 5th/95th percentile of ln(2)/θ̂) replaces the delta-method CI. The delta method
+   is anti-informative near the unit root — its variance formula goes to *zero* as θ→0, which
+   is backwards (uncertainty should blow up there, not vanish).
+
+`Signal` dataclass now carries `hold_target_low`, `hold_target_high` (90% bootstrap interval,
+clamped to [3,30]) and `hold_target_reliable` (bool) alongside the existing `hold_target_days`
+point estimate. Downstream consumers (`hold_monitor.py`, `backtest.py`, `main.py`) all read
+`hold_target_days` via `getattr(..., 15)` and are unaffected by the new fields; they do not
+yet *consume* the CI or reliability flag — see §16 for that as an open follow-on.
+
+**Citation note:** ln(2)/θ is the **half-life heuristic** from the practitioner literature,
+not the optimal-stopping exit boundary that Leung & Zhang (2019) actually derive in their
+paper. We continue citing Leung & Zhang for the general OU-hold-target *framing* but the
+half-life formula itself should be understood as a heuristic, not that paper's main result.
+Evaluating the actual optimal-stopping boundary remains a future upgrade (see §16).
+
+TODO:DERIVE min/max bounds (3, 30) at DATA-40 gate — regress realized hold_days vs θ̂ estimate.
 
 ### 15.3 Implementation Shortfall Tracking
 Every BUY and SELL fill records decision price vs Alpaca filled_avg_price.
@@ -1095,5 +1132,166 @@ Reference: Cheng & Madhavan 2009.
 
 ---
 
-*This document describes Raptor v5.4 as of 2026-06-12.*
+## 16. Session 6 — OU Hold Target Rework (2026-06-17)
+
+### 16.1 What changed and why
+The original OU hold target (§15.2, S5-1) was a working point estimate but had three
+defects identified via first-principles derivation (not a logged failure — a desk-check
+of the math before any bug surfaced in production):
+
+1. **Series choice.** θ was fit on raw log-price. Raw equity log-price is generally much
+   closer to a random walk (I(1), θ=0 in the limit) than to a stationary OU process. Fitting
+   AR(1) OLS there risks pure small-sample spurious mean reversion — a finite θ̂ that reflects
+   sampling noise, not a real reverting force. **Fix:** fit θ on the market-residual log-price
+   (stock log-price minus OLS-beta × SPY log-price) instead.
+2. **No stationarity gate.** A trending or random-walk name could still emit a specific
+   numeric hold_target (e.g. "9 days") with no signal that the number was statistically
+   meaningless. **Fix:** ADF-style unit-root pre-test; if it fails to reject, hold_target
+   falls back to the time-stop branch (30d) with `reliable=False` rather than a fabricated
+   number.
+3. **Point estimate only, with a biased estimator.** OLS φ̂ is known to be biased toward
+   zero in finite samples (Marriott-Pope 1941), which propagates to bias θ̂ upward and the
+   half-life downward — the system would tend to tell itself to exit too early, and the bias
+   is largest exactly in the near-unit-root regime equities live in. There was also no
+   confidence interval, so a "12-day" hold target looked precise when the honest uncertainty
+   (back-of-envelope delta method, away from the unit root) is roughly ±70% relative SE at
+   typical sample sizes. **Fix:** Marriott-Pope bias correction on φ̂ before the θ conversion,
+   plus a parametric bootstrap CI (the delta method itself is unreliable/anti-informative
+   near the unit root — its variance formula goes to zero as θ→0, backwards from reality).
+
+### 16.2 Citation correction
+ln(2)/θ is the **half-life heuristic** from the practitioner literature. Leung & Zhang
+(2019)'s actual contribution is an **optimal-stopping exit boundary**, a different and
+generally more sophisticated object. We keep citing Leung & Zhang for the general framing
+of OU-based hold/exit logic but the half-life formula itself is a heuristic, not that paper's
+result. The optimal-stopping boundary is a candidate future upgrade (§16.4).
+
+### 16.3 Implementation
+`signals.py::QuantSignalEngine._estimate_ou_hold_target(bars, spy_bars)`. Returns
+`{point, low, high, reliable, theta, n_obs}`. `Signal` dataclass extended with
+`hold_target_low`, `hold_target_high`, `hold_target_reliable` (all with defaults, so
+existing `getattr(signal, "hold_target_days", 15)` call sites in `hold_monitor.py`,
+`backtest.py`, `main.py` are unaffected). Verified via synthetic-data unit tests in the
+same session (Rule 11): a true-θ=0.10 OU process recovered θ̂≈0.109 with the true half-life
+inside the bootstrap interval; a pure random walk correctly triggered `reliable=False`;
+a fast-reverting θ=0.30 process clamped correctly at the 3-day floor; a too-short series
+hit the documented fallback.
+
+### 16.4 Open follow-ons (not yet built)
+- **Consume the reliability flag and CI downstream.** `hold_monitor.py` and `daily_recap.py`
+  currently only read the point estimate. A position flagged `hold_target_reliable=False`
+  is currently treated identically to a high-confidence one — the time-exit layer doesn't
+  yet widen its tolerance or flag the uncertainty in the recap.
+- **Documentation/code drift on the trailing stop.** §9 previously described and the master
+  plan's P1-3 row claimed an "OU-theta derived" trailing stop (`trail_base = 1/sqrt(theta)`)
+  that does not exist in `exit_monitor.py`. The live trail is purely time-tier + profit-ATR
+  based (`_trail_mult`). Corrected in §9 above; master plan P1-3 row needs the same correction.
+- **Real optimal-stopping boundary.** Evaluate replacing the half-life heuristic with the
+  actual Leung & Zhang (2019) / Leung & Li optimal-stopping exit boundary once θ estimation
+  is trustworthy at scale — this is a strictly more principled object than ln(2)/θ.
+- **Median-unbiased estimation (Andrews 1993)** as a sharper bias correction than the
+  first-order Marriott-Pope plug-in used here, if the plug-in proves inadequate once real
+  trade data accumulates.
+- **TODO:DERIVE min/max bounds (3,30)** — unchanged from §15.2, still gated at DATA-40.
+
+## 17. Session 7 — Kelly Drawdown-Budget Rework (2026-06-17)
+
+### 17.1 What changed and why
+`kelly_engine.py::_dd_constrained_f` previously used `f_max = dd_tolerance / (σ√252)` —
+a volatility-scaling heuristic with no probabilistic interpretation. It said roughly
+"how big can the bet be relative to typical dispersion," but never specified what
+*probability* of breaching the drawdown tolerance that bet size actually implies. There
+was no way to know whether the constraint was conservative or aggressive relative to a
+stated risk budget, because it wasn't built from one.
+
+**Fix (derived from first principles, worked by hand before being coded — see chat log
+2026-06-17):** in the continuous (GBM) approximation, betting fraction λ of full Kelly
+makes log-wealth a drifted Brownian motion with drift `m = γλ(1−λ/2)` and variance rate
+`v = γλ²` where `γ = μ²/σ²`. The probability that an equity excursion from a new peak
+ever reaches drawdown depth `d = −ln(β)` (β = 1 − dd_tolerance), via the exponential
+martingale and optional stopping, collapses to:
+
+```
+P(drawdown episode reaches β) = β^((2−λ)/λ)
+```
+
+Note that μ, σ, and γ all cancel — the drawdown *profile* of fractional-Kelly betting
+depends only on λ, not on the size of the edge. This is inverted to solve directly for
+the λ consistent with a stated risk budget: given a tolerance β and a target ceiling on
+the probability of ever breaching it, p_tol:
+
+```
+λ* = 2 / (1 + ln(p_tol)/ln(β))
+```
+
+`f_dd_constrained = λ* × f_star` (full-Kelly empirical estimate, not the Bayesian-shrunk
+`f` — λ is defined relative to full Kelly by construction, so scaling the shrunk value
+would make the result uninterpretable against its own derivation).
+
+### 17.2 What this revealed
+Worked example with dd_tolerance=0.12, p_tol=0.05: λ* ≈ 0.082. Half-Kelly (λ=0.5) is
+roughly 6× too aggressive for a hard 12% drawdown cap at any reasonable breach tolerance.
+**Half-Kelly and a tight drawdown cap are mathematically inconsistent with each other.**
+
+Running the new formula against the live MOMENTUM book (53 trades, 2026-06-17):
+at `MAX_DD=0.15`, `P_TOL=0.05`, λ* ≈ 0.103 — i.e. the drawdown-consistent fraction is
+roughly a fifth of half-Kelly. The Bayesian prior shrinkage (`F_PRIOR=0.02`, `N_PRIOR=50`)
+was doing the real risk-limiting work by accident — the system looked growth-constrained
+(bounded mainly by half-Kelly) when it was actually drawdown-constrained, with the prior
+masking that fact. That protection decays mechanically as n grows past N_PRIOR and the
+prior's grip on the blended estimate weakens (already happening: n=53 vs N_PRIOR=50).
+This rewrite makes the drawdown budget an explicit, persistent constraint rather than an
+artifact of small-sample shrinkage that will quietly loosen over the next 1–3 months of
+trading without anyone changing a line of code.
+
+### 17.3 Diagnostic addition — fat-tail correction to f*
+A fourth-order Taylor expansion of `E[ln(1+fR)]` gives
+`f* ≈ f_kelly_naive × (1 + s·η − κ·η²)`, where s = skewness, κ = full kurtosis,
+η = μ/σ (per-trade Sharpe). Positive skew raises true Kelly above the naive estimate;
+fat tails lower it; they cross at η* = s/κ. This is now computed and reported per book
+as `f_star_correction_factor_DIAGNOSTIC_ONLY` — **not used in production sizing.** At
+κ≈8–10 (the live MOMENTUM book's measured kurtosis), the expansion's own convergence
+condition (|fR| < 1) is marginal and the 5th moment barely exists, so a 4th-order
+polynomial near its own breakdown point is not trustworthy for sizing — only for
+direction. Production sizing continues to rely entirely on the bootstrap, which captures
+these moments empirically by resampling actual bounded (post-stop) outcomes rather than
+extrapolating from a moment expansion.
+
+### 17.4 Implementation
+`kelly_engine.py::_lambda_for_drawdown_budget(dd_tolerance, p_tol)` — closed-form solve,
+guards `0 < p_tol < β < 1` and returns `None` (fails open to unconstrained `f_star`, not
+to zero) if the inputs are out of range, so a misconfiguration is visible in the output
+rather than silently producing a number that looks plausible but doesn't mean what it
+claims. `_dd_constrained_f` calls it and scales `f_star`. `kelly_estimates.json` gained
+`dd_budget_lambda`, `dd_budget_inputs`, `max_dd_tolerance`, `p_tol`, `p_tol_status` —
+all additive; zero existing fields removed or reshaped. Sole downstream consumer
+(`get_recommended_kelly()`) reads only `f_recommended`/`mode`, unaffected.
+
+Verified same session (Rule 11): lambda formula reproduces the hand-derived session
+value (0.0819 for 12%/5% inputs) to 3 decimal places; boundary guard correctly rejects
+`p_tol ≥ β`; fail-open behavior confirmed against a deliberately invalid input; full run
+against live `outcome_log.json` (53 trades) moved `f_dd_constrained` from 3.83% (old
+heuristic) to 5.07% (new formula) while remaining the binding constraint ahead of
+half-Kelly's 13.17%. Kelly remains SHADOW mode throughout — this change affects only the
+number being logged, not live sizing (Rule 5, RAPTOR_SKILL.md).
+
+### 17.5 Open follow-ons (not yet built)
+- **P_TOL is not yet derived**, only flagged. It is currently a conventional 5%-tail
+  placeholder, not fit to Raptor's own equity curve or an explicit ruin-cost function from
+  Steve. Gated at DATA-60 — need enough independent positions to observe real multi-trade
+  excursion behavior, not just per-trade return dispersion, before this can be calibrated
+  honestly rather than guessed.
+- **Skew/kurtosis correction stays diagnostic-only.** Revisit promoting it into the
+  production pipeline only if the bootstrap's empirical capture of these moments proves
+  inadequate at higher n — there is no evidence of that yet, and the moment-expansion
+  route carries real truncation risk at this kurtosis level.
+- **CPCV / purge-embargo (item #2 from the same derivation session) and HMM macro regime
+  (item #1) were both scoped in the same session as this Kelly rework but deliberately
+  NOT built yet** — CPCV is provably not meaningful below n≈100 (own derivation: SE(IC)
+  at n=27 is ~0.19, swamping any IC in the range Raptor is trying to detect), and HMM is
+  a larger build queued separately (ARCH-2, no data gate, but not started this session).
+
+---
+
+*This document describes Raptor v5.4 as of 2026-06-17 (session 7 — Kelly drawdown-budget rework).*
 *Authoritative implementation: github.com/stevefirwin-svg/Raptor*

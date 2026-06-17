@@ -480,5 +480,25 @@
     "entry_reasoning": null,
     "entry_flags": [],
     "submitted_at": "2026-06-16T09:52:19.866581"
+  },
+  "c795982a-a27e-47e8-afae-f0544f86e37d": {
+    "symbol": "CSX",
+    "exit_reason": "math_trim_68%",
+    "composite": 0.0486,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-06-17T09:52:56.471371"
+  },
+  "1d8d4c85-b83e-4302-aed3-f62b7392b498": {
+    "symbol": "MRVL",
+    "exit_reason": "math_trim_76%",
+    "composite": -0.0812,
+    "entry_decision": "PASS",
+    "entry_confidence": 0.95,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-06-17T09:52:56.560828"
   }
 }

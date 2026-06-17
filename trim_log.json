@@ -960,5 +960,31 @@
     "agent_decision": "HOLD",
     "agent_conf": 0.9,
     "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-06-17T09:52:56.588121",
+    "symbol": "CSX",
+    "trim_qty": 105,
+    "price": 46.26,
+    "pnl_pct": -1.43,
+    "reason": "math_trim_68%",
+    "composite": 0.0486,
+    "trim_detail": "severity=0.267 x stop_mult=1.50 x far_mult=1.00 x pnl_mult=1.20 + slope_adj=0.196 = 0.676 -> 67.6% (105 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-06-17T09:52:56.588175",
+    "symbol": "MRVL",
+    "trim_qty": 5,
+    "price": 290.6,
+    "pnl_pct": -1.23,
+    "reason": "math_trim_76%",
+    "composite": -0.0812,
+    "trim_detail": "severity=0.278 x stop_mult=1.50 x far_mult=1.13 x pnl_mult=1.20 + slope_adj=0.200 = 0.764 -> 76.4% (5 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
   }
 ]
