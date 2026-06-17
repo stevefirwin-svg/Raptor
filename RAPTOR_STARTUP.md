@@ -1,6 +1,6 @@
 # RAPTOR_STARTUP.md — Session Startup Protocol
 *Read first. Every session. No exceptions.*
-*Last updated: 2026-06-12 | Version: 7.0*
+*Last updated: 2026-06-17 | Version: 7.1 — added raptor_monitor.py (4:30 PM EOD health check)*
 
 ---
 
@@ -167,6 +167,10 @@ print(f"Macro regime: {m.get('regime','?')}  score: {m.get('macro_score','?')}")
 3. Any open SQQQ/leveraged ETP positions? Exit manually if still held (pre-filter era).
 4. Check `slippage_log.json` — any pending fills (fill_price=None) from yesterday?
 5. Today's build target: see MASTER_PLAN open priority queue.
+6. Check yesterday's `logs/monitor_YYYYMMDD.json` for CRITICAL/ALERT findings from
+   raptor_monitor.py (4:30 PM run). Any unresolved CRITICAL findings take priority over
+   the build queue — the monitor exists to surface exactly this kind of thing before it's
+   forgotten between sessions.
 
 ---
 
@@ -180,6 +184,7 @@ print(f"Macro regime: {m.get('regime','?')}  score: {m.get('macro_score','?')}")
 | 9:35 AM | main.py | Signal engine + deterministic entry gate + BUY orders |
 | 9:35–3:50 | exit_monitor.py loop | Exits + trims every 30 min |
 | 3:50 PM | exit_monitor.py + hold_monitor.py + daily_recap.py | Final cycle + recap |
+| 4:30 PM | raptor_monitor.py | 6-layer deterministic health check, single HTML summary email (Task Scheduler: "Raptor Monitor") |
 | 5:00 PM | outcome_tracker.py | Tag new closed trades → outcome_log.json |
 | 5:00 PM | factor_lab.py + kelly_engine.py | IC + Kelly update |
 | 5:00 PM | dsr.py | Deflated Sharpe (position-level) |
@@ -262,6 +267,9 @@ slippage_tracker.py        IS recording + backfill + report
 dsr.py                     Deflated Sharpe Ratio (Bailey & López de Prado 2014)
 agent_layer.py             _eval_entry_rules() — deterministic gate
 universe_builder.py        Dynamic universe (excl. leveraged ETPs)
+raptor_monitor.py          6-layer EOD health check — 4:30 PM, single summary email (added session 7, 2026-06-17)
+Start_Monitor.bat          Launches raptor_monitor.py for Task Scheduler
+Register_Raptor_Monitor.ps1  One-time setup script, registers "Raptor Monitor" scheduled task
 ```
 
 ---
@@ -322,4 +330,13 @@ Remove-Item -Recurse -Force __pycache__ -ErrorAction SilentlyContinue
 18. All gate calculations use position_outcomes.json (independent positions), never raw outcome_log.json.
 19. FILE SYNC IS MANDATORY. GitHub is source of truth. Run `python sync_to_claude.py` after every push and upload all listed files to Claude Project. Never start a session with stale project files.
 20. CLAUDE FIXES CODE AUTOMATICALLY. Bug found → Claude writes fixed file, validates with ast.parse(), delivers via present_files. Steve downloads, copies to Raptor folder, pushes. Claude never asks Steve to edit manually.
-21. CLAUDE PROMPTS SYNC AFTER FILE CHANGES. At the end of any session where files were delivered, Claude shows only: `python sync_to_claude.py`
+21. CLAUDE PROMPTS SYNC AFTER FILE CHANGES. At the end of any session where files were delivered, Claude shows exactly two lines and nothing else:
+    ```
+    git add -A; git commit -m "describe what changed (YYYY-MM-DD)"; git push origin main
+    python sync_to_claude.py
+    ```
+    Uses `;` not `&&` — Steve's default PowerShell (5.1) does not support `&&` as a
+    statement separator (that needs PowerShell 7+). `;` does not stop on error the
+    way `&&` does, but for this sequence that's fine: a no-op `git add` or empty
+    `git commit` just makes the next command harmlessly no-op too.
+    The commit message must name every file changed that session (per Rule 10) — Claude fills in the actual description and date, never leaves it generic. Steve pushes manually, then manually uploads the changed files to the Claude Project — Claude does not need to remind him of the upload step separately.

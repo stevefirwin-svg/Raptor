@@ -1,5 +1,5 @@
 # Raptor — Master Priority Plan
-*Last updated: 2026-06-17 (session 7 — Kelly drawdown-budget rework: replaces heuristic σ√T constraint with derived excursion-probability formula)*
+*Last updated: 2026-06-17 (session 7 — Kelly drawdown-budget rework + raptor_monitor.py EOD health check added)*
 *Supersedes all prior versions. This is the single source of truth.*
 
 ---
@@ -20,7 +20,7 @@ per position entry), never raw `outcome_log.json` directly.
 
 ---
 
-## Current System State (verified 2026-06-12)
+## Current System State (verified 2026-06-17)
 
 | Component | Status |
 |-----------|--------|
@@ -32,17 +32,20 @@ per position entry), never raw `outcome_log.json` directly.
 | Implementation shortfall tracker | ✅ LIVE 2026-06-10 (slippage_log.json, Perold 1988) |
 | Cross-sectional sector neutralization | ✅ LIVE 2026-06-10 (Grinold & Kahn 2000) |
 | Deflated Sharpe Ratio | ✅ LIVE 2026-06-10 (Bailey & López de Prado 2014) |
-| OU-derived hold target | ✅ LIVE 2026-06-11 (Leung & Zhang 2019) — replaces 16+14*atr_pctile |
+| OU-derived hold target | ✅ LIVE 2026-06-11, reworked 2026-06-17 (market-residual series, unit-root gate, bias correction, bootstrap CI — see §16) |
 | exit_regime in outcome records | ✅ LIVE 2026-06-11 |
 | Survivorship bias warning in backtest | ✅ LIVE 2026-06-11 |
 | Regime drift metric | ✅ LIVE 2026-06-11 |
 | position_outcomes.json | ✅ LIVE 2026-06-12 — deduplicated position-level records |
 | DSR corrected to position-level | ✅ FIXED 2026-06-12 — true DSR 59.8% (was falsely 99.9%) |
+| Kelly drawdown constraint — derived excursion-probability formula | ✅ LIVE 2026-06-17 — replaces ad hoc σ√T heuristic (see §17). Kelly itself remains SHADOW. |
+| raptor_monitor.py — 6-layer EOD health check | ✅ LIVE 2026-06-17 — 4:30 PM, single summary email |
+| daily_recap.py exit-dedup bug | ✅ FIXED 2026-06-17 — every sell but the first was being silently dropped from recap |
 | P0-1 outcome sidecar | ✅ LIVE 2026-05-29 |
 | P0-8 regime unification | ✅ LIVE 2026-05-29 |
 | DFA-1 Hurst | ✅ LIVE 2026-05-29 |
 | Spearman IC + WLS + decay | ✅ LIVE |
-| Bootstrap Kelly — SHADOW mode | ✅ LIVE (43/100 trades) |
+| Bootstrap Kelly — SHADOW mode | ✅ LIVE (53/100 trades) |
 | Dual-book engine (MOMENTUM live, MR suspended) | ✅ LIVE |
 | Bat file log isolation (raptor_auto_start.log) | ✅ FIXED 2026-06-10 |
 
@@ -133,6 +136,10 @@ At current pace (~7 positions/week): DATA-40 in ~2 weeks, DATA-60 in ~5 weeks.
 | S7-4 | Diagnostic-only fat-tail correction factor (`f_star_correction_factor_DIAGNOSTIC_ONLY`) added to `return_diagnostics()` — surfaces the skew-vs-kurtosis directional correction to naive Kelly (η* = s/κ crossover) without feeding it into production sizing, per the 4th-order Taylor expansion's unreliability at κ≈8-10 |
 | S7-5 | Verified via unit tests (lambda formula matches hand-derived session value 0.0819 for 12%/5% inputs; boundary/degenerate guard rejects p_tol ≥ β; fail-open behavior confirmed) and a full run against live `outcome_log.json` (53 trades) — `f_dd_constrained` moved from 3.83% (old heuristic) to 5.07% (new formula), still the binding constraint ahead of half-Kelly's 13.17% |
 | S7-6 | Zero breaking changes confirmed: diffed `kelly_estimates.json` output keys old vs new — all prior keys retained, only additive fields. `get_recommended_kelly()` (sole downstream consumer) reads only `f_recommended`/`mode`, both unchanged in shape. Kelly remains SHADOW mode — no live sizing affected by this change (Rule 5). |
+| S7-7 | `raptor_monitor.py` added — deterministic 6-layer EOD health check (infra, position reconciliation, position risk, operations, macro/regime, opportunity awareness), runs 4:30 PM via Task Scheduler ("Raptor Monitor" task), single HTML summary email + machine-readable `logs/monitor_YYYYMMDD.json`. Built and verified by Steve outside this session's scope; added to RAPTOR_STARTUP.md key files, daily schedule, and Step 6 context check. |
+| S7-8 | `daily_recap.py` bug fix: symbol-dedup key for exit/trim log parsing was `parts.split("_")[1] if "_" in parts else parts[:4]` — the line being parsed never contains an underscore, so every symbol fell through to `parts[:4] == "SELL"`, making every sell's dedup key identical. Only the first sell of each day ever reached the recap; every subsequent same-day trim or exit was silently dropped from the recap email. Fixed to extract the 3rd whitespace token (`tokens[2]`) from the `"SELL <qty> <SYMBOL> @ <price>"` format. Built and fixed by Steve outside this session's scope; logged here per Rule 10/11 since it landed in the same push (commit ddc8f34) — not independently re-verified by Claude this session. |
+
+**Note on commit ddc8f34:** this push bundled the Kelly drawdown-budget rework (S7-1–S7-6, this session) together with separately-built monitor tooling and a daily_recap.py fix (S7-7, S7-8) due to `git add -A` staging the full working tree. Documenting both here for completeness per Rule 10 (commit message must describe what changed) even though the commit message itself only names the Kelly work.
 
 
 

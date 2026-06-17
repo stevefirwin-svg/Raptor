@@ -1,5 +1,5 @@
 # Raptor Trading System — Development Skill
-*Last updated: 2026-06-12 | Version: 7.0*
+*Last updated: 2026-06-17 | Version: 7.1*
 
 ---
 
@@ -23,12 +23,13 @@ hold_monitor.py      8-layer health scoring
 outcome_tracker.py   Trade labeling — --backfill, --relabel flags
 slippage_tracker.py  Implementation shortfall recording (Perold 1988)
 dsr.py               Deflated Sharpe Ratio (Bailey & López de Prado 2014)
-kelly_engine.py      Bootstrap Kelly (shadow until DATA-100)
+kelly_engine.py      Bootstrap Kelly (shadow until DATA-100) — drawdown constraint derived from excursion-probability formula (2026-06-17)
 factor_lab.py        Spearman IC validation per factor
 macro_context.py     Vote-count regime classifier → continuous macro_score [-1,1]
 backtest.py          Walk-forward backtester (survivorship bias warning in output)
 universe_builder.py  Screens 6800 assets → ~75–150 symbols (excl. leveraged ETPs)
 agent_layer.py       _eval_entry_rules() deterministic gate + LLM advisory
+raptor_monitor.py    6-layer EOD health check — 4:30 PM, single HTML summary email (added 2026-06-17)
 position_outcomes.json  27 independent positions — authoritative gate counter
 ```
 
@@ -209,4 +210,10 @@ A position with 4 math_trims followed by a trailing_stop → `final_exit_path = 
 - Challenge any assumption that looks like a default or round number
 - **Claude fixes bugs directly.** No manual edits, no diffs. Claude writes the fixed file, validates syntax, delivers via present_files. Steve downloads and pushes.
 - **Claude Project must mirror GitHub.** Run sync_to_claude.py after every push and upload all listed files.
-- **Claude prompts sync after any session where files changed.** Show only: `python sync_to_claude.py` — nothing else.
+- **Claude prompts both git and sync after any session where files changed.** Show exactly two lines, nothing else:
+  ```
+  git add -A; git commit -m "describe what changed (YYYY-MM-DD)"; git push origin main
+  python sync_to_claude.py
+  ```
+  Uses `;` not `&&` — Steve's default PowerShell (5.1) doesn't support `&&` as a separator.
+  Commit message names every file changed that session (Rule 10). Steve handles the manual Claude Project upload himself — no separate reminder needed.

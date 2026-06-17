@@ -1,11 +1,11 @@
 {
-  "generated": "2026-06-17T11:46:02.817137",
-  "commit": "d97e4ba Daily update 2026-06-16",
+  "generated": "2026-06-17T11:59:51.662610",
+  "commit": "ddc8f34 Kelly drawdown-budget rework: derived excursion-probability lambda replaces sigma-sqrt(T) heuristic, P_TOL flagged TODO:DERIVE (session 7, 2026-06-17)",
   "files": {
     "RAPTOR_MASTER_PLAN.md": {
-      "md5": "765c0fdf",
-      "size": 15781,
-      "modified": "2026-06-17T11:43:57.216015"
+      "md5": "82b10c41",
+      "size": 17777,
+      "modified": "2026-06-17T11:59:40.551025"
     },
     "RAPTOR_ONTOLOGY.md": {
       "md5": "7b0928da",
@@ -13,54 +13,149 @@
       "modified": "2026-06-17T11:44:21.988576"
     },
     "RAPTOR_SKILL.md": {
-      "md5": "35c6368d",
-      "size": 9186,
-      "modified": "2026-06-12T18:15:31.426339"
+      "md5": "43a3755a",
+      "size": 9649,
+      "modified": "2026-06-17T11:59:30.466768"
     },
     "RAPTOR_STARTUP.md": {
-      "md5": "057863b8",
-      "size": 13591,
-      "modified": "2026-06-12T18:15:42.087557"
+      "md5": "fd59a3bd",
+      "size": 14807,
+      "modified": "2026-06-17T11:59:20.568978"
+    },
+    "Register_Raptor_Monitor.ps1": {
+      "md5": "7e426bd7",
+      "size": 3263,
+      "modified": "2026-06-17T06:02:36.308752"
+    },
+    "Start_Monitor.bat": {
+      "md5": "244070c2",
+      "size": 827,
+      "modified": "2026-06-17T06:20:56.871450"
     },
     "agent_layer.py": {
       "md5": "6f24d55f",
       "size": 20927,
       "modified": "2026-06-10T11:38:44.179193"
     },
+    "composite_cache.json": {
+      "md5": "555ff81a",
+      "size": 1194,
+      "modified": "2026-06-17T09:52:55.914368"
+    },
     "config.py": {
       "md5": "379f0c6f",
       "size": 6535,
       "modified": "2026-05-30T07:35:32.823269"
+    },
+    "daily_recap.py": {
+      "md5": "7de9a801",
+      "size": 65083,
+      "modified": "2026-06-17T06:46:33.350818"
     },
     "data_feeds.py": {
       "md5": "57409f63",
       "size": 26246,
       "modified": "2026-06-05T07:06:17.669354"
     },
+    "entry_vetoes.json": {
+      "md5": "5c5f7856",
+      "size": 25952,
+      "modified": "2026-06-17T09:35:12.374670"
+    },
     "exit_monitor.py": {
       "md5": "4b96c96d",
       "size": 46773,
       "modified": "2026-06-10T17:07:04.296658"
+    },
+    "hold_decisions.json": {
+      "md5": "ac450f10",
+      "size": 302483,
+      "modified": "2026-06-17T09:52:26.921688"
+    },
+    "hold_health.json": {
+      "md5": "fb4157e2",
+      "size": 38279,
+      "modified": "2026-06-17T09:52:24.824577"
+    },
+    "hold_history.json": {
+      "md5": "5a91209b",
+      "size": 838534,
+      "modified": "2026-06-17T09:52:24.806031"
+    },
+    "kelly_engine.py": {
+      "md5": "cd815d5a",
+      "size": 29097,
+      "modified": "2026-06-17T11:43:46.808351"
+    },
+    "logs/exits_20260617.log": {
+      "md5": "0d3b2866",
+      "size": 7606,
+      "modified": "2026-06-17T09:52:57.827718"
     },
     "logs/github_push.log": {
       "md5": "81ffc3c6",
       "size": 8413,
       "modified": "2026-06-16T18:00:04.152906"
     },
+    "logs/monitor_20260617.json": {
+      "md5": "180776fa",
+      "size": 9761,
+      "modified": "2026-06-17T06:21:26.122544"
+    },
+    "logs/monitor_20260617.log": {
+      "md5": "87fd3b43",
+      "size": 5554,
+      "modified": "2026-06-17T06:18:59.667348"
+    },
+    "logs/monitor_bat_20260617.log": {
+      "md5": "73e7474b",
+      "size": 2770,
+      "modified": "2026-06-17T06:21:26.546796"
+    },
+    "logs/monitor_preview.html": {
+      "md5": "e0084f51",
+      "size": 34952,
+      "modified": "2026-06-17T05:56:47.322294"
+    },
+    "logs/monitor_run_20260617.log": {
+      "md5": "e7b7fc39",
+      "size": 1633,
+      "modified": "2026-06-17T06:21:26.122544"
+    },
+    "logs/raptor_20260617.log": {
+      "md5": "afa24269",
+      "size": 2489,
+      "modified": "2026-06-17T09:35:12.376901"
+    },
     "logs/raptor_auto_start.log": {
       "md5": "d79de807",
       "size": 3489,
       "modified": "2026-06-17T09:52:58.238544"
+    },
+    "macro_context.json": {
+      "md5": "b7a44752",
+      "size": 1072,
+      "modified": "2026-06-17T09:52:54.564070"
     },
     "main.py": {
       "md5": "79d2eba1",
       "size": 19225,
       "modified": "2026-06-10T17:07:04.282684"
     },
+    "market_decision.json": {
+      "md5": "483ed4b4",
+      "size": 277,
+      "modified": "2026-06-17T09:15:25.160610"
+    },
     "outcome_log.json": {
       "md5": "4801b3d8",
       "size": 118855,
       "modified": "2026-06-16T16:15:02.919898"
+    },
+    "outcome_pending.json": {
+      "md5": "d13d6bbe",
+      "size": 17310,
+      "modified": "2026-06-17T09:52:56.559366"
     },
     "position_ledger.json": {
       "md5": "00f13c31",
@@ -72,15 +167,35 @@
       "size": 25211,
       "modified": "2026-06-12T06:44:24.094731"
     },
+    "raptor_monitor.py": {
+      "md5": "e0519e9e",
+      "size": 58812,
+      "modified": "2026-06-17T06:23:52.959690"
+    },
     "signals.py": {
       "md5": "08f65d72",
       "size": 44969,
       "modified": "2026-06-17T06:41:00.952887"
     },
+    "slippage_log.json": {
+      "md5": "21e6b6e0",
+      "size": 10128,
+      "modified": "2026-06-17T09:52:57.827718"
+    },
+    "sync_manifest.json": {
+      "md5": "6cee81ac",
+      "size": 5438,
+      "modified": "2026-06-17T11:55:37.866159"
+    },
     "sync_to_claude.py": {
       "md5": "4fbcce13",
       "size": 3729,
       "modified": "2026-06-12T18:10:52.797328"
+    },
+    "trim_log.json": {
+      "md5": "a4b6b6f5",
+      "size": 33918,
+      "modified": "2026-06-17T09:52:56.591057"
     }
   }
 }
