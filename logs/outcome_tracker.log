@@ -186,3 +186,8 @@ Traceback (most recent call last):
     return codecs.charmap_encode(input,self.errors,encoding_table)[0]
            ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 UnicodeEncodeError: 'charmap' codec can't encode character '\u2192' in position 41: character maps to <undefined>
+[OutcomeTracker] Existing tagged trades : 153
+[OutcomeTracker] Pending sidecar records: 55
+[OutcomeTracker] Entry veto records     : 108
+[OutcomeTracker] Hold decision records  : 1357
+[OutcomeTracker] ERROR fetching Alpaca orders: HTTPSConnectionPool(host='paper-api.alpaca.markets', port=443): Read timed out. (read timeout=10)

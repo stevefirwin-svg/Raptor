@@ -15,7 +15,9 @@
         "note": "Restored by backfill_positions.py 2026-05-27 \u2014 position was incorrectly closed in ledger by math_trim routing bug",
         "high_water": 32.025,
         "stop_reset_reason": "reset_2026-06-05: corrected from ratchet-overtightened value to 2.5x ATR from high_water",
-        "last_trim_ts": "2026-06-16T09:52:19.698682"
+        "last_trim_ts": "2026-06-16T09:52:19.698682",
+        "pending_exit": true,
+        "pending_exit_ts": "2026-06-18T09:52:20.367035"
       },
       "trims": [
         {
@@ -83,7 +85,7 @@
     "v5.4:WFC": {
       "model": "v5.4",
       "symbol": "WFC",
-      "shares": 19,
+      "shares": 14,
       "entry_price": 81.84,
       "entry_date": "2026-06-05",
       "metadata": {
@@ -95,7 +97,7 @@
         "composite_score": 0.4768,
         "velocity": 0.0,
         "high_water": 86.68,
-        "last_trim_ts": "2026-06-16T09:52:19.888444"
+        "last_trim_ts": "2026-06-18T09:52:20.871311"
       },
       "trims": [
         {
@@ -137,6 +139,16 @@
           "pnl_abs": 26.6,
           "shares_before": 29,
           "shares_after": 19
+        },
+        {
+          "date": "2026-06-18",
+          "reason": "math_trim_27%",
+          "shares_sold": 5,
+          "trim_price": 84.73,
+          "pnl_pct": 3.5313,
+          "pnl_abs": 14.45,
+          "shares_before": 19,
+          "shares_after": 14
         }
       ]
     },
@@ -232,46 +244,6 @@
         }
       ]
     },
-    "v5.4:CSX": {
-      "model": "v5.4",
-      "symbol": "CSX",
-      "shares": 50,
-      "entry_price": 46.9,
-      "entry_date": "2026-06-10",
-      "metadata": {
-        "t_stat": 2.0151,
-        "stop": 45.7186,
-        "tp": 0.0,
-        "regime": "NEUTRAL/MIXED",
-        "kelly_fraction": 0.1125,
-        "composite_score": 0.5192,
-        "velocity": 0.0,
-        "high_water": 47.575,
-        "last_trim_ts": "2026-06-17T09:52:56.494235"
-      },
-      "trims": [
-        {
-          "date": "2026-06-16",
-          "reason": "math_trim_39%",
-          "shares_sold": 101,
-          "trim_price": 47.49,
-          "pnl_pct": 1.258,
-          "pnl_abs": 59.59,
-          "shares_before": 256,
-          "shares_after": 155
-        },
-        {
-          "date": "2026-06-17",
-          "reason": "math_trim_68%",
-          "shares_sold": 105,
-          "trim_price": 46.26,
-          "pnl_pct": -1.3646,
-          "pnl_abs": -67.2,
-          "shares_before": 155,
-          "shares_after": 50
-        }
-      ]
-    },
     "v5.4:BAC": {
       "model": "v5.4",
       "symbol": "BAC",
@@ -336,7 +308,9 @@
         "kelly_fraction": 0.0811,
         "composite_score": 0.4389,
         "velocity": 0.0,
-        "high_water": 26.315
+        "high_water": 26.315,
+        "pending_exit": true,
+        "pending_exit_ts": "2026-06-18T09:52:20.465126"
       }
     },
     "v5.4:WULF": {
@@ -1238,6 +1212,54 @@
       "exit_path": "trailing_stop",
       "pnl": -86.02000000000004,
       "pnl_pct": -4.36432637571158
+    },
+    {
+      "model": "v5.4",
+      "symbol": "CSX",
+      "shares": 50,
+      "entry_price": 46.9,
+      "entry_date": "2026-06-10",
+      "metadata": {
+        "t_stat": 2.0151,
+        "stop": 45.7186,
+        "tp": 0.0,
+        "regime": "NEUTRAL/MIXED",
+        "kelly_fraction": 0.1125,
+        "composite_score": 0.5192,
+        "velocity": 0.0,
+        "high_water": 47.575,
+        "last_trim_ts": "2026-06-17T09:52:56.494235",
+        "pending_exit": true,
+        "pending_exit_ts": "2026-06-18T09:52:20.743798"
+      },
+      "trims": [
+        {
+          "date": "2026-06-16",
+          "reason": "math_trim_39%",
+          "shares_sold": 101,
+          "trim_price": 47.49,
+          "pnl_pct": 1.258,
+          "pnl_abs": 59.59,
+          "shares_before": 256,
+          "shares_after": 155
+        },
+        {
+          "date": "2026-06-17",
+          "reason": "math_trim_68%",
+          "shares_sold": 105,
+          "trim_price": 46.26,
+          "pnl_pct": -1.3646,
+          "pnl_abs": -67.2,
+          "shares_before": 155,
+          "shares_after": 50
+        }
+      ],
+      "exit_price": 46.562,
+      "exit_date": "2026-06-18",
+      "exit_reason": "math_exit",
+      "exit_path": "math_exit",
+      "pnl": -16.90000000000005,
+      "pnl_pct": -0.7206823027718579
     }
   ]
 }

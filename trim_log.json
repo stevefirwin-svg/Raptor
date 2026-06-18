@@ -986,5 +986,31 @@
     "agent_decision": "HOLD",
     "agent_conf": 0.9,
     "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-06-18T09:52:20.876890",
+    "symbol": "AAL",
+    "trim_qty": 117,
+    "price": 15.835,
+    "pnl_pct": -1.25,
+    "reason": "math_trim_15%",
+    "composite": 0.1848,
+    "trim_detail": "severity=0.010 x stop_mult=0.75 x far_mult=1.09 x pnl_mult=1.20 + slope_adj=0.136 = 0.146 -> 14.6% (117 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-06-18T09:52:20.876940",
+    "symbol": "WFC",
+    "trim_qty": 5,
+    "price": 84.73,
+    "pnl_pct": 3.65,
+    "reason": "math_trim_27%",
+    "composite": -0.0761,
+    "trim_detail": "severity=0.146 x stop_mult=1.50 x far_mult=1.15 x pnl_mult=1.00 + slope_adj=0.022 = 0.274 -> 27.4% (5 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
   }
 ]

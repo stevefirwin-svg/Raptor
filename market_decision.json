@@ -2,8 +2,8 @@
   "decision": "SCAN",
   "risk_scalar": 1.0,
   "confidence": null,
-  "reasoning": "macro_regime is RISK_ON with VIX at 16.04 and no extreme signals present.",
+  "reasoning": "Macro regime is RISK_ON with a calm VIX and neutral sector breadth.",
   "source": "rule+llama3.2",
   "macro_regime": "RISK_ON",
-  "timestamp": "2026-06-17T13:15:25.155178+00:00"
+  "timestamp": "2026-06-18T13:15:24.793602+00:00"
 }
