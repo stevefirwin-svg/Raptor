@@ -1,7 +1,7 @@
-@echo off
+﻿@echo off
 chcp 65001 >nul
 title Raptor Entry Scan
-cd /d "C:\Users\steve\OneDrive\Desktop\Raptor"
+cd /d "C:\Raptor"
 echo [%date% %time%] Entry scan starting >> logs\raptor_auto_start.log
 echo Running entry scanner...
 python main.py

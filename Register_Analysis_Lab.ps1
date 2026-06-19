@@ -1,14 +1,14 @@
-# Register_Analysis_Lab.ps1
+﻿# Register_Analysis_Lab.ps1
 # Registers the Raptor Analysis Lab in Windows Task Scheduler.
 # Runs factor_lab.py + kelly_engine.py at 5:00 PM Mon-Fri.
 #
 # HOW TO RUN (one time, as Administrator):
-#   cd "C:\Users\steve\OneDrive\Desktop\Raptor"
+#   cd "C:\Raptor"
 #   Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 #   .\Register_Analysis_Lab.ps1
 
 $TaskName   = "Raptor Analysis Lab"
-$ProjectDir = "C:\Users\steve\OneDrive\Desktop\Raptor"
+$ProjectDir = "C:\Raptor"
 $BatFile    = "$ProjectDir\Start_Analysis_Lab.bat"
 $LogFile    = "$ProjectDir\logs\analysis_lab.log"
 

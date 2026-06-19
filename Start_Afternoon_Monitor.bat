@@ -1,7 +1,7 @@
-@echo off
+﻿@echo off
 chcp 65001 >nul
 title Raptor Afternoon Monitor
-cd /d "C:\Users\steve\OneDrive\Desktop\Raptor"
+cd /d "C:\Raptor"
 echo [%date% %time%] Afternoon monitor starting >> logs\raptor_auto_start.log
 echo Running hold monitor...
 python hold_monitor.py

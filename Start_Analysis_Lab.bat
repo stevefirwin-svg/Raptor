@@ -1,7 +1,7 @@
-@echo off
+﻿@echo off
 chcp 65001 >nul
 title Raptor Analysis Lab
-cd /d "C:\Users\steve\OneDrive\Desktop\Raptor"
+cd /d "C:\Raptor"
 echo [%date% %time%] Analysis lab starting >> logs\raptor_auto_start.log
 
 echo.

@@ -1,16 +1,16 @@
-# Register_Raptor_Monitor.ps1
+﻿# Register_Raptor_Monitor.ps1
 # Creates the "Raptor Monitor" scheduled task with all correct settings.
 # Run once from an elevated PowerShell prompt (Run as Administrator).
 #
 # Usage:
 #   1. Right-click PowerShell -> Run as Administrator
-#   2. cd C:\Users\steve\OneDrive\Desktop\Raptor
+#   2. cd C:\Raptor
 #   3. powershell -ExecutionPolicy Bypass -File .\Register_Raptor_Monitor.ps1
 #
 # This is idempotent — running it again replaces the existing task cleanly.
 
 $TaskName    = "Raptor Monitor"
-$RaptorPath  = "C:\Users\steve\OneDrive\Desktop\Raptor"
+$RaptorPath  = "C:\Raptor"
 $BatPath     = Join-Path $RaptorPath "Start_Monitor.bat"
 
 if (-not (Test-Path $BatPath)) {

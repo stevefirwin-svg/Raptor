@@ -1,7 +1,7 @@
-# Sync_To_Claude_Project.ps1
+﻿# Sync_To_Claude_Project.ps1
 # PURPOSE: Keep your local Raptor repo, GitHub, and the Claude Project in sync.
 # RUN THIS: Before every Claude session AND after every git push.
-# LOCATION: Save this file in C:\Users\steve\OneDrive\Desktop\Raptor\
+# LOCATION: Save this file in C:\Raptor\
 #
 # HARD RULE (from RAPTOR_SKILL.md):
 #   The Claude Project Files tab is the fallback when GitHub is unreachable.
@@ -9,7 +9,7 @@
 #   Run this script whenever you push. No exceptions.
 
 param(
-    [string]$RaptorPath = "C:\Users\steve\OneDrive\Desktop\Raptor"
+    [string]$RaptorPath = "C:\Raptor"
 )
 
 Set-StrictMode -Version Latest

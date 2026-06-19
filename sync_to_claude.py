@@ -1,4 +1,4 @@
-"""
+﻿"""
 sync_to_claude.py
 PURPOSE : Keep your local Raptor repo, GitHub, and the Claude Project in sync.
 RUN THIS : Before every Claude session AND after every git push.
@@ -13,7 +13,7 @@ import json
 from pathlib import Path
 from datetime import datetime
 
-RAPTOR_PATH = Path(r"C:\Users\steve\OneDrive\Desktop\Raptor")
+RAPTOR_PATH = Path(r"C:\Raptor")
 
 ALWAYS_UPLOAD = [
     "RAPTOR_SKILL.md",

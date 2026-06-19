@@ -1,4 +1,4 @@
-# RAPTOR_STARTUP.md — Session Startup Protocol
+﻿# RAPTOR_STARTUP.md — Session Startup Protocol
 *Read first. Every session. No exceptions.*
 *Last updated: 2026-06-17 | Version: 7.1 — added raptor_monitor.py (4:30 PM EOD health check)*
 
@@ -15,8 +15,8 @@ git log --oneline -5
 
 Steve's machine before any session:
 ```powershell
-git -C "C:\Users\steve\OneDrive\Desktop\Raptor" pull origin main
-git -C "C:\Users\steve\OneDrive\Desktop\Raptor" log --oneline -3
+git -C "C:\Raptor" pull origin main
+git -C "C:\Raptor" log --oneline -3
 Remove-Item -Recurse -Force __pycache__ -ErrorAction SilentlyContinue
 ```
 
@@ -300,7 +300,7 @@ git log --oneline -3
 
 ```powershell
 # Steve side
-cd "C:\Users\steve\OneDrive\Desktop\Raptor"
+cd "C:\Raptor"
 git pull origin main
 git log --oneline -4
 Remove-Item -Recurse -Force __pycache__ -ErrorAction SilentlyContinue

@@ -1,7 +1,7 @@
-@echo off
+﻿@echo off
 setlocal
 
-set SCRIPT_DIR=C:\Users\steve\OneDrive\Desktop\Raptor
+set SCRIPT_DIR=C:\Raptor
 set PYTHON=python
 set ERRORFILE=%SCRIPT_DIR%\logs\recap_error.txt
 

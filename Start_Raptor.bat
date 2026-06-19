@@ -1,7 +1,7 @@
-@echo off
+﻿@echo off
 chcp 65001 >nul
 title Raptor v5.4
-cd /d "C:\Users\steve\OneDrive\Desktop\Raptor"
+cd /d "C:\Raptor"
 
 echo.
 echo ========================================

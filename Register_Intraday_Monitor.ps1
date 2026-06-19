@@ -1,4 +1,4 @@
-# ============================================================
+﻿# ============================================================
 # Register_Intraday_Monitor.ps1
 # Registers the Raptor Intraday Monitor in Windows Task Scheduler.
 # Runs Start_Intraday_Monitor.bat at 9:30 AM Monday-Friday.
@@ -6,13 +6,13 @@
 #
 # HOW TO RUN (one time only):
 #   1. Open PowerShell as Administrator
-#   2. cd "C:\Users\steve\OneDrive\Desktop\Raptor"
+#   2. cd "C:\Raptor"
 #   3. Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 #   4. .\Register_Intraday_Monitor.ps1
 # ============================================================
 
 $TaskName    = "Raptor Intraday Monitor"
-$ProjectDir  = "C:\Users\steve\OneDrive\Desktop\Raptor"
+$ProjectDir  = "C:\Raptor"
 $BatFile     = "$ProjectDir\Start_Intraday_Monitor.bat"
 $LogFile     = "$ProjectDir\logs\task_scheduler.log"
 

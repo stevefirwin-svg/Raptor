@@ -1,4 +1,4 @@
-# Migrate_To_CRaptor.ps1
+﻿# Migrate_To_CRaptor.ps1
 # Run once from C:\Raptor after moving the folder out of OneDrive.
 # Patches all hardcoded paths, re-registers Task Scheduler tasks,
 # resumes OneDrive (no longer watching Raptor), verifies the result.
@@ -10,7 +10,7 @@
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
 
-$OLD = "C:\Users\steve\OneDrive\Desktop\Raptor"
+$OLD = "C:\Raptor"
 $NEW = "C:\Raptor"
 
 Write-Host ""

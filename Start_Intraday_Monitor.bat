@@ -1,7 +1,7 @@
-@echo off
+﻿@echo off
 chcp 65001 >nul
 title Raptor Intraday Monitor
-cd /d "C:\Users\steve\OneDrive\Desktop\Raptor"
+cd /d "C:\Raptor"
 
 echo [%date% %time%] Intraday monitor loop started >> logs\raptor_auto_start.log
 
