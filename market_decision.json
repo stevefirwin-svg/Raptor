@@ -2,8 +2,8 @@
   "decision": "SCAN",
   "risk_scalar": 1.0,
   "confidence": null,
-  "reasoning": "Macro regime is RISK_ON with a calm VIX and neutral sector breadth.",
+  "reasoning": "Macro regime is neutral and no extreme signals are present.",
   "source": "rule+llama3.2",
-  "macro_regime": "RISK_ON",
-  "timestamp": "2026-06-18T13:15:24.793602+00:00"
+  "macro_regime": "NEUTRAL",
+  "timestamp": "2026-06-19T13:15:25.177825+00:00"
 }

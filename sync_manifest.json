@@ -1,26 +1,26 @@
 {
-  "generated": "2026-06-19T07:10:07.667986",
-  "commit": "f3a6ab8 Fix all Task Scheduler tasks to C:\\Raptor (2026-06-19)",
+  "generated": "2026-06-19T07:31:55.506236",
+  "commit": "7950851 Update all MD docs: session 8 migration, ledger repair, path cleanup (2026-06-19)",
   "files": {
     "RAPTOR_MASTER_PLAN.md": {
-      "md5": "e37ea27b",
-      "size": 18025,
-      "modified": "2026-06-19T06:51:28.017084"
+      "md5": "5b90976a",
+      "size": 17242,
+      "modified": "2026-06-19T07:31:28.156360"
     },
     "RAPTOR_ONTOLOGY.md": {
-      "md5": "0ee9791f",
-      "size": 64741,
-      "modified": "2026-06-19T06:51:28.021140"
+      "md5": "6e0590dc",
+      "size": 66420,
+      "modified": "2026-06-19T07:31:40.598634"
     },
     "RAPTOR_SKILL.md": {
-      "md5": "a15f6801",
-      "size": 9958,
-      "modified": "2026-06-19T06:51:28.022895"
+      "md5": "dba79446",
+      "size": 9946,
+      "modified": "2026-06-19T07:31:18.153433"
     },
     "RAPTOR_STARTUP.md": {
-      "md5": "e802036f",
-      "size": 15378,
-      "modified": "2026-06-19T07:01:38.149641"
+      "md5": "13e1c620",
+      "size": 14090,
+      "modified": "2026-06-19T07:31:03.993088"
     },
     "agent_layer.py": {
       "md5": "248f266e",
@@ -41,6 +41,11 @@
       "md5": "426ec7ee",
       "size": 47655,
       "modified": "2026-06-19T06:51:28.145321"
+    },
+    "logs/diagnostic_20260619_071015.log": {
+      "md5": "ae35f134",
+      "size": 7264,
+      "modified": "2026-06-19T07:10:20.476951"
     },
     "main.py": {
       "md5": "ea966f4a",
@@ -68,9 +73,9 @@
       "modified": "2026-06-19T06:51:28.533683"
     },
     "sync_manifest.json": {
-      "md5": "b8329fb9",
-      "size": 2103,
-      "modified": "2026-06-19T07:05:17.101078"
+      "md5": "1ea313e3",
+      "size": 2102,
+      "modified": "2026-06-19T07:10:07.677205"
     },
     "sync_to_claude.py": {
       "md5": "75e16e66",

@@ -15,7 +15,9 @@
         "composite_score": 0.2835,
         "velocity": 0.0,
         "high_water": 74.13,
-        "last_trim_ts": "2026-06-16T09:52:19.782631"
+        "last_trim_ts": "2026-06-16T09:52:19.782631",
+        "pending_exit": true,
+        "pending_exit_ts": "2026-06-19T15:50:26.343879"
       },
       "trims": [
         {
@@ -27,76 +29,6 @@
           "pnl_abs": 70.72,
           "shares_before": 178,
           "shares_after": 152
-        }
-      ]
-    },
-    "v5.4:WFC": {
-      "model": "v5.4",
-      "symbol": "WFC",
-      "shares": 14,
-      "entry_price": 81.84,
-      "entry_date": "2026-06-05",
-      "metadata": {
-        "t_stat": 1.2234,
-        "stop": 83.8991,
-        "tp": 0.0,
-        "regime": "RISK_ON/TRENDING",
-        "kelly_fraction": 0.1089,
-        "composite_score": 0.4768,
-        "velocity": 0.0,
-        "high_water": 86.68,
-        "last_trim_ts": "2026-06-18T09:52:20.871311"
-      },
-      "trims": [
-        {
-          "date": "2026-06-11",
-          "reason": "math_trim_59%",
-          "shares_sold": 83,
-          "trim_price": 81.38,
-          "pnl_pct": -0.5621,
-          "pnl_abs": -38.18,
-          "shares_before": 142,
-          "shares_after": 59
-        },
-        {
-          "date": "2026-06-12",
-          "reason": "math_trim_37%",
-          "shares_sold": 22,
-          "trim_price": 82.85,
-          "pnl_pct": 1.2341,
-          "pnl_abs": 22.22,
-          "shares_before": 59,
-          "shares_after": 37
-        },
-        {
-          "date": "2026-06-15",
-          "reason": "math_trim_21%",
-          "shares_sold": 8,
-          "trim_price": 84.02,
-          "pnl_pct": 2.6637,
-          "pnl_abs": 17.44,
-          "shares_before": 37,
-          "shares_after": 29
-        },
-        {
-          "date": "2026-06-16",
-          "reason": "math_trim_35%",
-          "shares_sold": 10,
-          "trim_price": 84.5,
-          "pnl_pct": 3.2502,
-          "pnl_abs": 26.6,
-          "shares_before": 29,
-          "shares_after": 19
-        },
-        {
-          "date": "2026-06-18",
-          "reason": "math_trim_27%",
-          "shares_sold": 5,
-          "trim_price": 84.73,
-          "pnl_pct": 3.5313,
-          "pnl_abs": 14.45,
-          "shares_before": 19,
-          "shares_after": 14
         }
       ]
     },
@@ -274,6 +206,54 @@
           "repair_note": "Backfilled by repair_ledger_20260619.py \u2014 OneDrive conflict overwrote original save"
         }
       ]
+    },
+    "v5.4:CPNG": {
+      "model": "v5.4",
+      "symbol": "CPNG",
+      "shares": 711,
+      "entry_price": 18.02,
+      "entry_date": "2026-06-19",
+      "metadata": {
+        "t_stat": 2.3579,
+        "stop": 15.56,
+        "tp": 0.0,
+        "regime": "NEUTRAL/MIXED",
+        "kelly_fraction": 0.12,
+        "composite_score": 0.5442,
+        "velocity": 0.0
+      }
+    },
+    "v5.4:HOOD": {
+      "model": "v5.4",
+      "symbol": "HOOD",
+      "shares": 114,
+      "entry_price": 108.17,
+      "entry_date": "2026-06-19",
+      "metadata": {
+        "t_stat": 2.1067,
+        "stop": 89.9,
+        "tp": 0.0,
+        "regime": "NEUTRAL/MIXED",
+        "kelly_fraction": 0.1154,
+        "composite_score": 0.4862,
+        "velocity": 0.0
+      }
+    },
+    "v5.4:GOOGL": {
+      "model": "v5.4",
+      "symbol": "GOOGL",
+      "shares": 29,
+      "entry_price": 367.93,
+      "entry_date": "2026-06-19",
+      "metadata": {
+        "t_stat": 1.6674,
+        "stop": 339.29,
+        "tp": 0.0,
+        "regime": "NEUTRAL/MIXED",
+        "kelly_fraction": 0.1014,
+        "composite_score": 0.3848,
+        "velocity": 0.0
+      }
     }
   },
   "closed": [
@@ -1295,6 +1275,84 @@
       "pnl_pct": -9.1965,
       "pnl": -684.48,
       "repair_note": "Repaired by repair_ledger_20260619.py \u2014 order confirmed in exits log"
+    },
+    {
+      "model": "v5.4",
+      "symbol": "WFC",
+      "shares": 14,
+      "entry_price": 81.84,
+      "entry_date": "2026-06-05",
+      "metadata": {
+        "t_stat": 1.2234,
+        "stop": 83.8991,
+        "tp": 0.0,
+        "regime": "RISK_ON/TRENDING",
+        "kelly_fraction": 0.1089,
+        "composite_score": 0.4768,
+        "velocity": 0.0,
+        "high_water": 86.68,
+        "last_trim_ts": "2026-06-18T09:52:20.871311",
+        "pending_exit": true,
+        "pending_exit_ts": "2026-06-19T15:50:26.433358"
+      },
+      "trims": [
+        {
+          "date": "2026-06-11",
+          "reason": "math_trim_59%",
+          "shares_sold": 83,
+          "trim_price": 81.38,
+          "pnl_pct": -0.5621,
+          "pnl_abs": -38.18,
+          "shares_before": 142,
+          "shares_after": 59
+        },
+        {
+          "date": "2026-06-12",
+          "reason": "math_trim_37%",
+          "shares_sold": 22,
+          "trim_price": 82.85,
+          "pnl_pct": 1.2341,
+          "pnl_abs": 22.22,
+          "shares_before": 59,
+          "shares_after": 37
+        },
+        {
+          "date": "2026-06-15",
+          "reason": "math_trim_21%",
+          "shares_sold": 8,
+          "trim_price": 84.02,
+          "pnl_pct": 2.6637,
+          "pnl_abs": 17.44,
+          "shares_before": 37,
+          "shares_after": 29
+        },
+        {
+          "date": "2026-06-16",
+          "reason": "math_trim_35%",
+          "shares_sold": 10,
+          "trim_price": 84.5,
+          "pnl_pct": 3.2502,
+          "pnl_abs": 26.6,
+          "shares_before": 29,
+          "shares_after": 19
+        },
+        {
+          "date": "2026-06-18",
+          "reason": "math_trim_27%",
+          "shares_sold": 5,
+          "trim_price": 84.73,
+          "pnl_pct": 3.5313,
+          "pnl_abs": 14.45,
+          "shares_before": 19,
+          "shares_after": 14
+        }
+      ],
+      "exit_price": 82.2,
+      "exit_date": "2026-06-19",
+      "exit_reason": "hard_stop",
+      "exit_path": "hard_stop",
+      "pnl": 5.039999999999992,
+      "pnl_pct": 0.4398826979472137
     }
   ]
 }

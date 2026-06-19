@@ -1,0 +1,66 @@
+2026-06-19 09:35:04,417 [raptor.main] INFO: ============================================================
+2026-06-19 09:35:04,418 [raptor.main] INFO: RAPTOR v5.4 DAILY SCAN - 2026-06-19T09:35:04.418179
+2026-06-19 09:35:04,418 [raptor.main] INFO: ============================================================
+2026-06-19 09:35:04,419 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-06-19 09:35:04,874 [raptor.main] INFO: ============================================================
+2026-06-19 09:35:04,874 [raptor.main] INFO: RAPTOR v5.4 DAILY SCAN - 2026-06-19T09:35:04.874606
+2026-06-19 09:35:04,875 [raptor.main] INFO: ============================================================
+2026-06-19 09:35:04,876 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-06-19 09:35:04,926 [raptor.main] INFO: Account: equity=$106915.78  cap=none (compound)  sizing_base=$106915.78  positions=7
+2026-06-19 09:35:04,935 [raptor.main] INFO: [MarketAgent] SCAN | scalar=1.00 | Macro regime is neutral and no extreme signals are present.
+2026-06-19 09:35:05,255 [raptor.margin_guard] INFO: MARGIN GUARD: equity=$106,916  cap=none (compound)  cash=$57,004  positions=7
+2026-06-19 09:35:05,255 [raptor.margin_guard] INFO: MARGIN GUARD: market_value=$49,911  utilization=46.7% of base  margin=NO
+2026-06-19 09:35:05,276 [raptor.universe] INFO: Universe from cache: 77 symbols
+2026-06-19 09:35:05,277 [raptor.main] INFO: Dynamic universe: 77 symbols
+2026-06-19 09:35:05,406 [raptor.main] INFO: Account: equity=$106915.78  cap=none (compound)  sizing_base=$106915.78  positions=7
+2026-06-19 09:35:05,408 [raptor.main] INFO: [MarketAgent] SCAN | scalar=1.00 | Macro regime is neutral and no extreme signals are present.
+2026-06-19 09:35:05,478 [raptor.margin_guard] INFO: MARGIN GUARD: equity=$106,916  cap=none (compound)  cash=$57,004  positions=7
+2026-06-19 09:35:05,479 [raptor.margin_guard] INFO: MARGIN GUARD: market_value=$49,911  utilization=46.7% of base  margin=NO
+2026-06-19 09:35:05,489 [raptor.universe] INFO: Universe from cache: 77 symbols
+2026-06-19 09:35:05,490 [raptor.main] INFO: Dynamic universe: 77 symbols
+2026-06-19 09:35:07,221 [raptor.data_feeds] INFO: Fetched 77 new bars / 77 total cached
+2026-06-19 09:35:07,300 [raptor.data_feeds] INFO: Fetched 77 new bars / 77 total cached
+2026-06-19 09:35:07,437 [raptor.data_feeds] INFO: FRED regime: BULLISH (score=0.200)
+2026-06-19 09:35:07,437 [raptor.data_feeds] INFO: FRED regime: BULLISH (score=0.200)
+2026-06-19 09:35:07,510 [raptor.main] INFO: Data: 77 symbols | Macro: NEUTRAL (0.200)
+2026-06-19 09:35:07,511 [raptor.main] INFO: Data: 77 symbols | Macro: NEUTRAL (0.200)
+2026-06-19 09:35:10,825 [raptor.signals] INFO: v5.4 Signals: 5 from 76 | Macro=NEUTRAL Scale=0.8 | Micro={'MIXED': 57, 'REVERTING': 7, 'TRENDING': 12} | SNR min=1.61 max=3.06
+2026-06-19 09:35:10,851 [raptor.main] INFO: Velocity gate: 5 signals remain | velocities: {'PFE': '+0.000', 'CPNG': '+0.000', 'HOOD': '+0.000', 'GOOGL': '+0.000', 'NEE': '+0.000'}
+2026-06-19 09:35:10,853 [raptor.main] INFO: COOLDOWN GATE [skip] PFE stopped out 2026-06-18 (1 days ago, need 5)
+2026-06-19 09:35:10,853 [raptor.main] INFO: Signals:
+2026-06-19 09:35:10,853 [raptor.main] INFO:   1. CPNG  t=2.358  pctl=99%  entry=$18.02  stop=$15.56  tp=$0.00  kelly=0.120  hold~30d
+2026-06-19 09:35:10,853 [raptor.main] INFO:   2. HOOD  t=2.107  pctl=97%  entry=$108.17  stop=$89.90  tp=$0.00  kelly=0.115  hold~30d
+2026-06-19 09:35:10,854 [raptor.main] INFO:   3. GOOGL  t=1.667  pctl=95%  entry=$367.93  stop=$339.29  tp=$0.00  kelly=0.101  hold~30d
+2026-06-19 09:35:10,855 [raptor.main] INFO:   4. NEE  t=1.614  pctl=93%  entry=$86.73  stop=$82.51  tp=$0.00  kelly=0.100  hold~30d
+2026-06-19 09:35:10,902 [raptor.signals] INFO: v5.4 Signals: 5 from 76 | Macro=NEUTRAL Scale=0.8 | Micro={'MIXED': 57, 'REVERTING': 7, 'TRENDING': 12} | SNR min=1.61 max=3.06
+2026-06-19 09:35:10,909 [raptor.main] INFO: Velocity gate: 5 signals remain | velocities: {'PFE': '+0.000', 'CPNG': '+0.000', 'HOOD': '+0.000', 'GOOGL': '+0.000', 'NEE': '+0.000'}
+2026-06-19 09:35:10,910 [raptor.main] INFO: COOLDOWN GATE [skip] PFE stopped out 2026-06-18 (1 days ago, need 5)
+2026-06-19 09:35:10,911 [raptor.main] INFO: Signals:
+2026-06-19 09:35:10,911 [raptor.main] INFO:   1. CPNG  t=2.358  pctl=99%  entry=$18.02  stop=$15.56  tp=$0.00  kelly=0.120  hold~30d
+2026-06-19 09:35:10,912 [raptor.main] INFO:   2. HOOD  t=2.107  pctl=97%  entry=$108.17  stop=$89.90  tp=$0.00  kelly=0.115  hold~30d
+2026-06-19 09:35:10,912 [raptor.main] INFO:   3. GOOGL  t=1.667  pctl=95%  entry=$367.93  stop=$339.29  tp=$0.00  kelly=0.101  hold~30d
+2026-06-19 09:35:10,912 [raptor.main] INFO:   4. NEE  t=1.614  pctl=93%  entry=$86.73  stop=$82.51  tp=$0.00  kelly=0.100  hold~30d
+2026-06-19 09:35:12,961 [AgentLayer] WARNING: EntryAgent batch failed ('"decision"') — deterministic rules only.
+2026-06-19 09:35:12,967 [raptor.main] INFO: Deployable: cap=none  market_value=$49911  cash=$57004  headroom=$54154  available=$54154  (margin=OFF)
+2026-06-19 09:35:12,993 [AgentLayer] WARNING: EntryAgent batch failed ('"decision"') — deterministic rules only.
+2026-06-19 09:35:13,014 [raptor.data_feeds] INFO: Order submitted: BUY 711 CPNG @ 18.04
+2026-06-19 09:35:13,016 [raptor.main] INFO: Deployable: cap=none  market_value=$49911  cash=$57004  headroom=$54154  available=$54154  (margin=OFF)
+2026-06-19 09:35:13,023 [raptor.main] INFO: ORDER [v5.4]: BUY 711 CPNG @ $18.04
+2026-06-19 09:35:13,033 [raptor.slippage] INFO: SLIPPAGE BUY 711 CPNG: decision=$18.0200 fill=PENDING (order c57ff63e)
+2026-06-19 09:35:13,069 [raptor.data_feeds] INFO: Order submitted: BUY 114 HOOD @ 108.28
+2026-06-19 09:35:13,076 [raptor.main] INFO: ORDER [v5.4]: BUY 114 HOOD @ $108.28
+2026-06-19 09:35:13,098 [raptor.slippage] INFO: SLIPPAGE BUY 114 HOOD: decision=$108.1700 fill=PENDING (order ac5173de)
+2026-06-19 09:35:13,176 [raptor.data_feeds] INFO: Order submitted: BUY 29 GOOGL @ 368.3
+2026-06-19 09:35:13,183 [raptor.main] INFO: ORDER [v5.4]: BUY 29 GOOGL @ $368.30
+2026-06-19 09:35:13,202 [raptor.slippage] INFO: SLIPPAGE BUY 29 GOOGL: decision=$367.9300 fill=PENDING (order cbcfa396)
+2026-06-19 09:35:13,202 [raptor.main] INFO: Scan complete. 3 orders placed for v5.4.
+2026-06-19 09:35:13,213 [raptor.data_feeds] INFO: Order submitted: BUY 711 CPNG @ 18.04
+2026-06-19 09:35:13,220 [raptor.main] INFO: ORDER [v5.4]: BUY 711 CPNG @ $18.04
+2026-06-19 09:35:13,241 [raptor.slippage] INFO: SLIPPAGE BUY 711 CPNG: decision=$18.0200 fill=PENDING (order bdf84c1f)
+2026-06-19 09:35:13,274 [raptor.data_feeds] INFO: Order submitted: BUY 114 HOOD @ 108.28
+2026-06-19 09:35:13,281 [raptor.main] INFO: ORDER [v5.4]: BUY 114 HOOD @ $108.28
+2026-06-19 09:35:13,300 [raptor.slippage] INFO: SLIPPAGE BUY 114 HOOD: decision=$108.1700 fill=PENDING (order 2f612240)
+2026-06-19 09:35:13,337 [raptor.data_feeds] INFO: Order submitted: BUY 29 GOOGL @ 368.3
+2026-06-19 09:35:13,346 [raptor.main] INFO: ORDER [v5.4]: BUY 29 GOOGL @ $368.30
+2026-06-19 09:35:13,365 [raptor.slippage] INFO: SLIPPAGE BUY 29 GOOGL: decision=$367.9300 fill=PENDING (order 89355e47)
+2026-06-19 09:35:13,366 [raptor.main] INFO: Scan complete. 3 orders placed for v5.4.

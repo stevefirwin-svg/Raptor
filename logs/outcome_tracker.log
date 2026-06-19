@@ -191,3 +191,9 @@ UnicodeEncodeError: 'charmap' codec can't encode character '\u2192' in position 
 [OutcomeTracker] Entry veto records     : 108
 [OutcomeTracker] Hold decision records  : 1357
 [OutcomeTracker] ERROR fetching Alpaca orders: HTTPSConnectionPool(host='paper-api.alpaca.markets', port=443): Read timed out. (read timeout=10)
+[OutcomeTracker] Existing tagged trades : 158
+[OutcomeTracker] Pending sidecar records: 57
+[OutcomeTracker] Entry veto records     : 116
+[OutcomeTracker] Hold decision records  : 1378
+[OutcomeTracker] Filled sell orders from Alpaca: 158
+[OutcomeTracker] No new trades to tag.

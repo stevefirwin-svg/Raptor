@@ -550,5 +550,27 @@
     "entry_reasoning": null,
     "entry_flags": [],
     "submitted_at": "2026-06-18T09:52:20.850664"
+  },
+  "ae639a17-e1fa-4245-8ee2-55c316c4c9ac": {
+    "symbol": "KRE",
+    "exit_reason": "hard_stop",
+    "composite": 0.0163,
+    "entry_decision": "PASS",
+    "entry_confidence": 0.5,
+    "entry_reasoning": "Agent unavailable \u2014 passthrough default",
+    "entry_flags": [
+      "agent_error"
+    ],
+    "submitted_at": "2026-06-19T15:50:26.342351"
+  },
+  "bda47598-b44d-46ca-9a56-2955aec73cb4": {
+    "symbol": "WFC",
+    "exit_reason": "hard_stop",
+    "composite": 0.0507,
+    "entry_decision": null,
+    "entry_confidence": null,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-06-19T15:50:26.430704"
   }
 }
