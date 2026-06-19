@@ -1,5 +1,5 @@
 # Raptor Trading System — Development Skill
-*Last updated: 2026-06-17 | Version: 7.1*
+*Last updated: 2026-06-19 | Version: 8.0*
 
 ---
 
@@ -8,6 +8,7 @@
 Raptor v5.4 is a quantitative swing trading system on Alpaca paper (~$107K equity).
 US equities only, 0–10 positions, typical hold 5–20 trading days.
 Math governs every decision. LLM is advisory only.
+**Installed at:** `C:\Raptor` (moved from OneDrive 2026-06-19 — zero OneDrive paths remain)
 
 ---
 
@@ -23,14 +24,13 @@ hold_monitor.py      8-layer health scoring
 outcome_tracker.py   Trade labeling — --backfill, --relabel flags
 slippage_tracker.py  Implementation shortfall recording (Perold 1988)
 dsr.py               Deflated Sharpe Ratio (Bailey & López de Prado 2014)
-kelly_engine.py      Bootstrap Kelly (shadow until DATA-100) — drawdown constraint derived from excursion-probability formula (2026-06-17)
+kelly_engine.py      Bootstrap Kelly (shadow until DATA-100)
 factor_lab.py        Spearman IC validation per factor
 macro_context.py     Vote-count regime classifier → continuous macro_score [-1,1]
 backtest.py          Walk-forward backtester (survivorship bias warning in output)
 universe_builder.py  Screens 6800 assets → ~75–150 symbols (excl. leveraged ETPs)
 agent_layer.py       _eval_entry_rules() deterministic gate + LLM advisory
-raptor_monitor.py    6-layer EOD health check — 4:30 PM, single HTML summary email (added 2026-06-17)
-position_outcomes.json  27 independent positions — authoritative gate counter
+position_outcomes.json  27 independent positions — authoritative gate counter (post-repair 2026-06-19)
 ```
 
 Dead files removed 2026-05-29: raptor_state.json, diagnose.py, diagnose_regime.py, Start_Raptor_Recap.bat
@@ -130,10 +130,11 @@ outcome_tracker.py
   Backfills pending slippage fills via slippage_tracker.backfill_slippage()
 ```
 
-**Known failure modes:**
-- submit_order missing def line → AttributeError → execute loop aborts silently (happened Jun 1-4)
+**Known failure modes (historical):**
+- submit_order missing def line → AttributeError → execute loop aborts silently (happened Jun 1-4, fixed 2026-06-05)
 - hold_monitor crash → stale hold_health.json → exit_monitor uses old health scores
 - Ledger stop above current price → EXIT 1 fires every run → position never trims
+- **OneDrive sync conflict → ledger silently reverted to cloud version after rapid writes** (caused 3 corruptions May-Jun; FIXED 2026-06-19 by moving to C:\Raptor outside OneDrive scope)
 
 ---
 
@@ -170,6 +171,7 @@ A position with 4 math_trims followed by a trailing_stop → `final_exit_path = 
 13. **All gate counts use position_outcomes.json.** Never raw outcome_log.json.
 14. **position_outcomes.json must be rebuilt after every new position closes.** (TODO: automate in AfterClose)
 15. **Backtest Sharpe figures are upper bounds** until ARCH-5 point-in-time universe is implemented.
+16. **Raptor lives at `C:\Raptor`.** Never reference or suggest the old OneDrive path. Any file, script, or task pointing to `C:\Users\steve\OneDrive\Desktop\Raptor` is wrong and must be patched immediately.
 
 ---
 
@@ -192,11 +194,15 @@ A position with 4 math_trims followed by a trailing_stop → `final_exit_path = 
 | 120-symbol | 1008% | 56% | 4.64 | 1.73 |
 | 47-symbol | 201% | 22.6% | 2.17 | 1.43 |
 
-**Live performance (2026-06-12):**
+**Live performance (2026-06-19, post-repair):**
+- Open positions: 7 (KRE, WFC, MRVL, BAC, WULF, UBER, AAL) — Alpaca/ledger sync confirmed
 - Independent positions: 27 (position_outcomes.json)
+- Closed trades in ledger: 40
 - Win rate: 59.1% (13W/9L, clean positions)
 - Mean position PnL: 5.47%
 - DSR: 59.8% WEAK (n=24, SR=1.42 vs SR*=1.22)
+- Kelly: SHADOW mode, n_trades=53/100, f_recommended=1%
+- Equity: $106,915.78
 - Note: DSR rises toward STRONG as n grows if alpha is genuine. Current sample too small to distinguish from luck.
 
 ---
@@ -210,10 +216,4 @@ A position with 4 math_trims followed by a trailing_stop → `final_exit_path = 
 - Challenge any assumption that looks like a default or round number
 - **Claude fixes bugs directly.** No manual edits, no diffs. Claude writes the fixed file, validates syntax, delivers via present_files. Steve downloads and pushes.
 - **Claude Project must mirror GitHub.** Run sync_to_claude.py after every push and upload all listed files.
-- **Claude prompts both git and sync after any session where files changed.** Show exactly two lines, nothing else:
-  ```
-  git add -A; git commit -m "describe what changed (YYYY-MM-DD)"; git push origin main
-  python sync_to_claude.py
-  ```
-  Uses `;` not `&&` — Steve's default PowerShell (5.1) doesn't support `&&` as a separator.
-  Commit message names every file changed that session (Rule 10). Steve handles the manual Claude Project upload himself — no separate reminder needed.
+- **Claude prompts sync after any session where files changed.** Show only: `python sync_to_claude.py` — nothing else.

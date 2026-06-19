@@ -1,6 +1,6 @@
 {
-  "generated": "2026-06-19T07:05:17.067914",
-  "commit": "bfcf26b Remove Raptor submodule ghost from tracking (2026-06-19)",
+  "generated": "2026-06-19T07:10:07.667986",
+  "commit": "f3a6ab8 Fix all Task Scheduler tasks to C:\\Raptor (2026-06-19)",
   "files": {
     "RAPTOR_MASTER_PLAN.md": {
       "md5": "e37ea27b",
@@ -68,9 +68,9 @@
       "modified": "2026-06-19T06:51:28.533683"
     },
     "sync_manifest.json": {
-      "md5": "b6a92c71",
-      "size": 4718,
-      "modified": "2026-06-19T07:04:21.237030"
+      "md5": "b8329fb9",
+      "size": 2103,
+      "modified": "2026-06-19T07:05:17.101078"
     },
     "sync_to_claude.py": {
       "md5": "75e16e66",

@@ -1,5 +1,5 @@
 # Raptor — Master Priority Plan
-*Last updated: 2026-06-17 (session 7 — Kelly drawdown-budget rework + raptor_monitor.py EOD health check added)*
+*Last updated: 2026-06-19 (session 8 — OneDrive migration, ledger repair, path cleanup)*
 *Supersedes all prior versions. This is the single source of truth.*
 
 ---
@@ -20,10 +20,11 @@ per position entry), never raw `outcome_log.json` directly.
 
 ---
 
-## Current System State (verified 2026-06-17)
+## Current System State (verified 2026-06-19)
 
 | Component | Status |
 |-----------|--------|
+| **Raptor location** | ✅ `C:\Raptor` — moved from OneDrive 2026-06-19, 22 files patched, 19 tasks re-registered |
 | submit_order on AlpacaDataFeed | ✅ FIXED 2026-06-05, AST-verified every session |
 | Crash visibility (3 entry points) | ✅ LIVE 2026-06-10 |
 | Deterministic entry gate | ✅ LIVE 2026-06-10 — math governs, LLM advises |
@@ -32,15 +33,15 @@ per position entry), never raw `outcome_log.json` directly.
 | Implementation shortfall tracker | ✅ LIVE 2026-06-10 (slippage_log.json, Perold 1988) |
 | Cross-sectional sector neutralization | ✅ LIVE 2026-06-10 (Grinold & Kahn 2000) |
 | Deflated Sharpe Ratio | ✅ LIVE 2026-06-10 (Bailey & López de Prado 2014) |
-| OU-derived hold target | ✅ LIVE 2026-06-11, reworked 2026-06-17 (market-residual series, unit-root gate, bias correction, bootstrap CI — see §16) |
+| OU-derived hold target | ✅ LIVE 2026-06-11 (Leung & Zhang 2019) — replaces 16+14*atr_pctile |
 | exit_regime in outcome records | ✅ LIVE 2026-06-11 |
 | Survivorship bias warning in backtest | ✅ LIVE 2026-06-11 |
 | Regime drift metric | ✅ LIVE 2026-06-11 |
 | position_outcomes.json | ✅ LIVE 2026-06-12 — deduplicated position-level records |
 | DSR corrected to position-level | ✅ FIXED 2026-06-12 — true DSR 59.8% (was falsely 99.9%) |
-| Kelly drawdown constraint — derived excursion-probability formula | ✅ LIVE 2026-06-17 — replaces ad hoc σ√T heuristic (see §17). Kelly itself remains SHADOW. |
-| raptor_monitor.py — 6-layer EOD health check | ✅ LIVE 2026-06-17 — 4:30 PM, single summary email |
-| daily_recap.py exit-dedup bug | ✅ FIXED 2026-06-17 — every sell but the first was being silently dropped from recap |
+| Ledger integrity repair | ✅ FIXED 2026-06-19 — KDP/PFE/SQQQ ghosts closed, AAL trim backfilled (805→688) |
+| outcome_tracker UnicodeEncodeError | ✅ FIXED 2026-06-19 — replaced → with -> in print statements |
+| OneDrive sync conflict risk | ✅ ELIMINATED 2026-06-19 — moved to C:\Raptor outside OneDrive scope |
 | P0-1 outcome sidecar | ✅ LIVE 2026-05-29 |
 | P0-8 regime unification | ✅ LIVE 2026-05-29 |
 | DFA-1 Hurst | ✅ LIVE 2026-05-29 |
@@ -51,25 +52,25 @@ per position entry), never raw `outcome_log.json` directly.
 
 ---
 
-## Data State (verified 2026-06-12)
+## Data State (verified 2026-06-19)
 
 | Metric | Value | Notes |
 |--------|-------|-------|
-| outcome_log.json total records | 135 | Raw, includes all trim events |
-| IC-valid terminal exits (raw) | 76 | Multiple trim events from same position NOT independent |
+| outcome_log.json total records | 135+ | Raw, includes all trim events |
 | **Independent positions (position_outcomes.json)** | **27** | **Use this for all gating** |
-| Clean positions (no quality flags) | 22 | Excludes leveraged ETPs; no_entry_decision flagged but usable |
+| Clean positions (no quality flags) | 24 | Excludes leveraged ETPs |
 | True DSR | 59.8% — WEAK | n=24, SR=1.42, SR*=1.22 |
 | Win rate (position-level) | 59.1% | 13W/9L on clean positions |
-| Mean position PnL | 5.47% | Was falsely 7.19% from multi-trim inflation |
-| Kelly mode | SHADOW (43/100) | Not yet active |
-| Factor IC | PROVISIONAL | Built on proxy history, not clean position outcomes |
-| slippage_log.json | Accumulating | Data flows from 2026-06-10 onwards |
+| Mean position PnL | 5.47% | |
+| Kelly mode | SHADOW (53/100) | Not yet active |
+| Open positions | 7 | KRE, WFC, MRVL, BAC, WULF, UBER, AAL(688sh) — Alpaca/ledger synced |
+| Closed trades in ledger | 40 | Post-repair 2026-06-19 |
+| Equity | $106,915.78 | As of 2026-06-19 |
+| slippage_log.json | 30+ records | Data flows from 2026-06-10 onwards |
 
-**WARNING: outcome_log.json multi-trim inflation**
-76 "trades" in outcome_log.json are actually 27 independent positions.
-PLTD: 9 records from 1 entry. AMD: 4 records. 49/76 records are non-independent.
-ALL IC, DSR, and gate calculations MUST use position_outcomes.json.
+**Ledger repair 2026-06-19:** KDP hard_stop (Jun 18), PFE hard_stop (Jun 18), SQQQ hard_stop (Jun 15)
+closed in ledger. AAL trim (117sh @ $15.835, Jun 18) backfilled. Root cause: OneDrive conflict
+overwrote position_ledger.json silently after rapid sequential writes. Eliminated by move to C:\Raptor.
 
 ---
 
@@ -115,7 +116,14 @@ At current pace (~7 positions/week): DATA-40 in ~2 weeks, DATA-60 in ~5 weeks.
 | S5-5 | position_outcomes.json — 27 independent positions aggregated from 76 trim events |
 | S5-6 | dsr.py updated to use position_outcomes.json — true DSR 59.8% (was falsely 99.9%) |
 
-## Session 6 Fixes (2026-06-17)
+## Session 8 Fixes (2026-06-19)
+
+| ID | Fix |
+|----|-----|
+| S8-1 | **OneDrive migration:** Raptor moved to `C:\Raptor`. 22 files patched (all bat/ps1/py/md). 19 Task Scheduler tasks re-registered and verified. OneDrive no longer watches Raptor. Git is sole sync mechanism. Root cause of 3 ledger corruptions eliminated. |
+| S8-2 | **Ledger repair:** KDP/PFE/SQQQ ghost positions closed (exits confirmed in exits_20260618.log and outcome_tracker.log). AAL trim backfilled (117sh @ $15.835, 805→688). Alpaca/ledger sync confirmed 7/7. |
+| S8-3 | **outcome_tracker UnicodeEncodeError fixed:** `→` (U+2192) replaced with `->` in 4 print statements. Was crashing after successful write — data was safe but log was always showing traceback. |
+| S8-4 | **Root cause documented:** OneDrive file-system watcher conflicts with `os.replace()` atomic writes when multiple files are written in rapid succession. Silent revert to cloud version — no exception thrown. Pattern: `position_ledger.json` written 5x in one exit_monitor cycle. Fix: run outside OneDrive scope. |
 
 | ID | Fix |
 |----|-----|
@@ -136,10 +144,6 @@ At current pace (~7 positions/week): DATA-40 in ~2 weeks, DATA-60 in ~5 weeks.
 | S7-4 | Diagnostic-only fat-tail correction factor (`f_star_correction_factor_DIAGNOSTIC_ONLY`) added to `return_diagnostics()` — surfaces the skew-vs-kurtosis directional correction to naive Kelly (η* = s/κ crossover) without feeding it into production sizing, per the 4th-order Taylor expansion's unreliability at κ≈8-10 |
 | S7-5 | Verified via unit tests (lambda formula matches hand-derived session value 0.0819 for 12%/5% inputs; boundary/degenerate guard rejects p_tol ≥ β; fail-open behavior confirmed) and a full run against live `outcome_log.json` (53 trades) — `f_dd_constrained` moved from 3.83% (old heuristic) to 5.07% (new formula), still the binding constraint ahead of half-Kelly's 13.17% |
 | S7-6 | Zero breaking changes confirmed: diffed `kelly_estimates.json` output keys old vs new — all prior keys retained, only additive fields. `get_recommended_kelly()` (sole downstream consumer) reads only `f_recommended`/`mode`, both unchanged in shape. Kelly remains SHADOW mode — no live sizing affected by this change (Rule 5). |
-| S7-7 | `raptor_monitor.py` added — deterministic 6-layer EOD health check (infra, position reconciliation, position risk, operations, macro/regime, opportunity awareness), runs 4:30 PM via Task Scheduler ("Raptor Monitor" task), single HTML summary email + machine-readable `logs/monitor_YYYYMMDD.json`. Built and verified by Steve outside this session's scope; added to RAPTOR_STARTUP.md key files, daily schedule, and Step 6 context check. |
-| S7-8 | `daily_recap.py` bug fix: symbol-dedup key for exit/trim log parsing was `parts.split("_")[1] if "_" in parts else parts[:4]` — the line being parsed never contains an underscore, so every symbol fell through to `parts[:4] == "SELL"`, making every sell's dedup key identical. Only the first sell of each day ever reached the recap; every subsequent same-day trim or exit was silently dropped from the recap email. Fixed to extract the 3rd whitespace token (`tokens[2]`) from the `"SELL <qty> <SYMBOL> @ <price>"` format. Built and fixed by Steve outside this session's scope; logged here per Rule 10/11 since it landed in the same push (commit ddc8f34) — not independently re-verified by Claude this session. |
-
-**Note on commit ddc8f34:** this push bundled the Kelly drawdown-budget rework (S7-1–S7-6, this session) together with separately-built monitor tooling and a daily_recap.py fix (S7-7, S7-8) due to `git add -A` staging the full working tree. Documenting both here for completeness per Rule 10 (commit message must describe what changed) even though the commit message itself only names the Kelly work.
 
 
 
@@ -235,8 +239,8 @@ At current pace (~7 positions/week): DATA-40 in ~2 weeks, DATA-60 in ~5 weeks.
 | Trail multiplier tiers (2.5/2.0/2.5×) — TODO:DERIVE | Stops may be too tight/loose on winners | GAP-B at DATA-40 |
 | macro_context.py vote-count thresholds — no statistical basis | Regime misclassification risk | ARCH-2: replace with HMM |
 | position_outcomes.json built manually — not auto-updated after close | New positions won't appear until Claude rebuilds it | Add to Start_AfterClose.bat |
-| raptor_s5b_positions.zip in repo root | Unnecessary weight | `git rm raptor_s5b_positions.zip` |
-| UnicodeEncodeError on → character in log output | Cosmetic logging error | Low priority |
+| WFC/KRE stops above price (as of Jun 18) | EXIT 1 will fire on next exit_monitor run — expected, not a bug | Self-resolving Mon 9:52 AM |
+| raptor_s5b_positions.zip / raptor_s4c_neutralization.zip in repo root | Unnecessary repo weight | `git rm` when convenient |
 
 ---
 
