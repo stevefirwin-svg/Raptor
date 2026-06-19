@@ -242,7 +242,7 @@ def relabel_pre_label(verbose: bool = True) -> int:
         with open(tmp, "w") as f:
             json.dump(records, f, indent=2)
         os.replace(tmp, OUTCOME_LOG_PATH)
-        print(f"\n[OutcomeTracker] Relabeled {fixed} records → {OUTCOME_LOG_PATH}")
+        print(f"\n[OutcomeTracker] Relabeled {fixed} records -> {OUTCOME_LOG_PATH}")
         print("  pre_label = equity exits before labeled client_order_id era")
         print("  crypto    = crypto exits (no exit path label system)")
         print("  These are EXCLUDED from IC calibration but kept for PnL stats.")
@@ -292,7 +292,7 @@ def backfill_unknowns(verbose: bool = True) -> int:
             if new_path != "unknown":
                 if verbose:
                     print(f"  [fix] {r['symbol']:8s} {r.get('exit_date','')[:10]} "
-                          f"unknown → {new_path}  (client_id={client_id[:40]})")
+                          f"unknown -> {new_path}  (client_id={client_id[:40]})")
                 r["actual_exit_path"] = new_path
                 fixed += 1
             elif verbose:
@@ -306,7 +306,7 @@ def backfill_unknowns(verbose: bool = True) -> int:
         with open(tmp, "w") as f:
             json.dump(records, f, indent=2)
         os.replace(tmp, OUTCOME_LOG_PATH)
-        print(f"\n[OutcomeTracker] Backfilled {fixed} records → {OUTCOME_LOG_PATH}")
+        print(f"\n[OutcomeTracker] Backfilled {fixed} records -> {OUTCOME_LOG_PATH}")
     else:
         print("[OutcomeTracker] No records could be re-tagged from Alpaca order data.")
 
@@ -412,7 +412,7 @@ def run_tracker(verbose: bool = True) -> int:
         with open(tmp, "w") as f:
             json.dump(all_records, f, indent=2)
         os.replace(tmp, OUTCOME_LOG_PATH)
-        print(f"\n[OutcomeTracker] Tagged {len(new_records)} new trade(s) → {OUTCOME_LOG_PATH}")
+        print(f"\n[OutcomeTracker] Tagged {len(new_records)} new trade(s) -> {OUTCOME_LOG_PATH}")
     else:
         print("[OutcomeTracker] No new trades to tag.")
 

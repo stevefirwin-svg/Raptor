@@ -1,6 +1,6 @@
 {
-  "generated": "2026-06-17T12:01:44.344902",
-  "commit": "67d544a Add raptor_monitor.py to MD docs, hardcode git add+sync step in RAPTOR_STARTUP.md and RAPTOR_SKILL.md Rule 21 (2026-06-17)",
+  "generated": "2026-06-19T06:33:15.007292",
+  "commit": "8e4d09f Daily update 2026-06-18",
   "files": {
     "RAPTOR_MASTER_PLAN.md": {
       "md5": "82b10c41",
@@ -42,20 +42,30 @@
       "size": 46773,
       "modified": "2026-06-10T17:07:04.296658"
     },
+    "logs/github_push.log": {
+      "md5": "389774f1",
+      "size": 8939,
+      "modified": "2026-06-18T18:00:05.159116"
+    },
+    "logs/raptor_auto_start.log": {
+      "md5": "bdfa3287",
+      "size": 4468,
+      "modified": "2026-06-18T17:00:18.498405"
+    },
     "main.py": {
       "md5": "79d2eba1",
       "size": 19225,
       "modified": "2026-06-10T17:07:04.282684"
     },
     "outcome_log.json": {
-      "md5": "4801b3d8",
-      "size": 118855,
-      "modified": "2026-06-16T16:15:02.919898"
+      "md5": "ab548d4e",
+      "size": 124635,
+      "modified": "2026-06-18T17:00:05.185643"
     },
     "position_ledger.json": {
-      "md5": "00f13c31",
-      "size": 35669,
-      "modified": "2026-06-17T09:52:56.575029"
+      "md5": "a4b57785",
+      "size": 36404,
+      "modified": "2026-06-18T09:52:20.867963"
     },
     "position_outcomes.json": {
       "md5": "e9a47d06",
@@ -66,11 +76,6 @@
       "md5": "08f65d72",
       "size": 44969,
       "modified": "2026-06-17T06:41:00.952887"
-    },
-    "sync_manifest.json": {
-      "md5": "e5bed917",
-      "size": 5438,
-      "modified": "2026-06-17T11:59:51.677569"
     },
     "sync_to_claude.py": {
       "md5": "4fbcce13",

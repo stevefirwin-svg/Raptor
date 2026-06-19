@@ -1,57 +1,5 @@
 {
   "positions": {
-    "v5.4:KDP": {
-      "model": "v5.4",
-      "symbol": "KDP",
-      "shares": 7,
-      "entry_price": 28.670593,
-      "entry_date": "2026-05-24",
-      "metadata": {
-        "stop": 31.3779,
-        "regime": "BACKFILL",
-        "t_stat": null,
-        "kelly_fraction": null,
-        "composite_score": null,
-        "note": "Restored by backfill_positions.py 2026-05-27 \u2014 position was incorrectly closed in ledger by math_trim routing bug",
-        "high_water": 32.025,
-        "stop_reset_reason": "reset_2026-06-05: corrected from ratchet-overtightened value to 2.5x ATR from high_water",
-        "last_trim_ts": "2026-06-16T09:52:19.698682",
-        "pending_exit": true,
-        "pending_exit_ts": "2026-06-18T09:52:20.367035"
-      },
-      "trims": [
-        {
-          "date": "2026-06-12",
-          "reason": "math_trim_36%",
-          "shares_sold": 10,
-          "trim_price": 31.225,
-          "pnl_pct": 8.9095,
-          "pnl_abs": 25.54,
-          "shares_before": 28,
-          "shares_after": 18
-        },
-        {
-          "date": "2026-06-15",
-          "reason": "math_trim_42%",
-          "shares_sold": 8,
-          "trim_price": 31.655,
-          "pnl_pct": 10.4093,
-          "pnl_abs": 23.88,
-          "shares_before": 18,
-          "shares_after": 10
-        },
-        {
-          "date": "2026-06-16",
-          "reason": "math_trim_33%",
-          "shares_sold": 3,
-          "trim_price": 31.865,
-          "pnl_pct": 11.1418,
-          "pnl_abs": 9.58,
-          "shares_before": 10,
-          "shares_after": 7
-        }
-      ]
-    },
     "v5.4:KRE": {
       "model": "v5.4",
       "symbol": "KRE",
@@ -212,38 +160,6 @@
         }
       ]
     },
-    "v5.4:SQQQ": {
-      "model": "v5.4",
-      "symbol": "SQQQ",
-      "shares": 184,
-      "entry_price": 40.45,
-      "entry_date": "2026-06-09",
-      "metadata": {
-        "t_stat": 1.558,
-        "stop": 37.3414,
-        "tp": 0.0,
-        "regime": "NEUTRAL/TRENDING",
-        "kelly_fraction": 0.0979,
-        "composite_score": 0.5171,
-        "velocity": 0.0,
-        "high_water": 43.37,
-        "last_trim_ts": "2026-06-12T09:52:23.617404",
-        "pending_exit": true,
-        "pending_exit_ts": "2026-06-15T09:52:18.807550"
-      },
-      "trims": [
-        {
-          "date": "2026-06-12",
-          "reason": "math_trim_29%",
-          "shares_sold": 74,
-          "trim_price": 41.49,
-          "pnl_pct": 2.5711,
-          "pnl_abs": 76.96,
-          "shares_before": 258,
-          "shares_after": 184
-        }
-      ]
-    },
     "v5.4:BAC": {
       "model": "v5.4",
       "symbol": "BAC",
@@ -294,25 +210,6 @@
         }
       ]
     },
-    "v5.4:PFE": {
-      "model": "v5.4",
-      "symbol": "PFE",
-      "shares": 331,
-      "entry_price": 26.18,
-      "entry_date": "2026-06-11",
-      "metadata": {
-        "t_stat": 2.5529,
-        "stop": 25.3707,
-        "tp": 0.0,
-        "regime": "NEUTRAL/REVERTING",
-        "kelly_fraction": 0.0811,
-        "composite_score": 0.4389,
-        "velocity": 0.0,
-        "high_water": 26.315,
-        "pending_exit": true,
-        "pending_exit_ts": "2026-06-18T09:52:20.465126"
-      }
-    },
     "v5.4:WULF": {
       "model": "v5.4",
       "symbol": "WULF",
@@ -350,7 +247,7 @@
     "v5.4:AAL": {
       "model": "v5.4",
       "symbol": "AAL",
-      "shares": 805,
+      "shares": 688,
       "entry_price": 16.07,
       "entry_date": "2026-06-16",
       "metadata": {
@@ -361,8 +258,22 @@
         "kelly_fraction": 0.12,
         "composite_score": 0.4405,
         "velocity": 0.0,
-        "high_water": 16.0347
-      }
+        "high_water": 16.0347,
+        "last_trim_ts": "2026-06-18T09:52:20"
+      },
+      "trims": [
+        {
+          "date": "2026-06-18",
+          "reason": "math_trim_15%",
+          "shares_sold": 117,
+          "trim_price": 15.835,
+          "pnl_pct": -1.4624,
+          "pnl_abs": -27.49,
+          "shares_before": 805,
+          "shares_after": 688,
+          "repair_note": "Backfilled by repair_ledger_20260619.py \u2014 OneDrive conflict overwrote original save"
+        }
+      ]
     }
   },
   "closed": [
@@ -1260,6 +1171,130 @@
       "exit_path": "math_exit",
       "pnl": -16.90000000000005,
       "pnl_pct": -0.7206823027718579
+    },
+    {
+      "model": "v5.4",
+      "symbol": "KDP",
+      "shares": 7,
+      "entry_price": 28.670593,
+      "entry_date": "2026-05-24",
+      "metadata": {
+        "stop": 31.3779,
+        "regime": "BACKFILL",
+        "t_stat": null,
+        "kelly_fraction": null,
+        "composite_score": null,
+        "note": "Restored by backfill_positions.py 2026-05-27 \u2014 position was incorrectly closed in ledger by math_trim routing bug",
+        "high_water": 32.025,
+        "stop_reset_reason": "reset_2026-06-05: corrected from ratchet-overtightened value to 2.5x ATR from high_water",
+        "last_trim_ts": "2026-06-16T09:52:19.698682",
+        "pending_exit": true,
+        "pending_exit_ts": "2026-06-18T09:52:20.367035"
+      },
+      "trims": [
+        {
+          "date": "2026-06-12",
+          "reason": "math_trim_36%",
+          "shares_sold": 10,
+          "trim_price": 31.225,
+          "pnl_pct": 8.9095,
+          "pnl_abs": 25.54,
+          "shares_before": 28,
+          "shares_after": 18
+        },
+        {
+          "date": "2026-06-15",
+          "reason": "math_trim_42%",
+          "shares_sold": 8,
+          "trim_price": 31.655,
+          "pnl_pct": 10.4093,
+          "pnl_abs": 23.88,
+          "shares_before": 18,
+          "shares_after": 10
+        },
+        {
+          "date": "2026-06-16",
+          "reason": "math_trim_33%",
+          "shares_sold": 3,
+          "trim_price": 31.865,
+          "pnl_pct": 11.1418,
+          "pnl_abs": 9.58,
+          "shares_before": 10,
+          "shares_after": 7
+        }
+      ],
+      "exit_price": 31.08,
+      "exit_date": "2026-06-18",
+      "exit_reason": "hard_stop",
+      "exit_path": "hard_stop",
+      "pnl_pct": 8.4038,
+      "pnl": 16.87,
+      "repair_note": "Repaired by repair_ledger_20260619.py \u2014 order confirmed in exits log"
+    },
+    {
+      "model": "v5.4",
+      "symbol": "PFE",
+      "shares": 331,
+      "entry_price": 26.18,
+      "entry_date": "2026-06-11",
+      "metadata": {
+        "t_stat": 2.5529,
+        "stop": 25.3707,
+        "tp": 0.0,
+        "regime": "NEUTRAL/REVERTING",
+        "kelly_fraction": 0.0811,
+        "composite_score": 0.4389,
+        "velocity": 0.0,
+        "high_water": 26.315,
+        "pending_exit": true,
+        "pending_exit_ts": "2026-06-18T09:52:20.465126"
+      },
+      "exit_price": 25.235,
+      "exit_date": "2026-06-18",
+      "exit_reason": "hard_stop",
+      "exit_path": "hard_stop",
+      "pnl_pct": -3.6096,
+      "pnl": -312.8,
+      "repair_note": "Repaired by repair_ledger_20260619.py \u2014 order confirmed in exits log"
+    },
+    {
+      "model": "v5.4",
+      "symbol": "SQQQ",
+      "shares": 184,
+      "entry_price": 40.45,
+      "entry_date": "2026-06-09",
+      "metadata": {
+        "t_stat": 1.558,
+        "stop": 37.3414,
+        "tp": 0.0,
+        "regime": "NEUTRAL/TRENDING",
+        "kelly_fraction": 0.0979,
+        "composite_score": 0.5171,
+        "velocity": 0.0,
+        "high_water": 43.37,
+        "last_trim_ts": "2026-06-12T09:52:23.617404",
+        "pending_exit": true,
+        "pending_exit_ts": "2026-06-15T09:52:18.807550"
+      },
+      "trims": [
+        {
+          "date": "2026-06-12",
+          "reason": "math_trim_29%",
+          "shares_sold": 74,
+          "trim_price": 41.49,
+          "pnl_pct": 2.5711,
+          "pnl_abs": 76.96,
+          "shares_before": 258,
+          "shares_after": 184
+        }
+      ],
+      "exit_price": 36.73,
+      "exit_date": "2026-06-15",
+      "exit_reason": "hard_stop",
+      "exit_path": "hard_stop",
+      "pnl_pct": -9.1965,
+      "pnl": -684.48,
+      "repair_note": "Repaired by repair_ledger_20260619.py \u2014 order confirmed in exits log"
     }
   ]
 }
