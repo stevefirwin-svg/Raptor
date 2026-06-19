@@ -1,17 +1,7 @@
 {
-  "generated": "2026-06-19T07:04:21.204408",
-  "commit": "58cfe34 Patch all paths to C:\\Raptor, re-register tasks (2026-06-19)",
+  "generated": "2026-06-19T07:05:17.067914",
+  "commit": "bfcf26b Remove Raptor submodule ghost from tracking (2026-06-19)",
   "files": {
-    "Daily_GitHub_Push.bat": {
-      "md5": "f8d968e8",
-      "size": 351,
-      "modified": "2026-06-19T07:01:37.784437"
-    },
-    "Migrate_To_CRaptor.ps1": {
-      "md5": "b1374ed8",
-      "size": 11406,
-      "modified": "2026-06-19T07:01:37.935250"
-    },
     "RAPTOR_MASTER_PLAN.md": {
       "md5": "e37ea27b",
       "size": 18025,
@@ -31,99 +21,6 @@
       "md5": "e802036f",
       "size": 15378,
       "modified": "2026-06-19T07:01:38.149641"
-    },
-    "Raptor": {
-      "status": "MISSING"
-    },
-    "Register_Analysis_Lab.ps1": {
-      "md5": "7c1c156e",
-      "size": 1907,
-      "modified": "2026-06-19T07:01:38.231303"
-    },
-    "Register_Intraday_Monitor.ps1": {
-      "md5": "ca0a5ffd",
-      "size": 3417,
-      "modified": "2026-06-19T07:01:38.269721"
-    },
-    "Register_Raptor_Monitor.ps1": {
-      "md5": "57e135ab",
-      "size": 3286,
-      "modified": "2026-06-19T07:01:38.312851"
-    },
-    "Start_AfterClose.bat": {
-      "md5": "9851f775",
-      "size": 976,
-      "modified": "2026-06-19T07:01:38.484444"
-    },
-    "Start_Afternoon_Monitor.bat": {
-      "md5": "b555c34c",
-      "size": 446,
-      "modified": "2026-06-19T07:01:38.489598"
-    },
-    "Start_Analysis_Lab.bat": {
-      "md5": "2add1436",
-      "size": 730,
-      "modified": "2026-06-19T07:01:38.510421"
-    },
-    "Start_Crypto.bat": {
-      "md5": "8edee8f1",
-      "size": 411,
-      "modified": "2026-06-19T07:01:38.537120"
-    },
-    "Start_Daily_Recap.bat": {
-      "md5": "9ee65efb",
-      "size": 1216,
-      "modified": "2026-06-19T07:01:38.572193"
-    },
-    "Start_Entry.bat": {
-      "md5": "b0a108e0",
-      "size": 299,
-      "modified": "2026-06-19T07:01:38.591020"
-    },
-    "Start_Intraday_Monitor.bat": {
-      "md5": "1c8686c6",
-      "size": 2074,
-      "modified": "2026-06-19T07:01:38.596051"
-    },
-    "Start_Monitor.bat": {
-      "md5": "12b3446c",
-      "size": 818,
-      "modified": "2026-06-19T07:01:38.631826"
-    },
-    "Start_Morning_Monitor.bat": {
-      "md5": "a3d1d076",
-      "size": 342,
-      "modified": "2026-06-19T07:01:38.635851"
-    },
-    "Start_PreMarket.bat": {
-      "md5": "f2f47cf4",
-      "size": 291,
-      "modified": "2026-06-19T07:01:38.659493"
-    },
-    "Start_Raptor.bat": {
-      "md5": "8622d27a",
-      "size": 670,
-      "modified": "2026-06-19T07:01:38.675281"
-    },
-    "Start_Recap.bat": {
-      "md5": "fa180cc4",
-      "size": 280,
-      "modified": "2026-06-19T07:01:38.705222"
-    },
-    "Start_Viper.bat": {
-      "md5": "523f79e3",
-      "size": 564,
-      "modified": "2026-06-19T07:01:38.727708"
-    },
-    "Start_Watchdog.bat": {
-      "md5": "2abc9c69",
-      "size": 351,
-      "modified": "2026-06-19T07:01:38.751370"
-    },
-    "Sync_To_Claude_Project.ps1": {
-      "md5": "0484419d",
-      "size": 3544,
-      "modified": "2026-06-19T07:01:38.804240"
     },
     "agent_layer.py": {
       "md5": "248f266e",
@@ -169,6 +66,11 @@
       "md5": "2cf4a902",
       "size": 45810,
       "modified": "2026-06-19T06:51:28.533683"
+    },
+    "sync_manifest.json": {
+      "md5": "b6a92c71",
+      "size": 4718,
+      "modified": "2026-06-19T07:04:21.237030"
     },
     "sync_to_claude.py": {
       "md5": "75e16e66",
