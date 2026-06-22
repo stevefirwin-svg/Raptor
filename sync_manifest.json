@@ -1,6 +1,6 @@
 {
-  "generated": "2026-06-22T16:46:27.674406",
-  "commit": "dbaaeef Fix _sanitize_llm_json: try raw parse first, fallback sanitize only on failure (2026-06-23)",
+  "generated": "2026-06-22T17:01:40.978635",
+  "commit": "38b614a fix: strip UTF-8 BOM from all bat files - was causing Task Scheduler exit code 1 on Start_Recap",
   "files": {
     "RAPTOR_MASTER_PLAN.md": {
       "md5": "5b90976a",
@@ -42,10 +42,10 @@
       "size": 47655,
       "modified": "2026-06-19T06:51:28.145321"
     },
-    "logs/github_push.log": {
-      "md5": "11bb2641",
-      "size": 10160,
-      "modified": "2026-06-21T18:00:05.831188"
+    "logs/raptor_auto_start.log": {
+      "md5": "85e17852",
+      "size": 5878,
+      "modified": "2026-06-22T17:00:16.708157"
     },
     "main.py": {
       "md5": "ea966f4a",
