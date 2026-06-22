@@ -1,6 +1,6 @@
 {
-  "generated": "2026-06-19T07:31:55.506236",
-  "commit": "7950851 Update all MD docs: session 8 migration, ledger repair, path cleanup (2026-06-19)",
+  "generated": "2026-06-22T16:46:27.674406",
+  "commit": "dbaaeef Fix _sanitize_llm_json: try raw parse first, fallback sanitize only on failure (2026-06-23)",
   "files": {
     "RAPTOR_MASTER_PLAN.md": {
       "md5": "5b90976a",
@@ -23,9 +23,9 @@
       "modified": "2026-06-19T07:31:03.993088"
     },
     "agent_layer.py": {
-      "md5": "248f266e",
-      "size": 21392,
-      "modified": "2026-06-19T06:51:28.051104"
+      "md5": "c41e7372",
+      "size": 21302,
+      "modified": "2026-06-22T05:59:57.090255"
     },
     "config.py": {
       "md5": "379f0c6f",
@@ -42,10 +42,10 @@
       "size": 47655,
       "modified": "2026-06-19T06:51:28.145321"
     },
-    "logs/diagnostic_20260619_071015.log": {
-      "md5": "ae35f134",
-      "size": 7264,
-      "modified": "2026-06-19T07:10:20.476951"
+    "logs/github_push.log": {
+      "md5": "11bb2641",
+      "size": 10160,
+      "modified": "2026-06-21T18:00:05.831188"
     },
     "main.py": {
       "md5": "ea966f4a",
@@ -53,14 +53,14 @@
       "modified": "2026-06-19T06:51:28.487107"
     },
     "outcome_log.json": {
-      "md5": "ab548d4e",
-      "size": 124635,
-      "modified": "2026-06-19T06:51:28.497953"
+      "md5": "5de9bc52",
+      "size": 126363,
+      "modified": "2026-06-22T15:50:29.450403"
     },
     "position_ledger.json": {
-      "md5": "0db03135",
-      "size": 37677,
-      "modified": "2026-06-19T06:51:28.502855"
+      "md5": "3d143b88",
+      "size": 39758,
+      "modified": "2026-06-22T15:50:28.193793"
     },
     "position_outcomes.json": {
       "md5": "22aec649",
@@ -71,11 +71,6 @@
       "md5": "2cf4a902",
       "size": 45810,
       "modified": "2026-06-19T06:51:28.533683"
-    },
-    "sync_manifest.json": {
-      "md5": "1ea313e3",
-      "size": 2102,
-      "modified": "2026-06-19T07:10:07.677205"
     },
     "sync_to_claude.py": {
       "md5": "75e16e66",

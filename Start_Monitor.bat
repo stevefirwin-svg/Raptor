@@ -1,4 +1,4 @@
-﻿@echo off
+@echo off
 REM Start_Monitor.bat — Raptor End-of-Day Monitor
 REM Runs after daily_recap.py (Task Scheduler: 4:30 PM ET)
 REM Output: single summary email + logs\monitor_run_YYYYMMDD.log (Python) +

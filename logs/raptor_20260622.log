@@ -1,0 +1,29 @@
+2026-06-22 09:35:03,469 [raptor.main] INFO: ============================================================
+2026-06-22 09:35:03,470 [raptor.main] INFO: RAPTOR v5.4 DAILY SCAN - 2026-06-22T09:35:03.470083
+2026-06-22 09:35:03,470 [raptor.main] INFO: ============================================================
+2026-06-22 09:35:03,471 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-06-22 09:35:04,132 [raptor.main] INFO: Account: equity=$106918.30  cap=none (compound)  sizing_base=$106918.30  positions=8
+2026-06-22 09:35:04,140 [raptor.main] INFO: [MarketAgent] SCAN | scalar=1.00 | Neutral macro regime with no extreme signals present.
+2026-06-22 09:35:04,381 [raptor.margin_guard] INFO: MARGIN GUARD: equity=$106,917  cap=none (compound)  cash=$35,154  positions=8
+2026-06-22 09:35:04,382 [raptor.margin_guard] INFO: MARGIN GUARD: market_value=$71,765  utilization=67.1% of base  margin=NO
+2026-06-22 09:35:04,406 [raptor.universe] INFO: Universe from cache: 77 symbols
+2026-06-22 09:35:04,407 [raptor.main] INFO: Dynamic universe: 77 symbols
+2026-06-22 09:35:05,628 [raptor.data_feeds] INFO: Fetched 77 new bars / 77 total cached
+2026-06-22 09:35:05,831 [raptor.data_feeds] INFO: FRED regime: BULLISH (score=0.200)
+2026-06-22 09:35:05,892 [raptor.main] INFO: Data: 77 symbols | Macro: NEUTRAL (0.200)
+2026-06-22 09:35:08,057 [raptor.signals] INFO: v5.4 Signals: 5 from 76 | Macro=NEUTRAL Scale=0.8 | Micro={'MIXED': 59, 'REVERTING': 6, 'TRENDING': 11} | SNR min=1.67 max=2.40
+2026-06-22 09:35:08,078 [raptor.main] INFO: Velocity gate: 4 signals remain | velocities: {'HOOD': '+0.000', 'CRWV': '+0.000', 'NVO': '+0.000', 'PFE': '+0.000'}
+2026-06-22 09:35:08,096 [raptor.main] INFO: COOLDOWN GATE [skip] PFE stopped out 2026-06-18 (4 days ago, need 5)
+2026-06-22 09:35:08,098 [raptor.main] INFO: Signals:
+2026-06-22 09:35:08,099 [raptor.main] INFO:   1. HOOD  t=2.398  pctl=100%  entry=$109.00  stop=$91.82  tp=$0.00  kelly=0.120  hold~12d
+2026-06-22 09:35:08,099 [raptor.main] INFO:   2. CRWV  t=1.893  pctl=99%  entry=$114.91  stop=$93.67  tp=$0.00  kelly=0.109  hold~6d
+2026-06-22 09:35:08,099 [raptor.main] INFO:   3. NVO  t=1.688  pctl=96%  entry=$44.52  stop=$40.97  tp=$0.00  kelly=0.102  hold~30d
+2026-06-22 09:35:10,172 [AgentLayer] WARNING: EntryAgent batch failed ('"decision"') — deterministic rules only.
+2026-06-22 09:35:10,194 [raptor.main] INFO: Deployable: cap=none  market_value=$71764  cash=$35154  headroom=$33396  available=$33396  (margin=OFF)
+2026-06-22 09:35:10,254 [raptor.data_feeds] INFO: Order submitted: BUY 117 HOOD @ 109.11
+2026-06-22 09:35:10,262 [raptor.main] INFO: ORDER [v5.4]: BUY 117 HOOD @ $109.11
+2026-06-22 09:35:10,308 [raptor.slippage] INFO: SLIPPAGE BUY 117 HOOD: decision=$109.0000 fill=PENDING (order 503c1eea)
+2026-06-22 09:35:10,342 [raptor.data_feeds] INFO: Order submitted: BUY 101 CRWV @ 115.02
+2026-06-22 09:35:10,347 [raptor.main] INFO: ORDER [v5.4]: BUY 101 CRWV @ $115.02
+2026-06-22 09:35:10,367 [raptor.slippage] INFO: SLIPPAGE BUY 101 CRWV: decision=$114.9050 fill=PENDING (order 45e44caf)
+2026-06-22 09:35:10,368 [raptor.main] INFO: Scan complete. 2 orders placed for v5.4.

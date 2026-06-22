@@ -197,3 +197,9 @@ UnicodeEncodeError: 'charmap' codec can't encode character '\u2192' in position 
 [OutcomeTracker] Hold decision records  : 1378
 [OutcomeTracker] Filled sell orders from Alpaca: 158
 [OutcomeTracker] No new trades to tag.
+[OutcomeTracker] Existing tagged trades : 160
+[OutcomeTracker] Pending sidecar records: 57
+[OutcomeTracker] Entry veto records     : 119
+[OutcomeTracker] Hold decision records  : 1387
+[OutcomeTracker] Filled sell orders from Alpaca: 160
+[OutcomeTracker] No new trades to tag.

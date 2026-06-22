@@ -1,4 +1,4 @@
-﻿@echo off
+@echo off
 chcp 65001 >nul
 title Raptor Crypto v1.0 - BTC/ETH
 cd /d "C:\Raptor"

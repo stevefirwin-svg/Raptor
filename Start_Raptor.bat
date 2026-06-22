@@ -1,4 +1,4 @@
-﻿@echo off
+@echo off
 chcp 65001 >nul
 title Raptor v5.4
 cd /d "C:\Raptor"

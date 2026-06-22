@@ -1,4 +1,4 @@
-﻿@echo off
+@echo off
 cd /d C:\Raptor
 
 echo [%date% %time%] Starting daily GitHub push... >> logs\github_push.log

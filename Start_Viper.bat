@@ -1,4 +1,4 @@
-﻿@echo off
+@echo off
 chcp 65001 >nul
 title Viper Options Engine v1.0
 cd /d "C:\Raptor"

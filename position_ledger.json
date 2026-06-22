@@ -100,7 +100,7 @@
       "entry_date": "2026-06-10",
       "metadata": {
         "t_stat": 1.6713,
-        "stop": 55.4501,
+        "stop": 55.8674,
         "tp": 0.0,
         "regime": "NEUTRAL/TRENDING",
         "kelly_fraction": 0.1015,
@@ -150,7 +150,7 @@
       "entry_date": "2026-06-11",
       "metadata": {
         "t_stat": 2.0358,
-        "stop": 24.9964,
+        "stop": 26.0005,
         "tp": 0.0,
         "regime": "NEUTRAL/REVERTING",
         "kelly_fraction": 0.0707,
@@ -167,7 +167,7 @@
       "entry_date": "2026-06-16",
       "metadata": {
         "t_stat": 1.9352,
-        "stop": 68.74,
+        "stop": 69.2436,
         "tp": 0.0,
         "regime": "NEUTRAL/REVERTING",
         "kelly_fraction": 0.12,
@@ -190,7 +190,7 @@
         "kelly_fraction": 0.12,
         "composite_score": 0.4405,
         "velocity": 0.0,
-        "high_water": 16.0347,
+        "high_water": 16.225,
         "last_trim_ts": "2026-06-18T09:52:20"
       },
       "trims": [
@@ -220,23 +220,25 @@
         "regime": "NEUTRAL/MIXED",
         "kelly_fraction": 0.12,
         "composite_score": 0.5442,
-        "velocity": 0.0
+        "velocity": 0.0,
+        "high_water": 17.975
       }
     },
     "v5.4:HOOD": {
       "model": "v5.4",
       "symbol": "HOOD",
-      "shares": 114,
-      "entry_price": 108.17,
-      "entry_date": "2026-06-19",
+      "shares": 117,
+      "entry_price": 109.0,
+      "entry_date": "2026-06-22",
       "metadata": {
-        "t_stat": 2.1067,
-        "stop": 89.9,
+        "t_stat": 2.3985,
+        "stop": 91.82,
         "tp": 0.0,
         "regime": "NEUTRAL/MIXED",
-        "kelly_fraction": 0.1154,
-        "composite_score": 0.4862,
-        "velocity": 0.0
+        "kelly_fraction": 0.12,
+        "composite_score": 0.503,
+        "velocity": 0.0,
+        "high_water": 108.5515
       }
     },
     "v5.4:GOOGL": {
@@ -252,7 +254,25 @@
         "regime": "NEUTRAL/MIXED",
         "kelly_fraction": 0.1014,
         "composite_score": 0.3848,
-        "velocity": 0.0
+        "velocity": 0.0,
+        "high_water": 356.2528
+      }
+    },
+    "v5.4:CRWV": {
+      "model": "v5.4",
+      "symbol": "CRWV",
+      "shares": 101,
+      "entry_price": 114.905,
+      "entry_date": "2026-06-22",
+      "metadata": {
+        "t_stat": 1.8925,
+        "stop": 93.67,
+        "tp": 0.0,
+        "regime": "NEUTRAL/MIXED",
+        "kelly_fraction": 0.1086,
+        "composite_score": 0.3969,
+        "velocity": 0.0,
+        "high_water": 114.6163
       }
     }
   },

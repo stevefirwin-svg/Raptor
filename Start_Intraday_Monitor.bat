@@ -1,4 +1,4 @@
-﻿@echo off
+@echo off
 chcp 65001 >nul
 title Raptor Intraday Monitor
 cd /d "C:\Raptor"
