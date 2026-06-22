@@ -138,18 +138,27 @@ def _sanitize_llm_json(raw: str) -> str:
     entry_passes() defaults to PASS on missing symbol, but the decision was
     not written to entry_vetoes.json, making it invisible for debugging.
 
-    Strategy: extract each string value (between outer quotes) and replace
-    any interior double quotes with single quotes. Handles the most common
-    LLM output pattern without risking damage to the JSON structure itself.
+    FIX 2026-06-23: llama3.2 now properly escapes interior quotes as \"
+    (valid JSON). The original sanitizer replaced \" with ' which turned
+    valid JSON into invalid JSON. Strategy: try parsing raw first — if it
+    succeeds, return as-is. Only apply the quote-replacement fallback if
+    the raw string fails to parse (handles the old unescaped-quote case).
     """
+    # Fast path: raw is already valid JSON — return untouched
+    try:
+        json.loads(raw)
+        return raw
+    except (json.JSONDecodeError, ValueError):
+        pass
+
+    # Fallback: LLM emitted unescaped interior double quotes — replace with single quotes
     def _fix_value(m):
         key = m.group(1)
         val = m.group(2)
-        # Replace any interior double quotes with single quotes
-        val_clean = val.replace('"', "'")
+        # Strip any backslash-escapes before replacing to avoid double-processing
+        val_clean = val.replace('\\"', "'").replace('"', "'")
         return f'"{key}": "{val_clean}"'
 
-    # Match "key": "value" patterns and sanitize interior quotes in value
     sanitized = re.sub(
         r'"([^"]+)":\s*"(.*?)"(?=\s*[,}])',
         _fix_value,
