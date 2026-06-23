@@ -1,0 +1,10 @@
+2026-06-23 09:35:02,741 [raptor.main] INFO: ============================================================
+2026-06-23 09:35:02,742 [raptor.main] INFO: RAPTOR v5.4 DAILY SCAN - 2026-06-23T09:35:02.742192
+2026-06-23 09:35:02,742 [raptor.main] INFO: ============================================================
+2026-06-23 09:35:02,743 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-06-23 09:35:03,220 [raptor.main] INFO: Account: equity=$101615.54  cap=none (compound)  sizing_base=$101615.54  positions=9
+2026-06-23 09:35:03,240 [raptor.main] INFO: [MarketAgent] SCAN | scalar=1.00 | Neutral macro regime with no extreme signals present.
+2026-06-23 09:35:03,579 [raptor.margin_guard] INFO: MARGIN GUARD: equity=$101,607  cap=none (compound)  cash=$-26,143  positions=9
+2026-06-23 09:35:03,580 [raptor.margin_guard] INFO: MARGIN GUARD: market_value=$127,790  utilization=125.8% of base  margin=YES
+2026-06-23 09:35:03,580 [raptor.margin_guard] INFO: MARGIN GUARD: margin_usage=25.7% of equity
+2026-06-23 09:35:03,580 [raptor.main] WARNING: MARGIN GUARD BLOCK: on margin ($26,143, 25.7% of equity) and margin disabled — blocking new entries — skipping entry scan
