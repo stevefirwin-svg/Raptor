@@ -81,3 +81,315 @@ C:\Users\steve\AppData\Local\Programs\Python\Python313\python.exe: can't open fi
 2026-06-24 09:35:03,690 [raptor.margin_guard] INFO: MARGIN GUARD: market_value=$129,531  utilization=125.3% of base  margin=YES
 2026-06-24 09:35:03,690 [raptor.margin_guard] INFO: MARGIN GUARD: margin_usage=25.3% of equity
 2026-06-24 09:35:03,690 [raptor.main] WARNING: MARGIN GUARD BLOCK: on margin ($26,143, 25.3% of equity) and margin disabled — blocking new entries — skipping entry scan
+2026-06-24 15:50:03,897 [raptor.exits] INFO: ============================================================
+2026-06-24 15:50:03,898 [raptor.exits] INFO: RAPTOR v5.4 EXIT MONITOR - 2026-06-24T15:50:03.898640
+2026-06-24 15:50:03,899 [raptor.exits] INFO: ============================================================
+2026-06-24 15:50:03,899 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-06-24 15:50:04,324 [raptor.exits] INFO: Account: equity=$102771.62  cash=$25959.74  positions=9
+2026-06-24 15:50:04,336 [raptor.universe] INFO: Building universe...
+2026-06-24 15:50:05,166 [raptor.universe] INFO: Alpaca tradeable assets: 6936 after initial filter
+2026-06-24 15:50:05,182 [raptor.universe] INFO: Step 1: 6936 tradeable assets from Alpaca
+2026-06-24 15:50:05,183 [raptor.universe] INFO: Step 2: Fetching bars for 6936 symbols (this takes 1-2 min)...
+2026-06-24 15:51:05,129 [raptor.universe] INFO: Step 2: Got bars for 6925 symbols
+2026-06-24 15:51:10,940 [raptor.universe] INFO: Step 3: 80 symbols passed all screens
+2026-06-24 15:51:12,202 [raptor.data_feeds] INFO: Fetched 80 new bars / 80 total cached
+2026-06-24 15:51:12,916 [raptor.data_feeds] INFO: FRED fetch OK: T10Y2Y (748 observations)
+2026-06-24 15:51:13,661 [raptor.data_feeds] INFO: FRED fetch OK: FEDFUNDS (36 observations)
+2026-06-24 15:51:14,202 [raptor.data_feeds] INFO: FRED fetch OK: ICSA (155 observations)
+2026-06-24 15:51:14,848 [raptor.data_feeds] INFO: FRED fetch OK: VIXCLS (773 observations)
+2026-06-24 15:51:15,762 [raptor.data_feeds] INFO: FRED fetch OK: BAMLC0A4CBBB (786 observations)
+2026-06-24 15:51:16,313 [raptor.data_feeds] INFO: FRED fetch OK: CPIAUCSL (35 observations)
+2026-06-24 15:51:16,840 [raptor.data_feeds] INFO: FRED fetch OK: IPMAN (36 observations)
+2026-06-24 15:51:17,406 [raptor.data_feeds] INFO: FRED fetch OK: M2SL (36 observations)
+2026-06-24 15:51:17,971 [raptor.data_feeds] INFO: FRED fetch OK: RSXFS (36 observations)
+2026-06-24 15:51:18,553 [raptor.data_feeds] INFO: FRED fetch OK: UNRATE (35 observations)
+2026-06-24 15:51:18,556 [raptor.data_feeds] INFO: FRED regime: BULLISH (score=0.200)
+[MacroContext] Fetching macro signals...
+  Fetching VIX...
+  Fetching SPY trend...
+  Fetching sector breadth...
+  Fetching yield curve (FRED T10Y2Y)...
+  Fetching credit spread (FRED BAMLC0A4CBBB)...
+  Fetching Fed funds rate (FRED FEDFUNDS)...
+
+[MacroContext] Regime: NEUTRAL  Score: +0.250
+2026-06-24 15:51:23,456 [raptor.exits] WARNING: [MacroOverride] live refresh failed ('charmap' codec can't encode character '\u2192' in position 23: character maps to <undefined>) — falling back to cached macro_context.json
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Raptor\exit_monitor.py", line 188, in run_exit_monitor
+    _mc_fresh = _bmc()
+  File "C:\Raptor\macro_context.py", line 350, in build_macro_context
+    print(f"[MacroContext] Written \u2192 {MACRO_CONTEXT_PATH}")
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\steve\AppData\Local\Programs\Python\Python313\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2192' in position 23: character maps to <undefined>
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\steve\AppData\Local\Programs\Python\Python313\Lib\logging\__init__.py", line 1154, in emit
+    stream.write(msg + self.terminator)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\steve\AppData\Local\Programs\Python\Python313\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2192' in position 68: character maps to <undefined>
+Call stack:
+  File "C:\Raptor\exit_monitor.py", line 877, in <module>
+    run_exit_monitor(dry_run=args.dry_run)
+  File "C:\Raptor\exit_monitor.py", line 205, in run_exit_monitor
+    logger.info("[MacroOverride] regime \u2192 %s (cached fallback)", _label)
+Message: '[MacroOverride] regime \u2192 %s (cached fallback)'
+Arguments: ('NEUTRAL',)
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Raptor\exit_monitor.py", line 188, in run_exit_monitor
+    _mc_fresh = _bmc()
+  File "C:\Raptor\macro_context.py", line 350, in build_macro_context
+    print(f"[MacroContext] Written \u2192 {MACRO_CONTEXT_PATH}")
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\steve\AppData\Local\Programs\Python\Python313\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2192' in position 23: character maps to <undefined>
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\steve\AppData\Local\Programs\Python\Python313\Lib\logging\__init__.py", line 1154, in emit
+    stream.write(msg + self.terminator)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\steve\AppData\Local\Programs\Python\Python313\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2192' in position 68: character maps to <undefined>
+Call stack:
+  File "C:\Raptor\exit_monitor.py", line 877, in <module>
+    run_exit_monitor(dry_run=args.dry_run)
+  File "C:\Raptor\exit_monitor.py", line 205, in run_exit_monitor
+    logger.info("[MacroOverride] regime \u2192 %s (cached fallback)", _label)
+Message: '[MacroOverride] regime \u2192 %s (cached fallback)'
+Arguments: ('NEUTRAL',)
+2026-06-24 15:51:24,819 [raptor.signals] INFO: v5.4 Signals: 5 from 79 | Macro=NEUTRAL Scale=0.5 | Micro={'REVERTING': 7, 'MIXED': 61, 'TRENDING': 11} | SNR min=1.94 max=2.29
+2026-06-24 15:51:24,821 [raptor.exits] INFO: Portfolio unrealized: $-358.74 (-0.35%)
+2026-06-24 15:51:24,866 [raptor.exits] WARNING: MATH TRIM [TRIM_MODERATE] MRVL — 1 of 2 shares (42%) — Moderate trim 42% — thesis weakening
+2026-06-24 15:51:24,866 [raptor.exits] WARNING: MATH TRIM [TRIM_MODERATE] UBER — 62 of 176 shares (35%) — Moderate trim 35% — thesis weakening
+2026-06-24 15:51:24,866 [raptor.exits] INFO: 
+2026-06-24 15:51:24,866 [raptor.exits] INFO: ============================================================
+2026-06-24 15:51:24,866 [raptor.exits] INFO:   EXIT SUMMARY
+2026-06-24 15:51:24,866 [raptor.exits] INFO: ============================================================
+2026-06-24 15:51:24,866 [raptor.exits] INFO:   EXITS (2):
+2026-06-24 15:51:24,867 [raptor.exits] INFO:     MRVL  math_trim_42%  pnl=-7.5%  comp=-0.0870
+2026-06-24 15:51:24,867 [raptor.exits] INFO:     UBER  math_trim_35%  pnl=+0.7%  comp=0.1460
+2026-06-24 15:51:24,867 [raptor.exits] INFO:   HOLDS (7):
+2026-06-24 15:51:24,867 [raptor.exits] INFO:     AAL  pnl=+7.9%  trail=$15.83  comp=0.1895
+2026-06-24 15:51:24,867 [raptor.exits] INFO:     BAC  pnl=+5.4%  trail=$56.01  comp=-0.0767
+2026-06-24 15:51:24,867 [raptor.exits] INFO:     CPNG  pnl=-0.7%  trail=$15.91  comp=0.2343
+2026-06-24 15:51:24,867 [raptor.exits] INFO:     CRWV  pnl=-12.5%  trail=$93.67  comp=0.3493
+2026-06-24 15:51:24,867 [raptor.exits] INFO:     GOOGL  pnl=-3.1%  trail=$339.29  comp=0.4483
+2026-06-24 15:51:24,867 [raptor.exits] INFO:     HOOD  pnl=-10.7%  trail=$91.82  comp=0.5125
+2026-06-24 15:51:24,867 [raptor.exits] INFO:     WULF  pnl=+13.4%  trail=$26.0  comp=0.4342
+2026-06-24 15:51:24,867 [raptor.exits] INFO: ============================================================
+2026-06-24 15:51:24,871 [raptor.exits] INFO: AGENT [advisory] TRIM NVDA — 3+ deteriorating dimensions and unrealized_pct>5 (conf=0.60, from 2026-05-15T13:05:37.330779) [not executed — math trim governs]
+2026-06-24 15:51:24,871 [raptor.exits] INFO: AGENT [advisory] HOLD AMD — insufficient history: 0 days (conf=0.90, from 2026-06-05T09:52:08.933229)
+2026-06-24 15:51:24,871 [raptor.exits] INFO: AGENT [advisory] HOLD CVE — insufficient history: 0 days (conf=0.90, from 2026-05-28T15:50:34.277447)
+2026-06-24 15:51:24,871 [raptor.exits] INFO: AGENT [advisory] HOLD FXI — insufficient history: 0 days (conf=0.90, from 2026-05-19T16:30:29.205147)
+2026-06-24 15:51:24,871 [raptor.exits] INFO: AGENT [advisory] HOLD CSX — insufficient history: 0 days (conf=0.90, from 2026-06-18T09:52:09.166652)
+2026-06-24 15:51:24,871 [raptor.exits] INFO: AGENT [advisory] HOLD INTC — insufficient history: 0 days (conf=0.90, from 2026-06-05T09:52:08.933275)
+2026-06-24 15:51:24,871 [raptor.exits] INFO: AGENT [advisory] HOLD KDP — insufficient history: 0 days (conf=0.90, from 2026-06-18T09:52:09.166655)
+2026-06-24 15:51:24,871 [raptor.exits] INFO: AGENT [advisory] HOLD OWL — insufficient history: 0 days (conf=0.90, from 2026-05-17T15:50:38.416296)
+2026-06-24 15:51:24,871 [raptor.exits] INFO: AGENT [advisory] HOLD KRE — insufficient history: 0 days (conf=0.90, from 2026-06-19T15:50:16.055979)
+2026-06-24 15:51:24,871 [raptor.exits] INFO: AGENT [advisory] HOLD PLTD — insufficient history: 0 days (conf=0.90, from 2026-05-28T15:50:34.277463)
+2026-06-24 15:51:24,872 [raptor.exits] INFO: AGENT [advisory] HOLD STM — insufficient history: 0 days (conf=0.90, from 2026-06-05T09:52:08.933304)
+2026-06-24 15:51:24,872 [raptor.exits] INFO: AGENT [advisory] HOLD SMCI — insufficient history: 0 days (conf=0.90, from 2026-06-05T09:52:08.933299)
+2026-06-24 15:51:24,872 [raptor.exits] INFO: AGENT [advisory] HOLD TSLA — insufficient history: 0 days (conf=0.90, from 2026-06-05T09:52:08.933310)
+2026-06-24 15:51:24,872 [raptor.exits] INFO: AGENT [advisory] HOLD TSLL — insufficient history: 0 days (conf=0.90, from 2026-05-19T16:30:29.205168)
+2026-06-24 15:51:24,872 [raptor.exits] INFO: AGENT [advisory] HOLD TTD — insufficient history: 0 days (conf=0.90, from 2026-05-19T16:30:29.205175)
+2026-06-24 15:51:24,872 [raptor.exits] INFO: AGENT [advisory] HOLD DKNG — insufficient history: 0 days (conf=0.90, from 2026-05-29T09:52:09.312915)
+2026-06-24 15:51:24,872 [raptor.exits] INFO: AGENT [advisory] HOLD HPQ — insufficient history: 0 days (conf=0.90, from 2026-06-05T09:52:08.933265)
+2026-06-24 15:51:24,872 [raptor.exits] INFO: AGENT [advisory] HOLD MRVL — insufficient history: 0 days (conf=0.90, from 2026-06-23T19:12:42.711012)
+2026-06-24 15:51:24,872 [raptor.exits] INFO: AGENT [advisory] HOLD WFC — insufficient history: 0 days (conf=0.90, from 2026-06-19T15:50:16.055987)
+2026-06-24 15:51:24,872 [raptor.exits] INFO: AGENT [advisory] HOLD SQQQ — insufficient history: 0 days (conf=0.90, from 2026-06-15T09:52:08.207369)
+2026-06-24 15:51:24,872 [raptor.exits] INFO: AGENT [advisory] HOLD XLE — insufficient history: 0 days (conf=0.90, from 2026-06-15T09:52:08.207377)
+2026-06-24 15:51:24,872 [raptor.exits] INFO: AGENT [advisory] HOLD BAC — insufficient history: 0 days (conf=0.90, from 2026-06-23T19:12:42.710997)
+2026-06-24 15:51:24,872 [raptor.exits] INFO: AGENT [advisory] HOLD PFE — insufficient history: 0 days (conf=0.90, from 2026-06-18T09:52:09.166663)
+2026-06-24 15:51:24,872 [raptor.exits] INFO: AGENT [advisory] HOLD WULF — insufficient history: 0 days (conf=0.90, from 2026-06-23T19:12:42.711016)
+2026-06-24 15:51:24,872 [raptor.exits] INFO: AGENT [advisory] HOLD AAL — insufficient history: 0 days (conf=0.90, from 2026-06-23T19:12:42.710979)
+2026-06-24 15:51:24,872 [raptor.exits] INFO: AGENT [advisory] HOLD UBER — insufficient history: 0 days (conf=0.90, from 2026-06-23T19:12:42.711014)
+2026-06-24 15:51:24,872 [raptor.exits] INFO: AGENT [advisory] HOLD CPNG — insufficient history: 0 days (conf=0.90, from 2026-06-23T19:12:42.711001)
+2026-06-24 15:51:24,872 [raptor.exits] INFO: AGENT [advisory] HOLD CRWV — insufficient history: 0 days (conf=0.90, from 2026-06-23T19:12:42.711004)
+2026-06-24 15:51:24,873 [raptor.exits] INFO: AGENT [advisory] HOLD GOOGL — insufficient history: 0 days (conf=0.90, from 2026-06-23T19:12:42.711006)
+2026-06-24 15:51:24,873 [raptor.exits] INFO: AGENT [advisory] HOLD HOOD — insufficient history: 0 days (conf=0.90, from 2026-06-23T19:12:42.711009)
+2026-06-24 15:51:24,873 [raptor.exits] INFO: SELL 1 MRVL [math_trim_42%]
+2026-06-24 15:51:25,195 [raptor.data_feeds] INFO: Order submitted: SELL 1 MRVL @ None
+2026-06-24 15:51:25,196 [raptor.exits] INFO:   OK: OrderStatus.PENDING_NEW
+2026-06-24 15:51:25,205 [raptor.slippage] INFO: SLIPPAGE SELL 1 MRVL: decision=$272.0650 fill=PENDING (order e936e968)
+2026-06-24 15:51:25,233 [raptor.exits] INFO: SELL 62 UBER [math_trim_35%]
+2026-06-24 15:51:25,261 [raptor.data_feeds] INFO: Order submitted: SELL 62 UBER @ None
+2026-06-24 15:51:25,261 [raptor.exits] INFO:   OK: OrderStatus.PENDING_NEW
+2026-06-24 15:51:25,275 [raptor.slippage] INFO: SLIPPAGE SELL 62 UBER: decision=$73.6550 fill=PENDING (order f49601cb)
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Users\steve\AppData\Local\Programs\Python\Python313\Lib\logging\__init__.py", line 1154, in emit
+    stream.write(msg + self.terminator)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\steve\AppData\Local\Programs\Python\Python313\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2192' in position 72: character maps to <undefined>
+Call stack:
+  File "C:\Raptor\exit_monitor.py", line 877, in <module>
+    run_exit_monitor(dry_run=args.dry_run)
+  File "C:\Raptor\exit_monitor.py", line 847, in run_exit_monitor
+    logger.info("[TrimLog] Logged %d trim(s) \u2192 trim_log.json", len(_trim_exits))
+Message: '[TrimLog] Logged %d trim(s) \u2192 trim_log.json'
+Arguments: (2,)
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Users\steve\AppData\Local\Programs\Python\Python313\Lib\logging\__init__.py", line 1154, in emit
+    stream.write(msg + self.terminator)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\steve\AppData\Local\Programs\Python\Python313\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2192' in position 72: character maps to <undefined>
+Call stack:
+  File "C:\Raptor\exit_monitor.py", line 877, in <module>
+    run_exit_monitor(dry_run=args.dry_run)
+  File "C:\Raptor\exit_monitor.py", line 847, in run_exit_monitor
+    logger.info("[TrimLog] Logged %d trim(s) \u2192 trim_log.json", len(_trim_exits))
+Message: '[TrimLog] Logged %d trim(s) \u2192 trim_log.json'
+Arguments: (2,)
+
+[OutcomeTracker] Tagged 4 new trade(s) -> outcome_log.json
+2026-06-24 15:51:27,824 [raptor.slippage] INFO: SLIPPAGE BACKFILL MRVL e936e968: IS=-40.2 bps
+2026-06-24 15:51:28,147 [raptor.slippage] INFO: SLIPPAGE BACKFILL UBER f49601cb: IS=-18.3 bps
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Users\steve\AppData\Local\Programs\Python\Python313\Lib\logging\__init__.py", line 1154, in emit
+    stream.write(msg + self.terminator)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\steve\AppData\Local\Programs\Python\Python313\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2192' in position 91: character maps to <undefined>
+Call stack:
+  File "C:\Raptor\exit_monitor.py", line 877, in <module>
+    run_exit_monitor(dry_run=args.dry_run)
+  File "C:\Raptor\exit_monitor.py", line 860, in run_exit_monitor
+    logger.info("[OutcomeTracker] Tagged %d new closed trade(s) \u2192 outcome_log.json", n)
+Message: '[OutcomeTracker] Tagged %d new closed trade(s) \u2192 outcome_log.json'
+Arguments: (4,)
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Users\steve\AppData\Local\Programs\Python\Python313\Lib\logging\__init__.py", line 1154, in emit
+    stream.write(msg + self.terminator)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\steve\AppData\Local\Programs\Python\Python313\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2192' in position 91: character maps to <undefined>
+Call stack:
+  File "C:\Raptor\exit_monitor.py", line 877, in <module>
+    run_exit_monitor(dry_run=args.dry_run)
+  File "C:\Raptor\exit_monitor.py", line 860, in run_exit_monitor
+    logger.info("[OutcomeTracker] Tagged %d new closed trade(s) \u2192 outcome_log.json", n)
+Message: '[OutcomeTracker] Tagged %d new closed trade(s) \u2192 outcome_log.json'
+Arguments: (4,)
+[OutcomeTracker] Existing tagged trades : 164
+[OutcomeTracker] Pending sidecar records: 59
+[OutcomeTracker] Entry veto records     : 119
+[OutcomeTracker] Hold decision records  : 1441
+[OutcomeTracker] Filled sell orders from Alpaca: 165
+  [+] UBER     | exit: 2026-06-24 | pnl: +0.92%   | path: math_trim              | entry: PASS  | hold: HOLD
+
+[OutcomeTracker] Tagged 1 new trade(s) -> outcome_log.json
+
+==============================================================
+  OUTCOME LOG SUMMARY — 165 tagged trades
+  IC-valid (labeled exits): 103
+  Pre-label era (excluded from IC): 47
+  Crypto (excluded from IC): 12
+  Still unknown: 3
+==============================================================
+
+  Exit path breakdown:
+    crypto                   | n= 12 | win%=  50% | avg=+0.74%  [excl IC]
+    hard_stop                | n=  7 | win%=  43% | avg=-0.40%
+    math_exit                | n=  4 | win%=   0% | avg=-2.31%
+    math_trim                | n= 80 | win%=  71% | avg=+5.49%
+    pre_label                | n= 46 | win%=  35% | avg=-1.47%  [excl IC]
+    trailing_stop            | n= 12 | win%=  50% | avg=+10.37%
+    unknown                  | n=  3 | win%=  33% | avg=-2.56%  [excl IC]
+
+  By trade type:
+    MOMENTUM           | n=164 | win%=  54% | avg=+2.96%
+
+  Data quality: exit_unknown=3  pre_label=47  crypto=12
+==============================================================
+
+2026-06-24 16:30:03,448 [raptor.hold_monitor] INFO: ============================================================
+2026-06-24 16:30:03,448 [raptor.hold_monitor] INFO: RAPTOR HOLD MONITOR - 2026-06-24T16:30:03.448813
+2026-06-24 16:30:03,449 [raptor.hold_monitor] INFO: ============================================================
+2026-06-24 16:30:03,449 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-06-24 16:30:03,872 [raptor.universe] INFO: Universe from cache: 80 symbols
+2026-06-24 16:30:03,872 [raptor.hold_monitor] INFO: Fetching data for 80 symbols...
+2026-06-24 16:30:06,375 [raptor.data_feeds] INFO: Fetched 80 new bars / 80 total cached
+2026-06-24 16:30:06,534 [raptor.data_feeds] INFO: FRED regime: BULLISH (score=0.200)
+2026-06-24 16:30:07,798 [raptor.signals] INFO: v5.4 Signals: 5 from 79 | Macro=BULLISH Scale=0.5 | Micro={'REVERTING': 7, 'MIXED': 61, 'TRENDING': 11} | SNR min=1.67 max=2.35
+2026-06-24 16:30:07,814 [raptor.hold_monitor] INFO: Pre-entry tracker: 10 candidates monitored
+2026-06-24 16:30:07,818 [raptor.hold_monitor] INFO:   [GRN] AAL     health=+0.286  FAR=9/16  pnl=+8.5%  stop=2.18ATR  -> HOLD
+2026-06-24 16:30:07,821 [raptor.hold_monitor] INFO:   [YLW] BAC     health=+0.053  FAR=7/16  pnl=+5.5%  stop=1.48ATR  -> HOLD
+2026-06-24 16:30:07,825 [raptor.hold_monitor] INFO:   [YLW] CPNG    health=+0.170  FAR=9/16  pnl=-1.3%  stop=1.79ATR  -> HOLD
+2026-06-24 16:30:07,828 [raptor.hold_monitor] INFO:   [RED] CRWV    health=-0.510  FAR=10/16  pnl=-9.3%  stop=0.84ATR  -> EXIT
+2026-06-24 16:30:07,829 [raptor.hold_monitor] INFO:     DECAY: composite_slope: slope=-0.1891/day over 3d
+2026-06-24 16:30:07,829 [raptor.hold_monitor] INFO:     TRIM:  severity=0.424 x stop_mult=1.50 x far_mult=1.01 x pnl_mult=1.40 + slope_adj=0.200 = 1.103 -> 100.0% (101 sh)
+2026-06-24 16:30:07,832 [raptor.hold_monitor] INFO:   [RED] GOOGL   health=-0.189  FAR=9/16  pnl=-3.2%  stop=0.48ATR  -> TRIM_MINOR
+2026-06-24 16:30:07,832 [raptor.hold_monitor] INFO:     DECAY: price_momentum: ROC5=-7.52%  HH=0 HL=0  ClosePos=0.49  ROCtrend=-0.94
+2026-06-24 16:30:07,832 [raptor.hold_monitor] INFO:     TRIM:  severity=0.046 x stop_mult=1.50 x far_mult=1.02 x pnl_mult=1.20 + slope_adj=0.000 = 0.085 -> 8.5% (2 sh)
+2026-06-24 16:30:07,836 [raptor.hold_monitor] INFO:   [YLW] HOOD    health=-0.035  FAR=9/16  pnl=-8.8%  stop=0.73ATR  -> HOLD
+2026-06-24 16:30:07,839 [raptor.hold_monitor] INFO:   [RED] MRVL    health=-0.523  FAR=7/16  pnl=-2.1%  stop=0.42ATR  -> EXIT
+2026-06-24 16:30:07,839 [raptor.hold_monitor] INFO:     DECAY: composite_slope: slope=-0.1094/day over 5d
+2026-06-24 16:30:07,839 [raptor.hold_monitor] INFO:     TRIM:  severity=0.438 x stop_mult=1.50 x far_mult=1.04 x pnl_mult=1.20 + slope_adj=0.200 = 1.019 -> 100.0% (1 sh)
+2026-06-24 16:30:07,843 [raptor.hold_monitor] INFO:   [YLW] UBER    health=+0.090  FAR=11/16  pnl=+1.0%  stop=1.92ATR  -> HOLD
+2026-06-24 16:30:07,847 [raptor.hold_monitor] INFO:   [YLW] WULF    health=+0.198  FAR=11/16  pnl=+16.4%  stop=0.43ATR  -> HOLD
+2026-06-24 16:30:10,031 [AgentLayer] INFO: HoldAgent | Flushed 9 decisions -> hold_decisions.json
+2026-06-24 16:30:10,032 [raptor.hold_monitor] INFO: ============================================================
+2026-06-24 16:30:10,032 [raptor.hold_monitor] INFO: COMPLETE — 9 positions | STR=1  STA=5  DEC=3  INS=0
+2026-06-24 16:30:10,032 [raptor.hold_monitor] INFO: ============================================================
+2026-06-24 17:00:02,560 [raptor.factor_lab] INFO: ============================================================
+2026-06-24 17:00:02,560 [raptor.factor_lab] INFO: FACTOR IC VALIDATION LAB
+2026-06-24 17:00:02,560 [raptor.factor_lab] INFO: ============================================================
+2026-06-24 17:00:02,563 [raptor.factor_lab] INFO: Outcome observations loaded: 165 (with factor scores: 0)
+2026-06-24 17:00:02,590 [raptor.factor_lab] INFO: History observations loaded: 316
+2026-06-24 17:00:02,591 [raptor.factor_lab] INFO: Total observations: 316 (outcome=0, history=316)
+C:\Raptor\factor_lab.py:248: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  ic, _ = scipy_stats.spearmanr(f, r)
+
+======================================================================
+  FACTOR IC VALIDATION REPORT
+  Generated: 2026-06-24T17:00:06
+  Observations: 316 (outcome=0, history=316)
+======================================================================
+
+  MOMENTUM BOOK
+  Factor                 N      IC  t-stat  Stability Verdict
+  -----------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Raptor\factor_lab.py", line 559, in <module>
+    run_factor_lab()
+    ~~~~~~~~~~~~~~^^
+  File "C:\Raptor\factor_lab.py", line 494, in run_factor_lab
+    _print_report(report)
+    ~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Raptor\factor_lab.py", line 537, in _print_report
+    print(f"  {fn:<18} {n:>5} {ic_str:>7} {t_str:>7} "
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+          f"{stab_str:>10}  {verd}{flag}{warn}")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\steve\AppData\Local\Programs\Python\Python313\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u26a0' in position 71: character maps to <undefined>

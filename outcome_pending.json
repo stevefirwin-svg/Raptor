@@ -572,5 +572,25 @@
     "entry_reasoning": null,
     "entry_flags": [],
     "submitted_at": "2026-06-19T15:50:26.430704"
+  },
+  "e936e968-2419-4337-b0e5-a123f3fa1dab": {
+    "symbol": "MRVL",
+    "exit_reason": "math_trim_42%",
+    "composite": -0.087,
+    "entry_decision": "PASS",
+    "entry_confidence": 0.95,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-06-24T15:51:25.207445"
+  },
+  "f49601cb-5c68-48b1-b861-f36d50358ce4": {
+    "symbol": "UBER",
+    "exit_reason": "math_trim_35%",
+    "composite": 0.146,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-06-24T15:51:25.288857"
   }
 }

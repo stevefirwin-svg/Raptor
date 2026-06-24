@@ -1012,5 +1012,31 @@
     "agent_decision": "HOLD",
     "agent_conf": 0.9,
     "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-06-24T15:51:25.315016",
+    "symbol": "MRVL",
+    "trim_qty": 1,
+    "price": 272.065,
+    "pnl_pct": -7.53,
+    "reason": "math_trim_42%",
+    "composite": -0.087,
+    "trim_detail": "severity=0.148 x stop_mult=1.50 x far_mult=1.06 x pnl_mult=1.40 + slope_adj=0.088 = 0.416 -> 41.6% (1 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-06-24T15:51:25.315070",
+    "symbol": "UBER",
+    "trim_qty": 62,
+    "price": 73.655,
+    "pnl_pct": 0.74,
+    "reason": "math_trim_35%",
+    "composite": 0.146,
+    "trim_detail": "severity=0.172 x stop_mult=1.50 x far_mult=1.13 x pnl_mult=1.20 + slope_adj=0.000 = 0.350 -> 35.0% (62 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
   }
 ]

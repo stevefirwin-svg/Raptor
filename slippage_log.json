@@ -598,5 +598,35 @@
     "notional": 11605.41,
     "status": "OrderStatus.PENDING_NEW",
     "backfilled": true
+  },
+  {
+    "ts": "2026-06-24T19:51:25.200966+00:00",
+    "symbol": "MRVL",
+    "side": "SELL",
+    "qty": 1,
+    "decision_price": 272.065,
+    "fill_price": 273.16,
+    "is_bps": -40.25,
+    "is_dollars": -1.095,
+    "order_id": "e936e968-2419-4337-b0e5-a123f3fa1dab",
+    "exit_reason": "math_trim_42%",
+    "notional": 272.06,
+    "status": "OrderStatus.PENDING_NEW",
+    "backfilled": true
+  },
+  {
+    "ts": "2026-06-24T19:51:25.261938+00:00",
+    "symbol": "UBER",
+    "side": "SELL",
+    "qty": 62,
+    "decision_price": 73.655,
+    "fill_price": 73.79,
+    "is_bps": -18.33,
+    "is_dollars": -8.37,
+    "order_id": "f49601cb-5c68-48b1-b861-f36d50358ce4",
+    "exit_reason": "math_trim_35%",
+    "notional": 4566.61,
+    "status": "OrderStatus.PENDING_NEW",
+    "backfilled": true
   }
 ]

@@ -3,7 +3,7 @@
     "v5.4:MRVL": {
       "model": "v5.4",
       "symbol": "MRVL",
-      "shares": 2,
+      "shares": 1,
       "entry_price": 296.355,
       "entry_date": "2026-06-05",
       "metadata": {
@@ -15,7 +15,7 @@
         "composite_score": 0.3123,
         "velocity": 0.0,
         "high_water": 313.25,
-        "last_trim_ts": "2026-06-17T09:52:56.581768"
+        "last_trim_ts": "2026-06-24T15:51:25.228409"
       },
       "trims": [
         {
@@ -57,6 +57,16 @@
           "pnl_abs": -28.77,
           "shares_before": 7,
           "shares_after": 2
+        },
+        {
+          "date": "2026-06-24",
+          "reason": "math_trim_42%",
+          "shares_sold": 1,
+          "trim_price": 272.065,
+          "pnl_pct": -8.1963,
+          "pnl_abs": -24.29,
+          "shares_before": 2,
+          "shares_after": 1
         }
       ]
     },
@@ -68,13 +78,13 @@
       "entry_date": "2026-06-10",
       "metadata": {
         "t_stat": 1.6713,
-        "stop": 55.8674,
+        "stop": 56.0116,
         "tp": 0.0,
         "regime": "NEUTRAL/TRENDING",
         "kelly_fraction": 0.1015,
         "composite_score": 0.6124,
         "velocity": 0.0,
-        "high_water": 57.7301,
+        "high_water": 57.78,
         "last_trim_ts": "2026-06-16T09:52:19.383686"
       },
       "trims": [
@@ -130,7 +140,7 @@
     "v5.4:UBER": {
       "model": "v5.4",
       "symbol": "UBER",
-      "shares": 176,
+      "shares": 114,
       "entry_price": 73.16,
       "entry_date": "2026-06-16",
       "metadata": {
@@ -141,8 +151,21 @@
         "kelly_fraction": 0.12,
         "composite_score": 0.4169,
         "velocity": 0.0,
-        "high_water": 73.475
-      }
+        "high_water": 73.655,
+        "last_trim_ts": "2026-06-24T15:51:25.308775"
+      },
+      "trims": [
+        {
+          "date": "2026-06-24",
+          "reason": "math_trim_35%",
+          "shares_sold": 62,
+          "trim_price": 73.655,
+          "pnl_pct": 0.6766,
+          "pnl_abs": 30.69,
+          "shares_before": 176,
+          "shares_after": 114
+        }
+      ]
     },
     "v5.4:AAL": {
       "model": "v5.4",
@@ -152,13 +175,13 @@
       "entry_date": "2026-06-16",
       "metadata": {
         "t_stat": 1.7936,
-        "stop": 14.48,
+        "stop": 15.8329,
         "tp": 0.0,
         "regime": "NEUTRAL/MIXED",
         "kelly_fraction": 0.12,
         "composite_score": 0.4405,
         "velocity": 0.0,
-        "high_water": 16.225,
+        "high_water": 17.295,
         "last_trim_ts": "2026-06-18T09:52:20"
       },
       "trims": [
@@ -183,7 +206,7 @@
       "entry_date": "2026-06-19",
       "metadata": {
         "t_stat": 2.3579,
-        "stop": 15.56,
+        "stop": 15.9086,
         "tp": 0.0,
         "regime": "NEUTRAL/MIXED",
         "kelly_fraction": 0.12,
