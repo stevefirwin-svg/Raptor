@@ -1,11 +1,6 @@
 @echo off
 chcp 65001 >nul
-title Raptor Afternoon Monitor
 cd /d "C:\Raptor"
-echo [%date% %time%] Afternoon monitor starting >> logs\raptor_auto_start.log
-echo Running hold monitor...
-python hold_monitor.py
-echo Running exit monitor...
-python exit_monitor.py
-echo [%date% %time%] Afternoon monitor complete >> logs\raptor_auto_start.log
-:: NOTE: daily_recap.py is NOT called here — it runs separately via Start_Recap.bat at 4:30 PM
+echo [%date% %time%] Start_Afternoon_Monitor starting >> "C:\Raptor\logs\raptor_auto_start.log"
+"C:\Users\steve\AppData\Local\Programs\Python\Python313\python.exe" exit_monitor.py >> "C:\Raptor\logs\raptor_run.log" 2>&1
+echo [%date% %time%] Start_Afternoon_Monitor complete >> "C:\Raptor\logs\raptor_auto_start.log"

@@ -1,24 +1,6 @@
 @echo off
 chcp 65001 >nul
-title Raptor Analysis Lab
 cd /d "C:\Raptor"
-echo [%date% %time%] Analysis lab starting >> logs\raptor_auto_start.log
-
-echo.
-echo ============================================================
-echo  RAPTOR ANALYSIS LAB — %date% %time%
-echo ============================================================
-echo.
-
-echo [%time%] Running Factor IC Validation Lab...
-python factor_lab.py
-echo [%time%] Factor lab complete.
-
-echo.
-echo [%time%] Running Kelly Engine (shadow mode)...
-python kelly_engine.py
-echo [%time%] Kelly engine complete.
-
-echo.
-echo [%date% %time%] Analysis lab complete >> logs\raptor_auto_start.log
-echo Reports saved: factor_ic_report.json + kelly_estimates.json
+echo [%date% %time%] Start_Analysis_Lab starting >> "C:\Raptor\logs\raptor_auto_start.log"
+"C:\Users\steve\AppData\Local\Programs\Python\Python313\python.exe" factor_lab.py >> "C:\Raptor\logs\raptor_run.log" 2>&1
+echo [%date% %time%] Start_Analysis_Lab complete >> "C:\Raptor\logs\raptor_auto_start.log"

@@ -1,8 +1,6 @@
 @echo off
 chcp 65001 >nul
-title Raptor PreMarket
 cd /d "C:\Raptor"
-echo [%date% %time%] PreMarket scan starting >> logs\raptor_auto_start.log
-echo Running pre-entry hold monitor...
-python hold_monitor.py --pre
-echo [%date% %time%] PreMarket complete >> logs\raptor_auto_start.log
+echo [%date% %time%] Start_PreMarket starting >> "C:\Raptor\logs\raptor_auto_start.log"
+"C:\Users\steve\AppData\Local\Programs\Python\Python313\python.exe" premarket_scanner.py >> "C:\Raptor\logs\raptor_run.log" 2>&1
+echo [%date% %time%] Start_PreMarket complete >> "C:\Raptor\logs\raptor_auto_start.log"

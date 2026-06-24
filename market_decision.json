@@ -2,8 +2,8 @@
   "decision": "SCAN",
   "risk_scalar": 1.0,
   "confidence": null,
-  "reasoning": "Neutral macro regime with no extreme signals present.",
+  "reasoning": "Neutral macro conditions with no extreme signals present.",
   "source": "rule+llama3.2",
   "macro_regime": "NEUTRAL",
-  "timestamp": "2026-06-23T13:15:23.131991+00:00"
+  "timestamp": "2026-06-24T13:15:22.958636+00:00"
 }

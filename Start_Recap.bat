@@ -1,8 +1,6 @@
 @echo off
 chcp 65001 >nul
-title Raptor Daily Recap
 cd /d "C:\Raptor"
-echo [%date% %time%] Recap email starting >> logs\raptor_auto_start.log
-echo Sending daily recap email...
-python daily_recap.py
-echo [%date% %time%] Recap email complete >> logs\raptor_auto_start.log
+echo [%date% %time%] Start_Recap starting >> "C:\Raptor\logs\raptor_auto_start.log"
+"C:\Users\steve\AppData\Local\Programs\Python\Python313\python.exe" daily_recap.py >> "C:\Raptor\logs\raptor_run.log" 2>&1
+echo [%date% %time%] Start_Recap complete >> "C:\Raptor\logs\raptor_auto_start.log"

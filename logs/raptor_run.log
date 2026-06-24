@@ -1,0 +1,83 @@
+2026-06-23 19:12:34,923 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-06-23 19:12:35,384 [raptor.universe] INFO: Universe from cache: 79 symbols
+2026-06-23 19:12:36,399 [raptor.data_feeds] INFO: Fetched 79 new bars / 79 total cached
+2026-06-23 19:12:36,422 [raptor.data_feeds] INFO: FRED regime: BULLISH (score=0.200)
+2026-06-23 19:12:37,809 [raptor.signals] INFO: v5.4 Signals: 5 from 78 | Macro=BULLISH Scale=0.8 | Micro={'MIXED': 61, 'REVERTING': 7, 'TRENDING': 10} | SNR min=1.78 max=2.38
+2026-06-23 19:12:37,812 [raptor.hold_monitor] INFO: ============================================================
+2026-06-23 19:12:37,813 [raptor.hold_monitor] INFO: RAPTOR HOLD MONITOR - 2026-06-23T19:12:37.812902
+2026-06-23 19:12:37,813 [raptor.hold_monitor] INFO: ============================================================
+2026-06-23 19:12:37,813 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-06-23 19:12:38,194 [raptor.universe] INFO: Universe from cache: 79 symbols
+2026-06-23 19:12:38,194 [raptor.hold_monitor] INFO: Fetching data for 79 symbols...
+2026-06-23 19:12:39,113 [raptor.data_feeds] INFO: Fetched 79 new bars / 79 total cached
+2026-06-23 19:12:39,132 [raptor.data_feeds] INFO: FRED regime: BULLISH (score=0.200)
+2026-06-23 19:12:40,492 [raptor.signals] INFO: v5.4 Signals: 5 from 78 | Macro=BULLISH Scale=0.8 | Micro={'MIXED': 61, 'REVERTING': 7, 'TRENDING': 10} | SNR min=1.78 max=2.38
+2026-06-23 19:12:40,505 [raptor.hold_monitor] INFO: Pre-entry tracker: 9 candidates monitored
+2026-06-23 19:12:40,508 [raptor.hold_monitor] INFO:   [GRN] AAL     health=+0.209  FAR=9/16  pnl=+0.8%  stop=2.47ATR  -> HOLD
+2026-06-23 19:12:40,512 [raptor.hold_monitor] INFO:   [YLW] BAC     health=-0.011  FAR=5/16  pnl=+5.6%  stop=1.71ATR  -> HOLD
+2026-06-23 19:12:40,516 [raptor.hold_monitor] INFO:   [---] CPNG    health=+0.060  FAR=8/16  pnl=-2.6%  stop=1.89ATR  -> HOLD
+2026-06-23 19:12:40,520 [raptor.hold_monitor] INFO:   [---] CRWV    health=-0.218  FAR=12/16  pnl=-8.3%  stop=1.37ATR  -> HOLD
+2026-06-23 19:12:40,523 [raptor.hold_monitor] INFO:   [---] GOOGL   health=-0.345  FAR=9/16  pnl=-2.5%  stop=0.57ATR  -> HOLD
+2026-06-23 19:12:40,527 [raptor.hold_monitor] INFO:   [---] HOOD    health=+0.082  FAR=8/16  pnl=-5.4%  stop=1.58ATR  -> HOLD
+2026-06-23 19:12:40,531 [raptor.hold_monitor] INFO:   [RED] MRVL    health=-0.275  FAR=8/16  pnl=-5.2%  stop=0.47ATR  -> TRIM_MODERATE
+2026-06-23 19:12:40,531 [raptor.hold_monitor] INFO:     DECAY: price_momentum: ROC5=-9.64%  HH=0 HL=0  ClosePos=0.28  ROCtrend=-1.00
+2026-06-23 19:12:40,531 [raptor.hold_monitor] INFO:     TRIM:  severity=0.148 x stop_mult=1.50 x far_mult=1.06 x pnl_mult=1.40 + slope_adj=0.088 = 0.416 -> 41.6% (1 sh)
+2026-06-23 19:12:40,535 [raptor.hold_monitor] INFO:   [RED] UBER    health=-0.296  FAR=7/16  pnl=-4.6%  stop=0.22ATR  -> TRIM_MODERATE
+2026-06-23 19:12:40,535 [raptor.hold_monitor] INFO:     DECAY: price_momentum: ROC5=-4.34%  HH=0 HL=0  ClosePos=0.25  ROCtrend=-1.00
+2026-06-23 19:12:40,535 [raptor.hold_monitor] INFO:     TRIM:  severity=0.172 x stop_mult=1.50 x far_mult=1.13 x pnl_mult=1.20 + slope_adj=0.000 = 0.350 -> 35.0% (62 sh)
+2026-06-23 19:12:40,539 [raptor.hold_monitor] INFO:   [YLW] WULF    health=+0.027  FAR=10/16  pnl=+21.6%  stop=1.29ATR  -> HOLD
+2026-06-23 19:12:42,721 [AgentLayer] INFO: HoldAgent | Flushed 9 decisions -> hold_decisions.json
+2026-06-23 19:12:42,721 [raptor.hold_monitor] INFO: ============================================================
+2026-06-23 19:12:42,721 [raptor.hold_monitor] INFO: COMPLETE — 9 positions | STR=1  STA=2  DEC=2  INS=4
+2026-06-23 19:12:42,721 [raptor.hold_monitor] INFO: ============================================================
+Recap email sent.
+C:\Users\steve\AppData\Local\Programs\Python\Python313\python.exe: can't open file 'C:\\Raptor\\premarket_scanner.py': [Errno 2] No such file or directory
+2026-06-24 09:15:00,641 | MarketAgent | [MarketAgent] Rule-based: SCAN (scalar=1.0) — Macro NEUTRAL — full scan, normal sizing.
+2026-06-24 09:15:22,942 | MarketAgent | [MarketAgent] Mistral RAW: '{"decision": "STANDBY", "risk_scalar": null, "confidence": null, "reasoning": "Neutral macro conditions with no extreme signals present."}'
+2026-06-24 09:15:22,963 | MarketAgent | [MarketAgent] Written \u2192 market_decision.json
+2026-06-24 09:15:22,964 | MarketAgent | [MarketAgent] FINAL: SCAN | scalar=1.0 | Neutral macro conditions with no extreme signals present.
+
+==============================================================
+  MARKET AGENT DECISION — 2026-06-24T13:15:22
+==============================================================
+  Decision    : SCAN
+  Risk scalar : 1.0
+  Confidence  : None
+  Macro regime: NEUTRAL
+  Reasoning   : Neutral macro conditions with no extreme signals present.
+  Source      : rule+llama3.2
+
+==============================================================
+
+C:\Users\steve\AppData\Local\Programs\Python\Python313\python.exe: can't open file 'C:\\Raptor\\premarket_scanner.py': [Errno 2] No such file or directory
+2026-06-24 09:30:00,818 [monitor] INFO: ============================================================
+2026-06-24 09:30:00,820 [monitor] INFO: RAPTOR MONITOR â€” 2026-06-24 09:30 ET
+2026-06-24 09:30:00,820 [monitor] INFO: ============================================================
+2026-06-24 09:30:00,820 [monitor] INFO: Connecting to Alpaca...
+2026-06-24 09:30:04,946 [monitor] INFO: Running L1-Infrastructure...
+2026-06-24 09:30:04,977 [monitor] INFO:   L1-Infrastructure: 7 findings (2 non-OK)
+2026-06-24 09:30:04,977 [monitor] INFO: Running L2-Reconciliation...
+2026-06-24 09:30:05,005 [monitor] INFO:   L2-Reconciliation: 4 findings (4 non-OK)
+2026-06-24 09:30:05,006 [monitor] INFO: Running L3-PositionRisk...
+2026-06-24 09:30:05,008 [monitor] INFO:   L3-PositionRisk: 7 findings (7 non-OK)
+2026-06-24 09:30:05,008 [monitor] INFO: Running L4-Operations...
+2026-06-24 09:30:05,073 [monitor] INFO:   L4-Operations: 5 findings (4 non-OK)
+2026-06-24 09:30:05,073 [monitor] INFO: Running L5-Macro...
+2026-06-24 09:30:05,074 [monitor] INFO:   L5-Macro: 4 findings (2 non-OK)
+2026-06-24 09:30:05,074 [monitor] INFO: Running L6-Opportunity...
+2026-06-24 09:30:05,088 [monitor] INFO:   L6-Opportunity: 0 findings (0 non-OK)
+2026-06-24 09:30:05,088 [monitor] INFO: ============================================================
+2026-06-24 09:30:05,088 [monitor] INFO: SUMMARY: 0 CRITICAL  5 ALERT  11 WARN  27 total findings
+2026-06-24 09:30:06,594 [monitor] INFO: Monitor email sent: RAPTOR Monitor ðŸŸ  ALERT (5) â€” 2026-06-24
+2026-06-24 09:30:06,597 [monitor] INFO: Findings log written: logs\monitor_20260624.json
+2026-06-24 09:35:03,141 [raptor.main] INFO: ============================================================
+2026-06-24 09:35:03,141 [raptor.main] INFO: RAPTOR v5.4 DAILY SCAN - 2026-06-24T09:35:03.141820
+2026-06-24 09:35:03,141 [raptor.main] INFO: ============================================================
+[CONFIG] Raptor v5.4.0 validated
+2026-06-24 09:35:03,143 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-06-24 09:35:03,593 [raptor.main] INFO: Account: equity=$103378.91  cap=none (compound)  sizing_base=$103378.91  positions=9
+2026-06-24 09:35:03,596 [raptor.main] INFO: [MarketAgent] SCAN | scalar=1.00 | Neutral macro conditions with no extreme signals present.
+2026-06-24 09:35:03,689 [raptor.margin_guard] INFO: MARGIN GUARD: equity=$103,388  cap=none (compound)  cash=$-26,143  positions=9
+2026-06-24 09:35:03,690 [raptor.margin_guard] INFO: MARGIN GUARD: market_value=$129,531  utilization=125.3% of base  margin=YES
+2026-06-24 09:35:03,690 [raptor.margin_guard] INFO: MARGIN GUARD: margin_usage=25.3% of equity
+2026-06-24 09:35:03,690 [raptor.main] WARNING: MARGIN GUARD BLOCK: on margin ($26,143, 25.3% of equity) and margin disabled — blocking new entries — skipping entry scan

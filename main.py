@@ -12,6 +12,17 @@ MODEL_ID = "v5.4"
 COMPOSITE_CACHE_PATH = "composite_cache.json"
 COOLDOWN_LOG_PATH    = "cooldown_log.json"
 
+# ── Process lock ──────────────────────────────────────────────────────────────
+# Prevents concurrent duplicate runs. Root cause of 2026-06-19 double-orders:
+# two Task Scheduler tasks (old OneDrive path + new C:\Raptor) both fired at
+# 9:35:01, both fetched Alpaca positions before any fill confirmed, both saw 0
+# held symbols, both submitted identical orders → CPNG/HOOD/GOOGL doubled,
+# $26K margin. The all_held check was correct but lost the race.
+# Fix: first process writes a lock file with its start timestamp. Any second
+# process that finds a lock younger than LOCK_TTL_SECONDS exits immediately.
+LOCK_FILE        = "logs/raptor_scan.lock"
+LOCK_TTL_SECONDS = 30 * 60  # 30 min — longer than any normal scan
+
 os.makedirs(CONFIG.log.log_dir, exist_ok=True)
 logging.basicConfig(
     level=getattr(logging, CONFIG.log.log_level),
@@ -22,6 +33,46 @@ logging.basicConfig(
     ],
 )
 logger = logging.getLogger("raptor.main")
+
+
+# ── Process lock helpers ──────────────────────────────────────────────────────
+
+def _acquire_lock() -> bool:
+    """
+    Write a timestamp lock file. Returns False if a younger lock exists
+    (caller must abort); True if lock acquired or file-write failed (fail open —
+    don't block trading over a permissions issue).
+    """
+    os.makedirs(os.path.dirname(LOCK_FILE), exist_ok=True)
+    if os.path.exists(LOCK_FILE):
+        try:
+            age = (datetime.now() - datetime.fromisoformat(open(LOCK_FILE).read().strip())).total_seconds()
+            if age < LOCK_TTL_SECONDS:
+                logger.warning(
+                    "LOCK: another scan is already running (lock age %.0fs < %ds TTL). "
+                    "Aborting this instance to prevent duplicate orders. "
+                    "If stale, delete: %s",
+                    age, LOCK_TTL_SECONDS, os.path.abspath(LOCK_FILE),
+                )
+                return False
+            logger.warning("LOCK: stale lock (age %.0fs) — overwriting.", age)
+        except Exception as e:
+            logger.warning("LOCK: could not read lock file (%s) — overwriting.", e)
+    try:
+        with open(LOCK_FILE, "w") as f:
+            f.write(datetime.now().isoformat())
+        return True
+    except Exception as e:
+        logger.warning("LOCK: could not write lock file (%s) — proceeding without lock.", e)
+        return True
+
+
+def _release_lock():
+    try:
+        if os.path.exists(LOCK_FILE):
+            os.remove(LOCK_FILE)
+    except Exception as e:
+        logger.warning("LOCK: could not remove lock file (%s).", e)
 
 
 # ── Velocity gate ─────────────────────────────────────────────────────────────
@@ -38,26 +89,12 @@ def _load_composite_cache() -> dict:
 
 
 def _velocity_filter(signals, cache, min_velocity=-0.15):
-    """
-    Filter signals by composite velocity = today - yesterday.
-    Removes signals where the score is decelerating below min_velocity.
-    Accelerating signals (velocity > 0) are kept unconditionally.
-    Flat signals (abs(velocity) < 0.05) are kept — no data to condemn them.
-    Decelerating signals (velocity < min_velocity) are skipped.
-
-    min_velocity=-0.15: a signal must not have dropped more than 0.15
-    composite points day-over-day to qualify for entry. This prevents
-    entering a position that scored well yesterday but is already fading.
-    If cache is empty (first run), all signals pass — no data = no veto.
-    """
     if not cache:
         return signals, {}
-
     passed, velocities = [], {}
     for s in signals:
         yesterday = cache.get(s.symbol, None)
         if yesterday is None:
-            # Not in cache — new to universe, pass through
             velocities[s.symbol] = None
             passed.append(s)
             continue
@@ -74,7 +111,6 @@ def _velocity_filter(signals, cache, min_velocity=-0.15):
 # ── Cooldown gate ─────────────────────────────────────────────────────────────
 
 def _load_cooldown_log() -> dict:
-    """Load active cooldowns {symbol: stop_out_date_str}."""
     if not os.path.exists(COOLDOWN_LOG_PATH):
         return {}
     try:
@@ -85,7 +121,6 @@ def _load_cooldown_log() -> dict:
 
 
 def _save_cooldown_log(cooldowns: dict):
-    """Atomic write of cooldown log."""
     tmp = COOLDOWN_LOG_PATH + ".tmp"
     with open(tmp, "w") as f:
         json.dump(cooldowns, f, indent=2)
@@ -93,26 +128,11 @@ def _save_cooldown_log(cooldowns: dict):
 
 
 def _cooldown_filter(signals, cooldown_days=5, min_snr=0.8):
-    """
-    Block re-entry for symbols stopped out within the last cooldown_days.
-    After cooldown expires, also requires SNR > min_snr to re-qualify.
-
-    Reads cooldown_log.json {symbol: stop_out_date}.
-    Expired entries are pruned on each run (keeps file small).
-    stop-out events are logged by exit_monitor — but we also check here
-    against the ledger closed trades as a secondary source.
-
-    min_snr=0.8: the signal must show genuine conviction to re-enter
-    after a stop-out, not just barely clear the composite > 0 threshold.
-    """
     cooldowns = _load_cooldown_log()
     today = date.today()
     cutoff = today - timedelta(days=cooldown_days)
-
-    # Prune expired cooldowns
     active = {sym: d for sym, d in cooldowns.items()
               if datetime.strptime(d, "%Y-%m-%d").date() >= cutoff}
-
     passed = []
     for s in signals:
         if s.symbol in active:
@@ -122,7 +142,6 @@ def _cooldown_filter(signals, cooldown_days=5, min_snr=0.8):
                 logger.info("COOLDOWN GATE [skip] %s stopped out %s (%d days ago, need %d)",
                            s.symbol, active[s.symbol], days_since, cooldown_days)
                 continue
-            # Cooldown expired — check SNR re-qualification
             if s.t_statistic < min_snr:
                 logger.info("COOLDOWN GATE [skip] %s cooldown expired but SNR=%.3f < %.1f — not re-qualified",
                            s.symbol, s.t_statistic, min_snr)
@@ -130,23 +149,30 @@ def _cooldown_filter(signals, cooldown_days=5, min_snr=0.8):
             logger.info("COOLDOWN GATE [pass] %s cooldown expired + SNR=%.3f re-qualified",
                        s.symbol, s.t_statistic)
         passed.append(s)
-
-    # Save pruned cooldown log
     if active != cooldowns:
         _save_cooldown_log(active)
-
     return passed
 
 
 def _record_stopout_cooldown(symbol: str):
-    """Called by exit_monitor indirectly — or directly here after a stop-out fill."""
     cooldowns = _load_cooldown_log()
     cooldowns[symbol] = date.today().strftime("%Y-%m-%d")
     _save_cooldown_log(cooldowns)
     logger.info("COOLDOWN: %s added — blocked for 5 trading days", symbol)
 
 
+# ── Main scan ─────────────────────────────────────────────────────────────────
+
 def run_daily_scan():
+    if not _acquire_lock():
+        sys.exit(0)  # Clean exit — not a crash, yields to the already-running instance
+    try:
+        _run_scan()
+    finally:
+        _release_lock()
+
+
+def _run_scan():
     logger.info("=" * 60)
     logger.info("RAPTOR %s DAILY SCAN - %s", MODEL_ID, datetime.now().isoformat())
     logger.info("=" * 60)
@@ -155,15 +181,13 @@ def run_daily_scan():
     dm = DataManager(CONFIG)
     ledger = Ledger()
     positions = dm.alpaca.get_positions()
-    account = dm.alpaca.get_account()
+    account   = dm.alpaca.get_account()
 
     # Source of truth is Alpaca, not ledger
     all_held = {p["symbol"] for p in positions}
     current_position_count = len(positions)
-    # Sizing base. With equity_cap=None (default) the account compounds: Kelly
-    # sizes off the full, growing equity. With a finite cap, sizing is bounded
-    # by min(equity, cap) and excess equity sits idle.
-    _cap = CONFIG.risk.equity_cap
+
+    _cap      = CONFIG.risk.equity_cap
     my_equity = account["equity"] if _cap is None else min(account["equity"], _cap)
 
     logger.info("Account: equity=$%.2f  cap=%s  sizing_base=$%.2f  positions=%d",
@@ -171,12 +195,12 @@ def run_daily_scan():
                 "none (compound)" if _cap is None else f"${_cap:,.0f}",
                 my_equity, current_position_count)
 
-    # ── Market Agent gate — Layer 4 ───────────────────────────────────────────
+    # ── Market Agent gate ─────────────────────────────────────────────────────
     try:
         from market_agent import load_market_decision
         market_decision = load_market_decision()
-        session_mode   = market_decision.get("decision", "SCAN")
-        risk_scalar    = float(market_decision.get("risk_scalar", 1.0))
+        session_mode    = market_decision.get("decision", "SCAN")
+        risk_scalar     = float(market_decision.get("risk_scalar", 1.0))
         logger.info("[MarketAgent] %s | scalar=%.2f | %s",
                     session_mode, risk_scalar, market_decision.get("reasoning", ""))
         if session_mode == "STANDBY":
@@ -188,58 +212,49 @@ def run_daily_scan():
     except Exception as e:
         logger.warning("[MarketAgent] Unavailable (%s) — proceeding with full scan.", e)
         risk_scalar = 1.0
-    # ─────────────────────────────────────────────────────────────────────────
 
-    # ── Margin guard — block or reduce entries when overleveraged ─────────────
+    # ── Margin guard ──────────────────────────────────────────────────────────
     _mg_allowed, _mg_max_new, _mg_reason = check_margin_safety(dm)
     if not _mg_allowed:
         logger.warning("MARGIN GUARD BLOCK: %s — skipping entry scan", _mg_reason)
         return
     if _mg_max_new < CONFIG.execution.max_orders_per_scan:
         logger.warning("MARGIN GUARD REDUCE: capping new entries at %d — %s", _mg_max_new, _mg_reason)
-    # ─────────────────────────────────────────────────────────────────────────
 
-    # Dynamic universe
+    # ── Universe ──────────────────────────────────────────────────────────────
     try:
         from universe_builder import UniverseBuilder
-        ub = UniverseBuilder(CONFIG)
+        ub       = UniverseBuilder(CONFIG)
         universe = ub.build(max_symbols=150)
         logger.info("Dynamic universe: %d symbols", len(universe))
     except Exception as e:
-        # No static fallback — a fabricated universe violates Rule 3.
-        # If universe_builder fails, the filter criteria are unknown; any
-        # signals generated would be from an uncalibrated symbol set.
-        # Abort and fix the underlying error.
-        logger.error("Universe builder failed (%s) — aborting scan. Fix universe_builder before next run.", e)
+        logger.error("Universe builder failed (%s) — aborting scan.", e)
         return
     if "SPY" not in universe:
         universe.append("SPY")
 
-    dataset = dm.get_full_dataset(universe, lookback_days=CONFIG.signals.lookback_days)
+    dataset        = dm.get_full_dataset(universe, lookback_days=CONFIG.signals.lookback_days)
     bars, macro, sentiment = dataset["bars"], dataset["macro"], dataset["sentiment"]
-    spy_bars = bars.get("SPY")
+    spy_bars       = bars.get("SPY")
 
-    # P0-8: override macro["regime"] with canonical {RISK_ON,NEUTRAL,RISK_OFF,CRISIS}
-    # label from macro_context.json. data_feeds.compute_regime_score uses a different
-    # taxonomy (BULLISH/BEARISH) — without this override the EntryAgent veto rules
-    # for RISK_OFF/CRISIS can never fire.
+    # P0-8: regime label override
     try:
         import json as _mcj
-        _mc = _mcj.loads(open("macro_context.json").read())
+        _mc    = _mcj.loads(open("macro_context.json").read())
         _label = _mc.get("macro_regime") or _mc.get("regime")
         if _label in ("RISK_ON", "NEUTRAL", "RISK_OFF", "CRISIS"):
             macro["regime"] = _label
             logger.info("[MacroOverride] regime → %s (from macro_context.json)", _label)
         else:
-            logger.warning("[MacroOverride] macro_context.json has unrecognised label %r — keeping data_feeds value", _label)
+            logger.warning("[MacroOverride] unrecognised label %r — keeping data_feeds value", _label)
     except Exception as _mce:
-        logger.warning("[MacroOverride] Could not load macro_context.json (%s) — using data_feeds regime", _mce)
+        logger.warning("[MacroOverride] Could not load macro_context.json (%s)", _mce)
 
     logger.info("Data: %d symbols | Macro: %s (%.3f)",
                 len(bars), macro.get("regime","?"),
                 macro.get("macro_score", macro.get("score", 0.0)))
 
-    engine = QuantSignalEngine(CONFIG)
+    engine  = QuantSignalEngine(CONFIG)
     signals = engine.generate_signals(bars, macro, sentiment, spy_bars)
     signals = [s for s in signals if s.symbol not in all_held]
 
@@ -248,9 +263,7 @@ def run_daily_scan():
         return
 
     # ── Velocity gate ─────────────────────────────────────────────────────────
-    # Skip signals where composite score is decelerating > 0.15 points day-over-day.
-    # Prevents entering a position that scored well yesterday but is already fading.
-    comp_cache = _load_composite_cache()
+    comp_cache          = _load_composite_cache()
     signals, velocities = _velocity_filter(signals, comp_cache)
     if not signals:
         logger.info("All signals filtered by velocity gate. Patience.")
@@ -260,13 +273,10 @@ def run_daily_scan():
                               for s, v in list(velocities.items())[:5]})
 
     # ── Cooldown gate ─────────────────────────────────────────────────────────
-    # Block re-entry for symbols stopped out within last 5 trading days.
-    # Expired cooldowns require SNR > 0.8 to re-qualify.
     signals = _cooldown_filter(signals)
     if not signals:
         logger.info("All signals blocked by cooldown gate.")
         return
-    # ─────────────────────────────────────────────────────────────────────────
 
     logger.info("Signals:")
     for i, s in enumerate(signals):
@@ -294,40 +304,36 @@ def run_daily_scan():
             "macro_regime":            macro.get("regime", "NEUTRAL"),
         } for i, s in enumerate(signals)]
         agent_decisions = run_entry_screening(candidates)
-        before = len(signals)
+        before  = len(signals)
         signals = [s for s in signals if entry_passes(s.symbol, agent_decisions)]
         vetoed  = before - len(signals)
         if vetoed:
             logger.info("EntryAgent vetoed %d candidate(s).", vetoed)
     except Exception as e:
         logger.warning("EntryAgent unavailable (%s) — proceeding without screening.", e)
-    # ─────────────────────────────────────────────────────────────────────────
 
-    max_my_positions = CONFIG.risk.max_positions  # Full slots — v6 removed
-    # No-margin deployment: spend CASH only. In a cash account equity = cash +
-    # market_value, so the cash buffer alone keeps market value <= equity (no
-    # leverage). If a finite cap is set, also keep market value under the cap.
-    # buying_power is deliberately NOT used when allow_margin is False — it
-    # reflects broker margin (often ~2-4x equity) and would permit leverage.
-    _cash     = float(account.get("cash", 0))
-    _total_mv = sum(abs(float(p.get("qty", 0))) * float(p.get("current_price", 0)) for p in positions)
+    # ── Capital deployment ────────────────────────────────────────────────────
+    max_my_positions = CONFIG.risk.max_positions
+    _cash      = float(account.get("cash", 0))
+    _total_mv  = sum(abs(float(p.get("qty", 0))) * float(p.get("current_price", 0)) for p in positions)
     _cash_avail = max(0.0, _cash * 0.95)
     if CONFIG.risk.allow_margin:
         available_capital = float(account.get("buying_power", 0)) * 0.95
         _headroom_log = available_capital
     elif _cap is None:
-        available_capital = _cash_avail            # no margin, no cap → cash-bounded
-        _headroom_log = available_capital
+        available_capital = _cash_avail
+        _headroom_log     = available_capital
     else:
-        _cap_headroom = max(0.0, _cap - _total_mv)  # no margin + finite cap
+        _cap_headroom     = max(0.0, _cap - _total_mv)
         available_capital = min(_cash_avail, _cap_headroom)
-        _headroom_log = _cap_headroom
+        _headroom_log     = _cap_headroom
     logger.info(
         "Deployable: cap=%s  market_value=$%.0f  cash=$%.0f  headroom=$%.0f  available=$%.0f  (margin=%s)",
         "none" if _cap is None else f"${_cap:,.0f}",
         _total_mv, _cash, _headroom_log, available_capital,
         "ON" if CONFIG.risk.allow_margin else "OFF",
     )
+
     placed = 0
     for sig in signals:
         if current_position_count + placed >= max_my_positions:
@@ -335,23 +341,19 @@ def run_daily_scan():
         if placed >= _mg_max_new:
             logger.info("SKIP %s — margin guard cap reached (%d new positions)", sig.symbol, _mg_max_new)
             break
-        # Size from MY allocation, not full account
-        shares = int((my_equity * sig.kelly_fraction) / sig.entry_price)
+        shares     = int((my_equity * sig.kelly_fraction) / sig.entry_price)
         if shares < 1:
             continue
-        # Capital guard — never exceed available cash / cap headroom (no margin).
         order_cost = shares * sig.entry_price
         if available_capital < order_cost:
-            logger.info("SKIP %s — insufficient deployable capital ($%.2f needed, $%.2f available; no margin / cap headroom)",
+            logger.info("SKIP %s — insufficient deployable capital ($%.2f needed, $%.2f available; no margin)",
                         sig.symbol, order_cost, available_capital)
             continue
-        if CONFIG.execution.order_type == "limit":
-            limit = round(sig.entry_price + sig.entry_price * CONFIG.execution.limit_offset_bps / 10000, 2)
-        else:
-            limit = None
+        limit  = (round(sig.entry_price + sig.entry_price * CONFIG.execution.limit_offset_bps / 10000, 2)
+                  if CONFIG.execution.order_type == "limit" else None)
         result = dm.alpaca.submit_order(sig.symbol, shares, "BUY", CONFIG.execution.order_type, limit)
         if "error" not in result:
-            placed += 1
+            placed            += 1
             available_capital -= order_cost
             ledger.record_entry(MODEL_ID, sig.symbol, shares, sig.entry_price,
                                 datetime.now().strftime("%Y-%m-%d"),
@@ -361,13 +363,10 @@ def run_daily_scan():
                                  "composite_score": sig.composite_score,
                                  "velocity": velocities.get(sig.symbol)})
             logger.info("ORDER [%s]: BUY %d %s @ $%.2f", MODEL_ID, shares, sig.symbol, limit or sig.entry_price)
-            # Implementation shortfall: log decision price vs fill price (Perold 1988)
             try:
                 from slippage_tracker import record_fill as _record_fill
-                _record_fill(
-                    symbol=sig.symbol, side="BUY", qty=shares,
-                    decision_price=sig.entry_price, order_result=result,
-                )
+                _record_fill(symbol=sig.symbol, side="BUY", qty=shares,
+                             decision_price=sig.entry_price, order_result=result)
             except Exception as _se:
                 logger.warning("Slippage log failed for %s: %s", sig.symbol, _se)
         else:
@@ -377,12 +376,6 @@ def run_daily_scan():
 
 
 if __name__ == "__main__":
-    # CRASH VISIBILITY (2026-06-10): uncaught exceptions previously went only to
-    # the console window, which closes — the daily log just truncated mid-run
-    # (raptor_20260608.log died silently during universe build with no trace).
-    # Every fatal error must land in the log file. Non-zero exit code lets the
-    # watchdog/Task Scheduler see the failure.
-    import sys, logging
     try:
         run_daily_scan()
     except SystemExit:

@@ -1,9 +1,6 @@
 @echo off
 chcp 65001 >nul
-title Raptor Entry Scan
 cd /d "C:\Raptor"
-echo [%date% %time%] Entry scan starting >> logs\raptor_auto_start.log
-echo Running entry scanner...
-python main.py
-echo [%date% %time%] Entry scan complete >> logs\raptor_auto_start.log
-python morning_scanner_email.py
+echo [%date% %time%] Start_Entry starting >> "C:\Raptor\logs\raptor_auto_start.log"
+"C:\Users\steve\AppData\Local\Programs\Python\Python313\python.exe" main.py >> "C:\Raptor\logs\raptor_run.log" 2>&1
+echo [%date% %time%] Start_Entry complete >> "C:\Raptor\logs\raptor_auto_start.log"

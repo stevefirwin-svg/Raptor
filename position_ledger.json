@@ -1,37 +1,5 @@
 {
   "positions": {
-    "v5.4:KRE": {
-      "model": "v5.4",
-      "symbol": "KRE",
-      "shares": 152,
-      "entry_price": 70.11,
-      "entry_date": "2026-06-05",
-      "metadata": {
-        "t_stat": 1.4261,
-        "stop": 72.083,
-        "tp": 0.0,
-        "regime": "RISK_ON/REVERTING",
-        "kelly_fraction": 0.117,
-        "composite_score": 0.2835,
-        "velocity": 0.0,
-        "high_water": 74.13,
-        "last_trim_ts": "2026-06-16T09:52:19.782631",
-        "pending_exit": true,
-        "pending_exit_ts": "2026-06-19T15:50:26.343879"
-      },
-      "trims": [
-        {
-          "date": "2026-06-16",
-          "reason": "math_trim_14%",
-          "shares_sold": 26,
-          "trim_price": 72.83,
-          "pnl_pct": 3.8796,
-          "pnl_abs": 70.72,
-          "shares_before": 178,
-          "shares_after": 152
-        }
-      ]
-    },
     "v5.4:MRVL": {
       "model": "v5.4",
       "symbol": "MRVL",
@@ -227,7 +195,7 @@
     "v5.4:HOOD": {
       "model": "v5.4",
       "symbol": "HOOD",
-      "shares": 117,
+      "shares": 57,
       "entry_price": 109.0,
       "entry_date": "2026-06-22",
       "metadata": {
@@ -238,8 +206,22 @@
         "kelly_fraction": 0.12,
         "composite_score": 0.503,
         "velocity": 0.0,
-        "high_water": 108.5515
-      }
+        "high_water": 108.5515,
+        "last_trim_ts": "2026-06-24T11:35:35.348999"
+      },
+      "trims": [
+        {
+          "date": "2026-06-24",
+          "reason": "manual_margin_cleanup",
+          "shares_sold": 60,
+          "trim_price": 100.5,
+          "pnl_pct": -7.7982,
+          "pnl_abs": -510.0,
+          "shares_before": 117,
+          "shares_after": 57,
+          "repair_note": "60 shares oversold during 2026-06-24 manual margin cleanup (intended to sell 228 untracked duplicate shares, sold 288). Accepted as-is per Steve's decision. Price approximated."
+        }
+      ]
     },
     "v5.4:GOOGL": {
       "model": "v5.4",
@@ -1373,6 +1355,45 @@
       "exit_path": "hard_stop",
       "pnl": 5.039999999999992,
       "pnl_pct": 0.4398826979472137
+    },
+    {
+      "model": "v5.4",
+      "symbol": "KRE",
+      "shares": 152,
+      "entry_price": 70.11,
+      "entry_date": "2026-06-05",
+      "metadata": {
+        "t_stat": 1.4261,
+        "stop": 72.083,
+        "tp": 0.0,
+        "regime": "RISK_ON/REVERTING",
+        "kelly_fraction": 0.117,
+        "composite_score": 0.2835,
+        "velocity": 0.0,
+        "high_water": 74.13,
+        "last_trim_ts": "2026-06-16T09:52:19.782631",
+        "pending_exit": true,
+        "pending_exit_ts": "2026-06-19T15:50:26.343879"
+      },
+      "trims": [
+        {
+          "date": "2026-06-16",
+          "reason": "math_trim_14%",
+          "shares_sold": 26,
+          "trim_price": 72.83,
+          "pnl_pct": 3.8796,
+          "pnl_abs": 70.72,
+          "shares_before": 178,
+          "shares_after": 152
+        }
+      ],
+      "exit_price": 72.083,
+      "exit_date": "2026-06-19",
+      "exit_reason": "hard_stop",
+      "exit_path": "hard_stop",
+      "pnl": 299.9,
+      "pnl_pct": 2.8141,
+      "repair_note": "Repaired 2026-06-24 \u2014 KRE exited 2026-06-19 per exits_20260619.log (hard_stop confirmed). Ledger not updated due to stale pending_exit=True. Exit price approximated from stop price in metadata."
     }
   ]
 }
