@@ -1,75 +1,5 @@
 {
   "positions": {
-    "v5.4:MRVL": {
-      "model": "v5.4",
-      "symbol": "MRVL",
-      "shares": 1,
-      "entry_price": 296.355,
-      "entry_date": "2026-06-05",
-      "metadata": {
-        "t_stat": 1.2131,
-        "stop": 262.5693,
-        "tp": 0.0,
-        "regime": "RISK_ON/MIXED",
-        "kelly_fraction": 0.1085,
-        "composite_score": 0.3123,
-        "velocity": 0.0,
-        "high_water": 313.25,
-        "last_trim_ts": "2026-06-24T15:51:25.228409"
-      },
-      "trims": [
-        {
-          "date": "2026-06-09",
-          "reason": "math_trim_45%",
-          "shares_sold": 18,
-          "trim_price": 260.3572,
-          "pnl_pct": -12.1469,
-          "pnl_abs": -647.96,
-          "shares_before": 39,
-          "shares_after": 21
-        },
-        {
-          "date": "2026-06-11",
-          "reason": "math_trim_47%",
-          "shares_sold": 10,
-          "trim_price": 264.45,
-          "pnl_pct": -10.7658,
-          "pnl_abs": -319.05,
-          "shares_before": 21,
-          "shares_after": 11
-        },
-        {
-          "date": "2026-06-15",
-          "reason": "math_trim_40%",
-          "shares_sold": 4,
-          "trim_price": 295.42,
-          "pnl_pct": -0.3155,
-          "pnl_abs": -3.74,
-          "shares_before": 11,
-          "shares_after": 7
-        },
-        {
-          "date": "2026-06-17",
-          "reason": "math_trim_76%",
-          "shares_sold": 5,
-          "trim_price": 290.6,
-          "pnl_pct": -1.9419,
-          "pnl_abs": -28.77,
-          "shares_before": 7,
-          "shares_after": 2
-        },
-        {
-          "date": "2026-06-24",
-          "reason": "math_trim_42%",
-          "shares_sold": 1,
-          "trim_price": 272.065,
-          "pnl_pct": -8.1963,
-          "pnl_abs": -24.29,
-          "shares_before": 2,
-          "shares_after": 1
-        }
-      ]
-    },
     "v5.4:BAC": {
       "model": "v5.4",
       "symbol": "BAC",
@@ -78,13 +8,13 @@
       "entry_date": "2026-06-10",
       "metadata": {
         "t_stat": 1.6713,
-        "stop": 56.0116,
+        "stop": 56.3614,
         "tp": 0.0,
         "regime": "NEUTRAL/TRENDING",
         "kelly_fraction": 0.1015,
         "composite_score": 0.6124,
         "velocity": 0.0,
-        "high_water": 57.78,
+        "high_water": 58.08,
         "last_trim_ts": "2026-06-16T09:52:19.383686"
       },
       "trims": [
@@ -134,7 +64,9 @@
         "kelly_fraction": 0.0707,
         "composite_score": 0.35,
         "velocity": 0.0,
-        "high_water": 29.15
+        "high_water": 29.15,
+        "pending_exit": true,
+        "pending_exit_ts": "2026-06-25T15:50:26.768293"
       }
     },
     "v5.4:UBER": {
@@ -181,7 +113,7 @@
         "kelly_fraction": 0.12,
         "composite_score": 0.4405,
         "velocity": 0.0,
-        "high_water": 17.295,
+        "high_water": 17.5283,
         "last_trim_ts": "2026-06-18T09:52:20"
       },
       "trims": [
@@ -277,7 +209,26 @@
         "kelly_fraction": 0.1086,
         "composite_score": 0.3969,
         "velocity": 0.0,
-        "high_water": 114.6163
+        "high_water": 114.6163,
+        "pending_exit": true,
+        "pending_exit_ts": "2026-06-25T15:50:26.865981"
+      }
+    },
+    "v5.4:XLU": {
+      "model": "v5.4",
+      "symbol": "XLU",
+      "shares": 269,
+      "entry_price": 45.995,
+      "entry_date": "2026-06-25",
+      "metadata": {
+        "t_stat": 2.503,
+        "stop": 44.34,
+        "tp": 0.0,
+        "regime": "NEUTRAL/MIXED",
+        "kelly_fraction": 0.12,
+        "composite_score": 0.5696,
+        "velocity": 0.0,
+        "high_water": 45.9719
       }
     }
   },
@@ -1417,6 +1368,84 @@
       "pnl": 299.9,
       "pnl_pct": 2.8141,
       "repair_note": "Repaired 2026-06-24 \u2014 KRE exited 2026-06-19 per exits_20260619.log (hard_stop confirmed). Ledger not updated due to stale pending_exit=True. Exit price approximated from stop price in metadata."
+    },
+    {
+      "model": "v5.4",
+      "symbol": "MRVL",
+      "shares": 1,
+      "entry_price": 296.355,
+      "entry_date": "2026-06-05",
+      "metadata": {
+        "t_stat": 1.2131,
+        "stop": 264.1261,
+        "tp": 0.0,
+        "regime": "RISK_ON/MIXED",
+        "kelly_fraction": 0.1085,
+        "composite_score": 0.3123,
+        "velocity": 0.0,
+        "high_water": 313.25,
+        "last_trim_ts": "2026-06-24T15:51:25.228409",
+        "pending_exit": true,
+        "pending_exit_ts": "2026-06-25T15:50:27.074611"
+      },
+      "trims": [
+        {
+          "date": "2026-06-09",
+          "reason": "math_trim_45%",
+          "shares_sold": 18,
+          "trim_price": 260.3572,
+          "pnl_pct": -12.1469,
+          "pnl_abs": -647.96,
+          "shares_before": 39,
+          "shares_after": 21
+        },
+        {
+          "date": "2026-06-11",
+          "reason": "math_trim_47%",
+          "shares_sold": 10,
+          "trim_price": 264.45,
+          "pnl_pct": -10.7658,
+          "pnl_abs": -319.05,
+          "shares_before": 21,
+          "shares_after": 11
+        },
+        {
+          "date": "2026-06-15",
+          "reason": "math_trim_40%",
+          "shares_sold": 4,
+          "trim_price": 295.42,
+          "pnl_pct": -0.3155,
+          "pnl_abs": -3.74,
+          "shares_before": 11,
+          "shares_after": 7
+        },
+        {
+          "date": "2026-06-17",
+          "reason": "math_trim_76%",
+          "shares_sold": 5,
+          "trim_price": 290.6,
+          "pnl_pct": -1.9419,
+          "pnl_abs": -28.77,
+          "shares_before": 7,
+          "shares_after": 2
+        },
+        {
+          "date": "2026-06-24",
+          "reason": "math_trim_42%",
+          "shares_sold": 1,
+          "trim_price": 272.065,
+          "pnl_pct": -8.1963,
+          "pnl_abs": -24.29,
+          "shares_before": 2,
+          "shares_after": 1
+        }
+      ],
+      "exit_price": 277.35,
+      "exit_date": "2026-06-25",
+      "exit_reason": "math_exit",
+      "exit_path": "math_exit",
+      "pnl": -19.004999999999995,
+      "pnl_pct": -6.412916940831092
     }
   ]
 }

@@ -1,0 +1,218 @@
+{
+  "run_ts": "2026-06-25 09:30 ET",
+  "summary": {
+    "critical": 1,
+    "alerts": 0,
+    "warns": 8,
+    "total": 23
+  },
+  "findings": [
+    {
+      "severity": "WARN",
+      "layer": "L1-Infrastructure",
+      "code": "NO_EXIT_LOG",
+      "message": "No exit log found for today (exits_20260625.log)",
+      "detail": "exit_monitor.py may not have run, or ran before midnight",
+      "action": "Check Task Scheduler \u2014 confirm Start_AfterClose.bat fired",
+      "timestamp": "2026-06-25T09:30:04.650843"
+    },
+    {
+      "severity": "WARN",
+      "layer": "L1-Infrastructure",
+      "code": "NO_MAIN_LOG",
+      "message": "No main.py entry scan log found for today",
+      "detail": "Checked: raptor_20260625.log, raptor_v6_20260625.log",
+      "action": "Confirm Task Scheduler fired Start_Entry.bat at 9:35 AM",
+      "timestamp": "2026-06-25T09:30:04.650949"
+    },
+    {
+      "severity": "OK",
+      "layer": "L1-Infrastructure",
+      "code": "hold_health.json_FRESH",
+      "message": "hold_health.json is current (16.3h old)",
+      "detail": "",
+      "action": "",
+      "timestamp": "2026-06-25T09:30:04.651413"
+    },
+    {
+      "severity": "OK",
+      "layer": "L1-Infrastructure",
+      "code": "macro_context.json_FRESH",
+      "message": "macro_context.json is current (17.6h old)",
+      "detail": "",
+      "action": "",
+      "timestamp": "2026-06-25T09:30:04.651503"
+    },
+    {
+      "severity": "OK",
+      "layer": "L1-Infrastructure",
+      "code": "composite_cache.json_FRESH",
+      "message": "composite_cache.json is current (16.3h old)",
+      "detail": "",
+      "action": "",
+      "timestamp": "2026-06-25T09:30:04.652733"
+    },
+    {
+      "severity": "OK",
+      "layer": "L1-Infrastructure",
+      "code": "market_decision.json_FRESH",
+      "message": "market_decision.json is current (0.2h old)",
+      "detail": "",
+      "action": "",
+      "timestamp": "2026-06-25T09:30:04.652820"
+    },
+    {
+      "severity": "OK",
+      "layer": "L1-Infrastructure",
+      "code": "SUBMIT_ORDER_PRESENT",
+      "message": "AlpacaDataFeed.submit_order confirmed present (AST)",
+      "detail": "",
+      "action": "",
+      "timestamp": "2026-06-25T09:30:04.683550"
+    },
+    {
+      "severity": "CRITICAL",
+      "layer": "L2-Reconciliation",
+      "code": "STOP_ABOVE_PRICE_GOOGL",
+      "message": "GOOGL: stop=$339.290 > current price=$337.66 \u2014 EXIT 1 fires immediately",
+      "detail": "Hard stop is above current market price \u2014 exit_monitor will trigger on next run",
+      "action": "Check ledger stop for GOOGL. If this is intentional after a gap-down, acknowledge manually.",
+      "timestamp": "2026-06-25T09:30:04.714622"
+    },
+    {
+      "severity": "OK",
+      "layer": "L2-Reconciliation",
+      "code": "RECONCILIATION_CLEAN",
+      "message": "All 9 positions reconciled \u2014 Alpaca, ledger, health all aligned",
+      "detail": "",
+      "action": "",
+      "timestamp": "2026-06-25T09:30:04.714652"
+    },
+    {
+      "severity": "WARN",
+      "layer": "L3-PositionRisk",
+      "code": "STOP_PROXIMITY_CRWV",
+      "message": "CRWV: 0.8 ATR from stop with DECAYING health (pnl=-8.4%)",
+      "detail": "health=-0.510 composite=0.2640",
+      "action": "Monitor for hard stop trigger \u2014 consider whether math trim is already queued",
+      "timestamp": "2026-06-25T09:30:04.716379"
+    },
+    {
+      "severity": "WARN",
+      "layer": "L3-PositionRisk",
+      "code": "STOP_PROXIMITY_GOOGL",
+      "message": "GOOGL: 0.5 ATR from stop with DECAYING health (pnl=-5.2%)",
+      "detail": "health=-0.189 composite=0.4071",
+      "action": "Monitor for hard stop trigger \u2014 consider whether math trim is already queued",
+      "timestamp": "2026-06-25T09:30:04.716393"
+    },
+    {
+      "severity": "WARN",
+      "layer": "L3-PositionRisk",
+      "code": "STOP_PROXIMITY_MRVL",
+      "message": "MRVL: 0.4 ATR from stop with DECAYING health (pnl=-0.9%)",
+      "detail": "health=-0.523 composite=-0.1348",
+      "action": "Monitor for hard stop trigger \u2014 consider whether math trim is already queued",
+      "timestamp": "2026-06-25T09:30:04.716401"
+    },
+    {
+      "severity": "OK",
+      "layer": "L3-PositionRisk",
+      "code": "NO_TRIPLE_DETERIORATION",
+      "message": "No positions in triple-deterioration state",
+      "detail": "",
+      "action": "",
+      "timestamp": "2026-06-25T09:30:04.716406"
+    },
+    {
+      "severity": "OK",
+      "layer": "L3-PositionRisk",
+      "code": "CAPITAL_UTILIZATION_OK",
+      "message": "Capital utilization: 70.3% (NEUTRAL)",
+      "detail": "",
+      "action": "",
+      "timestamp": "2026-06-25T09:30:04.717017"
+    },
+    {
+      "severity": "WARN",
+      "layer": "L4-Operations",
+      "code": "STALE_OUTCOME_PENDING",
+      "message": "57 outcome_pending sidecar(s) older than 5 days",
+      "detail": "FXI (36d, order 27fb88a1), TTD (36d, order 4509b8a1), AMD (36d, order f6cd266a), INTC (36d, order bfc204b8), PLTD (36d, order 91abf87c), SMCI (36d, order ae323251), TSLA (36d, order 8c4368e9), TSLL (36d, order 9f95525a), AMD (35d, order ad5a7d45), DKNG (35d, order 82fc477c), PLTD (35d, order f6b4ce09), TSLA (35d, order 54e98976), DKNG (35d, order 4e237b13), KDP (35d, order de55c354), TSLA (35d, order ffe094dd), DKNG (34d, order 18870de3), CVE (34d, order 271291a3), PLTD (34d, order 200f4604), CSX (27d, order c050ffd8), DKNG (27d, order 6260b373), STM (27d, order 24bd4502), STM (27d, order 6620229d), AMD (20d, order a42e8916), HPQ (20d, order fcf340ae), INTC (20d, order 96ee90aa), SMCI (20d, order 9cd767d5), STM (20d, order fbf98d57), TSLA (20d, order 8631c535), MRVL (16d, order 8cd4ece7), MRVL (14d, order f25f5622), WFC (14d, order eedd5f0f), XLE (14d, order fad4281a), BAC (13d, order 31d8cc1e), KDP (13d, order 9b124ff6), SQQQ (13d, order daa8d3cb), WFC (13d, order a6998c6e), XLE (13d, order f58245e2), SQQQ (10d, order af5313fc), XLE (10d, order e4b5e5d6), BAC (10d, order c27fc536), KDP (10d, order a2759ace), MRVL (10d, order a3308617), WFC (10d, order a4d343a3), BAC (9d, order 53f338d4), CSX (9d, order fd060472), KDP (9d, order fc110a9a), KRE (9d, order fb30efbc), WFC (9d, order 7b432be1), CSX (8d, order c795982a), MRVL (8d, order 1d8d4c85), KDP (7d, order 918bd625), PFE (7d, order 37fdb692), AAL (7d, order 1e5603eb), CSX (7d, order 58f3717b), WFC (7d, order f35adf02), KRE (6d, order ae639a17), WFC (6d, order bda47598)",
+      "action": "Run: python outcome_tracker.py  to close out stale records",
+      "timestamp": "2026-06-25T09:30:04.730938"
+    },
+    {
+      "severity": "WARN",
+      "layer": "L4-Operations",
+      "code": "EXPIRED_COOLDOWNS",
+      "message": "4 expired cooldown block(s) still in cooldown_log.json: ['KDP', 'PFE', 'KRE', 'WFC']",
+      "detail": "These symbols are blocked from entry even though cooldown has passed",
+      "action": "These should auto-clear on next main.py run. If not, manually remove from cooldown_log.json",
+      "timestamp": "2026-06-25T09:30:04.743464"
+    },
+    {
+      "severity": "INFO",
+      "layer": "L4-Operations",
+      "code": "GATE_PROGRESS",
+      "message": "Data gates: DATA-40 \u23f3 24/40 (16 to go)  |  DATA-60 \u23f3 24/60 (36 to go)  |  DATA-100 (Kelly active) \u23f3 24/100 (76 to go)",
+      "detail": "27 total positions in position_outcomes.json, 24 clean (excl. leveraged ETPs)",
+      "action": "",
+      "timestamp": "2026-06-25T09:30:04.757798"
+    },
+    {
+      "severity": "INFO",
+      "layer": "L4-Operations",
+      "code": "KELLY_STATUS",
+      "message": "Kelly: mode=SHADOW, n_trades=61/100, f_recommended=0.01",
+      "detail": "Kelly becomes ACTIVE at 100 terminal exits. Currently in SHADOW mode (advisory only).",
+      "action": "",
+      "timestamp": "2026-06-25T09:30:04.771485"
+    },
+    {
+      "severity": "OK",
+      "layer": "L4-Operations",
+      "code": "SLIPPAGE_OK",
+      "message": "slippage_log.json: 42 records, all fills confirmed",
+      "detail": "",
+      "action": "",
+      "timestamp": "2026-06-25T09:30:04.785738"
+    },
+    {
+      "severity": "OK",
+      "layer": "L5-Macro",
+      "code": "MARKET_SCAN",
+      "message": "MarketAgent: SCAN \u2014 normal operation",
+      "detail": "",
+      "action": "",
+      "timestamp": "2026-06-25T09:30:04.786459"
+    },
+    {
+      "severity": "WARN",
+      "layer": "L5-Macro",
+      "code": "VIX_MODERATE",
+      "message": "VIX moderately elevated: 20.0",
+      "detail": "",
+      "action": "",
+      "timestamp": "2026-06-25T09:30:04.786471"
+    },
+    {
+      "severity": "OK",
+      "layer": "L5-Macro",
+      "code": "NO_REGIME_DRIFT",
+      "message": "All positions entered under regime consistent with today (NEUTRAL)",
+      "detail": "",
+      "action": "",
+      "timestamp": "2026-06-25T09:30:04.786970"
+    },
+    {
+      "severity": "INFO",
+      "layer": "L5-Macro",
+      "code": "MACRO_SUMMARY",
+      "message": "Macro: regime=NEUTRAL, score=+0.25, VIX=20.0, SPY vs 50MA=above, sector breadth=72.7%",
+      "detail": "",
+      "action": "",
+      "timestamp": "2026-06-25T09:30:04.786982"
+    }
+  ]
+}

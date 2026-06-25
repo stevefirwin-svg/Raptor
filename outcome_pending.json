@@ -592,5 +592,45 @@
     "entry_reasoning": null,
     "entry_flags": [],
     "submitted_at": "2026-06-24T15:51:25.288857"
+  },
+  "c087a664-e0b8-4b8a-86d0-ddb549af4c08": {
+    "symbol": "WULF",
+    "exit_reason": "hard_stop",
+    "composite": 0.1608,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-06-25T15:50:26.766540"
+  },
+  "a37b7e98-efcb-421f-ab14-d87eaa546abc": {
+    "symbol": "CRWV",
+    "exit_reason": "math_exit",
+    "composite": 0.0606,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-06-25T15:50:26.864297"
+  },
+  "c53e6496-1ed6-4c01-a019-e51953ead485": {
+    "symbol": "GOOGL",
+    "exit_reason": "math_trim_8%",
+    "composite": 0.1537,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-06-25T15:50:26.977503"
+  },
+  "579cd230-4236-4757-8b43-0aa59bc02bb6": {
+    "symbol": "MRVL",
+    "exit_reason": "math_exit",
+    "composite": 0.0482,
+    "entry_decision": "PASS",
+    "entry_confidence": 0.95,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-06-25T15:50:27.072869"
   }
 }
