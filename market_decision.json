@@ -1,9 +1,9 @@
 {
   "decision": "SCAN",
   "risk_scalar": 1.0,
-  "confidence": null,
-  "reasoning": "Neutral macro conditions with no extreme signals present.",
+  "confidence": 0.8,
+  "reasoning": "Neutral macro regime with broad strength and stable interest rates support full sizing.",
   "source": "rule+llama3.2",
   "macro_regime": "NEUTRAL",
-  "timestamp": "2026-06-25T13:15:22.990887+00:00"
+  "timestamp": "2026-06-26T14:40:50.207562+00:00"
 }

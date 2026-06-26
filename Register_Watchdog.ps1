@@ -1,21 +1,17 @@
-# Register_Analysis_Lab.ps1
-# Registers the Raptor Analysis Lab in Windows Task Scheduler.
-# UPDATED 2026-06-26: now points at Start_AfterClose.bat (full pipeline)
-# instead of Start_Analysis_Lab.bat (factor_lab only).
-# This ensures kelly_engine.py + dsr.py + outcome_tracker run on the same
-# schedule without a separate Register_AfterClose.ps1 conflict.
-# If Register_AfterClose.ps1 has already been run, remove one of the two
-# tasks — they would run simultaneously at 5PM and write to the same files.
+# Register_Watchdog.ps1
+# Registers the Raptor Watchdog in Windows Task Scheduler.
+# Runs Start_Watchdog.bat at 9:30 AM Mon-Fri.
+# Start_Watchdog.bat loops watchdog.py every 15 minutes and self-terminates at 4:00 PM.
 #
 # HOW TO RUN (one time, as Administrator):
 #   cd "C:\Raptor"
 #   Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
-#   .\Register_Analysis_Lab.ps1
+#   .\Register_Watchdog.ps1
 
-$TaskName   = "Raptor Analysis Lab"
+$TaskName   = "Raptor Watchdog"
 $ProjectDir = "C:\Raptor"
-$BatFile    = "$ProjectDir\Start_AfterClose.bat"
-$LogFile    = "$ProjectDir\logs\analysis_lab.log"
+$BatFile    = "$ProjectDir\Start_Watchdog.bat"
+$LogFile    = "$ProjectDir\logs\watchdog_task.log"
 
 if (Get-ScheduledTask -TaskName $TaskName -ErrorAction SilentlyContinue) {
     Unregister-ScheduledTask -TaskName $TaskName -Confirm:$false
@@ -30,12 +26,14 @@ $Action = New-ScheduledTaskAction `
 $Trigger = New-ScheduledTaskTrigger `
     -Weekly `
     -DaysOfWeek Monday, Tuesday, Wednesday, Thursday, Friday `
-    -At "05:00PM"
+    -At "09:30AM"
 
 $Settings = New-ScheduledTaskSettingsSet `
-    -ExecutionTimeLimit (New-TimeSpan -Hours 1) `
+    -ExecutionTimeLimit (New-TimeSpan -Hours 8) `
     -MultipleInstances IgnoreNew `
-    -StartWhenAvailable
+    -StartWhenAvailable `
+    -AllowStartIfOnBatteries `
+    -DontStopIfGoingOnBatteries
 
 $Principal = New-ScheduledTaskPrincipal `
     -UserId "$env:USERDOMAIN\$env:USERNAME" `
@@ -48,12 +46,14 @@ Register-ScheduledTask `
     -Trigger    $Trigger `
     -Settings   $Settings `
     -Principal  $Principal `
-    -Description "Factor IC lab + Kelly engine. Runs after close Mon-Fri 5PM."
+    -Description "Raptor intraday watchdog — hard stop + trail every 15 min, 9:30 AM - 4:00 PM ET."
 
 Write-Host ""
 Write-Host "============================================================"
 Write-Host " Task registered: $TaskName"
-Write-Host " Trigger:         Mon-Fri at 5:00 PM"
+Write-Host " Trigger:         Mon-Fri at 9:30 AM"
+Write-Host " Action:          $BatFile"
 Write-Host " Log:             $LogFile"
 Write-Host "============================================================"
-Write-Host "To verify: Open Task Scheduler and look for '$TaskName'"
+Write-Host "To verify: Get-ScheduledTaskInfo -TaskName '$TaskName'"
+Write-Host "To test now: Start-ScheduledTask -TaskName '$TaskName'"

@@ -156,3 +156,18 @@
 [Thu 06/25/2026 17:00:15.12] After-close sequence complete 
 [Fri 06/26/2026  9:00:00.77] Start_PreMarket starting 
 [Fri 06/26/2026  9:00:00.93] Start_PreMarket complete 
+[Fri 06/26/2026  9:28:00.79] Start_PreMarket starting 
+[Fri 06/26/2026  9:28:00.99] Start_PreMarket complete 
+[Fri 06/26/2026  9:45:52.52] Start_Recap starting 
+[Fri 06/26/2026  9:46:14.72] Start_Recap complete 
+[Fri 06/26/2026 10:40:16.95] Start_Recap starting 
+[Fri 06/26/2026 10:40:17.15] Start_Recap complete 
+[Fri 06/26/2026 10:40:17.49] Start_Entry starting 
+[Fri 06/26/2026 10:40:17.68] Start_Entry complete 
+[Fri 06/26/2026 10:40:17.72] Start_Intraday_Monitor starting 
+[Fri 06/26/2026 10:40:17.73] Start_Intraday_Monitor complete 
+[Fri 06/26/2026 15:50:00.35] Start_Afternoon_Monitor starting 
+[Fri 06/26/2026 15:50:14.49] Start_Afternoon_Monitor complete 
+[Fri 06/26/2026 16:15:00.48] Start_Recap starting 
+[Fri 06/26/2026 16:15:27.92] Start_Recap complete 
+[Fri 06/26/2026 17:00:00.34] After-close sequence starting 

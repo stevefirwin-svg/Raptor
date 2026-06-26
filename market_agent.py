@@ -152,41 +152,21 @@ def evaluate_session() -> dict:
         _write(decision)
         return decision
 
-    # Step 1: Rule-based decision (always runs, deterministic)
+    # Rule-based decision is the sole authoritative source (2026-06-26).
+    # LLM (Ollama/llama3.2) was previously called for advisory reasoning but
+    # introduced hallucination risk on a session-level gate that must be
+    # deterministic. The rule-based fallback was already correct — promoted here
+    # to primary. LLM removed entirely from this path.
     rule_decision = _rule_based_decision(macro)
-    logger.info(f"[MarketAgent] Rule-based: {rule_decision['decision']} "
+    logger.info(f"[MarketAgent] Decision: {rule_decision['decision']} "
                 f"(scalar={rule_decision['risk_scalar']}) — {rule_decision['reasoning']}")
 
-    # Step 2: Ask Mistral for reasoning (non-blocking — rule decision is authoritative)
-    agent_summary = macro.get("agent_summary", str(macro))
-    prompt = MARKET_PROMPT.format(macro=agent_summary)
-    mistral_decision = None
-    try:
-        raw = _call_ollama(prompt)
-        logger.info(f"[MarketAgent] Mistral RAW: {repr(raw[:300])}")
-        start = raw.find("{")
-        if start != -1:
-            depth, end = 0, start
-            for i, ch in enumerate(raw[start:], start):
-                if ch == "{": depth += 1
-                elif ch == "}":
-                    depth -= 1
-                    if depth == 0:
-                        end = i + 1
-                        break
-            mistral_decision = json.loads(raw[start:end])
-    except Exception as e:
-        logger.warning(f"[MarketAgent] Mistral unavailable: {e} — using rule-based only")
-
-    # Rule-based is authoritative for STANDBY/REDUCE/SCAN.
-    # Mistral can only provide reasoning string and confidence.
-    # It CANNOT override a STANDBY or change the risk_scalar by more than 0.1.
     final = {
         "decision":    rule_decision["decision"],
         "risk_scalar": rule_decision["risk_scalar"],
-        "confidence":  mistral_decision.get("confidence", 0.9) if mistral_decision else 0.9,
-        "reasoning":   mistral_decision.get("reasoning", rule_decision["reasoning"]) if mistral_decision else rule_decision["reasoning"],
-        "source":      "rule+llama3.2" if mistral_decision else "rule_only",
+        "confidence":  1.0,   # deterministic — no probabilistic uncertainty
+        "reasoning":   rule_decision["reasoning"],
+        "source":      "rule_deterministic",
         "macro_regime": macro.get("macro_regime", "UNKNOWN"),
         "timestamp":   datetime.now(timezone.utc).isoformat(),
     }

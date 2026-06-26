@@ -805,3 +805,108 @@ Traceback (most recent call last):
            ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 UnicodeEncodeError: 'charmap' codec can't encode character '\u26a0' in position 71: character maps to <undefined>
 C:\Users\steve\AppData\Local\Programs\Python\Python313\python.exe: can't open file 'C:\\Raptor\\premarket_scanner.py': [Errno 2] No such file or directory
+C:\Users\steve\AppData\Local\Programs\Python\Python313\python.exe: can't open file 'C:\\Raptor\\premarket_scanner.py': [Errno 2] No such file or directory
+2026-06-26 09:45:57,160 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-06-26 09:45:57,741 [raptor.universe] INFO: Universe from cache: 81 symbols
+2026-06-26 09:46:01,395 [raptor.data_feeds] INFO: Fetched 81 new bars / 81 total cached
+2026-06-26 09:46:01,449 [raptor.data_feeds] INFO: FRED regime: BULLISH (score=0.200)
+2026-06-26 09:46:03,503 [raptor.signals] INFO: v5.4 Signals: 5 from 80 | Macro=BULLISH Scale=0.5 | Micro={'MIXED': 59, 'TRENDING': 14, 'REVERTING': 7} | SNR min=1.81 max=2.32
+2026-06-26 09:46:03,506 [raptor.hold_monitor] INFO: ============================================================
+2026-06-26 09:46:03,506 [raptor.hold_monitor] INFO: RAPTOR HOLD MONITOR - 2026-06-26T09:46:03.506876
+2026-06-26 09:46:03,507 [raptor.hold_monitor] INFO: ============================================================
+2026-06-26 09:46:03,507 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-06-26 09:46:04,044 [raptor.universe] INFO: Universe from cache: 81 symbols
+2026-06-26 09:46:04,045 [raptor.hold_monitor] INFO: Fetching data for 82 symbols...
+2026-06-26 09:46:07,797 [raptor.data_feeds] INFO: Fetched 82 new bars / 82 total cached
+2026-06-26 09:46:07,830 [raptor.data_feeds] INFO: FRED regime: BULLISH (score=0.200)
+2026-06-26 09:46:09,952 [raptor.signals] INFO: v5.4 Signals: 5 from 81 | Macro=BULLISH Scale=0.5 | Micro={'MIXED': 60, 'TRENDING': 14, 'REVERTING': 7} | SNR min=1.91 max=2.35
+2026-06-26 09:46:09,969 [raptor.hold_monitor] INFO: Pre-entry tracker: 6 candidates monitored
+2026-06-26 09:46:09,974 [raptor.hold_monitor] INFO:   [GRN] AAL     health=+0.297  FAR=8/16  pnl=+9.9%  stop=2.39ATR  -> HOLD
+2026-06-26 09:46:09,979 [raptor.hold_monitor] INFO:   [YLW] BAC     health=+0.026  FAR=6/16  pnl=+5.2%  stop=1.11ATR  -> HOLD
+2026-06-26 09:46:09,983 [raptor.hold_monitor] INFO:   [RED] CPNG    health=-0.342  FAR=6/16  pnl=-4.6%  stop=1.27ATR  -> TRIM_MAJOR
+2026-06-26 09:46:09,983 [raptor.hold_monitor] INFO:     DECAY: composite_slope: slope=-0.0621/day over 5d
+2026-06-26 09:46:09,983 [raptor.hold_monitor] INFO:     TRIM:  severity=0.226 x stop_mult=1.25 x far_mult=1.17 x pnl_mult=1.20 + slope_adj=0.124 = 0.520 -> 52.0% (370 sh)
+2026-06-26 09:46:09,988 [raptor.hold_monitor] INFO:   [RED] GOOGL   health=-0.463  FAR=7/16  pnl=-5.2%  stop=-0.14ATR  -> EXIT
+2026-06-26 09:46:09,988 [raptor.hold_monitor] INFO:     DECAY: composite_slope: slope=-0.0709/day over 5d
+2026-06-26 09:46:09,988 [raptor.hold_monitor] INFO:     TRIM:  severity=0.368 x stop_mult=1.50 x far_mult=1.13 x pnl_mult=1.40 + slope_adj=0.142 = 1.013 -> 100.0% (27 sh)
+2026-06-26 09:46:09,993 [raptor.hold_monitor] INFO:   [RED] HOOD    health=-0.474  FAR=9/16  pnl=-12.9%  stop=0.40ATR  -> EXIT
+2026-06-26 09:46:09,993 [raptor.hold_monitor] INFO:     DECAY: composite_slope: slope=-0.1321/day over 5d
+2026-06-26 09:46:09,993 [raptor.hold_monitor] INFO:     TRIM:  severity=0.381 x stop_mult=1.50 x far_mult=1.00 x pnl_mult=1.40 + slope_adj=0.200 = 1.001 -> 100.0% (57 sh)
+2026-06-26 09:46:09,998 [raptor.hold_monitor] INFO:   [YLW] UBER    health=+0.131  FAR=11/16  pnl=-0.5%  stop=1.43ATR  -> HOLD
+2026-06-26 09:46:10,002 [raptor.hold_monitor] INFO:   [---] XLU     health=+0.469  FAR=9/16  pnl=+0.1%  stop=2.57ATR  -> HOLD
+2026-06-26 09:46:12,223 [AgentLayer] INFO: HoldAgent | Flushed 7 decisions -> hold_decisions.json
+2026-06-26 09:46:12,225 [raptor.hold_monitor] INFO: ============================================================
+2026-06-26 09:46:12,225 [raptor.hold_monitor] INFO: COMPLETE — 7 positions | STR=1  STA=2  DEC=3  INS=1
+2026-06-26 09:46:12,225 [raptor.hold_monitor] INFO: ============================================================
+2026-06-26 09:46:12,325 [raptor.data_feeds] INFO: Fetched 1 new bars / 8 total cached
+Recap email sent.
+2026-06-26 10:40:17,529 | MarketAgent | [MarketAgent] Rule-based: SCAN (scalar=1.0) — Macro NEUTRAL — full scan, normal sizing.
+2026-06-26 10:40:50,206 | MarketAgent | [MarketAgent] Mistral RAW: '{"decision": "SCAN", "risk_scalar": 1.0, "confidence": 0.8, "reasoning": "Neutral macro regime with broad strength and stable interest rates support full sizing."}'
+2026-06-26 10:40:50,216 | MarketAgent | [MarketAgent] Written \u2192 market_decision.json
+2026-06-26 10:40:50,224 | MarketAgent | [MarketAgent] FINAL: SCAN | scalar=1.0 | Neutral macro regime with broad strength and stable interest rates support full sizing.
+
+==============================================================
+  MARKET AGENT DECISION — 2026-06-26T14:40:50
+==============================================================
+  Decision    : SCAN
+  Risk scalar : 1.0
+  Confidence  : 0.8
+  Macro regime: NEUTRAL
+  Reasoning   : Neutral macro regime with broad strength and stable interest rates support full sizing.
+  Source      : rule+llama3.2
+
+==============================================================
+
+2026-06-26 15:50:14,208 [raptor.exits] INFO: EXIT MONITOR: past 3:50 PM cutoff — shutting down loop after 0 cycle(s).
+2026-06-26 16:15:04,483 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-06-26 16:15:04,987 [raptor.universe] INFO: Universe from cache: 81 symbols
+2026-06-26 16:15:06,697 [raptor.data_feeds] INFO: Fetched 81 new bars / 81 total cached
+2026-06-26 16:15:08,290 [raptor.data_feeds] INFO: FRED fetch OK: T10Y2Y (749 observations)
+2026-06-26 16:15:08,886 [raptor.data_feeds] INFO: FRED fetch OK: FEDFUNDS (36 observations)
+2026-06-26 16:15:10,202 [raptor.data_feeds] INFO: FRED fetch OK: ICSA (156 observations)
+2026-06-26 16:15:10,882 [raptor.data_feeds] INFO: FRED fetch OK: VIXCLS (774 observations)
+2026-06-26 16:15:11,543 [raptor.data_feeds] INFO: FRED fetch OK: BAMLC0A4CBBB (787 observations)
+2026-06-26 16:15:12,153 [raptor.data_feeds] INFO: FRED fetch OK: CPIAUCSL (35 observations)
+2026-06-26 16:15:12,685 [raptor.data_feeds] INFO: FRED fetch OK: IPMAN (36 observations)
+2026-06-26 16:15:13,219 [raptor.data_feeds] INFO: FRED fetch OK: M2SL (36 observations)
+2026-06-26 16:15:13,819 [raptor.data_feeds] INFO: FRED fetch OK: RSXFS (36 observations)
+2026-06-26 16:15:14,725 [raptor.data_feeds] INFO: FRED fetch OK: UNRATE (35 observations)
+2026-06-26 16:15:14,727 [raptor.data_feeds] INFO: FRED regime: BULLISH (score=0.200)
+2026-06-26 16:15:16,080 [raptor.signals] INFO: v5.4 Signals: 5 from 80 | Macro=BULLISH Scale=0.5 | Micro={'MIXED': 60, 'TRENDING': 14, 'REVERTING': 6} | SNR min=1.90 max=2.82
+2026-06-26 16:15:20,410 [raptor.recap] WARNING: [Recap] inline macro refresh failed ('charmap' codec can't encode character '\u2192' in position 23: character maps to <undefined>) — using cached macro_context.json
+2026-06-26 16:15:20,410 [raptor.hold_monitor] INFO: ============================================================
+2026-06-26 16:15:20,410 [raptor.hold_monitor] INFO: RAPTOR HOLD MONITOR - 2026-06-26T16:15:20.410567
+2026-06-26 16:15:20,410 [raptor.hold_monitor] INFO: ============================================================
+2026-06-26 16:15:20,411 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-06-26 16:15:20,760 [raptor.universe] INFO: Universe from cache: 81 symbols
+2026-06-26 16:15:20,761 [raptor.hold_monitor] INFO: Fetching data for 82 symbols...
+2026-06-26 16:15:21,982 [raptor.data_feeds] INFO: Fetched 82 new bars / 82 total cached
+2026-06-26 16:15:22,151 [raptor.data_feeds] INFO: FRED regime: BULLISH (score=0.200)
+2026-06-26 16:15:23,475 [raptor.signals] INFO: v5.4 Signals: 5 from 81 | Macro=BULLISH Scale=0.5 | Micro={'MIXED': 61, 'TRENDING': 14, 'REVERTING': 6} | SNR min=1.87 max=2.85
+2026-06-26 16:15:23,490 [raptor.hold_monitor] INFO: Pre-entry tracker: 6 candidates monitored
+2026-06-26 16:15:23,494 [raptor.hold_monitor] INFO:   [GRN] AAL     health=+0.317  FAR=8/16  pnl=+11.5%  stop=2.71ATR  -> HOLD
+2026-06-26 16:15:23,498 [raptor.hold_monitor] INFO:   [YLW] BAC     health=-0.037  FAR=6/16  pnl=+5.5%  stop=1.25ATR  -> HOLD
+2026-06-26 16:15:23,501 [raptor.hold_monitor] INFO:   [YLW] CPNG    health=-0.124  FAR=7/16  pnl=-2.3%  stop=1.63ATR  -> HOLD
+2026-06-26 16:15:23,505 [raptor.hold_monitor] INFO:   [RED] GOOGL   health=-0.505  FAR=8/16  pnl=-5.2%  stop=-0.28ATR  -> EXIT
+2026-06-26 16:15:23,505 [raptor.hold_monitor] INFO:     DECAY: composite_slope: slope=-0.0985/day over 5d
+2026-06-26 16:15:23,505 [raptor.hold_monitor] INFO:     TRIM:  severity=0.417 x stop_mult=1.50 x far_mult=1.06 x pnl_mult=1.40 + slope_adj=0.197 = 1.122 -> 100.0% (27 sh)
+2026-06-26 16:15:23,509 [raptor.hold_monitor] INFO:   [RED] HOOD    health=-0.486  FAR=8/16  pnl=-9.3%  stop=0.95ATR  -> EXIT
+2026-06-26 16:15:23,509 [raptor.hold_monitor] INFO:     DECAY: composite_slope: slope=-0.1486/day over 5d
+2026-06-26 16:15:23,509 [raptor.hold_monitor] INFO:     TRIM:  severity=0.396 x stop_mult=1.50 x far_mult=1.06 x pnl_mult=1.40 + slope_adj=0.200 = 1.078 -> 100.0% (57 sh)
+2026-06-26 16:15:23,512 [raptor.hold_monitor] INFO:   [GRN] UBER    health=+0.581  FAR=12/16  pnl=+4.0%  stop=2.63ATR  -> HOLD
+2026-06-26 16:15:23,516 [raptor.hold_monitor] INFO:   [---] XLU     health=+0.544  FAR=9/16  pnl=+0.4%  stop=2.81ATR  -> HOLD
+2026-06-26 16:15:25,773 [AgentLayer] INFO: HoldAgent | Flushed 7 decisions -> hold_decisions.json
+2026-06-26 16:15:25,773 [raptor.hold_monitor] INFO: ============================================================
+2026-06-26 16:15:25,773 [raptor.hold_monitor] INFO: COMPLETE — 7 positions | STR=2  STA=2  DEC=2  INS=1
+2026-06-26 16:15:25,773 [raptor.hold_monitor] INFO: ============================================================
+2026-06-26 16:15:25,846 [raptor.data_feeds] INFO: Fetched 1 new bars / 8 total cached
+[MacroContext] Fetching macro signals...
+  Fetching VIX...
+  Fetching SPY trend...
+  Fetching sector breadth...
+  Fetching yield curve (FRED T10Y2Y)...
+  Fetching credit spread (FRED BAMLC0A4CBBB)...
+  Fetching Fed funds rate (FRED FEDFUNDS)...
+
+[MacroContext] Regime: NEUTRAL  Score: +0.250
+Recap email sent.

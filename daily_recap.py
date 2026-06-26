@@ -1281,6 +1281,19 @@ def main(preview=False):
         entries, exits = get_todays_trades()
         signals, macro, scale, universe_size = get_signals(dm)
 
+        # Refresh macro_context.json inline — written at 9AM, now 7+ hours stale.
+        # Same pattern as exit_monitor already uses. Falls back to cached JSON on
+        # any failure so recap email is never blocked by a macro fetch error.
+        try:
+            from macro_context import build_macro_context as _bmc
+            _mc_fresh = _bmc()
+            if _mc_fresh.get("macro_regime") in ("RISK_ON", "NEUTRAL", "RISK_OFF", "CRISIS"):
+                macro["regime"] = _mc_fresh.get("macro_regime")
+                logger.warning("[Recap] macro_context refreshed inline: regime=%s score=%.3f",
+                               _mc_fresh.get("macro_regime"), _mc_fresh.get("macro_score", 0))
+        except Exception as _mce:
+            logger.warning("[Recap] inline macro refresh failed (%s) — using cached macro_context.json", _mce)
+
         # run_monitor is isolated — a failure here must not kill the email
         try:
             run_monitor()

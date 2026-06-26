@@ -48,7 +48,7 @@ load_dotenv()
 
 EMAIL_SENDER   = "stevefirwin@gmail.com"
 EMAIL_PASSWORD = os.getenv("EMAIL_APP_PASSWORD", "")
-EMAIL_RECEIVER = "stevefirwin@gmail.com"
+EMAIL_RECEIVER = os.getenv("EMAIL_RECEIVER", "stevefirwin+raptor@gmail.com")
 
 LOG_DIR        = Path("logs")
 TODAY          = date.today()
@@ -1116,6 +1116,20 @@ def main():
     alpaca_positions, account = get_alpaca_positions()
     if not alpaca_positions and not account:
         logger.warning("No Alpaca data available — L2/L3 will be limited")
+
+    # Refresh macro_context.json inline — written at 9AM, now 7+ hours stale.
+    # L5 regime drift analysis must use today's closing regime, not pre-market.
+    # Falls back to cached file on any failure.
+    try:
+        from macro_context import build_macro_context as _bmc_mon
+        _mc_fresh = _bmc_mon()
+        if _mc_fresh.get("macro_regime") in ("RISK_ON", "NEUTRAL", "RISK_OFF", "CRISIS"):
+            logger.info("[Monitor] macro_context refreshed inline: regime=%s score=%.3f",
+                        _mc_fresh.get("macro_regime"), _mc_fresh.get("macro_score", 0))
+        else:
+            logger.warning("[Monitor] inline macro refresh returned unrecognised regime — using cached")
+    except Exception as _mce_mon:
+        logger.warning("[Monitor] inline macro refresh failed (%s) — using cached macro_context.json", _mce_mon)
 
     # Run all layers
     all_findings: List[dict] = []

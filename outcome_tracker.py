@@ -143,9 +143,10 @@ def normalize_decision(record, agent_type: str) -> dict:
 # ── Core tagging ──────────────────────────────────────────────────────────────
 
 def build_outcome_record(sell_order, buy_order, entry_decision, hold_decision,
-                         exit_regime: str = None) -> dict:
+                         exit_regime: str = None, entry_regime: str = None) -> dict:
     # exit_regime: macro regime label at exit time (RISK_ON/NEUTRAL/RISK_OFF/CRISIS).
-    # Enables "macro regime at entry vs exit" metric. Added 2026-06-11.
+    # entry_regime: macro regime label at entry time — from ledger metadata.macro_regime.
+    # Both enable "macro regime at entry vs exit" metric. Added 2026-06-11/2026-06-26.
     symbol     = sell_order["symbol"]
     exit_ts    = sell_order["filled_at"]
     exit_price = float(sell_order.get("filled_avg_price") or 0)
@@ -201,6 +202,7 @@ def build_outcome_record(sell_order, buy_order, entry_decision, hold_decision,
         **normalize_decision(hold_decision,  "hold"),
         "tagged_at": datetime.now(timezone.utc).isoformat(),
         "exit_regime":      exit_regime,
+        "entry_regime":     entry_regime,
     }
 
 
@@ -386,17 +388,43 @@ def run_tracker(verbose: bool = True) -> int:
             entry_dec = last_decision_before(entry_vetoes, symbol, exit_ts)
         hold_dec  = last_decision_before(hold_decisions, symbol, exit_ts)
         # Stamp exit-time macro regime (added 2026-06-11)
+        # BUG FIX 2026-06-26: was .get("regime") — macro_context.json uses key "macro_regime"
         _exit_regime = None
+        _entry_regime = None
         try:
             import json as _json
             from pathlib import Path as _Path
             _mc = _Path("macro_context.json")
             if _mc.exists():
-                _exit_regime = _json.loads(_mc.read_text()).get("regime")
+                _mc_data = _json.loads(_mc.read_text())
+                _exit_regime = _mc_data.get("macro_regime") or _mc_data.get("regime")
+        except Exception:
+            pass
+        # entry_regime: read from outcome_pending sidecar (written by exit_monitor at sell time),
+        # falling back to ledger metadata for positions already closed before this fix.
+        try:
+            import json as _json2
+            from pathlib import Path as _Path2
+            _pending_path = _Path2("outcome_pending.json")
+            if _pending_path.exists():
+                _pending_all = _json2.loads(_pending_path.read_text())
+                _order_id_key = sell.get("id", "")
+                _pending_rec_er = _pending_all.get(_order_id_key, {})
+                _entry_regime = _pending_rec_er.get("entry_regime")
+            if not _entry_regime:
+                # Fallback: read from position_ledger closed entry for this symbol
+                _led_path = _Path2("position_ledger.json")
+                if _led_path.exists():
+                    _led = _json2.loads(_led_path.read_text())
+                    for _ct in reversed(_led.get("closed", [])):
+                        if _ct.get("symbol") == symbol:
+                            _entry_regime = _ct.get("entry_regime") or (_ct.get("metadata") or {}).get("macro_regime")
+                            break
         except Exception:
             pass
         record    = build_outcome_record(sell, buy, entry_dec, hold_dec,
-                                         exit_regime=_exit_regime)
+                                         exit_regime=_exit_regime,
+                                         entry_regime=_entry_regime)
         new_records.append(record)
 
         if verbose:

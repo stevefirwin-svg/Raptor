@@ -67,6 +67,18 @@ class Ledger:
             pos["pnl"]         = (exit_price - pos["entry_price"]) * pos["shares"]
             # pnl_pct as percentage (e.g. 5.2 = 5.2%), NOT raw decimal (0.052)
             pos["pnl_pct"]     = ((exit_price / pos["entry_price"]) - 1) * 100
+            # hold_days: calendar days from entry to exit — required by analytics
+            try:
+                from datetime import datetime as _dt
+                _entry = _dt.strptime(str(pos.get("entry_date", ""))[:10], "%Y-%m-%d")
+                _exit  = _dt.strptime(str(date)[:10], "%Y-%m-%d")
+                pos["hold_days"] = (_exit - _entry).days
+            except Exception:
+                pos["hold_days"] = None
+            # entry_value: notional at entry — required for capital efficiency metric
+            pos["entry_value"] = round(pos["entry_price"] * pos["shares"], 2)
+            # entry_regime: macro regime at entry time, stored in metadata by main.py
+            pos["entry_regime"] = (pos.get("metadata") or {}).get("macro_regime")
             self.data["closed"].append(pos)
             self._save()
             return pos
@@ -119,6 +131,16 @@ class Ledger:
             pos["exit_path"]   = reason
             pos["pnl_pct"]     = round(trim_pnl_pct, 4)
             pos["pnl"]         = round((trim_price - pos["entry_price"]) * shares_before, 2)
+            # hold_days, entry_value, entry_regime — same as record_exit
+            try:
+                from datetime import datetime as _dt
+                _entry = _dt.strptime(str(pos.get("entry_date", ""))[:10], "%Y-%m-%d")
+                _exit  = _dt.strptime(str(date)[:10], "%Y-%m-%d")
+                pos["hold_days"] = (_exit - _entry).days
+            except Exception:
+                pos["hold_days"] = None
+            pos["entry_value"]  = round(pos["entry_price"] * shares_before, 2)
+            pos["entry_regime"] = (pos.get("metadata") or {}).get("macro_regime")
             self.data["positions"].pop(key)
             self.data["closed"].append(pos)
 

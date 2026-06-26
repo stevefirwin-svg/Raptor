@@ -1,6 +1,6 @@
 {
-  "generated": "2026-06-24T11:41:44.936666",
-  "commit": "1280785 fix: process lock in main.py prevents duplicate orders; repair KRE ghost + HOOD oversell from margin cleanup (2026-06-24)",
+  "generated": "2026-06-26T14:37:09.181710",
+  "commit": "3210c6e fix: plus-alias email to prevent Gmail self-send suppression",
   "files": {
     "RAPTOR_MASTER_PLAN.md": {
       "md5": "5b90976a",
@@ -22,55 +22,20 @@
       "size": 14090,
       "modified": "2026-06-19T07:31:03.993088"
     },
-    "Start_Afternoon_Monitor.bat": {
-      "md5": "8f6940bb",
-      "size": 366,
-      "modified": "2026-06-23T19:01:55.321395"
-    },
-    "Start_Analysis_Lab.bat": {
-      "md5": "5fb3ea65",
-      "size": 354,
-      "modified": "2026-06-23T19:01:55.312418"
-    },
-    "Start_Entry.bat": {
-      "md5": "03c5e1e2",
-      "size": 334,
-      "modified": "2026-06-23T19:01:55.337626"
-    },
-    "Start_Intraday_Monitor.bat": {
-      "md5": "e1fd5fb1",
-      "size": 366,
-      "modified": "2026-06-23T19:01:55.315270"
-    },
-    "Start_Monitor.bat": {
-      "md5": "3cad072e",
-      "size": 346,
-      "modified": "2026-06-23T19:01:55.342897"
-    },
-    "Start_PreMarket.bat": {
-      "md5": "c5af41e1",
-      "size": 355,
-      "modified": "2026-06-23T19:01:55.324472"
-    },
-    "Start_Recap.bat": {
-      "md5": "38166eab",
-      "size": 341,
-      "modified": "2026-06-23T19:01:55.332384"
-    },
     "agent_layer.py": {
       "md5": "c41e7372",
       "size": 21302,
       "modified": "2026-06-22T05:59:57.090255"
     },
-    "composite_cache.json": {
-      "md5": "dd884358",
-      "size": 1221,
-      "modified": "2026-06-23T19:12:40.480254"
-    },
     "config.py": {
       "md5": "379f0c6f",
       "size": 6535,
       "modified": "2026-06-19T06:51:28.122877"
+    },
+    "daily_recap.py": {
+      "md5": "70879c06",
+      "size": 65969,
+      "modified": "2026-06-26T14:28:42.234710"
     },
     "data_feeds.py": {
       "md5": "7b206788",
@@ -78,104 +43,44 @@
       "modified": "2026-06-19T06:51:28.133772"
     },
     "exit_monitor.py": {
-      "md5": "426ec7ee",
-      "size": 47655,
-      "modified": "2026-06-19T06:51:28.145321"
-    },
-    "fix_duplicate_task.ps1": {
-      "md5": "02a0070a",
-      "size": 2609,
-      "modified": "2026-06-24T11:19:17.708707"
-    },
-    "hold_decisions.json": {
-      "md5": "6de41a9f",
-      "size": 326041,
-      "modified": "2026-06-23T19:12:42.711006"
-    },
-    "hold_health.json": {
-      "md5": "c8cb693b",
-      "size": 34478,
-      "modified": "2026-06-23T19:12:40.613431"
-    },
-    "hold_history.json": {
-      "md5": "f3d04ee9",
-      "size": 895790,
-      "modified": "2026-06-23T19:12:40.608299"
+      "md5": "f69cdaf4",
+      "size": 49004,
+      "modified": "2026-06-26T14:36:46.721519"
     },
     "logs/github_push.log": {
-      "md5": "ba386735",
-      "size": 10952,
-      "modified": "2026-06-23T18:00:04.648308"
-    },
-    "logs/monitor_20260624.json": {
-      "md5": "3a8d6b0b",
-      "size": 11175,
-      "modified": "2026-06-24T09:30:06.597530"
-    },
-    "logs/monitor_run_20260624.log": {
-      "md5": "cc068fad",
-      "size": 1633,
-      "modified": "2026-06-24T09:30:06.597530"
-    },
-    "logs/raptor_20260624.log": {
-      "md5": "4079c19e",
-      "size": 1194,
-      "modified": "2026-06-24T09:35:03.688267"
+      "md5": "3727cfb8",
+      "size": 11490,
+      "modified": "2026-06-25T18:00:02.701610"
     },
     "logs/raptor_auto_start.log": {
-      "md5": "593ca060",
-      "size": 6975,
-      "modified": "2026-06-24T09:35:04.026078"
+      "md5": "c1f324ec",
+      "size": 9251,
+      "modified": "2026-06-26T10:40:17.756468"
     },
     "logs/raptor_run.log": {
-      "md5": "743e9d91",
-      "size": 7961,
-      "modified": "2026-06-24T09:35:03.688267"
-    },
-    "logs/recap.log": {
-      "md5": "1deeabc7",
-      "size": 3792,
-      "modified": "2026-06-23T18:57:39.998901"
-    },
-    "logs/recap_errors.log": {
-      "md5": "cde4c19b",
-      "size": 6720,
-      "modified": "2026-06-23T19:12:44.273568"
-    },
-    "logs/recap_manual_test.log": {
-      "md5": "3010a6d4",
-      "size": 10044,
-      "modified": "2026-06-23T18:49:48.909157"
+      "md5": "c2854b04",
+      "size": 70570,
+      "modified": "2026-06-26T10:40:50.242008"
     },
     "main.py": {
-      "md5": "0b8730fe",
-      "size": 17976,
-      "modified": "2026-06-24T11:35:20.212374"
-    },
-    "market_decision.json": {
-      "md5": "41cc8cfa",
-      "size": 261,
-      "modified": "2026-06-24T09:15:22.961953"
+      "md5": "0771f146",
+      "size": 18086,
+      "modified": "2026-06-26T14:18:09.723003"
     },
     "outcome_log.json": {
-      "md5": "5de9bc52",
-      "size": 126363,
-      "modified": "2026-06-22T15:50:29.450403"
+      "md5": "f00ccc2e",
+      "size": 133813,
+      "modified": "2026-06-25T16:15:02.663475"
     },
     "position_ledger.json": {
-      "md5": "9228703c",
-      "size": 40723,
-      "modified": "2026-06-24T11:35:35.355723"
+      "md5": "23079b86",
+      "size": 42248,
+      "modified": "2026-06-25T15:50:27.096786"
     },
     "position_outcomes.json": {
       "md5": "22aec649",
       "size": 26175,
       "modified": "2026-06-19T06:51:28.505170"
-    },
-    "repair_ledger_20260624.py": {
-      "md5": "5d2b02a5",
-      "size": 6586,
-      "modified": "2026-06-24T11:35:20.230708"
     },
     "signals.py": {
       "md5": "2cf4a902",

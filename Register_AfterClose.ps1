@@ -1,21 +1,23 @@
-# Register_Analysis_Lab.ps1
-# Registers the Raptor Analysis Lab in Windows Task Scheduler.
-# UPDATED 2026-06-26: now points at Start_AfterClose.bat (full pipeline)
-# instead of Start_Analysis_Lab.bat (factor_lab only).
-# This ensures kelly_engine.py + dsr.py + outcome_tracker run on the same
-# schedule without a separate Register_AfterClose.ps1 conflict.
-# If Register_AfterClose.ps1 has already been run, remove one of the two
-# tasks — they would run simultaneously at 5PM and write to the same files.
+# Register_AfterClose.ps1
+# Registers the Raptor After-Close pipeline in Windows Task Scheduler.
+# Runs Start_AfterClose.bat at 5:00 PM Mon-Fri.
+#
+# Pipeline (in order):
+#   1. outcome_tracker.py    — tag closed trades → outcome_log.json
+#   2. factor_lab.py         — Spearman IC + ICIR validation → factor_ic_report.json
+#   3. kelly_engine.py       — bootstrap Kelly update → kelly_estimates.json
+#   4. dsr.py                — Deflated Sharpe Ratio → (printed, read from position_outcomes.json)
+#   5. git add -A + push     — daily snapshot to GitHub
 #
 # HOW TO RUN (one time, as Administrator):
 #   cd "C:\Raptor"
 #   Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
-#   .\Register_Analysis_Lab.ps1
+#   .\Register_AfterClose.ps1
 
-$TaskName   = "Raptor Analysis Lab"
+$TaskName   = "Raptor AfterClose"
 $ProjectDir = "C:\Raptor"
 $BatFile    = "$ProjectDir\Start_AfterClose.bat"
-$LogFile    = "$ProjectDir\logs\analysis_lab.log"
+$LogFile    = "$ProjectDir\logs\afterclose_task.log"
 
 if (Get-ScheduledTask -TaskName $TaskName -ErrorAction SilentlyContinue) {
     Unregister-ScheduledTask -TaskName $TaskName -Confirm:$false
@@ -35,7 +37,9 @@ $Trigger = New-ScheduledTaskTrigger `
 $Settings = New-ScheduledTaskSettingsSet `
     -ExecutionTimeLimit (New-TimeSpan -Hours 1) `
     -MultipleInstances IgnoreNew `
-    -StartWhenAvailable
+    -StartWhenAvailable `
+    -AllowStartIfOnBatteries `
+    -DontStopIfGoingOnBatteries
 
 $Principal = New-ScheduledTaskPrincipal `
     -UserId "$env:USERDOMAIN\$env:USERNAME" `
@@ -48,12 +52,14 @@ Register-ScheduledTask `
     -Trigger    $Trigger `
     -Settings   $Settings `
     -Principal  $Principal `
-    -Description "Factor IC lab + Kelly engine. Runs after close Mon-Fri 5PM."
+    -Description "Raptor after-close pipeline: outcome tagging, factor IC, Kelly, DSR, git push. Mon-Fri 5PM."
 
 Write-Host ""
 Write-Host "============================================================"
 Write-Host " Task registered: $TaskName"
 Write-Host " Trigger:         Mon-Fri at 5:00 PM"
+Write-Host " Action:          $BatFile"
 Write-Host " Log:             $LogFile"
 Write-Host "============================================================"
-Write-Host "To verify: Open Task Scheduler and look for '$TaskName'"
+Write-Host "To verify: Get-ScheduledTaskInfo -TaskName '$TaskName'"
+Write-Host "To test now: Start-ScheduledTask -TaskName '$TaskName'"

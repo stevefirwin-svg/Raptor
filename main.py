@@ -361,7 +361,8 @@ def _run_scan():
                                  "tp": sig.take_profit, "regime": sig.regime,
                                  "kelly_fraction": sig.kelly_fraction,
                                  "composite_score": sig.composite_score,
-                                 "velocity": velocities.get(sig.symbol)})
+                                 "velocity": velocities.get(sig.symbol),
+                                 "macro_regime": macro.get("regime") or macro.get("macro_regime", "NEUTRAL")})
             logger.info("ORDER [%s]: BUY %d %s @ $%.2f", MODEL_ID, shares, sig.symbol, limit or sig.entry_price)
             try:
                 from slippage_tracker import record_fill as _record_fill
