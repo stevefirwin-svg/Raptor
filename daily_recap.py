@@ -44,7 +44,7 @@ logger = logging.getLogger("raptor.recap")
 
 EMAIL_SENDER = "stevefirwin@gmail.com"
 EMAIL_PASSWORD = os.getenv("EMAIL_APP_PASSWORD", "")   # SECURITY 2026-06-10: never hardcode — repo is public. Set EMAIL_APP_PASSWORD in .env
-EMAIL_RECEIVER = "stevefirwin@gmail.com"
+EMAIL_RECEIVER = os.getenv("EMAIL_RECEIVER", "stevefirwin+raptor@gmail.com")
 
 LEDGER_FILE = "position_ledger.json"
 CRYPTO_LEDGER = "crypto_ledger.json"

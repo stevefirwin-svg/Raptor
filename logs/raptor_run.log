@@ -804,3 +804,4 @@ Traceback (most recent call last):
     return codecs.charmap_encode(input,self.errors,encoding_table)[0]
            ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 UnicodeEncodeError: 'charmap' codec can't encode character '\u26a0' in position 71: character maps to <undefined>
+C:\Users\steve\AppData\Local\Programs\Python\Python313\python.exe: can't open file 'C:\\Raptor\\premarket_scanner.py': [Errno 2] No such file or directory
