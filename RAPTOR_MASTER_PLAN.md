@@ -1,5 +1,5 @@
 # Raptor — Master Priority Plan
-*Last updated: 2026-06-19 (session 8 — OneDrive migration, ledger repair, path cleanup)*
+*Last updated: 2026-06-28 (session 9 — repo audit, CRLF line-ending issue, P2-9 fix)*
 *Supersedes all prior versions. This is the single source of truth.*
 
 ---
@@ -116,6 +116,37 @@ At current pace (~7 positions/week): DATA-40 in ~2 weeks, DATA-60 in ~5 weeks.
 | S5-5 | position_outcomes.json — 27 independent positions aggregated from 76 trim events |
 | S5-6 | dsr.py updated to use position_outcomes.json — true DSR 59.8% (was falsely 99.9%) |
 
+## Session 9 — Repo Audit (2026-06-28)
+
+**Critical infra finding — CRLF line-ending corruption risk (not yet fixed, needs Steve decision):**
+`git diff --stat` showed 347 files "modified" with ~114,460 insertions / 114,455 deletions —
+nearly every tracked file. Root cause: the working tree on `C:\Raptor` has CRLF line endings
+(`file signals.py` → "with CRLF line terminators") while the git history is LF, and there is no
+`.gitattributes` and no `core.autocrlf` set. Confirmed via `git diff --ignore-space-at-eol`:
+**only 1 file has a real content change** (`logs/github_push.log`, +5 lines). Everything else
+is pure whitespace/EOL noise. Risk: the next `git add -A && git commit` (e.g. via
+`Daily_GitHub_Push.bat`) will commit a ~115K-line diff across 346 files for zero functional
+change, permanently polluting `git log` / `git blame` and burying any real future diff in noise.
+**Fix applied and committed this session:** added `.gitattributes` with `* text=auto eol=lf`,
+ran `git add --renormalize .`, and committed. `core.autocrlf` set to `false` to keep future
+commits clean given the working tree stays CRLF on disk (Windows) while git stores LF.
+
+**Fixes applied and verified this session (Rule 11):**
+| ID | Fix |
+|----|-----|
+| S9-1 | `hold_monitor.py::_score_stop_distance` — `stop_dist_atr == 0` (price at/through stop) now scores -1.0 (was neutral 0.0, same code path as missing data). Matches P2-9 in known issues. |
+| S9-2 | `signals.py` — two bare `except: continue` / `except: ... = None` blocks (factor computation loop, Ridge regression fit) replaced with `except Exception as e: logger.warning(...)`. Failures were previously invisible — a growing fraction of the universe could silently drop out of scoring with no log trace. |
+
+**Corrections to stale doc claims found during audit:**
+- **P2-7 (OBV magic constant 1000)** was already fixed in code (see comment in `hold_monitor.py::_score_volume`: normalizes by rolling std of OBV slopes instead of a hardcoded 1000 floor) but was never marked done in this plan or removed from the ontology's open-gaps list. Removed below.
+- **P2-8 (ATR expansion binary)** — doc previously said the 0.80–1.20 range scores exactly 0.0. Actual code (`hold_monitor.py::_score_volatility`) scores 0.0 only for `atr_exp < 0.80` (contraction) and a flat 0.2 for the 0.80–1.20 normal band. Still not continuous (still loses information, still worth fixing) but the documented value was wrong. Corrected in ontology §14.3.
+
+**Repo cleanup — done this session:**
+- Deleted 9 zip/patch files in repo root with no remaining purpose: `files.zip` (duplicate of 9 files already present individually in root), `raptor_s4b_slippage.zip`, `raptor_s4c_neutralization.zip`, `raptor_s4d_dsr.zip`, `raptor_s5_fixes.zip`, `raptor_s5b_positions.zip`, `raptor_s5c_markdowns.zip`, `morning_email.patch`, `raptor_fixes_20260524.patch`.
+- Deleted `archive/backfill_ledger.py` — was byte-identical to root `backfill_ledger.py`, true duplicate, served no archival purpose.
+- Deleted 4 stray "Copy" files in `logs/`: `github_push - Copy.log`, `raptor_20260331 - Copy.log`, `raptor_auto_start - Copy.log`, `trades - Copy.csv`.
+- `outcome_tracker_v2.py` left in `archive/` — unreferenced anywhere but kept for archival history (not a true duplicate, just dead code).
+
 ## Session 8 Fixes (2026-06-19)
 
 | ID | Fix |
@@ -157,10 +188,10 @@ At current pace (~7 positions/week): DATA-40 in ~2 weeks, DATA-60 in ~5 weeks.
 | 2 | ARCH-2: HMM macro regime for Raptor | macro_context.py | Hamilton (1989) via hmmlearn; probability vector output, no discrete labels. Ares already has it. |
 | 3 | ARCH-5: Point-in-time universe | universe_builder.py | Requires external data source (Quandl/Sharadar). Survivorship warning already in backtest. |
 | 4 | margin_guard.py WARN_THRESHOLD derivation | margin_guard.py | TODO:DERIVE — needs equity curve data. Guard is fully wired and correct; threshold needs calibration. |
-| 5 | P2-8: ATR expansion binary → continuous | hold_monitor.py | Layer returns 0.0 for 0.80–1.20 range — loses information in normal volatility |
-| 6 | P2-9: Stop distance layer zero signal | hold_monitor.py | Zero stop distance should be strong negative, not neutral |
+| 5 | P2-8: ATR expansion binary → continuous | hold_monitor.py | Flat 0.2 for 0.80–1.20 range (corrected description 2026-06-28, was documented as 0.0) — still not continuous, still loses information |
+| 6 | ~~P2-9: Stop distance layer zero signal~~ | hold_monitor.py | **FIXED 2026-06-28 (S9-1)** — dist==0 now scores -1.0 |
 | 7 | P1-15: Sentiment dead path | signals.py | sentiment_score always 0.0 — remove or fix the pipeline |
-| 8 | raptor_session4_fixes.zip in repo | repo root | `del raptor_session4_fixes.zip` + `git rm` if present |
+| 8 | ~~7 zip/patch files + duplicate + Copy files in repo root~~ | repo root | **DELETED 2026-06-28 (session 9)** — see cleanup list above |
 | 9 | Consume hold_target_low/high/reliable downstream | hold_monitor.py, daily_recap.py | New fields exist on Signal (S6-4) but time-exit logic and recap email don't read them yet — a `reliable=False` position is currently treated identically to a high-confidence one |
 
 ### DATA-40 gate (≥40 independent positions in position_outcomes.json)
@@ -240,7 +271,8 @@ At current pace (~7 positions/week): DATA-40 in ~2 weeks, DATA-60 in ~5 weeks.
 | macro_context.py vote-count thresholds — no statistical basis | Regime misclassification risk | ARCH-2: replace with HMM |
 | position_outcomes.json built manually — not auto-updated after close | New positions won't appear until Claude rebuilds it | Add to Start_AfterClose.bat |
 | WFC/KRE stops above price (as of Jun 18) | EXIT 1 will fire on next exit_monitor run — expected, not a bug | Self-resolving Mon 9:52 AM |
-| raptor_s5b_positions.zip / raptor_s4c_neutralization.zip in repo root | Unnecessary repo weight | `git rm` when convenient |
+| `outcome_tracker_v2.py` unreferenced in `archive/` | Dead code, harmless | Low — delete whenever convenient |
+| **CRLF line-ending mismatch** | **RESOLVED 2026-06-28** — `.gitattributes` (`* text=auto eol=lf`) added, `git add --renormalize .` run and committed, `core.autocrlf=false` set | Done |
 
 ---
 

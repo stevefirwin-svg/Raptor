@@ -245,7 +245,9 @@ class AdaptiveWeights:
         X=np.array([[tr.get(fn,0) for fn in self.factor_names] for tr in t])
         y=np.array([tr["y"] for tr in t]); k=len(self.factor_names)
         try: self.data["ridge_beta"]=np.linalg.solve(X.T@X+self.RIDGE_LAMBDA*np.eye(k),X.T@y).tolist()
-        except: self.data["ridge_beta"]=None
+        except Exception as e:
+            logger.warning("Ridge regression fit failed (%s), falling back to base weights", e)
+            self.data["ridge_beta"]=None
     def blend_weights(self, base):
         if self.data["ridge_beta"] is None and not self.data.get("ic_weights"):
             return base
@@ -598,7 +600,9 @@ class QuantSignalEngine:
             try:
                 r=self._raw(sym,bars,spy_bars); raw[sym]=r
                 micros[sym]=self._detect_micro(r["hurst"],bars,adx_val=r["_adx_raw"])
-            except: continue
+            except Exception as e:
+                logger.warning("Factor computation failed for %s, skipping: %s", sym, e)
+                continue
         if len(raw)<10: return []
         syms=list(raw.keys()); zmat={}
         for fn in FACTOR_NAMES:
@@ -838,4 +842,3 @@ class QuantSignalEngine:
         except Exception as _ce:
             logger.warning("CompCache write failed: %s",_ce)
         return signals
-

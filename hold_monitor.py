@@ -386,10 +386,12 @@ def _score_volatility(snapshots: List[Dict], pnl_pct: float = 0.0) -> Tuple[floa
 
 
 def _score_stop_distance(snapshots: List[Dict]) -> Tuple[float, str]:
-    """Layer 7: Stop distance in ATR units. <1.5 ATR = dangerous."""
+    """Layer 7: Stop distance in ATR units. <1.5 ATR = dangerous. 0 ATR = at the stop (worst case)."""
     dist = snapshots[-1].get("stop_dist_atr", 2.0)
-    if not dist:
+    if dist is None:
         return 0.0, "no_stop_data"
+    if dist <= 0:
+        return -1.0, f"stop_dist={dist:.2f} ATR (at/through stop)"
     score = float(np.clip((dist - 1.5) / 1.5, -1.0, 1.0))
     return score, f"stop_dist={dist:.2f} ATR"
 
@@ -900,8 +902,4 @@ if __name__ == "__main__":
     except SystemExit:
         raise
     except BaseException:
-        _logging.getLogger("raptor.hold").exception("FATAL: uncaught exception — hold monitor aborted")
-        _sys.exit(1)
-
-
-
+        _l

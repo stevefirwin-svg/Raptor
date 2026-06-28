@@ -1022,14 +1022,14 @@ A lexicon-based sentiment score is computed from news headlines (26 positive + 2
 **P1-16 — No afternoon rescore of held positions**  
 The signal engine runs once at 9:35 AM. Composite scores do not update during the day. A 3:50 PM rescore of held positions + top 30 candidates would identify positions whose thesis has deteriorated intraday.
 
-**P2-7 — OBV slope magic constant**  
-In Layer 5 (volume), OBV magnitude is normalized by `max(|slope|, 1000)`. The 1000 is a hardcoded floor that prevents very small OBV values from dominating. This has not been calibrated.
+**P2-7 — OBV slope magic constant — FIXED (verified in code 2026-06-28)**  
+The hardcoded `max(|slope|, 1000)` floor was replaced with normalization by the rolling std of OBV slopes across that position's own snapshots (self-relative, no cross-sectional bias toward high-volume names). See `hold_monitor.py::_score_volume`.
 
-**P2-8 — Volatility layer returns 0 for ATR expansion 0.80–1.20**  
-When ATR expansion is between 80% and 120% of the 10-day average, the volatility layer returns exactly 0.0. This binary behavior loses information in the normal range.
+**P2-8 — Volatility layer returns flat 0.2 for ATR expansion 0.80–1.20 (corrected 2026-06-28)**  
+Previously documented as returning exactly 0.0 in this range — that was wrong. Current code (`hold_monitor.py::_score_volatility`) returns 0.0 only when ATR is *contracting* (<0.80) and a flat 0.2 for the normal 0.80–1.20 band. Still not continuous and still loses information within that band, so the underlying gap is real, just not as previously described.
 
-**P2-9 — Stop distance layer returns 0 if dist is exactly 0, not if None**  
-A zero stop distance should be a strong negative signal (price is at the stop), but the implementation returns neutral (0.0) instead.
+**P2-9 — Stop distance layer returns 0 if dist is exactly 0 — FIXED 2026-06-28**  
+`hold_monitor.py::_score_stop_distance` previously used `if not dist: return 0.0`, which treated `dist == 0` (price at/through the stop — the worst case) identically to missing data (neutral). Fixed: `dist <= 0` now returns -1.0 explicitly; only `dist is None` returns neutral with a `no_stop_data` label.
 
 ### 14.4 Data quality gaps
 
