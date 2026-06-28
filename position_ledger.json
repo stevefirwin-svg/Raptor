@@ -77,13 +77,13 @@
       "entry_date": "2026-06-16",
       "metadata": {
         "t_stat": 1.9352,
-        "stop": 69.2436,
+        "stop": 71.1718,
         "tp": 0.0,
         "regime": "NEUTRAL/REVERTING",
         "kelly_fraction": 0.12,
         "composite_score": 0.4169,
         "velocity": 0.0,
-        "high_water": 73.655,
+        "high_water": 76.2,
         "last_trim_ts": "2026-06-24T15:51:25.308775"
       },
       "trims": [
@@ -107,13 +107,13 @@
       "entry_date": "2026-06-16",
       "metadata": {
         "t_stat": 1.7936,
-        "stop": 15.8329,
+        "stop": 16.4047,
         "tp": 0.0,
         "regime": "NEUTRAL/MIXED",
         "kelly_fraction": 0.12,
         "composite_score": 0.4405,
         "velocity": 0.0,
-        "high_water": 17.5283,
+        "high_water": 17.87,
         "last_trim_ts": "2026-06-18T09:52:20"
       },
       "trims": [
@@ -138,7 +138,7 @@
       "entry_date": "2026-06-19",
       "metadata": {
         "t_stat": 2.3579,
-        "stop": 15.9086,
+        "stop": 15.9371,
         "tp": 0.0,
         "regime": "NEUTRAL/MIXED",
         "kelly_fraction": 0.12,
@@ -146,37 +146,6 @@
         "velocity": 0.0,
         "high_water": 17.975
       }
-    },
-    "v5.4:HOOD": {
-      "model": "v5.4",
-      "symbol": "HOOD",
-      "shares": 57,
-      "entry_price": 109.0,
-      "entry_date": "2026-06-22",
-      "metadata": {
-        "t_stat": 2.3985,
-        "stop": 91.82,
-        "tp": 0.0,
-        "regime": "NEUTRAL/MIXED",
-        "kelly_fraction": 0.12,
-        "composite_score": 0.503,
-        "velocity": 0.0,
-        "high_water": 108.5515,
-        "last_trim_ts": "2026-06-24T11:35:35.348999"
-      },
-      "trims": [
-        {
-          "date": "2026-06-24",
-          "reason": "manual_margin_cleanup",
-          "shares_sold": 60,
-          "trim_price": 100.5,
-          "pnl_pct": -7.7982,
-          "pnl_abs": -510.0,
-          "shares_before": 117,
-          "shares_after": 57,
-          "repair_note": "60 shares oversold during 2026-06-24 manual margin cleanup (intended to sell 228 untracked duplicate shares, sold 288). Accepted as-is per Steve's decision. Price approximated."
-        }
-      ]
     },
     "v5.4:GOOGL": {
       "model": "v5.4",
@@ -192,7 +161,9 @@
         "kelly_fraction": 0.1014,
         "composite_score": 0.3848,
         "velocity": 0.0,
-        "high_water": 356.2528
+        "high_water": 356.2528,
+        "pending_exit": true,
+        "pending_exit_ts": "2026-06-28T13:05:11.037633"
       }
     },
     "v5.4:CRWV": {
@@ -228,7 +199,7 @@
         "kelly_fraction": 0.12,
         "composite_score": 0.5696,
         "velocity": 0.0,
-        "high_water": 45.9719
+        "high_water": 46.2
       }
     }
   },
@@ -1446,6 +1417,48 @@
       "exit_path": "math_exit",
       "pnl": -19.004999999999995,
       "pnl_pct": -6.412916940831092
+    },
+    {
+      "model": "v5.4",
+      "symbol": "HOOD",
+      "shares": 57,
+      "entry_price": 109.0,
+      "entry_date": "2026-06-22",
+      "metadata": {
+        "t_stat": 2.3985,
+        "stop": 94.1158,
+        "tp": 0.0,
+        "regime": "NEUTRAL/MIXED",
+        "kelly_fraction": 0.12,
+        "composite_score": 0.503,
+        "velocity": 0.0,
+        "high_water": 108.5515,
+        "last_trim_ts": "2026-06-24T11:35:35.348999",
+        "pending_exit": true,
+        "pending_exit_ts": "2026-06-28T13:05:11.117019"
+      },
+      "trims": [
+        {
+          "date": "2026-06-24",
+          "reason": "manual_margin_cleanup",
+          "shares_sold": 60,
+          "trim_price": 100.5,
+          "pnl_pct": -7.7982,
+          "pnl_abs": -510.0,
+          "shares_before": 117,
+          "shares_after": 57,
+          "repair_note": "60 shares oversold during 2026-06-24 manual margin cleanup (intended to sell 228 untracked duplicate shares, sold 288). Accepted as-is per Steve's decision. Price approximated."
+        }
+      ],
+      "exit_price": 98.69,
+      "exit_date": "2026-06-28",
+      "exit_reason": "math_exit",
+      "exit_path": "math_exit",
+      "pnl": -587.6700000000001,
+      "pnl_pct": -9.458715596330281,
+      "hold_days": 6,
+      "entry_value": 6213.0,
+      "entry_regime": null
     }
   ]
 }

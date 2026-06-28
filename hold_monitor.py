@@ -902,4 +902,8 @@ if __name__ == "__main__":
     except SystemExit:
         raise
     except BaseException:
-        _l
+        _logging.getLogger("raptor.hold").exception("FATAL: uncaught exception — hold monitor aborted")
+        _sys.exit(1)
+
+
+

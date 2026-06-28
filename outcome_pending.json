@@ -632,5 +632,25 @@
     "entry_reasoning": null,
     "entry_flags": [],
     "submitted_at": "2026-06-25T15:50:27.072869"
+  },
+  "8b14d7d1-d8ab-460c-a454-19fb66f00b8b": {
+    "symbol": "GOOGL",
+    "exit_reason": "hard_stop",
+    "composite": -0.0029,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-06-28T13:05:11.035236"
+  },
+  "fe8f46ce-29d8-41f9-9a90-c0c4df32f7cc": {
+    "symbol": "HOOD",
+    "exit_reason": "math_exit",
+    "composite": 0.0296,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-06-28T13:05:11.114854"
   }
 }

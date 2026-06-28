@@ -703,5 +703,35 @@
     "notional": 277.35,
     "status": "OrderStatus.PENDING_NEW",
     "backfilled": true
+  },
+  {
+    "ts": "2026-06-28T17:05:11.029403+00:00",
+    "symbol": "GOOGL",
+    "side": "SELL",
+    "qty": 27.0,
+    "decision_price": 337.39,
+    "fill_price": null,
+    "is_bps": null,
+    "is_dollars": null,
+    "order_id": "8b14d7d1-d8ab-460c-a454-19fb66f00b8b",
+    "exit_reason": "hard_stop",
+    "notional": 9109.53,
+    "status": "OrderStatus.ACCEPTED",
+    "backfilled": false
+  },
+  {
+    "ts": "2026-06-28T17:05:11.090626+00:00",
+    "symbol": "HOOD",
+    "side": "SELL",
+    "qty": 57.0,
+    "decision_price": 98.69,
+    "fill_price": null,
+    "is_bps": null,
+    "is_dollars": null,
+    "order_id": "fe8f46ce-29d8-41f9-9a90-c0c4df32f7cc",
+    "exit_reason": "math_exit",
+    "notional": 5625.33,
+    "status": "OrderStatus.ACCEPTED",
+    "backfilled": false
   }
 ]
