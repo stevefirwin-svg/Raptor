@@ -743,12 +743,19 @@ def run_monitor(pre_entry_only: bool = False, debug: bool = False) -> Dict:
         icon = {"STRENGTHENING": "GRN", "STABLE": "YLW",
                 "DECAYING": "RED", "INSUFFICIENT_DATA": "---"}.get(
             health_result["tier"], "---")
+        # FIX (2026-06-29, audit cosmetic): "stop=0.00ATR" was indistinguishable from
+        # "no stop in ledger metadata" (None coerced to 0.0 via `or 0.0`) — both
+        # rendered identically even though one means "at the stop" (real, dangerous)
+        # and the other means "we have no stop data at all". Render "—" for the
+        # latter so it's not misread as the former.
+        _stop_disp = (f'{snapshot["stop_dist_atr"]:.2f}ATR'
+                      if snapshot.get("stop_dist_atr") is not None else "—")
         logger.info(
-            "  [%s] %-6s  health=%+.3f  FAR=%d/16  pnl=%+.1f%%  stop=%.2fATR  -> %s",
+            "  [%s] %-6s  health=%+.3f  FAR=%d/16  pnl=%+.1f%%  stop=%s  -> %s",
             icon, sym, health_result["health"],
             snapshot["factors_positive"],
             snapshot.get("pnl_pct", 0.0),
-            snapshot.get("stop_dist_atr") or 0.0,
+            _stop_disp,
             trim_result["action"]
         )
         if health_result["tier"] == "DECAYING":
@@ -819,7 +826,12 @@ def build_health_html(health_out: Optional[Dict] = None) -> str:
         health   = rec["health"]
         pnl      = rec["pnl_pct"]
         far      = rec["factors_positive"]
-        stop_atr = rec.get("stop_dist_atr") or 0.0  # None stored when stop missing → coerce to 0.0
+        # FIX (2026-06-29, audit cosmetic): was `rec.get("stop_dist_atr") or 0.0`, which
+        # rendered "0.00 ATR" for both "actually at the stop" and "no stop data at all" —
+        # two very different and important-to-distinguish situations. Render "—" for the
+        # latter (no real stop exists) instead of a fabricated-looking 0.00 value.
+        _stop_dist_raw = rec.get("stop_dist_atr")
+        stop_atr_str = f"{_stop_dist_raw:.2f} ATR" if _stop_dist_raw is not None else "—"
         pre_days = rec.get("pre_entry_days", 0)
         hist     = rec.get("days_history", 0)
         trim     = rec.get("trim", {})
@@ -860,7 +872,7 @@ def build_health_html(health_out: Optional[Dict] = None) -> str:
           <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:{pnl_c};text-align:right">{pnl:+.1f}%</td>
           <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#a0a0b0;text-align:center">{far}/16</td>
           <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#a0a0b0;text-align:right">{comp:+.3f}</td>
-          <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#a0a0b0;text-align:right">{stop_atr:.2f} ATR</td>
+          <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#a0a0b0;text-align:right">{stop_atr_str}</td>
           <td style="padding:7px 10px;border-bottom:1px solid #2a2a3e;color:#6a6a8a;text-align:right;font-size:11px">{hist_str}</td>
         </tr>{decay_row}{trim_row}"""
 
@@ -886,24 +898,4 @@ def build_health_html(health_out: Optional[Dict] = None) -> str:
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# ENTRY POINT
-# ─────────────────────────────────────────────────────────────────────────────
-
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Raptor Hold Monitor")
-    parser.add_argument("--pre",   action="store_true", help="Pre-entry scan only")
-    parser.add_argument("--debug", action="store_true", help="Verbose output")
-    args = parser.parse_args()
-    # CRASH VISIBILITY (2026-06-10): same pattern as main.py / exit_monitor.py —
-    # fatal errors must reach the log file, not just the closing console window.
-    import sys as _sys, logging as _logging
-    try:
-        run_monitor(pre_entry_only=args.pre, debug=args.debug)
-    except SystemExit:
-        raise
-    except BaseException:
-        _logging.getLogger("raptor.hold").exception("FATAL: uncaught exception — hold monitor aborted")
-        _sys.exit(1)
-
-
-
+# ENTRY POIN

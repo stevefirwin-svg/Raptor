@@ -319,8 +319,21 @@ class FREDDataFeed:
             return series
 
         except Exception as e:
-            logger.error("FRED fetch failed for %s: %s", series_id, e)
+            # FIX (2026-06-29, audit P1): requests embeds the full request URL
+            # (including the api_key query param, in plaintext) in the string
+            # representation of HTTPError/ConnectionError/Timeout. Logging `e`
+            # directly was writing the live FRED API key to logs/ on every
+            # failed fetch. Redact the key before it ever reaches the logger.
+            safe_err = self._redact_api_key(str(e))
+            logger.error("FRED fetch failed for %s: %s", series_id, safe_err)
             return pd.Series(dtype=float)
+
+    def _redact_api_key(self, text: str) -> str:
+        """Strip this feed's FRED api_key out of an error/URL string before logging."""
+        key = getattr(self.cfg.fred, "api_key", None)
+        if key:
+            text = text.replace(key, "***REDACTED***")
+        return text
 
     def get_macro_snapshot(self) -> Dict[str, Dict[str, Any]]:
         """
@@ -671,19 +684,4 @@ class DataManager:
         lookback_days: int = 60,
     ) -> Dict[str, Any]:
         """
-        One-shot fetch: bars + macro regime for all symbols.
-        Sentiment removed 2026-05-22 (P1-15): lexicon sentiment was computed
-        from Alpaca news API on every scan but sentiment_score=0.0 on every
-        Signal object — consuming API calls with zero alpha contribution.
-        Re-enable when a real NLP sentiment model is integrated.
-        """
-        bars = self.alpaca.get_daily_bars(symbols, lookback_days=lookback_days)
-        macro = self.fred.compute_regime_score()
-
-        return {
-            "bars": bars,
-            "macro": macro,
-            "sentiment": {},   # disabled — see P1-15
-            "symbols_with_data": list(bars.keys()),
-            "timestamp": datetime.now().isoformat(),
-        }
+        One

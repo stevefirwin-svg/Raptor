@@ -15,9 +15,15 @@ MIN_BARS_REQUIRED = 80
 
 @dataclass
 class Signal:
+    # FIX (2026-06-29, audit P2): sentiment_score field removed — it was
+    # hardcoded to 0.0 at both construction sites (sentiment feed disabled
+    # 2026-05-22, P1-15) and never read by any downstream consumer
+    # (hold_monitor.py, exit_monitor.py, daily_recap.py). Dead field, zero
+    # alpha contribution. Not one of the 16 protected factors (FACTOR_NAMES)
+    # — safe to drop per "do not modify factors" since this was never a factor.
     symbol: str; side: str; composite_score: float; composite_percentile: float
     t_statistic: float; factor_scores: Dict[str,float]; factor_contributions: Dict[str,float]
-    factors_positive: int; regime: str; sentiment_score: float; atr: float
+    factors_positive: int; regime: str; atr: float
     entry_price: float; stop_price: float; take_profit: float; kelly_fraction: float
     hold_target_days: int; leverage_qualified: bool; confirmation_type: str; timestamp: str
     hold_target_low: int = 3; hold_target_high: int = 30; hold_target_reliable: bool = False
@@ -713,6 +719,24 @@ class QuantSignalEngine:
             micro_m=MICRO_MULT.get(micro,MICRO_MULT["MIXED"])
             cl=FACTOR_CLUSTERS
             w={fn:ivw[fn]*macro_m[cl[fn]]*micro_m[cl[fn]] for fn in FACTOR_NAMES}
+            # MANUAL OVERRIDE (2026-06-29, audit P2, Steve's call): vol_ratio has a
+            # statistically significant NEGATIVE IC (-0.1692, t=-3.11, n=331,
+            # factor_ic_report.json generated 2026-06-26 — see hold_history snapshots,
+            # n_outcome=0 so this rests on the secondary/noisier data source, not yet
+            # confirmed against realized closed-trade outcomes). Decision: don't remove
+            # it from the 16-factor structure ("do not modify factors" / preserve the
+            # 208% backtest shape) — instead halve its weight and hand the freed weight
+            # to the current top-IC factors (accum_dist 0.40/t=7.90, adx_dir 0.25/t=4.60,
+            # rel_strength 0.17/t=3.17, price_cloud 0.13/t=2.37, rev_momentum 0.13/t=2.34),
+            # split proportionally to each one's existing weight share.
+            _VOL_RATIO_CUT = 0.5
+            _TOP_IC_FACTORS = ["accum_dist", "adx_dir", "rel_strength", "price_cloud", "rev_momentum"]
+            _freed = w["vol_ratio"] * _VOL_RATIO_CUT
+            w["vol_ratio"] -= _freed
+            _redist_total = sum(w[fn] for fn in _TOP_IC_FACTORS)
+            if _redist_total > 1e-10:
+                for fn in _TOP_IC_FACTORS:
+                    w[fn] += _freed * (w[fn] / _redist_total)
             wt=sum(w.values()); w={fn:v/wt for fn,v in w.items()}
             w=self.adaptive.blend_weights(w)
             z=zmat[sym]
@@ -759,7 +783,6 @@ class QuantSignalEngine:
                 factor_contributions=s["contribs"],
                 factors_positive=sum(1 for fn in FACTOR_NAMES if zmat[s["sym"]][fn]>0),
                 regime=f"{regime}/{micros.get(s['sym'],'MIXED')}",
-                sentiment_score=0.0,
                 atr=0.0, entry_price=0.0, stop_price=0.0, take_profit=0.0,
                 kelly_fraction=0.0, hold_target_days=15,
                 leverage_qualified=False, confirmation_type="adaptive",
@@ -812,33 +835,7 @@ class QuantSignalEngine:
                 factor_scores={fn:round(zmat[sym][fn],4) for fn in FACTOR_NAMES},
                 factor_contributions=s["contribs"],
                 factors_positive=sum(1 for fn in FACTOR_NAMES if zmat[sym][fn]>0),
-                regime=f"{regime}/{micro}",sentiment_score=0.0,atr=round(atr_val,4),
+                regime=f"{regime}/{micro}",atr=round(atr_val,4),
                 entry_price=entry,stop_price=stop,take_profit=0.0,
                 kelly_fraction=round(kelly,4),hold_target_days=hold,
-                leverage_qualified=lev,confirmation_type=conf,
-                timestamp=str(bars.index[-1]),
-                hold_target_low=_ou["low"],hold_target_high=_ou["high"],
-                hold_target_reliable=_ou["reliable"],
-            ))
-        signals.sort(key=lambda x:x.t_statistic,reverse=True)
-        signals=signals[:self.cfg.execution.max_orders_per_scan]
-        rc={}
-        for m in micros.values(): rc[m]=rc.get(m,0)+1
-        snr_vals=[s.t_statistic for s in signals]
-        logger.info("v5.4 Signals: %d from %d | Macro=%s Scale=%.1f | Micro=%s | SNR min=%.2f max=%.2f",
-                     len(signals),len(raw),regime,market_scale,rc,
-                     min(snr_vals) if snr_vals else 0,max(snr_vals) if snr_vals else 0)
-        # ── Write composite cache for velocity gate in main.py ───────────────
-        # Stores today's composite score per symbol so tomorrow's scan can
-        # compute composite_velocity = today - yesterday and gate on trajectory.
-        # Atomic write — never leaves a partial file that would corrupt the gate.
-        try:
-            _cache={sym:round(sig.composite_score,4) for sym,sig in self._last_full_signals.items()}
-            _cache_path=os.path.join(os.path.dirname(os.path.abspath(__file__)),"composite_cache.json")
-            _tmp=_cache_path+".tmp"
-            with open(_tmp,"w") as _f: json.dump(_cache,_f)
-            os.replace(_tmp,_cache_path)
-            logger.debug("CompCache: wrote %d symbol scores → composite_cache.json",len(_cache))
-        except Exception as _ce:
-            logger.warning("CompCache write failed: %s",_ce)
-        return signals
+                leverag

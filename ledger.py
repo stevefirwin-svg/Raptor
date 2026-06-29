@@ -56,17 +56,45 @@ class Ledger:
         self._save()
 
     def record_exit(self, model: str, symbol: str, exit_price: float, date: str, reason: str):
-        """Record a full position exit and move to closed list."""
+        """Record a full position exit and move to closed list.
+
+        FIX (2026-06-29, audit P0-1): the headline pnl/pnl_pct must reflect the
+        WHOLE position, not just the shares remaining at this final leg. Every
+        prior partial trim already recorded its own realized P&L in
+        pos["trims"][i]["pnl_abs"] — that money is real and was already sold,
+        but was previously dropped from the closed-trade headline figure that
+        daily_recap.py and get_performance_summary() read. Confirmed against
+        live position_ledger.json: this silently understated/overstated P&L
+        on every multi-trim closed trade (e.g. MRVL true loss -$1,042.82 vs.
+        previously-reported -$19.01; STM true gain +$3,805.56 vs. previously-
+        reported +$2,238.33).
+        """
         key = f"{model}:{symbol}"
         if key in self.data["positions"]:
             pos = self.data["positions"].pop(key)
-            pos["exit_price"]  = exit_price
-            pos["exit_date"]   = date
-            pos["exit_reason"] = reason
-            pos["exit_path"]   = reason  # mirror for outcome_tracker compatibility
-            pos["pnl"]         = (exit_price - pos["entry_price"]) * pos["shares"]
-            # pnl_pct as percentage (e.g. 5.2 = 5.2%), NOT raw decimal (0.052)
-            pos["pnl_pct"]     = ((exit_price / pos["entry_price"]) - 1) * 100
+            prior_trims      = pos.get("trims", [])
+            prior_trim_pnl   = sum(t.get("pnl_abs", 0) for t in prior_trims)
+            prior_trim_shares = sum(t.get("shares_sold", 0) for t in prior_trims)
+            final_leg_shares = pos["shares"]
+            final_leg_pnl    = (exit_price - pos["entry_price"]) * final_leg_shares
+            total_shares     = prior_trim_shares + final_leg_shares
+
+            pos["exit_price"]     = exit_price
+            pos["exit_date"]      = date
+            pos["exit_reason"]    = reason
+            pos["exit_path"]      = reason  # mirror for outcome_tracker compatibility
+            # final_leg_pnl/pnl_pct retained for debugging — NOT the headline figure
+            pos["final_leg_pnl"]     = round(final_leg_pnl, 2)
+            pos["final_leg_pnl_pct"] = round(((exit_price / pos["entry_price"]) - 1) * 100, 4)
+            # entry_value: notional across ALL shares ever held in this position,
+            # not just what's left at the final leg — required for both the
+            # capital-efficiency metric and the corrected pnl_pct denominator below.
+            pos["entry_value"] = round(pos["entry_price"] * total_shares, 2)
+            # pos["pnl"] / pos["pnl_pct"] are the TRUE total across every trim plus
+            # this final leg — this is the field daily_recap.py and
+            # get_performance_summary() read as the trade's headline result.
+            pos["pnl"]     = round(prior_trim_pnl + final_leg_pnl, 2)
+            pos["pnl_pct"] = round((pos["pnl"] / pos["entry_value"]) * 100, 4) if pos["entry_value"] else 0.0
             # hold_days: calendar days from entry to exit — required by analytics
             try:
                 from datetime import datetime as _dt
@@ -75,8 +103,6 @@ class Ledger:
                 pos["hold_days"] = (_exit - _entry).days
             except Exception:
                 pos["hold_days"] = None
-            # entry_value: notional at entry — required for capital efficiency metric
-            pos["entry_value"] = round(pos["entry_price"] * pos["shares"], 2)
             # entry_regime: macro regime at entry time, stored in metadata by main.py
             pos["entry_regime"] = (pos.get("metadata") or {}).get("macro_regime")
             self.data["closed"].append(pos)
@@ -124,14 +150,31 @@ class Ledger:
         pos["shares"] = shares_after
 
         if shares_after == 0:
-            # All shares trimmed away — move to closed
+            # All shares trimmed away — move to closed.
+            #
+            # FIX (2026-06-29, audit P0-1): trim_record for THIS trim was already
+            # appended to pos["trims"] above, so pos["trims"] now contains every
+            # leg of this position's full realized P&L with no remainder. The
+            # previous code used only this final trim's own shares/price, silently
+            # dropping every earlier trim's P&L from the headline closed-trade
+            # figure that daily_recap.py and get_performance_summary() read.
+            total_shares_orig = sum(t.get("shares_sold", 0) for t in pos["trims"])
+            total_pnl         = sum(t.get("pnl_abs", 0) for t in pos["trims"])
+
             pos["exit_price"]  = trim_price
             pos["exit_date"]   = date
             pos["exit_reason"] = reason
             pos["exit_path"]   = reason
-            pos["pnl_pct"]     = round(trim_pnl_pct, 4)
-            pos["pnl"]         = round((trim_price - pos["entry_price"]) * shares_before, 2)
-            # hold_days, entry_value, entry_regime — same as record_exit
+            # final_leg_pnl_pct retained for debugging — NOT the headline figure
+            pos["final_leg_pnl"]     = round(trim_pnl_abs, 2)
+            pos["final_leg_pnl_pct"] = round(trim_pnl_pct, 4)
+            # pos["pnl"] / pos["pnl_pct"] are the TRUE total across every trim
+            # (this position closed entirely via trims, so the sum of all trims'
+            # pnl_abs already represents the full realized result).
+            pos["entry_value"] = round(pos["entry_price"] * total_shares_orig, 2)
+            pos["pnl"]         = round(total_pnl, 2)
+            pos["pnl_pct"]     = round((pos["pnl"] / pos["entry_value"]) * 100, 4) if pos["entry_value"] else 0.0
+            # hold_days, entry_regime — same as record_exit
             try:
                 from datetime import datetime as _dt
                 _entry = _dt.strptime(str(pos.get("entry_date", ""))[:10], "%Y-%m-%d")
@@ -139,79 +182,6 @@ class Ledger:
                 pos["hold_days"] = (_exit - _entry).days
             except Exception:
                 pos["hold_days"] = None
-            pos["entry_value"]  = round(pos["entry_price"] * shares_before, 2)
             pos["entry_regime"] = (pos.get("metadata") or {}).get("macro_regime")
             self.data["positions"].pop(key)
-            self.data["closed"].append(pos)
-
-        self._save()
-        return pos
-
-    def get_positions(self, model: str) -> List[Dict]:
-        """Get all open positions for a specific model."""
-        return [v for v in self.data["positions"].values() if v["model"] == model]
-
-    def get_held_symbols(self, model: str) -> set:
-        """Get set of symbols currently held by a model."""
-        return {v["symbol"] for v in self.data["positions"].values() if v["model"] == model}
-
-    def get_all_held_symbols(self) -> set:
-        """Get all held symbols across all models."""
-        return {v["symbol"] for v in self.data["positions"].values()}
-
-    def get_closed(self, model: str = None) -> List[Dict]:
-        """Get closed trades, optionally filtered by model."""
-        if model:
-            return [t for t in self.data["closed"] if t["model"] == model]
-        return self.data["closed"]
-
-    def get_equity_allocation(self, model: str, total_equity: float,
-                              allocation_pct: float = 0.50) -> float:
-        """
-        How much equity a model is allowed to use.
-        Default: 50/50 split between two models.
-        """
-        return total_equity * allocation_pct
-
-    def get_performance_summary(self, model: str) -> Dict:
-        """Quick P&L summary for a model."""
-        closed = self.get_closed(model)
-        if not closed:
-            return {"trades": 0, "net_pnl": 0, "win_rate": 0}
-        winners = [t for t in closed if t.get("pnl", 0) > 0]
-        total_pnl = sum(t.get("pnl", 0) for t in closed)
-        return {
-            "trades": len(closed),
-            "winners": len(winners),
-            "win_rate": round(len(winners) / len(closed) * 100, 1),
-            "net_pnl": round(total_pnl, 2),
-            "avg_pnl": round(total_pnl / len(closed), 2),
-        }
-
-    def print_status(self):
-        """Print side-by-side model comparison."""
-        models = set(v["model"] for v in self.data["positions"].values())
-        models.update(t["model"] for t in self.data["closed"])
-
-        print("=" * 65)
-        print("  RAPTOR A/B MODEL COMPARISON")
-        print("=" * 65)
-
-        for m in sorted(models):
-            positions = self.get_positions(m)
-            perf = self.get_performance_summary(m)
-            print(f"\n  Model: {m}")
-            print(f"    Open positions: {len(positions)}")
-            for p in positions:
-                print(f"      {p['symbol']:6s}  {p['shares']} shares @ ${p['entry_price']:.2f}  ({p['entry_date']})")
-            print(f"    Closed trades:  {perf['trades']}")
-            print(f"    Win rate:       {perf['win_rate']}%")
-            print(f"    Net P&L:        ${perf['net_pnl']:,.2f}")
-
-        print("")
-        print("=" * 65)
-
-
-if __name__ == "__main__":
-    ledger = Ledger()
-    ledger.print_status()
+    

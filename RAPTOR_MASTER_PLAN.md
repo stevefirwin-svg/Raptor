@@ -1,5 +1,5 @@
 # Raptor — Master Priority Plan
-*Last updated: 2026-06-28 (session 9 — repo audit, CRLF line-ending issue, P2-9 fix)*
+*Last updated: 2026-06-29 (session 10 — full system audit fixes #10-17, see below)*
 *Supersedes all prior versions. This is the single source of truth.*
 
 ---
@@ -116,6 +116,25 @@ At current pace (~7 positions/week): DATA-40 in ~2 weeks, DATA-60 in ~5 weeks.
 | S5-5 | position_outcomes.json — 27 independent positions aggregated from 76 trim events |
 | S5-6 | dsr.py updated to use position_outcomes.json — true DSR 59.8% (was falsely 99.9%) |
 
+## Session 10 — Full System Audit Fixes (2026-06-29)
+
+Source: `Raptor_v5.4_Full_System_Audit.docx` punch list, worked in priority order per
+standing instruction. All fixes below Rule-11 verified (AST + functional tests pasted
+in-session; `C:\Raptor`'s bash mount has a known stat-cache lag, so verification was done
+by reconstructing each edited block into a sandbox and running `ast.parse()` + targeted
+unit tests against it).
+
+| ID | Fix |
+|----|-----|
+| S10-1 | `ledger.py` — fixed multi-trim P&L aggregation bug: partial trims against the same position entry were not being correctly rolled up into realized P&L. |
+| S10-2 | `slippage_log.json` / `outcome_pending.json` — audit flagged possible corruption; on inspection both had already self-healed (valid JSON, no action needed — confirmed via load test, not assumed). |
+| S10-3 | Sidecar JSON loaders (slippage/outcome_pending and related) now `logger.error`/`warning` explicitly on parse failure instead of silently falling back to an empty default — a failed load was previously invisible. |
+| S10-4 | **Security:** `data_feeds.py::FREDDataFeed._fetch_series` was logging the live FRED `api_key` in plaintext to `logs/` on every failed request — `requests`' `HTTPError`/`Timeout` embeds the full request URL (including the `api_key` query param) in `str(e)`, and the handler logged `e` directly. Added `_redact_api_key()`, applied before the `logger.error` call. `submit_order` (data_feeds.py:200, AlpacaDataFeed) re-verified untouched per Skill Rule 7. |
+| S10-5 | `signals.py::Signal` — removed dead `sentiment_score` field. Hardcoded to `0.0` at both construction sites since the sentiment feed was disabled 2026-05-22 (P1-15); confirmed via grep that no downstream consumer (`hold_monitor.py`, `exit_monitor.py`, `daily_recap.py`) ever reads it. Not one of the 16 protected factors — dropping it does not conflict with "do not modify factors." See RAPTOR_ONTOLOGY.md P1-15, now marked FIXED. |
+| S10-6 | `signals.py::generate_signals` — `vol_ratio` has a statistically significant **negative** IC (-0.1692, t=-3.11, n=331; `factor_ic_report.json` 2026-06-26). Caveat surfaced to Steve before acting: `n_outcome=0` — the IC rests entirely on the noisier `hold_history.json` secondary source, not yet confirmed against a single realized closed-trade outcome. Steve's explicit call: do not remove it from the 16-factor structure (preserves "do not modify factors" / the 208% backtest shape) — halve its weight and redistribute the freed share proportionally to the 5 current top-IC factors (`accum_dist` 0.40/t=7.90, `adx_dir` 0.25/t=4.60, `rel_strength` 0.17/t=3.17, `price_cloud` 0.13/t=2.37, `rev_momentum` 0.13/t=2.34). Functional test confirmed the post-redistribution weight ratio is exactly 0.5x and only the 5 named factors gain share. |
+| S10-7 | `exit_monitor.py` — EXIT5 (time-decay thesis check) read `hold_health.json` with no freshness check. `hold_monitor.py` only runs 9:28 AM + 3:50 PM; a crashed/skipped run leaves the file silently stale for hours while `exit_monitor`'s 30-min loop keeps reading it. Added per-symbol staleness detection (per RAPTOR_STARTUP.md's existing "timestamped today" convention) — stale symbols now skip EXIT5's deterioration check and default to hold rather than act on outdated composite/health data. |
+| S10-8 | `hold_monitor.py` — cosmetic display bug: a missing real stop (`stop_dist_atr is None`) was coerced to `0.00 ATR` in both the per-symbol log line and the daily recap HTML table — visually identical to a position genuinely sitting *at* its stop (`stop_dist_atr == 0.0`, the dangerous case). Both display sites now render `—` when there's no real stop, so the two cases can't be confused. |
+
 ## Session 9 — Repo Audit (2026-06-28)
 
 **Critical infra finding — CRLF line-ending corruption risk (not yet fixed, needs Steve decision):**
@@ -228,57 +247,4 @@ commits clean given the working tree stays CRLF on disk (Windows) while git stor
 | signals.py | Kelly clip 0.02/0.12 | EVT tail on closed position returns | DATA-40 |
 | signals.py | Regime blend sigma 0.25 | Historical regime transition frequency | None — derive from macro_context history |
 | signals.py | OU hold_target min=3, max=30 | Regress realized hold_days vs theta estimate (estimator reworked 2026-06-17, see ontology §16 — bounds calibration still pending data) | DATA-40 |
-| hold_monitor.py | LAYER_WEIGHTS (hand-picked) | Spearman IC per layer vs PnL | DATA-60 (ARCH-1) |
-| hold_monitor.py | TIER_STRONG=0.20, TIER_STABLE=-0.15 | Health score vs forward return distribution | DATA-40 |
-| exit_monitor.py | Trail modifier 0.3/1.3/0.75 | Backtest trail width sensitivity | DATA-40 (GAP-B) |
-| config.py | initial_stop_atr_mult 3.0 | EVT-derived — gate: DATA-60 | DATA-60 |
-| config.py | max_portfolio_drawdown 0.12 | EVT tail on portfolio return distribution | DATA-60 |
-| kelly_engine.py | P_TOL = 0.05 (target probability of ever breaching MAX_DD) | Calibrate against margin_guard.py trigger cost / Steve's explicit ruin-cost function once enough live drawdown episodes exist (session 7, 2026-06-17 — see ontology §17) | DATA-60 |
-| macro_context.py | Vote thresholds 3/0/-2 | Replace with HMM probability vector (ARCH-2) | None |
-| dsr.py | N_TRIALS_DEFAULT = 10 | Count of strategy-altering commits — update each session | Rolling |
-
----
-
-## P1 Status Table (updated 2026-06-12)
-
-| ID | Description | Status |
-|----|-------------|--------|
-| P1-1 | Kalman macro classifier | NOT BUILT — replaced by Gaussian regime blend in signals.py |
-| P1-2 | Vol-regime hard stop | ✅ CONFIRMED |
-| P1-3 | OU trailing stop | ❌ NEVER BUILT — was documentation-only; live trail is time-tier + profit-ATR (`exit_monitor._trail_mult`). Corrected 2026-06-17. |
-| P1-4 | Bayesian Kelly | ✅ CONFIRMED — bootstrap live, SHADOW mode |
-| P1-5 | OU hold target | ⚠️ REWORKED 2026-06-17 — market-residual series, unit-root gate, bias correction, bootstrap CI added (S6-1..S6-4). CI/reliability flag not yet consumed downstream (see queue item below). |
-| P1-6 | IC layer weights hold monitor | GATED — DATA-60 (currently 27 positions) |
-| P1-7 | Continuous trim | ✅ CONFIRMED |
-| P1-8 | Regime-relative thesis threshold | ✅ CONFIRMED |
-| P1-9 | Watchdog intraday | NOT BUILT — fetches 5 daily bars, not intraday. Rebuild or remove bat. |
-| P1-10 | Composite velocity gate | ✅ CONFIRMED |
-| P1-11 | Re-entry cooldown | ✅ CONFIRMED |
-| P1-12 | Portfolio heat partial trim | ✅ CONFIRMED (25% proportional) |
-| P1-13 | Multi-MA breadth (50/150/200) | ✅ CONFIRMED |
-| P1-14 | Universe sensitivity sweep | FUTURE (ARCH-5) |
-| P1-15 | Sentiment dead path | OPEN — sentiment_score always 0.0 |
-| P1-16 | Afternoon rescore | PARTIAL — exit_monitor GAP9 rescore live |
-| P1-17 | Conviction gradient sizing | ✅ CONFIRMED via book_conviction percentile |
-
----
-
-## Known Issues — Open
-
-| Issue | Impact | Priority |
-|-------|--------|----------|
-| Trail multiplier tiers (2.5/2.0/2.5×) — TODO:DERIVE | Stops may be too tight/loose on winners | GAP-B at DATA-40 |
-| macro_context.py vote-count thresholds — no statistical basis | Regime misclassification risk | ARCH-2: replace with HMM |
-| position_outcomes.json built manually — not auto-updated after close | New positions won't appear until Claude rebuilds it | Add to Start_AfterClose.bat |
-| WFC/KRE stops above price (as of Jun 18) | EXIT 1 will fire on next exit_monitor run — expected, not a bug | Self-resolving Mon 9:52 AM |
-| `outcome_tracker_v2.py` unreferenced in `archive/` | Dead code, harmless | Low — delete whenever convenient |
-| **CRLF line-ending mismatch** | **RESOLVED 2026-06-28** — `.gitattributes` (`* text=auto eol=lf`) added, `git add --renormalize .` run and committed, `core.autocrlf=false` set | Done |
-
----
-
-## Completed (all sessions, chronological)
-
-All pre-session-4 completions archived. For full history see git log.
-Key pre-S4 completions: CRIT-0 through CRIT-9, MATH-2/3/4, H-1 through H-8,
-P0-1, P0-8, submit_order fix, trail tier interim fix, double-trim guard,
-log tracking enabled, DFA-1 Hurst, soft z-score shrinkage, Ledoit-Wolf SNR.
+| hold_monitor.py | LAYER_WEIGHTS (hand-pic

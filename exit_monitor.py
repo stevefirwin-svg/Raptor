@@ -234,13 +234,40 @@ def run_exit_monitor(dry_run=False):
     holds = []
 
     # Pre-load hold_health.json for use in time_decay thesis check
+    # FIX (2026-06-29, audit P2): hold_health.json is only rewritten when
+    # hold_monitor.py runs (9:28 AM pre-entry + 3:50 PM final, per
+    # RAPTOR_STARTUP.md daily schedule) — exit_monitor's 30-min loop reads
+    # whatever snapshot is on disk. If hold_monitor crashes or simply didn't
+    # run today, the file is silently days old, and EXIT5 would judge "thesis
+    # dead" off stale composite/health numbers with no warning. Per
+    # RAPTOR_STARTUP.md STEP 6.2 ("Is hold_health.json timestamped today? If
+    # not -> hold_monitor did not run"), staleness = not dated today. We check
+    # per-symbol timestamps (the file can in principle hold a mix of ages) and
+    # mark stale entries so EXIT5 skips its deterioration check on them rather
+    # than acting on outdated data.
     _pre_health = {}
+    _stale_health_syms = set()
     try:
         import json as _phjson
         from pathlib import Path as _phpath
         _ph = _phpath("hold_health.json")
         if _ph.exists():
             _pre_health = _phjson.loads(_ph.read_text())
+            for _hsym, _hrec in _pre_health.items():
+                _hts_raw = _hrec.get("timestamp")
+                _is_stale = True  # no/unparseable timestamp -> treat as stale, safest default
+                if _hts_raw:
+                    try:
+                        _is_stale = datetime.fromisoformat(_hts_raw).date() != _today
+                    except Exception:
+                        _is_stale = True
+                if _is_stale:
+                    _stale_health_syms.add(_hsym)
+            if _stale_health_syms:
+                logger.warning(
+                    "hold_health.json STALE for %d symbol(s) (not timestamped today): %s "
+                    "— EXIT5 thesis-deterioration check will skip these, not act on old data",
+                    len(_stale_health_syms), sorted(_stale_health_syms))
     except Exception:
         pass
 
@@ -483,20 +510,29 @@ def run_exit_monitor(dry_run=False):
                 if flat_20 or flat_5:
                     # Check thesis — flat + losing is only an exit if signals are also deteriorating.
                     # If composite > 0 or health > 0, stock may be basing — give it room.
-                    _hrec      = _pre_health.get(sym, {})
-                    _composite = _hrec.get("composite", 0.0)
-                    _health    = _hrec.get("health", 0.0)
-                    if _composite < 0.0 and _health < 0.0:
-                        window  = "20d" if flat_20 else "5d"
-                        ret_ref = ret_20d if flat_20 else ret_5d
-                        reason  = "time_decay"
-                        logger.info(
-                            "EXIT 5 [TIME] %s flat (%s ret=%.1f%%) losing (%.1f%%) health=%.3f comp=%.3f after %d days",
-                            sym, window, ret_ref * 100, pnl_pct * 100, _health, _composite, days_held)
+                    if sym in _stale_health_syms:
+                        # FIX (2026-06-29, audit P2): hold_health.json isn't dated today for
+                        # this symbol — don't let EXIT5 fire (or hold) off a stale thesis read.
+                        # Safe default: treat as "can't confirm thesis is dead" -> hold.
+                        logger.warning(
+                            "EXIT 5 [TIME] %s flat+losing but hold_health.json is STALE "
+                            "(not timestamped today) — skipping thesis check, holding rather "
+                            "than acting on outdated composite/health", sym)
                     else:
-                        logger.info(
-                            "EXIT 5 [TIME] %s flat but thesis intact (health=%.3f comp=%.3f) — holding",
-                            sym, _health, _composite)
+                        _hrec      = _pre_health.get(sym, {})
+                        _composite = _hrec.get("composite", 0.0)
+                        _health    = _hrec.get("health", 0.0)
+                        if _composite < 0.0 and _health < 0.0:
+                            window  = "20d" if flat_20 else "5d"
+                            ret_ref = ret_20d if flat_20 else ret_5d
+                            reason  = "time_decay"
+                            logger.info(
+                                "EXIT 5 [TIME] %s flat (%s ret=%.1f%%) losing (%.1f%%) health=%.3f comp=%.3f after %d days",
+                                sym, window, ret_ref * 100, pnl_pct * 100, _health, _composite, days_held)
+                        else:
+                            logger.info(
+                                "EXIT 5 [TIME] %s flat but thesis intact (health=%.3f comp=%.3f) — holding",
+                                sym, _health, _composite)
             # ─────────────────────────────────────────────────────────────────
 
         if reason:
@@ -873,56 +909,4 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # ── Loop mode (default) ───────────────────────────────────────────────────
-    # Runs every 30 minutes from start until 3:50 PM ET, then exits cleanly.
-    # Task Scheduler fires this once at 9:35 AM; it self-manages the rest of
-    # the day. --once flag preserves single-shot behaviour for manual runs.
-    #
-    # CRASH VISIBILITY (2026-06-10): any uncaught exception is written to the
-    # exits log with full traceback before the process dies.
-    import sys as _sys
-
-    MARKET_CLOSE_HOUR   = 15   # 3 PM
-    MARKET_CLOSE_MINUTE = 50   # :50 → 3:50 PM cutoff
-    CYCLE_SECONDS       = 1800 # 30 minutes
-
-    def _run_once():
-        try:
-            run_exit_monitor(dry_run=args.dry_run)
-        except SystemExit:
-            raise
-        except BaseException:
-            logger.exception("FATAL: uncaught exception — exit monitor cycle aborted")
-
-    if args.once:
-        _run_once()
-    else:
-        cycle = 0
-        while True:
-            now = datetime.now()
-            past_cutoff = (now.hour > MARKET_CLOSE_HOUR or
-                           (now.hour == MARKET_CLOSE_HOUR and
-                            now.minute >= MARKET_CLOSE_MINUTE))
-            if past_cutoff:
-                logger.info("EXIT MONITOR: past 3:50 PM cutoff — shutting down loop after %d cycle(s).", cycle)
-                break
-
-            cycle += 1
-            logger.info("EXIT MONITOR LOOP: cycle %d starting at %s", cycle, now.strftime("%H:%M:%S"))
-            _run_once()
-
-            # Re-check cutoff before sleeping — final cycle may have run close to 3:50
-            now_after = datetime.now()
-            past_cutoff_after = (now_after.hour > MARKET_CLOSE_HOUR or
-                                  (now_after.hour == MARKET_CLOSE_HOUR and
-                                   now_after.minute >= MARKET_CLOSE_MINUTE))
-            if past_cutoff_after:
-                logger.info("EXIT MONITOR: past 3:50 PM after cycle %d — shutting down.", cycle)
-                break
-
-            next_run = now_after.replace(second=0, microsecond=0)
-            sleep_secs = CYCLE_SECONDS - (now_after - now).seconds
-            sleep_secs = max(60, min(sleep_secs, CYCLE_SECONDS))  # clamp 60s–30min
-            logger.info("EXIT MONITOR LOOP: cycle %d complete. Next in %.0f min at ~%s.",
-                        cycle, sleep_secs / 60,
-                        (now_after + __import__("datetime").timedelta(seconds=sleep_secs)).strftime("%H:%M"))
-            _time.sleep(sleep_secs)
+    # Runs every 30 minutes from start until 3:50 PM ET

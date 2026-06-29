@@ -1016,8 +1016,20 @@ When total portfolio drawdown exceeds the threshold, the single weakest position
 **P1-14 — Universe filters are untested**  
 Price range $5-$1000, volume ≥ 500K, dollar volume ≥ $20M, daily range ≥ 1% — all hand-picked with no sensitivity analysis. A 10% change in any threshold might significantly alter the opportunity set.
 
-**P1-15 — Sentiment is computed but unused**  
-A lexicon-based sentiment score is computed from news headlines (26 positive + 26 negative words). It is injected into agent prompts but the `sentiment_score` field is 0.0 on every Signal object. The sentiment pipeline consumes API calls and parsing time for zero alpha contribution.
+**P1-15 — Sentiment is computed but unused — FIXED 2026-06-29**  
+A lexicon-based sentiment score is computed from news headlines (26 positive + 26 negative words). It was injected into agent prompts but the `sentiment_score` field was 0.0 on every Signal object, since the sentiment pipeline was disabled 2026-05-22. Fix: removed the dead `sentiment_score` field from the `Signal` dataclass entirely (confirmed via grep: no downstream consumer ever read it). Not one of the 16 protected factors, so removal does not conflict with "do not modify factors."
+
+**P1-17 — `vol_ratio` factor has a statistically significant negative IC — MITIGATED 2026-06-29**  
+`factor_ic_report.json` (generated 2026-06-26) shows `vol_ratio` IC = -0.1692, t=-3.11, n=331 — i.e. the factor's signal is reliably backwards. Caveat: `n_outcome=0` for every factor in that report, meaning this rests entirely on the noisier `hold_history.json` mid-hold snapshots, not yet confirmed against a single realized closed-trade outcome. Steve's decision: do not remove the factor (preserves the 16-factor "do not modify factors" structure / 208% backtest shape) — instead halve its weight in `signals.py::generate_signals` and redistribute the freed share proportionally to the 5 current top-IC factors (`accum_dist`, `adx_dir`, `rel_strength`, `price_cloud`, `rev_momentum`). Re-evaluate once `n_outcome` evidence accumulates.
+
+**P0-9 — FRED API key logged in plaintext — FIXED 2026-06-29**  
+`data_feeds.py::FREDDataFeed._fetch_series` logged `str(e)` directly on any failed request. `requests`' `HTTPError`/`Timeout`/`ConnectionError` embed the full request URL — including the plaintext `api_key` query param — in their string representation, so every failed FRED fetch wrote the live API key to `logs/`. Fix: added `_redact_api_key()`, called before the `logger.error` in the exception handler.
+
+**P2-10 — EXIT5 thesis check had no `hold_health.json` freshness check — FIXED 2026-06-29**  
+See §11 / `exit_monitor.py`. `hold_monitor.py` runs only at 9:28 AM and 3:50 PM; `exit_monitor.py`'s 30-minute loop reads whatever snapshot is currently on disk with no staleness check. A crashed or skipped `hold_monitor` run left EXIT5 silently judging "thesis dead" off hours-old composite/health numbers. Fix: per-symbol staleness check against each record's `timestamp` field (not dated today → stale); stale symbols skip the EXIT5 deterioration check and default to hold.
+
+**P2-11 — Missing-stop ATR display indistinguishable from "at the stop" — FIXED 2026-06-29**  
+`hold_monitor.py`'s log line and recap HTML table both rendered `stop_dist_atr is None` (no real stop in ledger metadata) as `0.00 ATR`, identical to `stop_dist_atr == 0.0` (price genuinely at/through the stop — the dangerous case the layer-7 scorer treats as worst-case). Fix: both display sites now render `—` when there's no real stop.
 
 **P1-16 — No afternoon rescore of held positions**  
 The signal engine runs once at 9:35 AM. Composite scores do not update during the day. A 3:50 PM rescore of held positions + top 30 candidates would identify positions whose thesis has deteriorated intraday.
@@ -1304,46 +1316,4 @@ Between May and June 2026, Raptor experienced three silent ledger corruption eve
 Root cause: Raptor ran from `C:\Users\steve\OneDrive\Desktop\Raptor`, which was inside
 OneDrive's file-system watch scope.
 
-`exit_monitor.py` writes `position_ledger.json` up to 5 times in a single 30-second execution
-window (once per exit/trim, each via `os.replace(tmp → file)`). OneDrive's sync agent watches
-for file modifications and attempts an upload on each write. When writes arrive faster than
-OneDrive can complete an upload cycle, it detects a conflict between its in-progress upload
-and the new local version. Its conflict resolution silently reverts the local file to the
-cloud version. The correct data is written to disk, then immediately overwritten by stale data.
-No `WinError 32` is thrown because the revert happens after the lock is released — only the
-cases where OneDrive held the lock during the `os.replace()` call produced visible errors
-(seen in `recap_errors.log` on 2026-05-29 and 2026-06-11).
-
-The three corruption events:
-1. **May 2026:** 8 positions disappeared from ledger while remaining open on Alpaca (the
-   `record_exit`-for-trims bug also contributed, but OneDrive amplified it)
-2. **June 18, 2026:** AAL trim (117sh) confirmed executed, ledger reverted to pre-trim state
-3. **June 18, 2026:** KDP/PFE/SQQQ exits confirmed in logs, ledger not updated
-
-### 18.2 Fix
-
-Raptor moved to `C:\Raptor` — outside OneDrive's sync scope. Git is the sole sync mechanism:
-- `Daily_GitHub_Push.bat` runs at 6 PM daily (`git add -A && git push`)
-- `sync_to_claude.py` produces the upload manifest for the Claude Project
-- OneDrive continues to sync Desktop, Documents, etc. — just not `C:\Raptor`
-
-**Files patched:** 22 (all `.bat`, `.ps1`, `.py`, `.md` files containing the old path)
-**Task Scheduler tasks:** 19 re-registered/updated, all verified `[OK]` pointing to `C:\Raptor`
-**Commit:** `f3a6ab8` (2026-06-19)
-
-### 18.3 What to check if a ledger discrepancy is suspected
-
-1. Run `python diagnose_system.py` — section 6 checks Alpaca/ledger sync
-2. Run `python raptor_monitor.py` — L2-Reconciliation checks qty mismatches and ghost positions
-3. Compare `trim_log.json` trim_qty entries against ledger `trims[]` arrays per position
-4. If discrepancy found: run `python backfill_ledger.py --write` then `python outcome_tracker.py`
-
-The OneDrive revert pattern is identifiable: trim/exit appears in `exits_YYYYMMDD.log` with
-`OK: PENDING_NEW` and slippage backfill, but ledger shows pre-event state. No `Ledger record
-failed` warning appears because the write succeeded — it was the subsequent revert that
-corrupted the file.
-
----
-
-*This document describes Raptor v5.4 as of 2026-06-19 (session 8 — OneDrive migration and ledger repair).*
-*Authoritative implementation: github.com/stevefirwin-svg/Raptor*
+`exit_monitor.py` writes `position_ledger.json
