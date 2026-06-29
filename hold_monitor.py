@@ -898,4 +898,24 @@ def build_health_html(health_out: Optional[Dict] = None) -> str:
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# ENTRY POIN
+# ENTRY POINT
+# ─────────────────────────────────────────────────────────────────────────────
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Raptor Hold Monitor")
+    parser.add_argument("--pre",   action="store_true", help="Pre-entry scan only")
+    parser.add_argument("--debug", action="store_true", help="Verbose output")
+    args = parser.parse_args()
+    # CRASH VISIBILITY (2026-06-10): same pattern as main.py / exit_monitor.py —
+    # fatal errors must reach the log file, not just the closing console window.
+    import sys as _sys, logging as _logging
+    try:
+        run_monitor(pre_entry_only=args.pre, debug=args.debug)
+    except SystemExit:
+        raise
+    except BaseException:
+        _logging.getLogger("raptor.hold").exception("FATAL: uncaught exception — hold monitor aborted")
+        _sys.exit(1)
+
+
+

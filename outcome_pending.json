@@ -652,5 +652,15 @@
     "entry_reasoning": null,
     "entry_flags": [],
     "submitted_at": "2026-06-28T13:05:11.114854"
+  },
+  "4fb9e3ca-1211-41e2-a446-32b9559d73fd": {
+    "symbol": "HOOD",
+    "exit_reason": "math_exit",
+    "composite": 0.0701,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-06-29T09:37:14.291253"
   }
 }

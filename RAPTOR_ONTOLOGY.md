@@ -1316,4 +1316,46 @@ Between May and June 2026, Raptor experienced three silent ledger corruption eve
 Root cause: Raptor ran from `C:\Users\steve\OneDrive\Desktop\Raptor`, which was inside
 OneDrive's file-system watch scope.
 
-`exit_monitor.py` writes `position_ledger.json
+`exit_monitor.py` writes `position_ledger.json` up to 5 times in a single 30-second execution
+window (once per exit/trim, each via `os.replace(tmp → file)`). OneDrive's sync agent watches
+for file modifications and attempts an upload on each write. When writes arrive faster than
+OneDrive can complete an upload cycle, it detects a conflict between its in-progress upload
+and the new local version. Its conflict resolution silently reverts the local file to the
+cloud version. The correct data is written to disk, then immediately overwritten by stale data.
+No `WinError 32` is thrown because the revert happens after the lock is released — only the
+cases where OneDrive held the lock during the `os.replace()` call produced visible errors
+(seen in `recap_errors.log` on 2026-05-29 and 2026-06-11).
+
+The three corruption events:
+1. **May 2026:** 8 positions disappeared from ledger while remaining open on Alpaca (the
+   `record_exit`-for-trims bug also contributed, but OneDrive amplified it)
+2. **June 18, 2026:** AAL trim (117sh) confirmed executed, ledger reverted to pre-trim state
+3. **June 18, 2026:** KDP/PFE/SQQQ exits confirmed in logs, ledger not updated
+
+### 18.2 Fix
+
+Raptor moved to `C:\Raptor` — outside OneDrive's sync scope. Git is the sole sync mechanism:
+- `Daily_GitHub_Push.bat` runs at 6 PM daily (`git add -A && git push`)
+- `sync_to_claude.py` produces the upload manifest for the Claude Project
+- OneDrive continues to sync Desktop, Documents, etc. — just not `C:\Raptor`
+
+**Files patched:** 22 (all `.bat`, `.ps1`, `.py`, `.md` files containing the old path)
+**Task Scheduler tasks:** 19 re-registered/updated, all verified `[OK]` pointing to `C:\Raptor`
+**Commit:** `f3a6ab8` (2026-06-19)
+
+### 18.3 What to check if a ledger discrepancy is suspected
+
+1. Run `python diagnose_system.py` — section 6 checks Alpaca/ledger sync
+2. Run `python raptor_monitor.py` — L2-Reconciliation checks qty mismatches and ghost positions
+3. Compare `trim_log.json` trim_qty entries against ledger `trims[]` arrays per position
+4. If discrepancy found: run `python backfill_ledger.py --write` then `python outcome_tracker.py`
+
+The OneDrive revert pattern is identifiable: trim/exit appears in `exits_YYYYMMDD.log` with
+`OK: PENDING_NEW` and slippage backfill, but ledger shows pre-event state. No `Ledger record
+failed` warning appears because the write succeeded — it was the subsequent revert that
+corrupted the file.
+
+---
+
+*This document describes Raptor v5.4 as of 2026-06-19 (session 8 — OneDrive migration and ledger repair).*
+*Authoritative implementation: github.com/stevefirwin-svg/Raptor*

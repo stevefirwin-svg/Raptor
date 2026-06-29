@@ -8,13 +8,13 @@
       "entry_date": "2026-06-10",
       "metadata": {
         "t_stat": 1.6713,
-        "stop": 56.3614,
+        "stop": 56.5564,
         "tp": 0.0,
         "regime": "NEUTRAL/TRENDING",
         "kelly_fraction": 0.1015,
         "composite_score": 0.6124,
         "velocity": 0.0,
-        "high_water": 58.08,
+        "high_water": 58.29,
         "last_trim_ts": "2026-06-16T09:52:19.383686"
       },
       "trims": [
@@ -77,13 +77,13 @@
       "entry_date": "2026-06-16",
       "metadata": {
         "t_stat": 1.9352,
-        "stop": 71.1718,
+        "stop": 72.2383,
         "tp": 0.0,
         "regime": "NEUTRAL/REVERTING",
         "kelly_fraction": 0.12,
         "composite_score": 0.4169,
         "velocity": 0.0,
-        "high_water": 76.2,
+        "high_water": 77.38,
         "last_trim_ts": "2026-06-24T15:51:25.308775"
       },
       "trims": [
@@ -107,13 +107,13 @@
       "entry_date": "2026-06-16",
       "metadata": {
         "t_stat": 1.7936,
-        "stop": 16.4047,
+        "stop": 16.8429,
         "tp": 0.0,
         "regime": "NEUTRAL/MIXED",
         "kelly_fraction": 0.12,
         "composite_score": 0.4405,
         "velocity": 0.0,
-        "high_water": 17.87,
+        "high_water": 17.985,
         "last_trim_ts": "2026-06-18T09:52:20"
       },
       "trims": [
@@ -138,7 +138,7 @@
       "entry_date": "2026-06-19",
       "metadata": {
         "t_stat": 2.3579,
-        "stop": 15.9371,
+        "stop": 15.9957,
         "tp": 0.0,
         "regime": "NEUTRAL/MIXED",
         "kelly_fraction": 0.12,
@@ -193,13 +193,13 @@
       "entry_date": "2026-06-25",
       "metadata": {
         "t_stat": 2.503,
-        "stop": 44.34,
+        "stop": 44.6719,
         "tp": 0.0,
         "regime": "NEUTRAL/MIXED",
         "kelly_fraction": 0.12,
         "composite_score": 0.5696,
         "velocity": 0.0,
-        "high_water": 46.2
+        "high_water": 46.23
       }
     }
   },
@@ -756,8 +756,12 @@
       "exit_date": "2026-05-28",
       "exit_reason": "math_exit",
       "exit_path": "math_exit",
-      "pnl": -14.699999999999985,
-      "pnl_pct": -2.4373259052924756
+      "final_leg_pnl": -14.7,
+      "final_leg_pnl_pct": -2.4373,
+      "entry_value": 2872.0,
+      "pnl": -42.91,
+      "pnl_pct": -1.4941,
+      "backfill_note": "Corrected 2026-06-29 \u00e2\u20ac\u201d audit P0-1: prior pnl/pnl_pct reflected only the final leg, dropping two earlier trims (-19.47, -8.74). final_leg_pnl/final_leg_pnl_pct preserve the old (final-leg-only) figures for reference."
     },
     {
       "model": "v5.4",
@@ -791,8 +795,12 @@
       "exit_date": "2026-05-29",
       "exit_reason": "hard_stop",
       "exit_path": "hard_stop",
-      "pnl": -9.33916499999971,
-      "pnl_pct": -0.12024540498636327
+      "final_leg_pnl": -9.34,
+      "final_leg_pnl_pct": -0.1202,
+      "entry_value": 8448.05,
+      "pnl": -2.13,
+      "pnl_pct": -0.0252,
+      "backfill_note": "Corrected 2026-06-29 \u00e2\u20ac\u201d audit P0-1: prior pnl/pnl_pct reflected only the final leg, dropping one earlier trim (+7.21)."
     },
     {
       "model": "v5.4",
@@ -826,8 +834,12 @@
       "exit_date": "2026-05-29",
       "exit_reason": "math_exit",
       "exit_path": "math_exit",
-      "pnl": -27.694809999999933,
-      "pnl_pct": -5.024596015263905
+      "final_leg_pnl": -27.69,
+      "final_leg_pnl_pct": -5.0246,
+      "entry_value": 1453.12,
+      "pnl": -47.81,
+      "pnl_pct": -3.2902,
+      "backfill_note": "Corrected 2026-06-29 \u00e2\u20ac\u201d audit P0-1: prior pnl/pnl_pct reflected only the final leg, dropping one earlier trim (-20.12)."
     },
     {
       "symbol": "PLTR",
@@ -977,8 +989,12 @@
       "exit_date": "2026-06-05",
       "exit_reason": "trailing_stop",
       "exit_path": "trailing_stop",
-      "pnl": 2238.3254880000004,
-      "pnl_pct": 45.50723547330517
+      "final_leg_pnl": 2238.33,
+      "final_leg_pnl_pct": 45.5072,
+      "entry_value": 8883.62,
+      "pnl": 3805.56,
+      "pnl_pct": 42.8379,
+      "backfill_note": "Corrected 2026-06-29 \u00e2\u20ac\u201d audit P0-1: prior pnl/pnl_pct reflected only the final leg, dropping two earlier trims (+784.13, +783.10)."
     },
     {
       "model": "v5.4",
@@ -1048,8 +1064,12 @@
       "exit_date": "2026-06-15",
       "exit_reason": "trailing_stop",
       "exit_path": "trailing_stop",
-      "pnl": -86.02000000000004,
-      "pnl_pct": -4.36432637571158
+      "final_leg_pnl": -86.02,
+      "final_leg_pnl_pct": -4.3643,
+      "entry_value": 10086.78,
+      "pnl": -124.1,
+      "pnl_pct": -1.2303,
+      "backfill_note": "Corrected 2026-06-29 \u00e2\u20ac\u201d audit P0-1: prior pnl/pnl_pct reflected only the final leg, dropping two earlier trims (+7.52, -45.60)."
     },
     {
       "model": "v5.4",
@@ -1096,8 +1116,12 @@
       "exit_date": "2026-06-18",
       "exit_reason": "math_exit",
       "exit_path": "math_exit",
-      "pnl": -16.90000000000005,
-      "pnl_pct": -0.7206823027718579
+      "final_leg_pnl": -16.9,
+      "final_leg_pnl_pct": -0.7207,
+      "entry_value": 12006.4,
+      "pnl": -24.51,
+      "pnl_pct": -0.2041,
+      "backfill_note": "Corrected 2026-06-29 \u00e2\u20ac\u201d audit P0-1: prior pnl/pnl_pct reflected only the final leg, dropping two earlier trims (+59.59, -67.20)."
     },
     {
       "model": "v5.4",
@@ -1154,9 +1178,13 @@
       "exit_date": "2026-06-18",
       "exit_reason": "hard_stop",
       "exit_path": "hard_stop",
-      "pnl_pct": 8.4038,
-      "pnl": 16.87,
-      "repair_note": "Repaired by repair_ledger_20260619.py \u2014 order confirmed in exits log"
+      "final_leg_pnl": 16.87,
+      "final_leg_pnl_pct": 8.4038,
+      "entry_value": 802.78,
+      "pnl_pct": 9.4509,
+      "pnl": 75.87,
+      "repair_note": "Repaired by repair_ledger_20260619.py \u2014 order confirmed in exits log",
+      "backfill_note": "Corrected 2026-06-29 \u2014 audit P0-1: prior pnl/pnl_pct reflected only the final leg, dropping three earlier trims (+25.54, +23.88, +9.58)."
     },
     {
       "model": "v5.4",
@@ -1219,9 +1247,13 @@
       "exit_date": "2026-06-15",
       "exit_reason": "hard_stop",
       "exit_path": "hard_stop",
-      "pnl_pct": -9.1965,
-      "pnl": -684.48,
-      "repair_note": "Repaired by repair_ledger_20260619.py \u2014 order confirmed in exits log"
+      "final_leg_pnl": -684.48,
+      "final_leg_pnl_pct": -9.1965,
+      "entry_value": 10436.1,
+      "pnl_pct": -5.8213,
+      "pnl": -607.52,
+      "repair_note": "Repaired by repair_ledger_20260619.py \u2014 order confirmed in exits log",
+      "backfill_note": "Corrected 2026-06-29 \u2014 audit P0-1: prior pnl/pnl_pct reflected only the final leg, dropping one earlier trim (+76.96)."
     },
     {
       "model": "v5.4",
@@ -1298,8 +1330,12 @@
       "exit_date": "2026-06-19",
       "exit_reason": "hard_stop",
       "exit_path": "hard_stop",
-      "pnl": 5.039999999999992,
-      "pnl_pct": 0.4398826979472137
+      "final_leg_pnl": 5.04,
+      "final_leg_pnl_pct": 0.4399,
+      "entry_value": 11621.28,
+      "pnl": 47.57,
+      "pnl_pct": 0.4093,
+      "backfill_note": "Corrected 2026-06-29 \u00e2\u20ac\u201d audit P0-1: prior pnl/pnl_pct reflected only the final leg, dropping five earlier trims (-38.18, +22.22, +17.44, +26.60, +14.45)."
     },
     {
       "model": "v5.4",
@@ -1336,9 +1372,13 @@
       "exit_date": "2026-06-19",
       "exit_reason": "hard_stop",
       "exit_path": "hard_stop",
-      "pnl": 299.9,
-      "pnl_pct": 2.8141,
-      "repair_note": "Repaired 2026-06-24 \u2014 KRE exited 2026-06-19 per exits_20260619.log (hard_stop confirmed). Ledger not updated due to stale pending_exit=True. Exit price approximated from stop price in metadata."
+      "final_leg_pnl": 299.9,
+      "final_leg_pnl_pct": 2.8141,
+      "entry_value": 12479.58,
+      "pnl": 370.62,
+      "pnl_pct": 2.9698,
+      "repair_note": "Repaired 2026-06-24 \u2014 KRE exited 2026-06-19 per exits_20260619.log (hard_stop confirmed). Ledger not updated due to stale pending_exit=True. Exit price approximated from stop price in metadata.",
+      "backfill_note": "Corrected 2026-06-29 \u2014 audit P0-1: prior pnl/pnl_pct reflected only the final leg, dropping one earlier trim (+70.72)."
     },
     {
       "model": "v5.4",
@@ -1415,8 +1455,12 @@
       "exit_date": "2026-06-25",
       "exit_reason": "math_exit",
       "exit_path": "math_exit",
-      "pnl": -19.004999999999995,
-      "pnl_pct": -6.412916940831092
+      "final_leg_pnl": -19.0,
+      "final_leg_pnl_pct": -6.4129,
+      "entry_value": 11557.85,
+      "pnl": -1042.82,
+      "pnl_pct": -9.0226,
+      "backfill_note": "Corrected 2026-06-29 \u00e2\u20ac\u201d audit P0-1: prior pnl/pnl_pct reflected only the final leg, dropping five earlier trims (-647.96, -319.05, -3.74, -28.77, -24.29)."
     },
     {
       "model": "v5.4",
@@ -1454,11 +1498,14 @@
       "exit_date": "2026-06-28",
       "exit_reason": "math_exit",
       "exit_path": "math_exit",
-      "pnl": -587.6700000000001,
-      "pnl_pct": -9.458715596330281,
+      "final_leg_pnl": -587.67,
+      "final_leg_pnl_pct": -9.4587,
+      "pnl": -1097.67,
+      "pnl_pct": -8.6072,
       "hold_days": 6,
-      "entry_value": 6213.0,
-      "entry_regime": null
+      "entry_value": 12753.0,
+      "entry_regime": null,
+      "backfill_note": "Corrected 2026-06-29 \u00e2\u20ac\u201d audit P0-1: prior pnl/pnl_pct reflected only the final leg, dropping one earlier trim (-510.00). entry_value also corrected from final-leg-only shares (57) to total shares ever held (117)."
     }
   ]
 }

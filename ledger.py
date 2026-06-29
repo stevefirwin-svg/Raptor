@@ -184,4 +184,76 @@ class Ledger:
                 pos["hold_days"] = None
             pos["entry_regime"] = (pos.get("metadata") or {}).get("macro_regime")
             self.data["positions"].pop(key)
-    
+            self.data["closed"].append(pos)
+
+        self._save()
+        return pos
+
+    def get_positions(self, model: str) -> List[Dict]:
+        """Get all open positions for a specific model."""
+        return [v for v in self.data["positions"].values() if v["model"] == model]
+
+    def get_held_symbols(self, model: str) -> set:
+        """Get set of symbols currently held by a model."""
+        return {v["symbol"] for v in self.data["positions"].values() if v["model"] == model}
+
+    def get_all_held_symbols(self) -> set:
+        """Get all held symbols across all models."""
+        return {v["symbol"] for v in self.data["positions"].values()}
+
+    def get_closed(self, model: str = None) -> List[Dict]:
+        """Get closed trades, optionally filtered by model."""
+        if model:
+            return [t for t in self.data["closed"] if t["model"] == model]
+        return self.data["closed"]
+
+    def get_equity_allocation(self, model: str, total_equity: float,
+                              allocation_pct: float = 0.50) -> float:
+        """
+        How much equity a model is allowed to use.
+        Default: 50/50 split between two models.
+        """
+        return total_equity * allocation_pct
+
+    def get_performance_summary(self, model: str) -> Dict:
+        """Quick P&L summary for a model."""
+        closed = self.get_closed(model)
+        if not closed:
+            return {"trades": 0, "net_pnl": 0, "win_rate": 0}
+        winners = [t for t in closed if t.get("pnl", 0) > 0]
+        total_pnl = sum(t.get("pnl", 0) for t in closed)
+        return {
+            "trades": len(closed),
+            "winners": len(winners),
+            "win_rate": round(len(winners) / len(closed) * 100, 1),
+            "net_pnl": round(total_pnl, 2),
+            "avg_pnl": round(total_pnl / len(closed), 2),
+        }
+
+    def print_status(self):
+        """Print side-by-side model comparison."""
+        models = set(v["model"] for v in self.data["positions"].values())
+        models.update(t["model"] for t in self.data["closed"])
+
+        print("=" * 65)
+        print("  RAPTOR A/B MODEL COMPARISON")
+        print("=" * 65)
+
+        for m in sorted(models):
+            positions = self.get_positions(m)
+            perf = self.get_performance_summary(m)
+            print(f"\n  Model: {m}")
+            print(f"    Open positions: {len(positions)}")
+            for p in positions:
+                print(f"      {p['symbol']:6s}  {p['shares']} shares @ ${p['entry_price']:.2f}  ({p['entry_date']})")
+            print(f"    Closed trades:  {perf['trades']}")
+            print(f"    Win rate:       {perf['win_rate']}%")
+            print(f"    Net P&L:        ${perf['net_pnl']:,.2f}")
+
+        print("")
+        print("=" * 65)
+
+
+if __name__ == "__main__":
+    ledger = Ledger()
+    ledger.print_status()

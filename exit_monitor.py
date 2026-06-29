@@ -909,4 +909,56 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # ── Loop mode (default) ───────────────────────────────────────────────────
-    # Runs every 30 minutes from start until 3:50 PM ET
+    # Runs every 30 minutes from start until 3:50 PM ET, then exits cleanly.
+    # Task Scheduler fires this once at 9:35 AM; it self-manages the rest of
+    # the day. --once flag preserves single-shot behaviour for manual runs.
+    #
+    # CRASH VISIBILITY (2026-06-10): any uncaught exception is written to the
+    # exits log with full traceback before the process dies.
+    import sys as _sys
+
+    MARKET_CLOSE_HOUR   = 15   # 3 PM
+    MARKET_CLOSE_MINUTE = 50   # :50 → 3:50 PM cutoff
+    CYCLE_SECONDS       = 1800 # 30 minutes
+
+    def _run_once():
+        try:
+            run_exit_monitor(dry_run=args.dry_run)
+        except SystemExit:
+            raise
+        except BaseException:
+            logger.exception("FATAL: uncaught exception — exit monitor cycle aborted")
+
+    if args.once:
+        _run_once()
+    else:
+        cycle = 0
+        while True:
+            now = datetime.now()
+            past_cutoff = (now.hour > MARKET_CLOSE_HOUR or
+                           (now.hour == MARKET_CLOSE_HOUR and
+                            now.minute >= MARKET_CLOSE_MINUTE))
+            if past_cutoff:
+                logger.info("EXIT MONITOR: past 3:50 PM cutoff — shutting down loop after %d cycle(s).", cycle)
+                break
+
+            cycle += 1
+            logger.info("EXIT MONITOR LOOP: cycle %d starting at %s", cycle, now.strftime("%H:%M:%S"))
+            _run_once()
+
+            # Re-check cutoff before sleeping — final cycle may have run close to 3:50
+            now_after = datetime.now()
+            past_cutoff_after = (now_after.hour > MARKET_CLOSE_HOUR or
+                                  (now_after.hour == MARKET_CLOSE_HOUR and
+                                   now_after.minute >= MARKET_CLOSE_MINUTE))
+            if past_cutoff_after:
+                logger.info("EXIT MONITOR: past 3:50 PM after cycle %d — shutting down.", cycle)
+                break
+
+            next_run = now_after.replace(second=0, microsecond=0)
+            sleep_secs = CYCLE_SECONDS - (now_after - now).seconds
+            sleep_secs = max(60, min(sleep_secs, CYCLE_SECONDS))  # clamp 60s–30min
+            logger.info("EXIT MONITOR LOOP: cycle %d complete. Next in %.0f min at ~%s.",
+                        cycle, sleep_secs / 60,
+                        (now_after + __import__("datetime").timedelta(seconds=sleep_secs)).strftime("%H:%M"))
+            _time.sleep(sleep_secs)

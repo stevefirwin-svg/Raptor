@@ -84,7 +84,17 @@ def _load() -> list:
         return []
     try:
         return json.loads(SLIPPAGE_LOG_PATH.read_text())
-    except Exception:
+    except Exception as e:
+        # FIX (2026-06-29, audit P2): previously swallowed silently and
+        # returned [] — every caller (record_fill, backfill_slippage, report)
+        # would then silently start from an empty log, meaning a corrupted
+        # file looks identical to "no slippage history yet" and the next
+        # _atomic_write() permanently discards everything recorded before
+        # the corruption. Log loudly so this gets noticed and the raw file
+        # can be recovered before it's overwritten.
+        logger.warning("Failed to load %s: %s — treating as empty. "
+                        "Check this file for corruption before further writes "
+                        "overwrite it.", SLIPPAGE_LOG_PATH, e)
         return []
 
 

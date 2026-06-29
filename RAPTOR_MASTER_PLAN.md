@@ -247,4 +247,57 @@ commits clean given the working tree stays CRLF on disk (Windows) while git stor
 | signals.py | Kelly clip 0.02/0.12 | EVT tail on closed position returns | DATA-40 |
 | signals.py | Regime blend sigma 0.25 | Historical regime transition frequency | None — derive from macro_context history |
 | signals.py | OU hold_target min=3, max=30 | Regress realized hold_days vs theta estimate (estimator reworked 2026-06-17, see ontology §16 — bounds calibration still pending data) | DATA-40 |
-| hold_monitor.py | LAYER_WEIGHTS (hand-pic
+| hold_monitor.py | LAYER_WEIGHTS (hand-picked) | Spearman IC per layer vs PnL | DATA-60 (ARCH-1) |
+| hold_monitor.py | TIER_STRONG=0.20, TIER_STABLE=-0.15 | Health score vs forward return distribution | DATA-40 |
+| exit_monitor.py | Trail modifier 0.3/1.3/0.75 | Backtest trail width sensitivity | DATA-40 (GAP-B) |
+| config.py | initial_stop_atr_mult 3.0 | EVT-derived — gate: DATA-60 | DATA-60 |
+| config.py | max_portfolio_drawdown 0.12 | EVT tail on portfolio return distribution | DATA-60 |
+| kelly_engine.py | P_TOL = 0.05 (target probability of ever breaching MAX_DD) | Calibrate against margin_guard.py trigger cost / Steve's explicit ruin-cost function once enough live drawdown episodes exist (session 7, 2026-06-17 — see ontology §17) | DATA-60 |
+| macro_context.py | Vote thresholds 3/0/-2 | Replace with HMM probability vector (ARCH-2) | None |
+| dsr.py | N_TRIALS_DEFAULT = 10 | Count of strategy-altering commits — update each session | Rolling |
+
+---
+
+## P1 Status Table (updated 2026-06-12)
+
+| ID | Description | Status |
+|----|-------------|--------|
+| P1-1 | Kalman macro classifier | NOT BUILT — replaced by Gaussian regime blend in signals.py |
+| P1-2 | Vol-regime hard stop | ✅ CONFIRMED |
+| P1-3 | OU trailing stop | ❌ NEVER BUILT — was documentation-only; live trail is time-tier + profit-ATR (`exit_monitor._trail_mult`). Corrected 2026-06-17. |
+| P1-4 | Bayesian Kelly | ✅ CONFIRMED — bootstrap live, SHADOW mode |
+| P1-5 | OU hold target | ⚠️ REWORKED 2026-06-17 — market-residual series, unit-root gate, bias correction, bootstrap CI added (S6-1..S6-4). CI/reliability flag not yet consumed downstream (see queue item below). |
+| P1-6 | IC layer weights hold monitor | GATED — DATA-60 (currently 27 positions) |
+| P1-7 | Continuous trim | ✅ CONFIRMED |
+| P1-8 | Regime-relative thesis threshold | ✅ CONFIRMED |
+| P1-9 | Watchdog intraday | NOT BUILT — fetches 5 daily bars, not intraday. Rebuild or remove bat. |
+| P1-10 | Composite velocity gate | ✅ CONFIRMED |
+| P1-11 | Re-entry cooldown | ✅ CONFIRMED |
+| P1-12 | Portfolio heat partial trim | ✅ CONFIRMED (25% proportional) |
+| P1-13 | Multi-MA breadth (50/150/200) | ✅ CONFIRMED |
+| P1-14 | Universe sensitivity sweep | FUTURE (ARCH-5) |
+| P1-15 | Sentiment dead path | OPEN — sentiment_score always 0.0 |
+| P1-16 | Afternoon rescore | PARTIAL — exit_monitor GAP9 rescore live |
+| P1-17 | Conviction gradient sizing | ✅ CONFIRMED via book_conviction percentile |
+
+---
+
+## Known Issues — Open
+
+| Issue | Impact | Priority |
+|-------|--------|----------|
+| Trail multiplier tiers (2.5/2.0/2.5×) — TODO:DERIVE | Stops may be too tight/loose on winners | GAP-B at DATA-40 |
+| macro_context.py vote-count thresholds — no statistical basis | Regime misclassification risk | ARCH-2: replace with HMM |
+| position_outcomes.json built manually — not auto-updated after close | New positions won't appear until Claude rebuilds it | Add to Start_AfterClose.bat |
+| WFC/KRE stops above price (as of Jun 18) | EXIT 1 will fire on next exit_monitor run — expected, not a bug | Self-resolving Mon 9:52 AM |
+| `outcome_tracker_v2.py` unreferenced in `archive/` | Dead code, harmless | Low — delete whenever convenient |
+| **CRLF line-ending mismatch** | **RESOLVED 2026-06-28** — `.gitattributes` (`* text=auto eol=lf`) added, `git add --renormalize .` run and committed, `core.autocrlf=false` set | Done |
+
+---
+
+## Completed (all sessions, chronological)
+
+All pre-session-4 completions archived. For full history see git log.
+Key pre-S4 completions: CRIT-0 through CRIT-9, MATH-2/3/4, H-1 through H-8,
+P0-1, P0-8, submit_order fix, trail tier interim fix, double-trim guard,
+log tracking enabled, DFA-1 Hurst, soft z-score shrinkage, Ledoit-Wolf SNR.

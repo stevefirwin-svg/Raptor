@@ -88,7 +88,13 @@ def load_json_list(path: str) -> list:
         with open(path, "r") as f:
             data = json.load(f)
         return data if isinstance(data, list) else []
-    except (json.JSONDecodeError, OSError):
+    except (json.JSONDecodeError, OSError) as e:
+        # FIX (2026-06-29, audit P2): previously swallowed silently and
+        # returned [] — indistinguishable from a genuinely empty/missing
+        # file, so corruption in outcome_log.json/entry_vetoes.json/
+        # hold_decisions.json went unnoticed until P&L stats looked wrong.
+        print(f"[OutcomeTracker] WARNING: failed to load {path}: {e} "
+              f"— treating as empty. Check this file for corruption.")
         return []
 
 
@@ -327,7 +333,16 @@ def _load_outcome_pending() -> dict:
         with open(OUTCOME_PENDING_PATH) as f:
             data = json.load(f)
         return data if isinstance(data, dict) else {}
-    except Exception:
+    except Exception as e:
+        # FIX (2026-06-29, audit P2): previously swallowed silently and
+        # returned {} — this sidecar is the P0-1 direct order-ID join that
+        # run_tracker() relies on for accurate entry_decision attribution.
+        # A silently-empty pending dict makes every trade fall back to the
+        # weaker timestamp-match heuristic with no visible warning.
+        print(f"[OutcomeTracker] WARNING: failed to load {OUTCOME_PENDING_PATH}: {e} "
+              f"— treating as empty. entry_decision attribution will fall back "
+              f"to timestamp matching for all trades this run. Check this file "
+              f"for corruption.")
         return {}
 
 

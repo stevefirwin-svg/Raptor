@@ -838,4 +838,30 @@ class QuantSignalEngine:
                 regime=f"{regime}/{micro}",atr=round(atr_val,4),
                 entry_price=entry,stop_price=stop,take_profit=0.0,
                 kelly_fraction=round(kelly,4),hold_target_days=hold,
-                leverag
+                leverage_qualified=lev,confirmation_type=conf,
+                timestamp=str(bars.index[-1]),
+                hold_target_low=_ou["low"],hold_target_high=_ou["high"],
+                hold_target_reliable=_ou["reliable"],
+            ))
+        signals.sort(key=lambda x:x.t_statistic,reverse=True)
+        signals=signals[:self.cfg.execution.max_orders_per_scan]
+        rc={}
+        for m in micros.values(): rc[m]=rc.get(m,0)+1
+        snr_vals=[s.t_statistic for s in signals]
+        logger.info("v5.4 Signals: %d from %d | Macro=%s Scale=%.1f | Micro=%s | SNR min=%.2f max=%.2f",
+                     len(signals),len(raw),regime,market_scale,rc,
+                     min(snr_vals) if snr_vals else 0,max(snr_vals) if snr_vals else 0)
+        # ── Write composite cache for velocity gate in main.py ───────────────
+        # Stores today's composite score per symbol so tomorrow's scan can
+        # compute composite_velocity = today - yesterday and gate on trajectory.
+        # Atomic write — never leaves a partial file that would corrupt the gate.
+        try:
+            _cache={sym:round(sig.composite_score,4) for sym,sig in self._last_full_signals.items()}
+            _cache_path=os.path.join(os.path.dirname(os.path.abspath(__file__)),"composite_cache.json")
+            _tmp=_cache_path+".tmp"
+            with open(_tmp,"w") as _f: json.dump(_cache,_f)
+            os.replace(_tmp,_cache_path)
+            logger.debug("CompCache: wrote %d symbol scores → composite_cache.json",len(_cache))
+        except Exception as _ce:
+            logger.warning("CompCache write failed: %s",_ce)
+        return signals
