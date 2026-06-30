@@ -3,19 +3,19 @@
     "v5.4:BAC": {
       "model": "v5.4",
       "symbol": "BAC",
-      "shares": 78,
+      "shares": 1,
       "entry_price": 54.79,
       "entry_date": "2026-06-10",
       "metadata": {
         "t_stat": 1.6713,
-        "stop": 56.5564,
+        "stop": 56.5811,
         "tp": 0.0,
         "regime": "NEUTRAL/TRENDING",
         "kelly_fraction": 0.1015,
         "composite_score": 0.6124,
         "velocity": 0.0,
         "high_water": 58.29,
-        "last_trim_ts": "2026-06-16T09:52:19.383686"
+        "last_trim_ts": "2026-06-30T14:05:18.366461"
       },
       "trims": [
         {
@@ -47,6 +47,36 @@
           "pnl_abs": 48.02,
           "shares_before": 106,
           "shares_after": 78
+        },
+        {
+          "date": "2026-06-30",
+          "reason": "math_trim_38%",
+          "shares_sold": 30,
+          "trim_price": 57.3,
+          "pnl_pct": 4.5811,
+          "pnl_abs": 75.3,
+          "shares_before": 78,
+          "shares_after": 48
+        },
+        {
+          "date": "2026-06-30",
+          "reason": "math_trim_38%",
+          "shares_sold": 30,
+          "trim_price": 57.235,
+          "pnl_pct": 4.4625,
+          "pnl_abs": 73.35,
+          "shares_before": 48,
+          "shares_after": 18
+        },
+        {
+          "date": "2026-06-30",
+          "reason": "math_trim_38%",
+          "shares_sold": 17,
+          "trim_price": 57.15,
+          "pnl_pct": 4.3074,
+          "pnl_abs": 40.12,
+          "shares_before": 18,
+          "shares_after": 1
         }
       ]
     },
@@ -69,36 +99,6 @@
         "pending_exit_ts": "2026-06-25T15:50:26.768293"
       }
     },
-    "v5.4:UBER": {
-      "model": "v5.4",
-      "symbol": "UBER",
-      "shares": 114,
-      "entry_price": 73.16,
-      "entry_date": "2026-06-16",
-      "metadata": {
-        "t_stat": 1.9352,
-        "stop": 72.2383,
-        "tp": 0.0,
-        "regime": "NEUTRAL/REVERTING",
-        "kelly_fraction": 0.12,
-        "composite_score": 0.4169,
-        "velocity": 0.0,
-        "high_water": 77.38,
-        "last_trim_ts": "2026-06-24T15:51:25.308775"
-      },
-      "trims": [
-        {
-          "date": "2026-06-24",
-          "reason": "math_trim_35%",
-          "shares_sold": 62,
-          "trim_price": 73.655,
-          "pnl_pct": 0.6766,
-          "pnl_abs": 30.69,
-          "shares_before": 176,
-          "shares_after": 114
-        }
-      ]
-    },
     "v5.4:AAL": {
       "model": "v5.4",
       "symbol": "AAL",
@@ -107,13 +107,13 @@
       "entry_date": "2026-06-16",
       "metadata": {
         "t_stat": 1.7936,
-        "stop": 16.8429,
+        "stop": 17.2003,
         "tp": 0.0,
         "regime": "NEUTRAL/MIXED",
         "kelly_fraction": 0.12,
         "composite_score": 0.4405,
         "velocity": 0.0,
-        "high_water": 17.985,
+        "high_water": 18.3301,
         "last_trim_ts": "2026-06-18T09:52:20"
       },
       "trims": [
@@ -133,19 +133,52 @@
     "v5.4:CPNG": {
       "model": "v5.4",
       "symbol": "CPNG",
-      "shares": 711,
+      "shares": 1,
       "entry_price": 18.02,
       "entry_date": "2026-06-19",
       "metadata": {
         "t_stat": 2.3579,
-        "stop": 15.9957,
+        "stop": 16.5163,
         "tp": 0.0,
         "regime": "NEUTRAL/MIXED",
         "kelly_fraction": 0.12,
         "composite_score": 0.5442,
         "velocity": 0.0,
-        "high_water": 17.975
-      }
+        "high_water": 17.975,
+        "last_trim_ts": "2026-06-30T14:05:18.449527"
+      },
+      "trims": [
+        {
+          "date": "2026-06-30",
+          "reason": "math_trim_36%",
+          "shares_sold": 254,
+          "trim_price": 17.585,
+          "pnl_pct": -2.414,
+          "pnl_abs": -110.49,
+          "shares_before": 711,
+          "shares_after": 457
+        },
+        {
+          "date": "2026-06-30",
+          "reason": "math_trim_36%",
+          "shares_sold": 254,
+          "trim_price": 17.405,
+          "pnl_pct": -3.4129,
+          "pnl_abs": -156.21,
+          "shares_before": 457,
+          "shares_after": 203
+        },
+        {
+          "date": "2026-06-30",
+          "reason": "math_trim_36%",
+          "shares_sold": 202,
+          "trim_price": 17.3625,
+          "pnl_pct": -3.6487,
+          "pnl_abs": -132.81,
+          "shares_before": 203,
+          "shares_after": 1
+        }
+      ]
     },
     "v5.4:GOOGL": {
       "model": "v5.4",
@@ -193,7 +226,7 @@
       "entry_date": "2026-06-25",
       "metadata": {
         "t_stat": 2.503,
-        "stop": 44.6719,
+        "stop": 44.9721,
         "tp": 0.0,
         "regime": "NEUTRAL/MIXED",
         "kelly_fraction": 0.12,
@@ -1506,6 +1539,49 @@
       "entry_value": 12753.0,
       "entry_regime": null,
       "backfill_note": "Corrected 2026-06-29 \u00e2\u20ac\u201d audit P0-1: prior pnl/pnl_pct reflected only the final leg, dropping one earlier trim (-510.00). entry_value also corrected from final-leg-only shares (57) to total shares ever held (117)."
+    },
+    {
+      "model": "v5.4",
+      "symbol": "UBER",
+      "shares": 114,
+      "entry_price": 73.16,
+      "entry_date": "2026-06-16",
+      "metadata": {
+        "t_stat": 1.9352,
+        "stop": 73.2046,
+        "tp": 0.0,
+        "regime": "NEUTRAL/REVERTING",
+        "kelly_fraction": 0.12,
+        "composite_score": 0.4169,
+        "velocity": 0.0,
+        "high_water": 77.38,
+        "last_trim_ts": "2026-06-24T15:51:25.308775",
+        "pending_exit": true,
+        "pending_exit_ts": "2026-06-30T13:35:18.427082"
+      },
+      "trims": [
+        {
+          "date": "2026-06-24",
+          "reason": "math_trim_35%",
+          "shares_sold": 62,
+          "trim_price": 73.655,
+          "pnl_pct": 0.6766,
+          "pnl_abs": 30.69,
+          "shares_before": 176,
+          "shares_after": 114
+        }
+      ],
+      "exit_price": 72.65,
+      "exit_date": "2026-06-30",
+      "exit_reason": "hard_stop",
+      "exit_path": "hard_stop",
+      "final_leg_pnl": -58.14,
+      "final_leg_pnl_pct": -0.6971,
+      "entry_value": 12876.16,
+      "pnl": -27.45,
+      "pnl_pct": -0.2132,
+      "hold_days": 14,
+      "entry_regime": null
     }
   ]
 }

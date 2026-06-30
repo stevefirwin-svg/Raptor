@@ -1051,5 +1051,83 @@
     "agent_decision": "HOLD",
     "agent_conf": 0.9,
     "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-06-30T12:35:17.202688",
+    "symbol": "BAC",
+    "trim_qty": 30,
+    "price": 57.3,
+    "pnl_pct": 4.54,
+    "reason": "math_trim_38%",
+    "composite": -0.1036,
+    "trim_detail": "severity=0.185 x stop_mult=1.50 x far_mult=1.24 x pnl_mult=1.00 + slope_adj=0.037 = 0.382 -> 38.2% (30 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-06-30T12:35:17.202747",
+    "symbol": "CPNG",
+    "trim_qty": 254,
+    "price": 17.585,
+    "pnl_pct": -2.17,
+    "reason": "math_trim_36%",
+    "composite": 0.0765,
+    "trim_detail": "severity=0.139 x stop_mult=1.25 x far_mult=1.13 x pnl_mult=1.20 + slope_adj=0.121 = 0.357 -> 35.7% (254 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-06-30T13:05:19.268967",
+    "symbol": "BAC",
+    "trim_qty": 30,
+    "price": 57.235,
+    "pnl_pct": 4.42,
+    "reason": "math_trim_38%",
+    "composite": -0.1111,
+    "trim_detail": "severity=0.185 x stop_mult=1.50 x far_mult=1.24 x pnl_mult=1.00 + slope_adj=0.037 = 0.382 -> 38.2% (30 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-06-30T13:05:19.269011",
+    "symbol": "CPNG",
+    "trim_qty": 254,
+    "price": 17.405,
+    "pnl_pct": -3.17,
+    "reason": "math_trim_36%",
+    "composite": -0.1844,
+    "trim_detail": "severity=0.139 x stop_mult=1.25 x far_mult=1.13 x pnl_mult=1.20 + slope_adj=0.121 = 0.357 -> 35.7% (254 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-06-30T14:05:18.469706",
+    "symbol": "BAC",
+    "trim_qty": 17,
+    "price": 57.15,
+    "pnl_pct": 4.27,
+    "reason": "math_trim_38%",
+    "composite": -0.1331,
+    "trim_detail": "severity=0.185 x stop_mult=1.50 x far_mult=1.24 x pnl_mult=1.00 + slope_adj=0.037 = 0.382 -> 38.2% (30 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-06-30T14:05:18.469754",
+    "symbol": "CPNG",
+    "trim_qty": 202,
+    "price": 17.3625,
+    "pnl_pct": -3.41,
+    "reason": "math_trim_36%",
+    "composite": -0.2285,
+    "trim_detail": "severity=0.139 x stop_mult=1.25 x far_mult=1.13 x pnl_mult=1.20 + slope_adj=0.121 = 0.357 -> 35.7% (254 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
   }
 ]

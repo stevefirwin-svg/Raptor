@@ -662,5 +662,75 @@
     "entry_reasoning": null,
     "entry_flags": [],
     "submitted_at": "2026-06-29T09:37:14.291253"
+  },
+  "a4ce5998-f9dd-4ac9-8ff4-c5dcc819cbf4": {
+    "symbol": "BAC",
+    "exit_reason": "math_trim_38%",
+    "composite": -0.1036,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-06-30T12:35:17.073645"
+  },
+  "100ac873-8adf-42b9-a4b7-1f4db6d908ca": {
+    "symbol": "CPNG",
+    "exit_reason": "math_trim_36%",
+    "composite": 0.0765,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-06-30T12:35:17.161220"
+  },
+  "e4ca0f0a-31fe-4828-a5a0-46fc6cfe1b61": {
+    "symbol": "BAC",
+    "exit_reason": "math_trim_38%",
+    "composite": -0.1111,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-06-30T13:05:19.154329"
+  },
+  "693af339-6032-466f-a7ff-68601e9f8d6e": {
+    "symbol": "CPNG",
+    "exit_reason": "math_trim_36%",
+    "composite": -0.1844,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-06-30T13:05:19.226974"
+  },
+  "2becaae8-0d7f-466a-8f43-e30f42c90d3c": {
+    "symbol": "UBER",
+    "exit_reason": "hard_stop",
+    "composite": 0.1409,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-06-30T13:35:18.424527"
+  },
+  "e739969e-be5f-4288-84ea-6b6d5fa6cfe3": {
+    "symbol": "BAC",
+    "exit_reason": "math_trim_38%",
+    "composite": -0.1331,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-06-30T14:05:18.358155"
+  },
+  "a7bf083b-a07f-4e73-a469-2ad60b617801": {
+    "symbol": "CPNG",
+    "exit_reason": "math_trim_36%",
+    "composite": -0.2285,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-06-30T14:05:18.428579"
   }
 }
