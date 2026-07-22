@@ -6594,5 +6594,31 @@
     "tagged_at": "2026-07-22T17:35:24.388779+00:00",
     "exit_regime": "RISK_ON",
     "entry_regime": null
+  },
+  {
+    "symbol": "PLTR",
+    "entry_date": "2026-07-21T13:38:13.980037Z",
+    "exit_date": "2026-07-22T17:35:24.429562Z",
+    "hold_days": 1,
+    "entry_price": 133.7,
+    "exit_price": 124.41,
+    "qty": 48.0,
+    "actual_pnl_pct": -6.9484,
+    "actual_exit_path": "hard_stop",
+    "sell_order_id": "955840df-eaaa-4847-9129-0fce19a89c78",
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "entry_timestamp": "2026-07-22T13:35:23.124849",
+    "hold_decision": "HOLD",
+    "hold_confidence": 0.9,
+    "hold_reasoning": "insufficient history: 0 days",
+    "hold_flags": [],
+    "hold_timestamp": "2026-07-22T12:30:14.735762",
+    "hold_trim_pct": null,
+    "tagged_at": "2026-07-22T21:00:07.759658+00:00",
+    "exit_regime": "RISK_ON",
+    "entry_regime": null
   }
 ]

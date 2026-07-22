@@ -705,25 +705,61 @@ def run_exit_monitor(dry_run=False):
                 else:
                     alp = next((p for p in positions if p["symbol"] == _sym), None)
                     if alp and _sym not in {e["symbol"] for e in exits}:
-                        # Double-trim guard: skip if this symbol was trimmed within the last 30 min.
-                        # hold_health.json trim recommendation persists until hold_monitor re-runs.
-                        # Without this guard, exit_monitor fires the same trim twice per cycle
-                        # (morning + afternoon runs), causing Alpaca insufficient_qty rejections.
-                        # Read last_trim_ts from live _ledger object (updated during execute loop),
-                        # NOT from _ledger_map which is a stale snapshot built before the loop.
+                        # Double-trim guard (FIXED 2026-07-22 — see RAPTOR_AUDIT_20260722.md
+                        # KWEB finding): the old guard compared elapsed wall-clock time since
+                        # last_trim_ts against a flat 1800s (30 min) threshold — identical to
+                        # CYCLE_SECONDS, this script's own loop interval. Any normal cycle-to-
+                        # cycle timing jitter (a few seconds of execution time, network latency)
+                        # pushed elapsed just OVER 1800s, so the guard silently failed to guard
+                        # almost every time. Confirmed in logs/exits_20260710.log: the same stale
+                        # math_trim_32% recommendation fired 3 cycles in a row (12:35, 13:05,
+                        # 13:35) ~30 min apart, walking KWEB from ~278 shares down to 8 before a
+                        # 4th cycle finally sold the last 7 — ledger and Alpaca have disagreed on
+                        # KWEB's share count ever since (Alpaca=1, ledger=91, unreconciled 7/9
+                        # through 7/21 per the daily monitor).
+                        #
+                        # Real fix: gate on whether hold_health.json's OWN per-symbol timestamp
+                        # is newer than the last executed trim, not on wall-clock elapsed time.
+                        # hold_health.json's trim recommendation is only meaningful until
+                        # hold_monitor.py re-scores the position — comparing against its actual
+                        # generation timestamp is exact, where a fixed time window can never be
+                        # (it will always either race the loop cadence or lag a genuine refresh).
+                        # Falls back to the old time-based check only if either timestamp is
+                        # missing/unparseable, with a wider (35 min) margin so a fallback comparison
+                        # doesn't reintroduce the same near-exact-cadence collision.
                         try:
                             _tk_guard = f"v5.4:{_sym}"
                             _last_trim_ts = _ledger.data["positions"].get(_tk_guard, {}).get("metadata", {}).get("last_trim_ts")
                         except Exception:
                             _last_trim_ts = _ledger_map.get(_sym, {}).get("metadata", {}).get("last_trim_ts")
-                        if _last_trim_ts:
+                        _health_ts = _hrec.get("timestamp")
+                        _guard_blocked = False
+                        if _last_trim_ts and _health_ts:
+                            try:
+                                _last_trim_dt = datetime.fromisoformat(_last_trim_ts)
+                                _health_dt    = datetime.fromisoformat(_health_ts)
+                                if _health_dt <= _last_trim_dt:
+                                    logger.info(
+                                        "DOUBLE-TRIM GUARD [skip] %s — hold_health.json snapshot (%s) "
+                                        "is not newer than last trim (%s); recommendation is stale, "
+                                        "waiting for hold_monitor to re-score",
+                                        _sym, _health_ts, _last_trim_ts)
+                                    _guard_blocked = True
+                            except Exception:
+                                # Unparseable timestamp on either side — fall through to time-based check below.
+                                pass
+                        elif _last_trim_ts and not _health_ts:
+                            # No per-symbol timestamp available — fall back to a wider time window
+                            # than the loop cadence so jitter can't defeat it the way it did before.
                             try:
                                 _elapsed = (datetime.now() - datetime.fromisoformat(_last_trim_ts)).total_seconds()
-                                if _elapsed < 1800:  # 30 minutes
-                                    logger.info("DOUBLE-TRIM GUARD [skip] %s trimmed %.0f min ago — waiting for hold_monitor refresh", _sym, _elapsed/60)
-                                    continue
+                                if _elapsed < 2100:  # 35 minutes — deliberately > CYCLE_SECONDS (1800s)
+                                    logger.info("DOUBLE-TRIM GUARD [skip, fallback] %s trimmed %.0f min ago and hold_health.json has no timestamp to check freshness against", _sym, _elapsed/60)
+                                    _guard_blocked = True
                             except Exception:
                                 pass
+                        if _guard_blocked:
+                            continue
                         full_qty = float(alp["qty"])
                         # Cap trim at full_qty-1 — full exits go through EXIT path
                         safe_trim = min(_trim_shares, int(full_qty) - 1) if full_qty > 1 else 0

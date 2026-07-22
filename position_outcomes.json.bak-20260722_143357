@@ -1,0 +1,965 @@
+[
+  {
+    "symbol": "TSLA",
+    "entry_price": 366.2868,
+    "entry_date": "2026-03-30",
+    "final_exit_date": "2026-04-01",
+    "total_qty": 125.0,
+    "position_capital": 45785.85,
+    "position_pnl_pct": 2.7534,
+    "position_pnl_dollars": 1260.67,
+    "weighted_exit_price": 376.3722,
+    "position_hold_days": 1,
+    "final_exit_path": "math_trim",
+    "n_events": 1,
+    "n_trims": 1,
+    "trim_sequence": [
+      "math_trim"
+    ],
+    "entry_decision": null,
+    "entry_confidence": null,
+    "hold_decision": null,
+    "entry_regime": null,
+    "exit_regime": null,
+    "ic_valid": true,
+    "flags": [
+      "no_entry_decision"
+    ],
+    "sell_order_ids": [
+      "eee0657b-4874-4e96-b247-4d5797631986"
+    ],
+    "source_record_count": 1,
+    "aggregated_at": "2026-06-12T10:14:41.023956+00:00"
+  },
+  {
+    "symbol": "INTC",
+    "entry_price": 48.36,
+    "entry_date": "2026-04-01",
+    "final_exit_date": "2026-04-10",
+    "total_qty": 85.0,
+    "position_capital": 4110.6,
+    "position_pnl_pct": 26.0339,
+    "position_pnl_dollars": 1070.15,
+    "weighted_exit_price": 60.95,
+    "position_hold_days": 8,
+    "final_exit_path": "math_trim",
+    "n_events": 1,
+    "n_trims": 1,
+    "trim_sequence": [
+      "math_trim"
+    ],
+    "entry_decision": null,
+    "entry_confidence": null,
+    "hold_decision": null,
+    "entry_regime": null,
+    "exit_regime": null,
+    "ic_valid": true,
+    "flags": [
+      "no_entry_decision"
+    ],
+    "sell_order_ids": [
+      "41b2f2f6-1ca8-44af-83c5-ff9c6acaf25a"
+    ],
+    "source_record_count": 1,
+    "aggregated_at": "2026-06-12T10:14:41.024015+00:00"
+  },
+  {
+    "symbol": "SMCI",
+    "entry_price": 23.016257,
+    "entry_date": "2026-04-06",
+    "final_exit_date": "2026-04-10",
+    "total_qty": 179.0,
+    "position_capital": 4119.91,
+    "position_pnl_pct": 3.7528,
+    "position_pnl_dollars": 154.61,
+    "weighted_exit_price": 23.88,
+    "position_hold_days": 3,
+    "final_exit_path": "math_trim",
+    "n_events": 1,
+    "n_trims": 1,
+    "trim_sequence": [
+      "math_trim"
+    ],
+    "entry_decision": null,
+    "entry_confidence": null,
+    "hold_decision": null,
+    "entry_regime": null,
+    "exit_regime": null,
+    "ic_valid": true,
+    "flags": [
+      "no_entry_decision"
+    ],
+    "sell_order_ids": [
+      "4090ff50-4340-4b01-bd2d-804b92f7875d"
+    ],
+    "source_record_count": 1,
+    "aggregated_at": "2026-06-12T10:14:41.024040+00:00"
+  },
+  {
+    "symbol": "KRE",
+    "entry_price": 68.477173,
+    "entry_date": "2026-04-09",
+    "final_exit_date": "2026-04-10",
+    "total_qty": 92.0,
+    "position_capital": 6299.9,
+    "position_pnl_pct": 1.4845,
+    "position_pnl_dollars": 93.52,
+    "weighted_exit_price": 69.4937,
+    "position_hold_days": 1,
+    "final_exit_path": "trailing_stop",
+    "n_events": 1,
+    "n_trims": 0,
+    "trim_sequence": [
+      "trailing_stop"
+    ],
+    "entry_decision": null,
+    "entry_confidence": null,
+    "hold_decision": null,
+    "entry_regime": null,
+    "exit_regime": null,
+    "ic_valid": true,
+    "flags": [
+      "no_entry_decision"
+    ],
+    "sell_order_ids": [
+      "7d0d0546-5a26-478c-95c8-285af84f8f38"
+    ],
+    "source_record_count": 1,
+    "aggregated_at": "2026-06-12T10:14:41.024499+00:00"
+  },
+  {
+    "symbol": "INTC",
+    "entry_price": 62.45,
+    "entry_date": "2026-04-10",
+    "final_exit_date": "2026-04-14",
+    "total_qty": 147.0,
+    "position_capital": 9180.15,
+    "position_pnl_pct": 2.8022,
+    "position_pnl_dollars": 257.25,
+    "weighted_exit_price": 64.2,
+    "position_hold_days": 3,
+    "final_exit_path": "math_trim",
+    "n_events": 1,
+    "n_trims": 1,
+    "trim_sequence": [
+      "math_trim"
+    ],
+    "entry_decision": null,
+    "entry_confidence": null,
+    "hold_decision": null,
+    "entry_regime": null,
+    "exit_regime": null,
+    "ic_valid": true,
+    "flags": [
+      "no_entry_decision"
+    ],
+    "sell_order_ids": [
+      "5da4029a-14f2-4903-92c8-69b54b105f19"
+    ],
+    "source_record_count": 1,
+    "aggregated_at": "2026-06-12T10:14:41.024059+00:00"
+  },
+  {
+    "symbol": "TSLL",
+    "entry_price": 14.22,
+    "entry_date": "2026-04-17",
+    "final_exit_date": "2026-04-17",
+    "total_qty": 700.0,
+    "position_capital": 9954.0,
+    "position_pnl_pct": -2.7426,
+    "position_pnl_dollars": -273.0,
+    "weighted_exit_price": 13.83,
+    "position_hold_days": 1,
+    "final_exit_path": "math_trim",
+    "n_events": 1,
+    "n_trims": 1,
+    "trim_sequence": [
+      "math_trim"
+    ],
+    "entry_decision": null,
+    "entry_confidence": null,
+    "hold_decision": null,
+    "entry_regime": null,
+    "exit_regime": null,
+    "ic_valid": false,
+    "flags": [
+      "no_entry_decision",
+      "leveraged_or_inverse_etp"
+    ],
+    "sell_order_ids": [
+      "40d5c3c7-7bc6-4b73-a095-56d626542e97"
+    ],
+    "source_record_count": 1,
+    "aggregated_at": "2026-06-12T10:14:41.024445+00:00"
+  },
+  {
+    "symbol": "SMCI",
+    "entry_price": 29.458098,
+    "entry_date": "2026-04-21",
+    "final_exit_date": "2026-04-23",
+    "total_qty": 368.0,
+    "position_capital": 10840.58,
+    "position_pnl_pct": -6.9865,
+    "position_pnl_dollars": -757.38,
+    "weighted_exit_price": 27.4,
+    "position_hold_days": 1,
+    "final_exit_path": "math_trim",
+    "n_events": 1,
+    "n_trims": 1,
+    "trim_sequence": [
+      "math_trim"
+    ],
+    "entry_decision": null,
+    "entry_confidence": null,
+    "hold_decision": null,
+    "entry_regime": null,
+    "exit_regime": null,
+    "ic_valid": true,
+    "flags": [
+      "no_entry_decision"
+    ],
+    "sell_order_ids": [
+      "8494bdb9-dae4-412b-95c1-87b53aae94c9"
+    ],
+    "source_record_count": 1,
+    "aggregated_at": "2026-06-12T10:14:41.024079+00:00"
+  },
+  {
+    "symbol": "SMCI",
+    "entry_price": 28.368403,
+    "entry_date": "2026-04-24",
+    "final_exit_date": "2026-04-28",
+    "total_qty": 382.0,
+    "position_capital": 10836.73,
+    "position_pnl_pct": -4.7532,
+    "position_pnl_dollars": -515.09,
+    "weighted_exit_price": 27.02,
+    "position_hold_days": 4,
+    "final_exit_path": "math_trim",
+    "n_events": 1,
+    "n_trims": 1,
+    "trim_sequence": [
+      "math_trim"
+    ],
+    "entry_decision": null,
+    "entry_confidence": null,
+    "hold_decision": null,
+    "entry_regime": null,
+    "exit_regime": null,
+    "ic_valid": true,
+    "flags": [
+      "no_entry_decision"
+    ],
+    "sell_order_ids": [
+      "1ece4913-4da7-4a06-b456-23bc20ddd25b"
+    ],
+    "source_record_count": 1,
+    "aggregated_at": "2026-06-12T10:14:41.024095+00:00"
+  },
+  {
+    "symbol": "OWL",
+    "entry_price": 10.53,
+    "entry_date": "2026-05-06",
+    "final_exit_date": "2026-05-18",
+    "total_qty": 1051.0,
+    "position_capital": 11067.03,
+    "position_pnl_pct": -9.7081,
+    "position_pnl_dollars": -1074.4,
+    "weighted_exit_price": 9.5077,
+    "position_hold_days": 11,
+    "final_exit_path": "trailing_stop",
+    "n_events": 2,
+    "n_trims": 1,
+    "trim_sequence": [
+      "math_trim",
+      "trailing_stop"
+    ],
+    "entry_decision": null,
+    "entry_confidence": null,
+    "hold_decision": "HOLD",
+    "entry_regime": null,
+    "exit_regime": null,
+    "ic_valid": true,
+    "flags": [
+      "no_entry_decision"
+    ],
+    "sell_order_ids": [
+      "1aa00ca9-7a4d-41df-a090-1db8fb1fea7a",
+      "a544d4d9-31c3-4cc7-9161-e5065be5b6e4"
+    ],
+    "source_record_count": 2,
+    "aggregated_at": "2026-06-12T10:14:41.024427+00:00"
+  },
+  {
+    "symbol": "KRE",
+    "entry_price": 69.878699,
+    "entry_date": "2026-04-29",
+    "final_exit_date": "2026-05-19",
+    "total_qty": 146.0,
+    "position_capital": 10202.29,
+    "position_pnl_pct": -3.819,
+    "position_pnl_dollars": -389.63,
+    "weighted_exit_price": 67.21,
+    "position_hold_days": 20,
+    "final_exit_path": "trailing_stop",
+    "n_events": 1,
+    "n_trims": 0,
+    "trim_sequence": [
+      "trailing_stop"
+    ],
+    "entry_decision": null,
+    "entry_confidence": null,
+    "hold_decision": "HOLD",
+    "entry_regime": null,
+    "exit_regime": null,
+    "ic_valid": true,
+    "flags": [
+      "no_entry_decision"
+    ],
+    "sell_order_ids": [
+      "f2221860-0dbf-4cfe-a350-13061a781f89"
+    ],
+    "source_record_count": 1,
+    "aggregated_at": "2026-06-12T10:14:41.024408+00:00"
+  },
+  {
+    "symbol": "TSLL",
+    "entry_price": 14.288028,
+    "entry_date": "2026-05-07",
+    "final_exit_date": "2026-05-20",
+    "total_qty": 725.0,
+    "position_capital": 10358.82,
+    "position_pnl_pct": -0.971,
+    "position_pnl_dollars": -100.58,
+    "weighted_exit_price": 14.1493,
+    "position_hold_days": 12,
+    "final_exit_path": "math_exit",
+    "n_events": 3,
+    "n_trims": 2,
+    "trim_sequence": [
+      "math_trim",
+      "math_trim",
+      "math_exit"
+    ],
+    "entry_decision": null,
+    "entry_confidence": null,
+    "hold_decision": "HOLD",
+    "entry_regime": null,
+    "exit_regime": null,
+    "ic_valid": false,
+    "flags": [
+      "no_entry_decision",
+      "leveraged_or_inverse_etp"
+    ],
+    "sell_order_ids": [
+      "19697414-9a7d-49c9-9e90-4f6927f6ed8a",
+      "2ee0eaff-4b4d-416c-b1de-c8497efaca30",
+      "9f95525a-9fe3-40d0-af8a-1018c9d60f86"
+    ],
+    "source_record_count": 3,
+    "aggregated_at": "2026-06-12T10:14:41.024262+00:00"
+  },
+  {
+    "symbol": "TTD",
+    "entry_price": 23.18,
+    "entry_date": "2026-04-28",
+    "final_exit_date": "2026-05-20",
+    "total_qty": 442.0,
+    "position_capital": 10245.56,
+    "position_pnl_pct": -11.9067,
+    "position_pnl_dollars": -1219.91,
+    "weighted_exit_price": 20.42,
+    "position_hold_days": 22,
+    "final_exit_path": "trailing_stop",
+    "n_events": 1,
+    "n_trims": 0,
+    "trim_sequence": [
+      "trailing_stop"
+    ],
+    "entry_decision": null,
+    "entry_confidence": null,
+    "hold_decision": "HOLD",
+    "entry_regime": null,
+    "exit_regime": null,
+    "ic_valid": true,
+    "flags": [
+      "no_entry_decision"
+    ],
+    "sell_order_ids": [
+      "4509b8a1-6656-4299-8752-e258d3c5aae9"
+    ],
+    "source_record_count": 1,
+    "aggregated_at": "2026-06-12T10:14:41.024366+00:00"
+  },
+  {
+    "symbol": "FXI",
+    "entry_price": 37.35,
+    "entry_date": "2026-05-07",
+    "final_exit_date": "2026-05-20",
+    "total_qty": 272.0,
+    "position_capital": 10159.2,
+    "position_pnl_pct": -3.1647,
+    "position_pnl_dollars": -321.51,
+    "weighted_exit_price": 36.168,
+    "position_hold_days": 12,
+    "final_exit_path": "trailing_stop",
+    "n_events": 2,
+    "n_trims": 1,
+    "trim_sequence": [
+      "math_trim",
+      "trailing_stop"
+    ],
+    "entry_decision": null,
+    "entry_confidence": null,
+    "hold_decision": "HOLD",
+    "entry_regime": null,
+    "exit_regime": null,
+    "ic_valid": true,
+    "flags": [
+      "no_entry_decision"
+    ],
+    "sell_order_ids": [
+      "760e589e-dddf-4d0f-aed0-0ace61f36356",
+      "27fb88a1-8cfb-411a-a99f-af3fbc4db83c"
+    ],
+    "source_record_count": 2,
+    "aggregated_at": "2026-06-12T10:14:41.024389+00:00"
+  },
+  {
+    "symbol": "KDP",
+    "entry_price": 28.670594,
+    "entry_date": "2026-04-24",
+    "final_exit_date": "2026-05-26",
+    "total_qty": 309.0,
+    "position_capital": 8859.21,
+    "position_pnl_pct": 2.5238,
+    "position_pnl_dollars": 223.59,
+    "weighted_exit_price": 29.3942,
+    "position_hold_days": 31,
+    "final_exit_path": "math_trim",
+    "n_events": 4,
+    "n_trims": 4,
+    "trim_sequence": [
+      "math_trim",
+      "math_trim",
+      "math_trim",
+      "math_trim"
+    ],
+    "entry_decision": null,
+    "entry_confidence": null,
+    "hold_decision": "HOLD",
+    "entry_regime": null,
+    "exit_regime": null,
+    "ic_valid": true,
+    "flags": [
+      "no_entry_decision"
+    ],
+    "sell_order_ids": [
+      "de55c354-8bcc-4672-95c7-64cb8f821b4c",
+      "622a7e74-079a-40dc-ba13-a82a6647ea80",
+      "26adbb20-fe41-4769-a3bb-f9ad50519bde",
+      "820847e1-2ac4-426c-a914-f76514c83e70"
+    ],
+    "source_record_count": 4,
+    "aggregated_at": "2026-06-12T10:14:41.024221+00:00"
+  },
+  {
+    "symbol": "PLTD",
+    "entry_price": 7.74,
+    "entry_date": "2026-05-05",
+    "final_exit_date": "2026-05-28",
+    "total_qty": 1224.0,
+    "position_capital": 9473.76,
+    "position_pnl_pct": 1.9572,
+    "position_pnl_dollars": 185.42,
+    "weighted_exit_price": 7.8915,
+    "position_hold_days": 23,
+    "final_exit_path": "hard_stop",
+    "n_events": 9,
+    "n_trims": 8,
+    "trim_sequence": [
+      "math_trim",
+      "math_trim",
+      "math_trim",
+      "math_trim",
+      "math_trim",
+      "math_trim",
+      "math_trim",
+      "math_trim",
+      "hard_stop"
+    ],
+    "entry_decision": null,
+    "entry_confidence": null,
+    "hold_decision": "HOLD",
+    "entry_regime": null,
+    "exit_regime": null,
+    "ic_valid": false,
+    "flags": [
+      "no_entry_decision",
+      "high_trim_count",
+      "leveraged_or_inverse_etp"
+    ],
+    "sell_order_ids": [
+      "d3b6ddbc-b175-44b4-9217-9bac6dd8c422",
+      "91abf87c-20f7-494f-a01e-4cbe1f89fd1e",
+      "61e6eb55-ab86-489c-9af1-81458a10c111",
+      "f6b4ce09-50aa-410c-a065-26a55a02107a",
+      "200f4604-34a2-4e46-a151-f9c27b836128",
+      "816f52fe-b04f-409d-bea7-af49f61019ee",
+      "b6136082-d66c-40d0-aadd-7e5638ce959f",
+      "aec06a56-2604-49eb-9188-92ea0b3d34e1",
+      "39cbce21-3c4f-4b4c-88db-7aec5d522506"
+    ],
+    "source_record_count": 9,
+    "aggregated_at": "2026-06-12T10:14:41.024126+00:00"
+  },
+  {
+    "symbol": "CVE",
+    "entry_price": 28.72,
+    "entry_date": "2026-04-30",
+    "final_exit_date": "2026-05-28",
+    "total_qty": 323.0,
+    "position_capital": 9276.56,
+    "position_pnl_pct": 1.0929,
+    "position_pnl_dollars": 101.38,
+    "weighted_exit_price": 29.0339,
+    "position_hold_days": 28,
+    "final_exit_path": "math_exit",
+    "n_events": 7,
+    "n_trims": 6,
+    "trim_sequence": [
+      "math_trim",
+      "math_trim",
+      "math_trim",
+      "math_trim",
+      "math_trim",
+      "math_trim",
+      "math_exit"
+    ],
+    "entry_decision": null,
+    "entry_confidence": null,
+    "hold_decision": "HOLD",
+    "entry_regime": null,
+    "exit_regime": null,
+    "ic_valid": false,
+    "flags": [
+      "no_entry_decision",
+      "high_trim_count"
+    ],
+    "sell_order_ids": [
+      "271291a3-8177-4045-b020-5981ddf9cd2f",
+      "6bd06304-5ef5-46ea-9c07-3187677ab80a",
+      "34dc6ed0-c73f-48dd-af1a-c9fe8611bd61",
+      "7ba7b386-60c0-49aa-93ac-8ee08f297871",
+      "a7ae3dbc-18c8-43bf-a982-75e4fdc4020b",
+      "b274bc3e-3a88-4c53-9bfa-18d7ac3a9d9c",
+      "bc5ae72e-607f-405d-ae04-977a751b058d"
+    ],
+    "source_record_count": 7,
+    "aggregated_at": "2026-06-12T10:14:41.024152+00:00"
+  },
+  {
+    "symbol": "DKNG",
+    "entry_price": 25.036189,
+    "entry_date": "2026-05-11",
+    "final_exit_date": "2026-05-29",
+    "total_qty": 825.0,
+    "position_capital": 20654.86,
+    "position_pnl_pct": -0.3408,
+    "position_pnl_dollars": -70.39,
+    "weighted_exit_price": 24.9509,
+    "position_hold_days": 18,
+    "final_exit_path": "math_exit",
+    "n_events": 8,
+    "n_trims": 7,
+    "trim_sequence": [
+      "math_trim",
+      "math_trim",
+      "math_trim",
+      "math_trim",
+      "math_trim",
+      "math_trim",
+      "math_trim",
+      "math_exit"
+    ],
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "hold_decision": "HOLD",
+    "entry_regime": null,
+    "exit_regime": null,
+    "ic_valid": false,
+    "flags": [
+      "high_trim_count"
+    ],
+    "sell_order_ids": [
+      "c944475f-882f-4bad-be15-4a1174e04f2c",
+      "82fc477c-cb54-4387-8a25-b3c39f087b32",
+      "4e237b13-ea4d-461e-b7ff-b28a8d50e004",
+      "18870de3-2609-4d7a-8843-d33c44bd0587",
+      "a855e0df-96fc-4de0-bed6-91961dc3bc46",
+      "2c143da5-fe4f-41e6-aac9-84aed8ea13fc",
+      "68747bdd-6fae-4949-93df-0ff26edb81a4",
+      "6260b373-ae1e-4416-88d6-7576a84a4864"
+    ],
+    "source_record_count": 8,
+    "aggregated_at": "2026-06-12T10:14:41.024178+00:00"
+  },
+  {
+    "symbol": "CSX",
+    "entry_price": 45.409231,
+    "entry_date": "2026-04-27",
+    "final_exit_date": "2026-05-29",
+    "total_qty": 416.0,
+    "position_capital": 18890.24,
+    "position_pnl_pct": 0.7812,
+    "position_pnl_dollars": 147.57,
+    "weighted_exit_price": 45.764,
+    "position_hold_days": 32,
+    "final_exit_path": "hard_stop",
+    "n_events": 3,
+    "n_trims": 2,
+    "trim_sequence": [
+      "math_trim",
+      "math_trim",
+      "hard_stop"
+    ],
+    "entry_decision": null,
+    "entry_confidence": null,
+    "hold_decision": "HOLD",
+    "entry_regime": null,
+    "exit_regime": null,
+    "ic_valid": true,
+    "flags": [
+      "no_entry_decision"
+    ],
+    "sell_order_ids": [
+      "6e5bf76e-c183-4dae-906a-fc12d9352d9e",
+      "4bba31ee-4d34-4c2c-a041-c71e4063874c",
+      "c050ffd8-dcf2-42ab-ba63-555696b78b93"
+    ],
+    "source_record_count": 3,
+    "aggregated_at": "2026-06-12T10:14:41.024525+00:00"
+  },
+  {
+    "symbol": "TSLA",
+    "entry_price": 391.11,
+    "entry_date": "2026-05-06",
+    "final_exit_date": "2026-06-05",
+    "total_qty": 25.0,
+    "position_capital": 9777.75,
+    "position_pnl_pct": 4.2163,
+    "position_pnl_dollars": 412.26,
+    "weighted_exit_price": 407.6004,
+    "position_hold_days": 29,
+    "final_exit_path": "trailing_stop",
+    "n_events": 6,
+    "n_trims": 5,
+    "trim_sequence": [
+      "math_trim",
+      "math_trim",
+      "math_trim",
+      "math_trim",
+      "math_trim",
+      "trailing_stop"
+    ],
+    "entry_decision": null,
+    "entry_confidence": null,
+    "hold_decision": "HOLD",
+    "entry_regime": null,
+    "exit_regime": null,
+    "ic_valid": true,
+    "flags": [
+      "no_entry_decision"
+    ],
+    "sell_order_ids": [
+      "889c0fa0-3692-4ad4-81d5-84d324f04d29",
+      "8c4368e9-0988-44a4-9de4-d68de328bb35",
+      "f9cf3915-f375-4404-85a4-360e61076306",
+      "54e98976-6f83-4af1-8e4f-9c5e9c4ddec4",
+      "ffe094dd-38f4-44f2-b6b8-fe6740acf934",
+      "8631c535-13f8-4130-9655-91f6f070f1e6"
+    ],
+    "source_record_count": 6,
+    "aggregated_at": "2026-06-12T10:14:41.024201+00:00"
+  },
+  {
+    "symbol": "AMD",
+    "entry_price": 304.32,
+    "entry_date": "2026-04-23",
+    "final_exit_date": "2026-06-05",
+    "total_qty": 29.0,
+    "position_capital": 8825.28,
+    "position_pnl_pct": 56.8768,
+    "position_pnl_dollars": 5019.54,
+    "weighted_exit_price": 477.4076,
+    "position_hold_days": 43,
+    "final_exit_path": "trailing_stop",
+    "n_events": 4,
+    "n_trims": 3,
+    "trim_sequence": [
+      "math_trim",
+      "math_trim",
+      "math_trim",
+      "trailing_stop"
+    ],
+    "entry_decision": null,
+    "entry_confidence": null,
+    "hold_decision": "HOLD",
+    "entry_regime": null,
+    "exit_regime": null,
+    "ic_valid": true,
+    "flags": [
+      "no_entry_decision"
+    ],
+    "sell_order_ids": [
+      "f6cd266a-42f5-4c1c-a97f-fa621b95a05e",
+      "ad5a7d45-58ea-443c-9253-2882216e8dfc",
+      "6e0d5d42-9a37-4da4-b8c1-9f23ebb9619d",
+      "a42e8916-9b01-49fe-9647-ca2cf488775e"
+    ],
+    "source_record_count": 4,
+    "aggregated_at": "2026-06-12T10:14:41.024241+00:00"
+  },
+  {
+    "symbol": "SMCI",
+    "entry_price": 34.096966,
+    "entry_date": "2026-05-07",
+    "final_exit_date": "2026-06-05",
+    "total_qty": 290.0,
+    "position_capital": 9888.12,
+    "position_pnl_pct": 3.2509,
+    "position_pnl_dollars": 321.45,
+    "weighted_exit_price": 35.2054,
+    "position_hold_days": 28,
+    "final_exit_path": "trailing_stop",
+    "n_events": 5,
+    "n_trims": 4,
+    "trim_sequence": [
+      "math_trim",
+      "math_trim",
+      "math_trim",
+      "math_trim",
+      "trailing_stop"
+    ],
+    "entry_decision": null,
+    "entry_confidence": null,
+    "hold_decision": "HOLD",
+    "entry_regime": null,
+    "exit_regime": null,
+    "ic_valid": true,
+    "flags": [
+      "no_entry_decision"
+    ],
+    "sell_order_ids": [
+      "92545694-25e4-413f-a5d2-8caa2b09c0ce",
+      "ae323251-3249-42f2-8957-db51e3d24020",
+      "55f6e1d9-69ac-4b1f-9a6f-a4bbb1a306e5",
+      "efc4aad9-3274-44b0-9c09-535827a5864f",
+      "9cd767d5-c29e-48bc-b7b8-d56717e72bbd"
+    ],
+    "source_record_count": 5,
+    "aggregated_at": "2026-06-12T10:14:41.024283+00:00"
+  },
+  {
+    "symbol": "INTC",
+    "entry_price": 87.74,
+    "entry_date": "2026-04-29",
+    "final_exit_date": "2026-06-05",
+    "total_qty": 99.0,
+    "position_capital": 8686.26,
+    "position_pnl_pct": 27.1205,
+    "position_pnl_dollars": 2355.76,
+    "weighted_exit_price": 111.5356,
+    "position_hold_days": 37,
+    "final_exit_path": "trailing_stop",
+    "n_events": 5,
+    "n_trims": 4,
+    "trim_sequence": [
+      "math_trim",
+      "math_trim",
+      "math_trim",
+      "math_trim",
+      "trailing_stop"
+    ],
+    "entry_decision": null,
+    "entry_confidence": null,
+    "hold_decision": "HOLD",
+    "entry_regime": null,
+    "exit_regime": null,
+    "ic_valid": true,
+    "flags": [
+      "no_entry_decision"
+    ],
+    "sell_order_ids": [
+      "6f7d1957-9f9f-4c36-b9c6-194a9bd1b005",
+      "bfc204b8-51a6-49d3-abc2-dd0cb7bf39ea",
+      "57956205-5e77-4b60-ae78-ee4f2b2298db",
+      "2b86d324-b6e0-445d-a00e-05d4b994ce71",
+      "96ee90aa-ae3d-42cc-93f5-7ff7258c6923"
+    ],
+    "source_record_count": 5,
+    "aggregated_at": "2026-06-12T10:14:41.024341+00:00"
+  },
+  {
+    "symbol": "STM",
+    "entry_price": 50.189944,
+    "entry_date": "2026-04-24",
+    "final_exit_date": "2026-06-05",
+    "total_qty": 177.0,
+    "position_capital": 8883.62,
+    "position_pnl_pct": 42.8344,
+    "position_pnl_dollars": 3805.24,
+    "weighted_exit_price": 71.6885,
+    "position_hold_days": 42,
+    "final_exit_path": "trailing_stop",
+    "n_events": 3,
+    "n_trims": 2,
+    "trim_sequence": [
+      "math_trim",
+      "math_trim",
+      "trailing_stop"
+    ],
+    "entry_decision": null,
+    "entry_confidence": null,
+    "hold_decision": "HOLD",
+    "entry_regime": null,
+    "exit_regime": null,
+    "ic_valid": true,
+    "flags": [
+      "no_entry_decision"
+    ],
+    "sell_order_ids": [
+      "24bd4502-e4db-432c-9528-075870ff1212",
+      "6620229d-b556-4032-ac71-724d0fcf1928",
+      "fbf98d57-a5be-4c4a-a137-5274195b344e"
+    ],
+    "source_record_count": 3,
+    "aggregated_at": "2026-06-12T10:14:41.024548+00:00"
+  },
+  {
+    "symbol": "HPQ",
+    "entry_price": 26.87,
+    "entry_date": "2026-05-29",
+    "final_exit_date": "2026-06-05",
+    "total_qty": 238.0,
+    "position_capital": 6395.06,
+    "position_pnl_pct": -3.2181,
+    "position_pnl_dollars": -205.8,
+    "weighted_exit_price": 26.0053,
+    "position_hold_days": 7,
+    "final_exit_path": "trailing_stop",
+    "n_events": 1,
+    "n_trims": 0,
+    "trim_sequence": [
+      "trailing_stop"
+    ],
+    "entry_decision": "PASS",
+    "entry_confidence": 0.8,
+    "hold_decision": "HOLD",
+    "entry_regime": null,
+    "exit_regime": null,
+    "ic_valid": true,
+    "flags": [],
+    "sell_order_ids": [
+      "fcf340ae-f112-44d0-ad32-df0b3a9e3ed1"
+    ],
+    "source_record_count": 1,
+    "aggregated_at": "2026-06-12T10:14:41.024567+00:00"
+  },
+  {
+    "symbol": "MRVL",
+    "entry_price": 294.21,
+    "entry_date": "2026-06-05",
+    "final_exit_date": "2026-06-11",
+    "total_qty": 28.0,
+    "position_capital": 8237.88,
+    "position_pnl_pct": -10.896,
+    "position_pnl_dollars": -897.6,
+    "weighted_exit_price": 262.1529,
+    "position_hold_days": 6,
+    "final_exit_path": "math_trim",
+    "n_events": 2,
+    "n_trims": 2,
+    "trim_sequence": [
+      "math_trim",
+      "math_trim"
+    ],
+    "entry_decision": "PASS",
+    "entry_confidence": 0.95,
+    "hold_decision": "HOLD",
+    "entry_regime": null,
+    "exit_regime": null,
+    "ic_valid": true,
+    "flags": [],
+    "sell_order_ids": [
+      "8cd4ece7-73c4-4646-ae56-4899db775548",
+      "f25f5622-90f4-44c9-b40f-44f9019e4633"
+    ],
+    "source_record_count": 2,
+    "aggregated_at": "2026-06-12T10:14:41.024622+00:00"
+  },
+  {
+    "symbol": "WFC",
+    "entry_price": 81.749296,
+    "entry_date": "2026-06-05",
+    "final_exit_date": "2026-06-11",
+    "total_qty": 83.0,
+    "position_capital": 6785.19,
+    "position_pnl_pct": -0.5363,
+    "position_pnl_dollars": -36.39,
+    "weighted_exit_price": 81.3108,
+    "position_hold_days": 6,
+    "final_exit_path": "math_trim",
+    "n_events": 1,
+    "n_trims": 1,
+    "trim_sequence": [
+      "math_trim"
+    ],
+    "entry_decision": null,
+    "entry_confidence": null,
+    "hold_decision": "HOLD",
+    "entry_regime": null,
+    "exit_regime": null,
+    "ic_valid": true,
+    "flags": [
+      "no_entry_decision"
+    ],
+    "sell_order_ids": [
+      "eedd5f0f-ab95-4624-9171-5b3ed8b5604d"
+    ],
+    "source_record_count": 1,
+    "aggregated_at": "2026-06-12T10:14:41.024648+00:00"
+  },
+  {
+    "symbol": "XLE",
+    "entry_price": 57.856494,
+    "entry_date": "2026-06-09",
+    "final_exit_date": "2026-06-11",
+    "total_qty": 20.0,
+    "position_capital": 1157.13,
+    "position_pnl_pct": 0.9221,
+    "position_pnl_dollars": 10.67,
+    "weighted_exit_price": 58.39,
+    "position_hold_days": 2,
+    "final_exit_path": "math_trim",
+    "n_events": 1,
+    "n_trims": 1,
+    "trim_sequence": [
+      "math_trim"
+    ],
+    "entry_decision": null,
+    "entry_confidence": null,
+    "hold_decision": "HOLD",
+    "entry_regime": null,
+    "exit_regime": null,
+    "ic_valid": true,
+    "flags": [
+      "no_entry_decision"
+    ],
+    "sell_order_ids": [
+      "fad4281a-f618-420f-aff9-4cbf72504d9a"
+    ],
+    "source_record_count": 1,
+    "aggregated_at": "2026-06-12T10:14:41.024669+00:00"
+  }
+]

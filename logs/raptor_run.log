@@ -3225,3 +3225,92 @@ Recap email sent.
 2026-07-22 09:38:41,108 [raptor.main] INFO: ORDER [v5.4]: BUY 182 DVN @ $44.96
 2026-07-22 09:38:41,129 [raptor.slippage] INFO: SLIPPAGE BUY 182 DVN: decision=$44.9150 fill=PENDING (order 40aeb9c9)
 2026-07-22 09:38:41,129 [raptor.main] INFO: Scan complete. 2 orders placed for v5.4.
+2026-07-22 15:50:04,298 [raptor.hold_monitor] INFO: ============================================================
+2026-07-22 15:50:04,299 [raptor.hold_monitor] INFO: RAPTOR HOLD MONITOR - 2026-07-22T15:50:04.299525
+2026-07-22 15:50:04,299 [raptor.hold_monitor] INFO: ============================================================
+2026-07-22 15:50:04,300 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-07-22 15:50:04,988 [raptor.hold_monitor] INFO: Cleaned 1 ghost(s) from hold_health.json: ['PLTR']
+2026-07-22 15:50:04,993 [raptor.universe] INFO: Universe from cache: 68 symbols
+2026-07-22 15:50:04,993 [raptor.hold_monitor] INFO: Fetching data for 68 symbols...
+2026-07-22 15:50:10,252 [raptor.data_feeds] INFO: Fetched 68 new bars / 68 total cached
+2026-07-22 15:50:10,967 [raptor.data_feeds] INFO: FRED fetch OK: T10Y2Y (748 observations)
+2026-07-22 15:50:11,516 [raptor.data_feeds] INFO: FRED fetch OK: FEDFUNDS (36 observations)
+2026-07-22 15:50:12,095 [raptor.data_feeds] INFO: FRED fetch OK: ICSA (155 observations)
+2026-07-22 15:50:12,711 [raptor.data_feeds] INFO: FRED fetch OK: VIXCLS (773 observations)
+2026-07-22 15:50:13,249 [raptor.data_feeds] INFO: FRED fetch OK: BAMLC0A4CBBB (786 observations)
+2026-07-22 15:50:13,804 [raptor.data_feeds] INFO: FRED fetch OK: CPIAUCSL (35 observations)
+2026-07-22 15:50:14,427 [raptor.data_feeds] INFO: FRED fetch OK: IPMAN (36 observations)
+2026-07-22 15:50:15,086 [raptor.data_feeds] INFO: FRED fetch OK: M2SL (35 observations)
+2026-07-22 15:50:15,634 [raptor.data_feeds] INFO: FRED fetch OK: RSXFS (36 observations)
+2026-07-22 15:50:16,458 [raptor.data_feeds] INFO: FRED fetch OK: UNRATE (35 observations)
+2026-07-22 15:50:16,459 [raptor.data_feeds] INFO: FRED regime: BULLISH (score=0.300)
+2026-07-22 15:50:17,659 [raptor.signals] INFO: v5.4 Signals: 5 from 66 | Macro=BULLISH Scale=0.8 | Micro={'MIXED': 50, 'TRENDING': 13, 'REVERTING': 3} | SNR min=1.23 max=2.51
+2026-07-22 15:50:17,668 [raptor.hold_monitor] INFO: Pre-entry tracker: 7 candidates monitored
+2026-07-22 15:50:17,672 [raptor.hold_monitor] INFO:   [RED] AMZN    health=-0.497  FAR=6/16  pnl=-3.5%  stop=0.50ATR  -> EXIT
+2026-07-22 15:50:17,672 [raptor.hold_monitor] INFO:     DECAY: composite_slope: slope=-0.0854/day over 5d
+2026-07-22 15:50:17,672 [raptor.hold_monitor] INFO:     TRIM:  severity=0.408 x stop_mult=1.50 x far_mult=1.17 x pnl_mult=1.20 + slope_adj=0.171 = 1.026 -> 100.0% (1 sh)
+2026-07-22 15:50:17,676 [raptor.hold_monitor] INFO:   [RED] BSX     health=-0.279  FAR=8/16  pnl=-2.0%  stop=1.22ATR  -> TRIM_MODERATE
+2026-07-22 15:50:17,676 [raptor.hold_monitor] INFO:     DECAY: composite_slope: slope=-0.0545/day over 5d
+2026-07-22 15:50:17,676 [raptor.hold_monitor] INFO:     TRIM:  severity=0.151 x stop_mult=1.25 x far_mult=1.00 x pnl_mult=1.20 + slope_adj=0.109 = 0.336 -> 33.6% (0 sh)
+2026-07-22 15:50:17,679 [raptor.hold_monitor] WARNING: No stop in ledger metadata for DVN — stop_dist_atr skipped
+2026-07-22 15:50:17,679 [raptor.hold_monitor] INFO:   [---] DVN     health=+0.210  FAR=10/16  pnl=+0.1%  stop=—  -> HOLD
+2026-07-22 15:50:17,683 [raptor.hold_monitor] INFO:   [YLW] FXI     health=-0.091  FAR=6/16  pnl=-1.0%  stop=1.90ATR  -> HOLD
+2026-07-22 15:50:17,687 [raptor.hold_monitor] INFO:   [GRN] KRE     health=+0.264  FAR=11/16  pnl=-0.1%  stop=2.41ATR  -> HOLD
+2026-07-22 15:50:17,690 [raptor.hold_monitor] INFO:   [RED] MSFT    health=-0.380  FAR=9/16  pnl=-2.0%  stop=0.67ATR  -> TRIM_MAJOR
+2026-07-22 15:50:17,690 [raptor.hold_monitor] INFO:     DECAY: composite_slope: slope=-0.0809/day over 4d
+2026-07-22 15:50:17,690 [raptor.hold_monitor] INFO:     TRIM:  severity=0.271 x stop_mult=1.50 x far_mult=1.02 x pnl_mult=1.20 + slope_adj=0.162 = 0.658 -> 65.8% (1 sh)
+2026-07-22 15:50:17,693 [raptor.hold_monitor] WARNING: No stop in ledger metadata for T — stop_dist_atr skipped
+2026-07-22 15:50:17,694 [raptor.hold_monitor] INFO:   [---] T       health=+0.289  FAR=10/16  pnl=-0.6%  stop=—  -> HOLD
+2026-07-22 15:50:17,697 [raptor.hold_monitor] INFO:   [GRN] XLE     health=+0.455  FAR=9/16  pnl=+3.7%  stop=2.44ATR  -> HOLD
+2026-07-22 15:50:19,881 [AgentLayer] INFO: HoldAgent | Flushed 8 decisions -> hold_decisions.json
+2026-07-22 15:50:19,882 [raptor.hold_monitor] INFO: ============================================================
+2026-07-22 15:50:19,882 [raptor.hold_monitor] INFO: COMPLETE — 8 positions | STR=2  STA=1  DEC=3  INS=2
+2026-07-22 15:50:19,882 [raptor.hold_monitor] INFO: ============================================================
+2026-07-22 15:50:23,435 [raptor.exits] WARNING: LOCK: another exit_monitor instance is already running (lock age 22516s < 28800s TTL). Aborting this instance to avoid concurrent writes to position_ledger.json etc. If stale, delete: C:\Raptor\logs\exit_monitor.lock
+2026-07-22 16:15:04,261 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-07-22 16:15:04,839 [raptor.data_feeds] WARNING: safe_int: account.daytrade_count was None, defaulting to 0
+2026-07-22 16:15:04,939 [raptor.universe] INFO: Universe from cache: 68 symbols
+2026-07-22 16:15:06,717 [raptor.data_feeds] INFO: Fetched 68 new bars / 68 total cached
+2026-07-22 16:15:06,844 [raptor.data_feeds] INFO: FRED regime: BULLISH (score=0.300)
+2026-07-22 16:15:08,018 [raptor.signals] INFO: v5.4 Signals: 5 from 66 | Macro=BULLISH Scale=0.8 | Micro={'MIXED': 50, 'TRENDING': 13, 'REVERTING': 3} | SNR min=1.32 max=2.48
+2026-07-22 16:15:17,598 [raptor.recap] WARNING: [Recap] inline macro refresh failed ('charmap' codec can't encode character '\u2192' in position 23: character maps to <undefined>) — using cached macro_context.json
+2026-07-22 16:15:17,602 [raptor.hold_monitor] INFO: ============================================================
+2026-07-22 16:15:17,602 [raptor.hold_monitor] INFO: RAPTOR HOLD MONITOR - 2026-07-22T16:15:17.602246
+2026-07-22 16:15:17,602 [raptor.hold_monitor] INFO: ============================================================
+2026-07-22 16:15:17,602 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-07-22 16:15:18,044 [raptor.universe] INFO: Universe from cache: 68 symbols
+2026-07-22 16:15:18,044 [raptor.hold_monitor] INFO: Fetching data for 68 symbols...
+2026-07-22 16:15:20,117 [raptor.data_feeds] INFO: Fetched 68 new bars / 68 total cached
+2026-07-22 16:15:20,135 [raptor.data_feeds] INFO: FRED regime: BULLISH (score=0.300)
+2026-07-22 16:15:21,241 [raptor.signals] INFO: v5.4 Signals: 5 from 66 | Macro=BULLISH Scale=0.8 | Micro={'MIXED': 50, 'TRENDING': 13, 'REVERTING': 3} | SNR min=1.32 max=2.48
+2026-07-22 16:15:21,250 [raptor.hold_monitor] INFO: Pre-entry tracker: 8 candidates monitored
+2026-07-22 16:15:21,254 [raptor.hold_monitor] INFO:   [RED] AMZN    health=-0.496  FAR=6/16  pnl=-3.0%  stop=0.50ATR  -> EXIT
+2026-07-22 16:15:21,254 [raptor.hold_monitor] INFO:     DECAY: composite_slope: slope=-0.0846/day over 5d
+2026-07-22 16:15:21,254 [raptor.hold_monitor] INFO:     TRIM:  severity=0.407 x stop_mult=1.50 x far_mult=1.17 x pnl_mult=1.20 + slope_adj=0.169 = 1.023 -> 100.0% (1 sh)
+2026-07-22 16:15:21,258 [raptor.hold_monitor] INFO:   [RED] BSX     health=-0.278  FAR=8/16  pnl=-2.1%  stop=1.19ATR  -> TRIM_MODERATE
+2026-07-22 16:15:21,258 [raptor.hold_monitor] INFO:     DECAY: composite_slope: slope=-0.0530/day over 5d
+2026-07-22 16:15:21,258 [raptor.hold_monitor] INFO:     TRIM:  severity=0.151 x stop_mult=1.25 x far_mult=1.00 x pnl_mult=1.20 + slope_adj=0.106 = 0.332 -> 33.2% (0 sh)
+2026-07-22 16:15:21,261 [raptor.hold_monitor] WARNING: No stop in ledger metadata for DVN — stop_dist_atr skipped
+2026-07-22 16:15:21,262 [raptor.hold_monitor] INFO:   [---] DVN     health=+0.198  FAR=10/16  pnl=-0.2%  stop=—  -> HOLD
+2026-07-22 16:15:21,265 [raptor.hold_monitor] INFO:   [YLW] FXI     health=-0.088  FAR=6/16  pnl=-1.1%  stop=1.90ATR  -> HOLD
+2026-07-22 16:15:21,269 [raptor.hold_monitor] INFO:   [GRN] KRE     health=+0.290  FAR=12/16  pnl=+0.0%  stop=2.47ATR  -> HOLD
+2026-07-22 16:15:21,273 [raptor.hold_monitor] INFO:   [RED] MSFT    health=-0.347  FAR=9/16  pnl=-1.7%  stop=0.77ATR  -> TRIM_MAJOR
+2026-07-22 16:15:21,273 [raptor.hold_monitor] INFO:     DECAY: composite_slope: slope=-0.0712/day over 4d
+2026-07-22 16:15:21,273 [raptor.hold_monitor] INFO:     TRIM:  severity=0.232 x stop_mult=1.50 x far_mult=1.02 x pnl_mult=1.20 + slope_adj=0.142 = 0.568 -> 56.8% (1 sh)
+2026-07-22 16:15:21,276 [raptor.hold_monitor] WARNING: No stop in ledger metadata for T — stop_dist_atr skipped
+2026-07-22 16:15:21,276 [raptor.hold_monitor] INFO:   [---] T       health=+0.294  FAR=10/16  pnl=-0.5%  stop=—  -> HOLD
+2026-07-22 16:15:21,280 [raptor.hold_monitor] INFO:   [GRN] XLE     health=+0.444  FAR=9/16  pnl=+3.6%  stop=2.38ATR  -> HOLD
+2026-07-22 16:15:23,470 [AgentLayer] INFO: HoldAgent | Flushed 8 decisions -> hold_decisions.json
+2026-07-22 16:15:23,471 [raptor.hold_monitor] INFO: ============================================================
+2026-07-22 16:15:23,471 [raptor.hold_monitor] INFO: COMPLETE — 8 positions | STR=2  STA=1  DEC=3  INS=2
+2026-07-22 16:15:23,471 [raptor.hold_monitor] INFO: ============================================================
+[MacroContext] Fetching macro signals...
+  Fetching VIX...
+  Fetching SPY trend...
+  Fetching sector breadth...
+  Fetching yield curve (FRED T10Y2Y)...
+  Fetching credit spread (FRED BAMLC0A4CBBB)...
+  Fetching Fed funds rate (FRED FEDFUNDS)...
+
+[MacroContext] Regime: RISK_ON  Score: +0.375
+Recap email sent.

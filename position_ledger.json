@@ -403,6 +403,36 @@
         "note": "Backfilled from Alpaca \u2014 entry_date approximate",
         "high_water": 75.615
       }
+    },
+    "v5.4:DVN": {
+      "model": "v5.4",
+      "symbol": "DVN",
+      "shares": 182,
+      "entry_price": 44.96,
+      "entry_date": "2026-07-22",
+      "metadata": {
+        "stop": 42.2672,
+        "regime": "BACKFILL",
+        "t_stat": null,
+        "kelly_fraction": null,
+        "composite_score": null,
+        "note": "Backfilled from Alpaca \u2014 entry_date approximate"
+      }
+    },
+    "v5.4:T": {
+      "model": "v5.4",
+      "symbol": "T",
+      "shares": 376,
+      "entry_price": 23.14,
+      "entry_date": "2026-07-22",
+      "metadata": {
+        "stop": 21.7582,
+        "regime": "BACKFILL",
+        "t_stat": null,
+        "kelly_fraction": null,
+        "composite_score": null,
+        "note": "Backfilled from Alpaca \u2014 entry_date approximate"
+      }
     }
   },
   "closed": [

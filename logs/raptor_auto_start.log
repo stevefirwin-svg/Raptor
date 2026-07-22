@@ -370,3 +370,8 @@
 [Wed 07/22/2026  9:28:00.96] Start_PreMarket complete 
 [Wed 07/22/2026  9:35:00.88] Start_Entry starting 
 [Wed 07/22/2026  9:38:41.56] Start_Entry complete 
+[Wed 07/22/2026 15:50:00.73] Start_Afternoon_Monitor starting 
+[Wed 07/22/2026 15:50:23.71] Start_Afternoon_Monitor complete 
+[Wed 07/22/2026 16:15:00.72] Start_Recap starting 
+[Wed 07/22/2026 16:15:26.03] Start_Recap complete 
+[Wed 07/22/2026 17:00:00.58] After-close sequence starting 

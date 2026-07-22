@@ -18,16 +18,25 @@ import os
 import sys
 from datetime import datetime
 
+# LOG-HANDLER FIX (2026-07-22 audit — RAPTOR_AUDIT_20260722.md): this used to
+# open logs/premarket_YYYYMMDD.log itself via logging.FileHandler AND get
+# launched by Start_PreMarket.bat with `>> logs\premarket_YYYYMMDD.log 2>&1`
+# — the exact same path opened twice, once by cmd.exe's redirect (held for
+# the whole process) and once by this FileHandler. On Windows that second
+# open fails immediately with PermissionError, which happened at import time
+# (before main()/run() even starts, before any try/except in this file could
+# catch it) — confirmed in every single logs/premarket_*.log back to
+# 2026-06-29, twice a day (both the 9:00 AM and 9:28 AM firings), ~17
+# consecutive trading days. Since this crashed before Step 2 (market_agent.py)
+# ever ran, it's the actual reason market_decision.json had been frozen since
+# 2026-06-26 — not a missing schedule entry. Fix: log to stdout only, exactly
+# like main.py/market_agent.py/exit_monitor.py already do — the .bat
+# wrapper's own `>>` redirect is what writes the log file; a second internal
+# FileHandler on the identical path was always going to collide with it.
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [premarket] %(levelname)s: %(message)s",
-    handlers=[
-        logging.StreamHandler(sys.stdout),
-        logging.FileHandler(
-            os.path.join("logs", f"premarket_{datetime.now():%Y%m%d}.log"),
-            encoding="utf-8"
-        ),
-    ],
+    handlers=[logging.StreamHandler(sys.stdout)],
 )
 logger = logging.getLogger("raptor.premarket")
 
