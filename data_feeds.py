@@ -34,6 +34,93 @@ from config import RaptorConfig
 logger = logging.getLogger("raptor.data_feeds")
 
 
+class AlpacaDataError(Exception):
+    """Raised when Alpaca returns None/unparseable data for a CAPITAL- or
+    POSITION-CRITICAL field (equity, cash, buying_power, portfolio_value,
+    qty, avg_entry_price, current_price).
+
+    DESIGN (2026-07-06, "real money" hardening pass): the 2026-07-06
+    daytrade_count crash was first patched by defaulting EVERY get_account()/
+    get_positions() field to 0.0/0 on None (safe_float/safe_int below). That
+    was correct for daytrade_count (informational only, feeds no sizing or
+    risk decision) but WRONG for equity/cash/buying_power/portfolio_value/
+    qty/avg_entry_price/current_price — those feed position sizing, margin
+    checks, and exit order quantities. Silently defaulting equity to 0.0
+    is itself a fabricated value that *looks real* (a valid float depended on
+    downstream) — exactly what RAPTOR_MASTER_PLAN.md's own "Data integrity
+    corollary" prohibits ("Real data or skip. Never fabricate a fallback value
+    that looks real"). A caller that reads equity=0.0 has no way to tell
+    "the account really has $0" from "Alpaca didn't return this field."
+
+    So critical fields now RAISE instead of defaulting. This is not new
+    exception-throwing behavior — every caller of get_account()/
+    get_positions() already wraps the call in a try/except with fail-closed
+    handling (margin_guard.py explicitly: "Fail CLOSED... previous behavior
+    was a silent capital risk"; main.py/exit_monitor.py/hold_monitor.py's
+    __main__ blocks log FATAL and abort the cycle; raptor_monitor.py catches
+    per-call since S14-1) — a raise here is caught the same way an opaque
+    TypeError already was today, just with a clear, typed, well-labeled error
+    naming the exact field instead of an arbitrary conversion crashing
+    wherever it happens to land. Skip the cycle rather than trade on a
+    fabricated number.
+    """
+    pass
+
+
+def require_float(value, field: str) -> float:
+    """Coerce to float for a CRITICAL field — raise AlpacaDataError on
+    None/unparseable rather than defaulting. Use only for fields where a
+    silently-fabricated number could feed a sizing, margin, or order-quantity
+    decision. See AlpacaDataError's docstring for the full rationale.
+    """
+    if value is None:
+        raise AlpacaDataError(f"{field} was None — Alpaca did not return this critical field")
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        raise AlpacaDataError(f"{field}={value!r} is not a valid number")
+
+
+def safe_int(value, default: int = 0, field: str = "") -> int:
+    """Coerce to int, treating None/missing/unparseable as `default`.
+
+    Alpaca's TradeAccount.daytrade_count is None for account types that
+    don't track PDT status (was seen live 2026-07-06, crashed daily_recap.py
+    with TypeError: int() argument ... not 'NoneType'). Mirrors the
+    safe_float() pattern already used in raptor_monitor.py for the same
+    None-but-present-key failure class.
+    """
+    if value is None:
+        if field:
+            logger.warning("safe_int: %s was None, defaulting to %s", field, default)
+        return default
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        logger.warning("safe_int: %s=%r unparseable, defaulting to %s", field or "value", value, default)
+        return default
+
+
+def safe_float(value, default: float = 0.0, field: str = "") -> float:
+    """Coerce to float, treating None/missing/unparseable as `default`.
+
+    Same rationale as safe_int() above — Alpaca account/position fields can
+    come back None for edge-case account states, and a bare float(None) call
+    takes down the whole recap/monitor run instead of just that one field.
+    Logs a warning (not silent) whenever it substitutes, per S10-3's "no
+    silent fallback" convention.
+    """
+    if value is None:
+        if field:
+            logger.warning("safe_float: %s was None, defaulting to %s", field, default)
+        return default
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        logger.warning("safe_float: %s=%r unparseable, defaulting to %s", field or "value", value, default)
+        return default
+
+
 # ═══════════════════════════════════════════════
 # 1. ALPACA MARKET DATA
 # ═══════════════════════════════════════════════
@@ -122,27 +209,47 @@ class AlpacaDataFeed:
         return {s: self._bar_cache[s] for s in symbols if s in self._bar_cache}
 
     def get_account(self) -> Dict[str, Any]:
-        """Return account summary: equity, cash, buying power."""
+        """Return account summary: equity, cash, buying power.
+
+        equity/cash/buying_power/portfolio_value are CAPITAL-CRITICAL — feed
+        position sizing (main.py my_equity), margin checks (margin_guard.py),
+        and cap-headroom math (daily_recap.py). Raise via require_float()
+        rather than default; see AlpacaDataError. day_trade_count is
+        informational only (PDT compliance display) — safe to default.
+        """
         acct = self.trading_client.get_account()
         return {
-            "equity": float(acct.equity),
-            "cash": float(acct.cash),
-            "buying_power": float(acct.buying_power),
-            "portfolio_value": float(acct.portfolio_value),
-            "day_trade_count": int(acct.daytrade_count),
+            "equity": require_float(acct.equity, "account.equity"),
+            "cash": require_float(acct.cash, "account.cash"),
+            "buying_power": require_float(acct.buying_power, "account.buying_power"),
+            "portfolio_value": require_float(acct.portfolio_value, "account.portfolio_value"),
+            "day_trade_count": safe_int(acct.daytrade_count, field="account.daytrade_count"),
         }
 
     def get_positions(self) -> List[Dict[str, Any]]:
-        """Return current open positions."""
+        """Return current open positions.
+
+        qty/avg_entry/current_price are POSITION-CRITICAL — qty feeds exit
+        order size and duplicate-entry detection (main.py `all_held`),
+        current_price*qty feeds market_value/margin/capital-utilization math.
+        A silently-defaulted qty=0.0 could make a real position invisible to
+        sizing/exposure checks (over-allocation risk) or to exit_monitor
+        (missed stop-loss risk) — worse than raising and skipping the whole
+        cycle. Raises AlpacaDataError (whole call, not just one position) if
+        any position has a bad critical field, same fail-closed pattern as
+        get_account(). unrealized_pnl/unrealized_pnl_pct are informational/
+        analytics (hold_monitor health scoring self-corrects next cycle) —
+        safe to default.
+        """
         positions = self.trading_client.get_all_positions()
         return [
             {
                 "symbol": p.symbol,
-                "qty": float(p.qty),
-                "avg_entry": float(p.avg_entry_price),
-                "current_price": float(p.current_price),
-                "unrealized_pnl": float(p.unrealized_pl),
-                "unrealized_pnl_pct": float(p.unrealized_plpc),
+                "qty": require_float(p.qty, f"{p.symbol}.qty"),
+                "avg_entry": require_float(p.avg_entry_price, f"{p.symbol}.avg_entry_price"),
+                "current_price": require_float(p.current_price, f"{p.symbol}.current_price"),
+                "unrealized_pnl": safe_float(p.unrealized_pl, field=f"{p.symbol}.unrealized_pl"),
+                "unrealized_pnl_pct": safe_float(p.unrealized_plpc, field=f"{p.symbol}.unrealized_plpc"),
                 "side": str(p.side),
             }
             for p in positions
@@ -692,6 +799,21 @@ class DataManager:
         """
         bars = self.alpaca.get_daily_bars(symbols, lookback_days=lookback_days)
         macro = self.fred.compute_regime_score()
+
+        # SCHEMA FIX 2026-07-01 (JSON schema audit): this in-memory macro dict
+        # has always used "regime"/"score", while the persisted macro_context.json
+        # and market_decision.json files use "macro_regime"/"macro_score" for the
+        # same concepts. That split already caused one confirmed bug
+        # (outcome_tracker.py, fixed 2026-06-26) and is patched ad hoc with `or`
+        # fallback chains in main.py, exit_monitor.py, outcome_tracker.py instead
+        # of being fixed once at the source. Alias both key names here so every
+        # consumer works regardless of which convention it happens to check —
+        # this only adds keys, never removes the originals, so nothing existing
+        # can break.
+        if "macro_regime" not in macro:
+            macro["macro_regime"] = macro.get("regime")
+        if "macro_score" not in macro:
+            macro["macro_score"] = macro.get("score")
 
         return {
             "bars": bars,

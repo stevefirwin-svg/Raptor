@@ -338,4 +338,33 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Raptor Watchdog v1.1")
     parser.add_argument("--dry-run", action="store_true", help="Show exits without submitting")
     args = parser.parse_args()
-    run_watchdog(dry_run=args.dry_run)
+
+    # RACE CONDITION FIX 2026-07-01: watchdog.py (this script, every 15 min) and
+    # exit_monitor.py (every 30 min) both load position_ledger.json into memory,
+    # mutate it, and overwrite the whole file — with no coordination between the
+    # two processes. If exit_monitor is mid-cycle (already loaded its snapshot)
+    # when watchdog executes a hard-stop and writes record_exit(), exit_monitor's
+    # later _save() would silently revert that exit back to "open" in the ledger,
+    # even though the position is genuinely flat on Alpaca. See ledger_lock.py for
+    # the full writeup. Held for this whole run (load through final save), not
+    # just around the write, since the race is between one process's *load* and
+    # another's *save*.
+    # CRASH VISIBILITY (2026-07-06): watchdog.py was the only one of the four
+    # scheduled entry points (main.py, exit_monitor.py, hold_monitor.py,
+    # watchdog.py) without a try/except + logger.exception around __main__
+    # (pattern established 2026-06-10, S4-1). An uncaught exception here —
+    # e.g. the same AlpacaDataError data_feeds.py's get_account()/
+    # get_positions() can now raise for a bad critical field — would
+    # propagate to an unhandled traceback with no guaranteed log-file entry,
+    # on the one script that runs the SPY circuit breaker and hard-stop
+    # execution every 15 min. Matches the other three entry points exactly.
+    import sys as _sys, logging as _logging
+    try:
+        from ledger_lock import ledger_lock
+        with ledger_lock("watchdog"):
+            run_watchdog(dry_run=args.dry_run)
+    except SystemExit:
+        raise
+    except BaseException:
+        _logging.getLogger("raptor.watchdog").exception("FATAL: uncaught exception — watchdog aborted")
+        _sys.exit(1)

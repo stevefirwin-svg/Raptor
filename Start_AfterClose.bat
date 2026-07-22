@@ -5,6 +5,11 @@ cd /d "C:\Raptor"
 echo [%date% %time%] After-close sequence starting >> logs\raptor_auto_start.log
 
 echo.
+echo [%time%] Step 0: Alpaca/ledger reconciliation (auto-fix)...
+python reconcile_positions.py --fix
+echo [%time%] Reconciliation complete.
+
+echo.
 echo [%time%] Step 1: Tagging closed trades (outcome_tracker)...
 python outcome_tracker.py
 echo [%time%] Outcome tracker complete.
@@ -25,7 +30,7 @@ python dsr.py
 echo [%time%] DSR complete.
 
 echo.
-echo [%time%] Step 4: GitHub push...
+echo [%time%] Step 5: GitHub push...
 git add -A
 git commit -m "Daily update %date:~10,4%-%date:~4,2%-%date:~7,2%"
 git push

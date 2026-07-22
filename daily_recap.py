@@ -22,6 +22,7 @@ Schedule at 4:30 PM ET via Task Scheduler.
 
 import logging
 import os
+import re
 import sys
 import smtplib
 from dotenv import load_dotenv
@@ -36,7 +37,7 @@ import pandas as pd
 
 from config import CONFIG
 from hold_monitor import build_health_html, run_monitor
-from data_feeds import DataManager
+from data_feeds import DataManager, safe_float, safe_int
 from signals import QuantSignalEngine, FACTOR_NAMES
 
 logging.basicConfig(level=logging.WARNING)
@@ -48,6 +49,31 @@ EMAIL_RECEIVER = os.getenv("EMAIL_RECEIVER", "stevefirwin+raptor@gmail.com")
 
 LEDGER_FILE = "position_ledger.json"
 CRYPTO_LEDGER = "crypto_ledger.json"
+SLIPPAGE_FILE = "slippage_log.json"
+
+
+def _first_not_none(d: dict, *keys, default=None):
+    """Return the first key in `keys` whose value is present AND not None.
+
+    `dict.get(primary, dict.get(secondary))` (the pattern this replaces) only
+    falls back to the secondary key when `primary` is *absent* — a record
+    with `primary` explicitly present as JSON null still returns None and
+    skips the fallback entirely. Confirmed live in outcome_log.json /
+    position_outcomes.json (2026-07-06 audit): hold_days, entry_price,
+    actual_pnl_pct, entry_date, entry_regime, exit_regime, entry_decision
+    all carry explicit nulls on some records. Same failure class as the
+    2026-07-06 daytrade_count crash (see data_feeds.safe_float/safe_int),
+    applied here to the ledger/outcome-log ingestion side. No current
+    position_ledger.json record has a null in these fields (verified
+    2026-07-06), so this changes no output today — it only prevents a
+    future null from bypassing its fallback or crashing a float()/int() call.
+    """
+    for k in keys:
+        v = d.get(k)
+        if v is not None:
+            return v
+    return default
+
 
 # ─────────────────────────────────────────────────────────────────────────────
 # DATA COLLECTION
@@ -139,25 +165,64 @@ def get_todays_trades():
     if os.path.exists(exit_log):
         seen_exits = set()  # dedupe same symbol re-logged across multiple intraday runs
         with open(exit_log) as f:
-            for line in f:
-                # Only count real executions — "Order submitted" only fires on live orders,
-                # not dry-runs. The EXIT 1/2/3/4/5 diagnostic lines fire on every run
-                # including dry-runs so we deliberately ignore them here.
-                if "SELL" in line and "Order submitted" in line:
-                    parts = line.strip().split("Order submitted: ")[1] if "Order submitted: " in line else line.strip()
-                    # Format is "SELL <qty> <SYMBOL> @ <price>" — symbol is always the
-                    # 3rd whitespace token. BUG FIX 2026-06-17: previous code did
-                    # parts.split("_")[1] if "_" in parts else parts[:4], but this line
-                    # never contains an underscore, so it always fell through to
-                    # parts[:4] == "SELL" for every single trim/exit. That made every
-                    # symbol's dedup key identical, so only the FIRST sell of the day
-                    # (whatever it was) ever made it into `exits` — every subsequent
-                    # trim that day was silently dropped before reaching the recap.
-                    tokens = parts.split()
-                    sym = tokens[2] if len(tokens) > 2 else parts[:4]
-                    if sym not in seen_exits:
-                        seen_exits.add(sym)
-                        exits.append(parts)
+            lines = f.readlines()
+
+        # BUG FIX 2026-07-01: AlpacaDataFeed logs "Order submitted: SELL <qty>
+        # <SYMBOL> @ None" at submission time because the fill price isn't
+        # confirmed yet (market orders fill async). That literal "None" was
+        # flowing straight into the recap (e.g. HOOD showed no exit price).
+        # The real fill price gets reconciled into slippage_log.json later
+        # the same day by outcome_tracker's backfill_slippage() step, keyed
+        # by order_id. The SLIPPAGE ... (order <id8>) log line links each
+        # symbol to its (truncated) order_id — use that to look up the real
+        # fill price and substitute it for "None" below.
+        order_id_by_symbol = {}
+        for line in lines:
+            m = re.search(r"SLIPPAGE\s+(?:BUY|SELL)\s+[\d.]+\s+(\S+):.*\(order\s+([0-9a-f]+)\)", line)
+            if m:
+                order_id_by_symbol[m.group(1)] = m.group(2)
+
+        slippage_records = None  # lazy-loaded only if we actually need it
+
+        for line in lines:
+            # Only count real executions — "Order submitted" only fires on live orders,
+            # not dry-runs. The EXIT 1/2/3/4/5 diagnostic lines fire on every run
+            # including dry-runs so we deliberately ignore them here.
+            if "SELL" in line and "Order submitted" in line:
+                parts = line.strip().split("Order submitted: ")[1] if "Order submitted: " in line else line.strip()
+                # Format is "SELL <qty> <SYMBOL> @ <price>" — symbol is always the
+                # 3rd whitespace token. BUG FIX 2026-06-17: previous code did
+                # parts.split("_")[1] if "_" in parts else parts[:4], but this line
+                # never contains an underscore, so it always fell through to
+                # parts[:4] == "SELL" for every single trim/exit. That made every
+                # symbol's dedup key identical, so only the FIRST sell of the day
+                # (whatever it was) ever made it into `exits` — every subsequent
+                # trim that day was silently dropped before reaching the recap.
+                tokens = parts.split()
+                sym = tokens[2] if len(tokens) > 2 else parts[:4]
+                if sym in seen_exits:
+                    continue
+                seen_exits.add(sym)
+
+                if parts.endswith(" None"):
+                    if slippage_records is None:
+                        try:
+                            slippage_records = json.load(open(SLIPPAGE_FILE))
+                        except Exception:
+                            slippage_records = []
+                    oid_prefix = order_id_by_symbol.get(sym)
+                    fill_price = None
+                    for r in slippage_records:
+                        if r.get("symbol") != sym or r.get("side") != "SELL":
+                            continue
+                        if oid_prefix and not str(r.get("order_id", "")).startswith(oid_prefix):
+                            continue
+                        if r.get("fill_price") is not None:
+                            fill_price = r["fill_price"]
+                    if fill_price is not None:
+                        parts = parts[:-4] + f"{fill_price:.2f}"
+
+                exits.append(parts)
 
     return entries, exits
 
@@ -187,7 +252,7 @@ def get_realized_total(closed_trades):
     """All-time realized PnL from the Raptor ledger (sum of closed-trade $ PnL)."""
     tot = 0.0
     for t in closed_trades or []:
-        pnl = t.get("pnl", t.get("pnl_dollar"))
+        pnl = _first_not_none(t, "pnl", "pnl_dollar")
         if pnl is not None:
             try:
                 tot += float(pnl)
@@ -258,7 +323,7 @@ def get_pnl_windows(dm, closed_trades):
     for label, cut in cutoffs.items():
         tot = 0.0
         for t in closed_trades or []:
-            pnl = t.get("pnl", t.get("pnl_dollar"))
+            pnl = _first_not_none(t, "pnl", "pnl_dollar")
             if pnl is None:
                 continue
             if cut is None:
@@ -293,7 +358,7 @@ def get_portfolio_analytics(closed_trades, equity):
 
     returns = []
     for t in closed_trades:
-        pnl = t.get("pnl_pct", t.get("return_pct", None))
+        pnl = _first_not_none(t, "pnl_pct", "return_pct")
         if pnl is not None:
             returns.append(float(pnl) / 100.0)
 
@@ -388,9 +453,9 @@ def get_portfolio_analytics(closed_trades, equity):
     # Approximated from closed trades: sum of abs(pnl_pct * position_size) where
     # position_size is available, else fallback to mean equity assumption.
     cap_eff = None
-    realized_pnl_sum = sum(float(t.get("pnl_usd", t.get("pnl", 0) or 0)) for t in closed_trades)
+    realized_pnl_sum = sum(safe_float(_first_not_none(t, "pnl_usd", "pnl", default=0)) for t in closed_trades)
     cap_deployed = sum(
-        abs(float(t.get("entry_value", t.get("market_value", 0) or 0)))
+        abs(safe_float(_first_not_none(t, "entry_value", "market_value", default=0)))
         for t in closed_trades
     )
     if cap_deployed > 0:
@@ -601,7 +666,7 @@ def get_days_held(open_ledger, positions):
     for p in positions:
         sym = p["symbol"]
         meta = sym_map.get(sym, {})
-        entry_date_str = meta.get("entry_date", meta.get("date", None))
+        entry_date_str = _first_not_none(meta, "entry_date", "date")
         days = None
         if entry_date_str:
             try:
@@ -827,12 +892,16 @@ def build_html(account, positions, entries, exits, signals, macro, scale,
             hold_days = t.get("hold_days")
             pnl_abs   = t.get("pnl") or t.get("pnl_dollar")
 
-            # pnl_pct should now be in % (e.g. 5.2 = 5.2%), convert if still decimal
+            # SCHEMA FIX 2026-07-01 (JSON schema audit): pnl_pct on closed ledger
+            # trades is always stored as a percentage (e.g. 5.2 = 5.2%) by
+            # ledger.py's record_exit/record_trim and both manual repair scripts
+            # — no writer produces a decimal-scale value here. The previous
+            # magnitude-based heuristic ("if abs < 1.5, assume decimal and *100")
+            # had no real case left to catch and instead silently corrupted any
+            # genuine trade returning between -1.5% and +1.5%, e.g. displaying a
+            # true +1.2% winner as +120%. Removed — trust the stored percentage.
             if pnl is not None:
                 pnl_f = float(pnl)
-                # If abs < 1.5, was stored as decimal — convert
-                if abs(pnl_f) < 1.5:
-                    pnl_f = pnl_f * 100
                 pnl_color_t = "#00d4aa" if pnl_f >= 0 else "#ff4757"
                 pnl_str = f"{pnl_f:+.2f}%"
             else:
@@ -1296,7 +1365,9 @@ def main(preview=False):
 
         # run_monitor is isolated — a failure here must not kill the email
         try:
-            run_monitor()
+            from ledger_lock import hold_history_lock
+            with hold_history_lock("daily_recap"):
+                run_monitor()
         except Exception as e:
             import traceback
             msg = f"[{datetime.now().isoformat()}] run_monitor() failed: {e}\n{traceback.format_exc()}\n"

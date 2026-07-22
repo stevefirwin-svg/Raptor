@@ -32,11 +32,24 @@ logging.basicConfig(
 logger = logging.getLogger("raptor.premarket")
 
 
-def run(dry: bool = False):
+def run(dry: bool = False) -> bool:
+    """Returns True if both steps succeeded; False if either raised.
+
+    LOGIC FIX 2026-07-01 (Tier 1/2 audit): previously every exception was
+    caught, logged, and swallowed, and the function always fell through to
+    "Pre-market init complete." with no way for the Task Scheduler job (or
+    any monitoring) to detect a FATAL failure — the process always exited 0.
+    Since this script runs unattended at 9:00 AM ET, a silent macro_context
+    or market_agent failure could go unnoticed for days. Now tracks failures
+    and __main__ exits non-zero when either step failed, consistent with the
+    fail-closed philosophy already established in margin_guard.py.
+    """
     os.makedirs("logs", exist_ok=True)
     logger.info("=" * 60)
     logger.info("PRE-MARKET INIT — %s", datetime.now().strftime("%Y-%m-%d %H:%M ET"))
     logger.info("=" * 60)
+
+    ok = True
 
     # ── Step 1: Macro context ─────────────────────────────────────────────────
     logger.info("Step 1/2: Building macro context (FRED + SPY + VIX)...")
@@ -62,11 +75,12 @@ def run(dry: bool = False):
             }, indent=2))
     except Exception as e:
         logger.exception("FATAL: macro_context.py failed — market_agent will use cached file: %s", e)
+        ok = False
 
     # ── Step 2: Market agent ──────────────────────────────────────────────────
     if dry:
         logger.info("Step 2/2: DRY RUN — skipping market_decision.json write")
-        return
+        return ok
 
     logger.info("Step 2/2: Running market agent (SCAN/REDUCE/STANDBY)...")
     try:
@@ -80,8 +94,13 @@ def run(dry: bool = False):
         logger.info("  Reasoning: %s", decision.get("reasoning", ""))
     except Exception as e:
         logger.exception("FATAL: market_agent.py failed — main.py will default to SCAN: %s", e)
+        ok = False
 
-    logger.info("Pre-market init complete.")
+    if ok:
+        logger.info("Pre-market init complete.")
+    else:
+        logger.error("Pre-market init completed WITH FAILURES — see FATAL entries above.")
+    return ok
 
 
 if __name__ == "__main__":
@@ -89,4 +108,5 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Raptor pre-market initialization")
     parser.add_argument("--dry", action="store_true", help="Print macro summary only, no writes")
     args = parser.parse_args()
-    run(dry=args.dry)
+    success = run(dry=args.dry)
+    sys.exit(0 if success else 1)

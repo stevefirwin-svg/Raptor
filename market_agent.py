@@ -28,6 +28,13 @@ TIMEOUT            = 45
 MACRO_CONTEXT_PATH = "macro_context.json"
 MARKET_DECISION_PATH = "market_decision.json"
 
+# LOGIC FIX 2026-07-01 (Tier 1/2 audit): risk_scalar used whenever this gate
+# has no reliable information (macro data missing/unreadable/stale). Matches
+# the middle of the REDUCE range the prompt/rule-based logic already uses
+# elsewhere in this file (0.5-0.75) — conservative without being as extreme
+# as STANDBY, since a data hiccup alone isn't evidence of an actual crisis.
+FAIL_CLOSED_SCALAR = 0.75
+
 logger = logging.getLogger("MarketAgent")
 
 # ── Prompt ────────────────────────────────────────────────────────────────────
@@ -123,17 +130,27 @@ def evaluate_session() -> dict:
     Evaluate today's macro and decide session mode.
     Returns the decision dict and writes market_decision.json.
     Rule-based logic runs first (deterministic). Mistral adds reasoning if available.
+
+    LOGIC FIX 2026-07-01 (Tier 1/2 audit): the missing-file and unreadable-file
+    fallbacks previously defaulted to full-size SCAN — the opposite of this
+    codebase's established fail-closed convention (see margin_guard.py, whose
+    own docstring calls fail-open on a risk gate "a silent capital risk"). If
+    macro_context.py fails to run (FRED/yfinance outage, Task Scheduler miss),
+    the system should not silently assume "everything is fine, trade at full
+    size" — it has no information either way. Now defaults to REDUCE at a
+    moderate risk_scalar instead, matching load_market_decision()'s staleness
+    fallback below (kept consistent for the same reason).
     """
     # Load macro context
     macro_path = Path(MACRO_CONTEXT_PATH)
     if not macro_path.exists():
-        logger.warning("[MarketAgent] macro_context.json not found — defaulting to SCAN")
+        logger.warning("[MarketAgent] macro_context.json not found — defaulting to REDUCE (fail-closed)")
         decision = {
-            "decision":    "SCAN",
-            "risk_scalar": 1.0,
+            "decision":    "REDUCE",
+            "risk_scalar": FAIL_CLOSED_SCALAR,
             "confidence":  0.5,
-            "reasoning":   "macro_context.json missing — passthrough default",
-            "source":      "fallback",
+            "reasoning":   "macro_context.json missing — fail-closed default (no macro data to evaluate)",
+            "source":      "fallback_fail_closed",
         }
         _write(decision)
         return decision
@@ -141,13 +158,13 @@ def evaluate_session() -> dict:
     try:
         macro = json.loads(macro_path.read_text())
     except Exception as e:
-        logger.warning(f"[MarketAgent] Failed to read macro_context.json: {e} — defaulting to SCAN")
+        logger.warning(f"[MarketAgent] Failed to read macro_context.json: {e} — defaulting to REDUCE (fail-closed)")
         decision = {
-            "decision":    "SCAN",
-            "risk_scalar": 1.0,
+            "decision":    "REDUCE",
+            "risk_scalar": FAIL_CLOSED_SCALAR,
             "confidence":  0.5,
-            "reasoning":   "macro_context.json unreadable — passthrough default",
-            "source":      "fallback",
+            "reasoning":   "macro_context.json unreadable — fail-closed default (no macro data to evaluate)",
+            "source":      "fallback_fail_closed",
         }
         _write(decision)
         return decision
@@ -180,17 +197,28 @@ def evaluate_session() -> dict:
 
 def _write(decision: dict):
     Path(MARKET_DECISION_PATH).write_text(json.dumps(decision, indent=2))
-    logger.info(f"[MarketAgent] Written → {MARKET_DECISION_PATH}")
+    logger.info(f"[MarketAgent] Written -> {MARKET_DECISION_PATH}")
 
 
 def load_market_decision() -> dict:
     """
     Load today's market decision. Called by main.py at session start.
-    Falls back to SCAN if file missing or stale (>12 hours old).
+    Falls back to REDUCE (fail-closed) if file missing, unreadable, or stale
+    (>12 hours old).
+
+    LOGIC FIX 2026-07-01 (Tier 1/2 audit): all three fallback paths here used
+    to default to full-size SCAN — meaning a missing file, a corrupt file, or
+    a market_agent.py that silently stopped running for over 12 hours would
+    all be treated identically to "macro conditions are fine, trade at full
+    size." That's fail-open on a risk gate, which this codebase's other
+    session-level gate (margin_guard.py) deliberately avoids. Missing
+    information about market risk should not default to "assume no risk" —
+    now defaults to REDUCE at FAIL_CLOSED_SCALAR instead.
     """
     path = Path(MARKET_DECISION_PATH)
     if not path.exists():
-        return {"decision": "SCAN", "risk_scalar": 1.0, "reasoning": "No market_decision.json — defaulting to SCAN"}
+        return {"decision": "REDUCE", "risk_scalar": FAIL_CLOSED_SCALAR,
+                "reasoning": "No market_decision.json — fail-closed default (no data to evaluate)"}
 
     try:
         decision = json.loads(path.read_text())
@@ -203,12 +231,14 @@ def load_market_decision() -> dict:
                 ts = ts.replace(tzinfo=timezone.utc)
             age_hours = (datetime.now(timezone.utc) - ts).total_seconds() / 3600
             if age_hours > 12:
-                logger.warning(f"[MarketAgent] market_decision.json is {age_hours:.1f}h old — defaulting to SCAN")
-                return {"decision": "SCAN", "risk_scalar": 1.0, "reasoning": "Stale decision file — defaulting to SCAN"}
+                logger.warning(f"[MarketAgent] market_decision.json is {age_hours:.1f}h old — defaulting to REDUCE (fail-closed)")
+                return {"decision": "REDUCE", "risk_scalar": FAIL_CLOSED_SCALAR,
+                        "reasoning": f"Stale decision file ({age_hours:.1f}h old) — fail-closed default"}
         return decision
     except Exception as e:
-        logger.warning(f"[MarketAgent] Failed to load market_decision.json: {e} — defaulting to SCAN")
-        return {"decision": "SCAN", "risk_scalar": 1.0, "reasoning": "Load error — defaulting to SCAN"}
+        logger.warning(f"[MarketAgent] Failed to load market_decision.json: {e} — defaulting to REDUCE (fail-closed)")
+        return {"decision": "REDUCE", "risk_scalar": FAIL_CLOSED_SCALAR,
+                "reasoning": "Load error — fail-closed default (no data to evaluate)"}
 
 
 def print_summary():

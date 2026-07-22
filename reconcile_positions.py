@@ -181,7 +181,11 @@ def main():
     if missing_from_ledger or ghost_in_ledger:
         print(f"\n  1. SYNC LEDGER with Alpaca:")
         print(f"     python backfill_ledger.py --write")
-        print(f"     This will add missing positions and close exited ones.")
+        print(f"     This adds missing positions (placeholder stop/regime until hold_monitor")
+        print(f"     runs). Ghost positions ({sorted(ghost_in_ledger) if ghost_in_ledger else 'none'})")
+        print(f"     are NOT auto-closed — confirm on Alpaca whether they were really exited")
+        print(f"     before closing them in the ledger; auto-closing here could be wrong if")
+        print(f"     this is a transient data glitch rather than a real exit.")
 
     if missing_from_health or stale_in_health:
         print(f"\n  2. RE-RUN HOLD MONITOR to rebuild health scores:")
@@ -189,6 +193,33 @@ def main():
 
     if not missing_from_ledger and not ghost_in_ledger and not stale_in_health and not missing_from_health:
         print(f"\n  ✓ No action needed — all files are current.")
+
+    # ── --fix: auto-heal what's safe to auto-heal ──────────────────────────
+    # BUG FIX 2026-07-01: --fix was documented in the module docstring
+    # ("auto-runs backfill_ledger if discrepancies found") and accepted as a
+    # CLI flag, but the flag was never actually read anywhere in this file —
+    # passing --fix silently did nothing but print the same report as a plain
+    # run. Only MISSING_FROM_LEDGER is auto-healed here (additive, and
+    # backfill_ledger.py already guards against overwriting existing entries).
+    # GHOST_IN_LEDGER is deliberately left for manual review — auto-closing a
+    # ledger position is a destructive action, and this script's "not seen on
+    # Alpaca" read can itself be wrong (API hiccup, timing), so Steve should
+    # confirm on Alpaca before anything gets closed out.
+    if args.fix:
+        print(f"\n{'='*70}")
+        print(f"  --fix: AUTO-HEALING")
+        print(f"{'='*70}")
+        if missing_from_ledger:
+            print(f"\n  Running backfill_ledger.py --write for: {sorted(missing_from_ledger)}")
+            try:
+                from backfill_ledger import backfill as _backfill
+                _backfill(write=True)
+            except Exception as e:
+                print(f"  ERROR: backfill_ledger.py failed: {e}")
+        else:
+            print(f"\n  Nothing to auto-heal (no MISSING_FROM_LEDGER positions).")
+        if ghost_in_ledger:
+            print(f"\n  NOT auto-closed (needs manual confirmation): {sorted(ghost_in_ledger)}")
 
     # ── 7. Closed trades summary ───────────────────────────────────────────
     if ledger_closed:

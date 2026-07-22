@@ -66,6 +66,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Optional
 
+from ledger_lock import slippage_lock
+
 logger = logging.getLogger("raptor.slippage")
 
 SLIPPAGE_LOG_PATH = Path("slippage_log.json")
@@ -153,9 +155,17 @@ def record_fill(
         "backfilled":     False,
     }
 
-    existing = _load()
-    existing.append(record)
-    _atomic_write(SLIPPAGE_LOG_PATH, existing)
+    # LOGIC FIX 2026-07-01 (Tier 1/2 audit): watchdog.py and exit_monitor.py can
+    # each independently record_fill() around the same time (offset schedules,
+    # but no coordination). Without a lock, both do load->append->full-file
+    # rewrite, and the second writer silently drops the first writer's record
+    # — the exact same lost-update race already found and fixed for
+    # position_ledger.json via ledger_lock.py. Held for the full
+    # load-modify-save span, same pattern.
+    with slippage_lock("record_fill"):
+        existing = _load()
+        existing.append(record)
+        _atomic_write(SLIPPAGE_LOG_PATH, existing)
 
     if is_bps is not None:
         logger.info(
@@ -182,44 +192,52 @@ def backfill_slippage(alpaca_headers_fn, base_url: str) -> int:
     """
     import requests
 
-    records  = _load()
-    pending  = [r for r in records if r.get("fill_price") is None and r.get("order_id")]
-    if not pending:
-        return 0
+    # LOGIC FIX 2026-07-01 (Tier 1/2 audit): same lost-update race as
+    # record_fill() above — this reads the WHOLE log, mutates entries in
+    # memory, and rewrites the WHOLE file, so it must hold the lock for its
+    # entire load-through-save span (including the network calls in between)
+    # to keep a concurrent record_fill() from writing a new record that this
+    # backfill's in-memory snapshot doesn't know about and would otherwise
+    # clobber on save.
+    with slippage_lock("backfill_slippage"):
+        records  = _load()
+        pending  = [r for r in records if r.get("fill_price") is None and r.get("order_id")]
+        if not pending:
+            return 0
 
-    filled = 0
-    for r in pending:
-        try:
-            resp = requests.get(
-                f"{base_url}/v2/orders/{r['order_id']}",
-                headers=alpaca_headers_fn(),
-                timeout=10,
-            )
-            if resp.status_code != 200:
-                continue
-            order = resp.json()
-            fp = float(order.get("filled_avg_price") or 0)
-            if fp == 0:
-                continue
+        filled = 0
+        for r in pending:
+            try:
+                resp = requests.get(
+                    f"{base_url}/v2/orders/{r['order_id']}",
+                    headers=alpaca_headers_fn(),
+                    timeout=10,
+                )
+                if resp.status_code != 200:
+                    continue
+                order = resp.json()
+                fp = float(order.get("filled_avg_price") or 0)
+                if fp == 0:
+                    continue
 
-            side_sign  = 1.0 if r["side"] == "BUY" else -1.0
-            dp         = r["decision_price"]
-            qty        = r["qty"]
-            r["fill_price"]  = round(fp, 4)
-            r["is_bps"]      = round(side_sign * (fp - dp) / dp * 10_000, 2)
-            r["is_dollars"]  = round(side_sign * (fp - dp) * qty, 4)
-            r["backfilled"]  = True
-            filled += 1
-            logger.info(
-                "SLIPPAGE BACKFILL %s %s: IS=%+.1f bps",
-                r["symbol"], r["order_id"][:8], r["is_bps"]
-            )
-        except Exception as e:
-            logger.warning("Slippage backfill failed for order %s: %s", r.get("order_id","?")[:8], e)
+                side_sign  = 1.0 if r["side"] == "BUY" else -1.0
+                dp         = r["decision_price"]
+                qty        = r["qty"]
+                r["fill_price"]  = round(fp, 4)
+                r["is_bps"]      = round(side_sign * (fp - dp) / dp * 10_000, 2)
+                r["is_dollars"]  = round(side_sign * (fp - dp) * qty, 4)
+                r["backfilled"]  = True
+                filled += 1
+                logger.info(
+                    "SLIPPAGE BACKFILL %s %s: IS=%+.1f bps",
+                    r["symbol"], r["order_id"][:8], r["is_bps"]
+                )
+            except Exception as e:
+                logger.warning("Slippage backfill failed for order %s: %s", r.get("order_id","?")[:8], e)
 
-    if filled:
-        _atomic_write(SLIPPAGE_LOG_PATH, records)
-    return filled
+        if filled:
+            _atomic_write(SLIPPAGE_LOG_PATH, records)
+        return filled
 
 
 # ── Analytics report ──────────────────────────────────────────────────────────

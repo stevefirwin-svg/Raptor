@@ -362,11 +362,18 @@ class UniverseBuilder:
             """Count symbols within pct% of the threshold."""
             return sum(1 for v in values if abs(v - threshold) / threshold < pct)
 
+        # SCHEMA/LOGIC FIX 2026-07-01 (Tier 1/2 audit): these thresholds had not
+        # been updated after the 2026-05-22 sensitivity sweep raised the live
+        # filters from 500K->750K shares and $20M->$30M dollar volume (see
+        # _screen() above and the header comment block). The report was
+        # silently computing "near threshold" counts against the OLD, no
+        # longer enforced cutoffs, making its output misleading for tuning
+        # decisions. Aligned to the actual enforced filters.
         thresholds = [
             ("Price min $5",    prices,  5.0,    "below"),
             ("Price max $1000", prices,  1000.0, "above"),
-            ("Volume 500K",     vols,    500_000, "near"),
-            ("Dollar vol $20M", dvols,   20.0,   "near"),
+            ("Volume 750K",     vols,    750_000, "near"),
+            ("Dollar vol $30M", dvols,   30.0,   "near"),
             ("Daily range 1.0%",ranges,  1.0,    "near"),
         ]
 

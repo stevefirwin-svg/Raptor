@@ -910,7 +910,9 @@ if __name__ == "__main__":
     # fatal errors must reach the log file, not just the closing console window.
     import sys as _sys, logging as _logging
     try:
-        run_monitor(pre_entry_only=args.pre, debug=args.debug)
+        from ledger_lock import hold_history_lock
+        with hold_history_lock("hold_monitor"):
+            run_monitor(pre_entry_only=args.pre, debug=args.debug)
     except SystemExit:
         raise
     except BaseException:

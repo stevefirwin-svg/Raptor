@@ -137,6 +137,22 @@ def load_json(path: Path) -> Optional[dict]:
         return None
 
 
+def safe_float(value, default: float = 0.0) -> float:
+    """Coerce to float, treating None/missing/unparseable as `default`.
+
+    dict.get(key, default) only substitutes `default` when the key is
+    absent — a key present with an explicit JSON null (Python None, e.g.
+    positions not yet backfilled into the ledger) still slips through and
+    crashes float(None). This closes that gap.
+    """
+    if value is None:
+        return default
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return default
+
+
 def file_age_hours(path: Path) -> Optional[float]:
     """Return hours since file was last modified, or None if missing."""
     if not path.exists():
@@ -172,17 +188,35 @@ def read_log(filename: str) -> str:
 
 
 def get_alpaca_positions() -> Tuple[List[dict], dict]:
-    """Connect to Alpaca and return (positions, account). Returns ([], {}) on failure."""
+    """Connect to Alpaca and return (positions, account).
+
+    FIX (2026-07-06, monitor findings audit): positions and account were
+    fetched inside the same try block, so a failure in EITHER call discarded
+    BOTH results — including a positions list that had already been fetched
+    successfully. Confirmed live: today's 16:30 run hit the (now-fixed)
+    get_account() daytrade_count=None crash, which nuked an already-fetched
+    real positions list down to [], which L2-Reconciliation then read as
+    "10 ledger positions not on Alpaca" (GHOST_IN_LEDGER) — a false alarm
+    caused entirely by this coupling, not real ledger/broker drift. Fetching
+    each independently means a failure in one no longer erases the other.
+    """
+    from config import CONFIG
+    from data_feeds import AlpacaDataFeed
+    positions, account = [], {}
     try:
-        from config import CONFIG
-        from data_feeds import AlpacaDataFeed
         feed = AlpacaDataFeed(CONFIG)
-        positions = feed.get_positions()
-        account   = feed.get_account()
-        return positions, account
     except Exception as e:
         logger.error("Alpaca connection failed: %s", e)
         return [], {}
+    try:
+        positions = feed.get_positions()
+    except Exception as e:
+        logger.error("Alpaca get_positions() failed: %s", e)
+    try:
+        account = feed.get_account()
+    except Exception as e:
+        logger.error("Alpaca get_account() failed: %s", e)
+    return positions, account
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -241,6 +275,45 @@ def run_layer1() -> List[dict]:
                 "\n".join(error_lines[:3]),
                 "Read full log: logs/" + exit_log_name
             ))
+
+        # ── 1a-2. Exit monitor self-loop cycle-count check ────────────────────
+        # ADDED 2026-07-01: exit_monitor.py runs as one long-lived process from
+        # 9:35 AM, self-managing a cycle every 30 min until 3:50 PM (~13 cycles
+        # on a full day). It can be killed externally (laptop sleep, reboot,
+        # closed terminal, Task Scheduler execution-time-limit) without ever
+        # writing a Python traceback — logging.exception() only catches
+        # catchable Python exceptions, not the process being killed outright.
+        # Confirmed happening on 2026-06-29: cycles 1-3 ran fine (9:35-10:35),
+        # then nothing until an unrelated 3:50 PM safety-net call logged
+        # "shutting down loop after 0 cycle(s)" — ~4h45m with zero exit checks
+        # and no error anywhere to flag it. This check catches that pattern by
+        # comparing how many cycles *should* have happened by now against how
+        # many actually did.
+        cycle_starts = re.findall(r"EXIT MONITOR LOOP: cycle (\d+) starting at (\d{2}:\d{2}:\d{2})", exit_content)
+        now_dt = datetime.now()
+        market_open_today  = now_dt.replace(hour=9,  minute=35, second=0, microsecond=0)
+        market_close_today = now_dt.replace(hour=15, minute=50, second=0, microsecond=0)
+        if now_dt >= market_open_today:
+            elapsed_cutoff = min(now_dt, market_close_today)
+            expected_cycles = max(1, int((elapsed_cutoff - market_open_today).total_seconds() // 1800) + 1)
+            actual_cycles = len(cycle_starts)
+            last_cycle_time = cycle_starts[-1][1] if cycle_starts else None
+            # Allow slack of 2 cycles (~1h) for normal startup jitter/late scheduler fire
+            if actual_cycles < expected_cycles - 2:
+                findings.append(finding(
+                    SEV_ALERT if now_dt >= market_close_today else SEV_WARN,
+                    layer, "EXIT_LOOP_GAP",
+                    f"exit_monitor self-loop ran only {actual_cycles} cycle(s), expected ~{expected_cycles} by now",
+                    f"Last cycle logged at {last_cycle_time or 'never'}. The loop likely died mid-day "
+                    f"(laptop sleep, reboot, closed terminal, Task Scheduler time limit) with no traceback — "
+                    f"logger.exception() only catches Python exceptions, not the process being killed outright.",
+                    "Check whether exit_monitor.py is still running (Task Manager); check Task Scheduler "
+                    "history for the exit_monitor task around the gap; re-run manually if positions are unmonitored: "
+                    "python exit_monitor.py --once"
+                ))
+            elif cycle_starts:
+                findings.append(finding(SEV_OK, layer, "EXIT_LOOP_OK",
+                    f"exit_monitor self-loop on track — {actual_cycles} cycle(s), last at {last_cycle_time}"))
 
     # ── 1b. Main entry log ────────────────────────────────────────────────────
     # main.py logs to raptor_YYYYMMDD.log or raptor_v6_YYYYMMDD.log
@@ -477,15 +550,18 @@ def run_layer3(alpaca_positions: List[dict], account: dict) -> List[dict]:
         value   = price * qty
 
         health_rec  = hold_health.get(sym, {})
-        health      = float(health_rec.get("health", 0.0))
-        composite   = float(health_rec.get("composite", 0.0))
-        tier        = health_rec.get("tier", "UNKNOWN")
-        days_held   = int(health_rec.get("days_held", 0))
-        stop_dist   = float(health_rec.get("stop_dist_atr", 999))
+        health      = safe_float(health_rec.get("health"), 0.0)
+        composite   = safe_float(health_rec.get("composite"), 0.0)
+        tier        = health_rec.get("tier") or "UNKNOWN"
+        days_held   = int(safe_float(health_rec.get("days_held"), 0))
+        # stop_dist_atr is null for positions not yet backfilled into the
+        # ledger (no stop set) — default to 999 (i.e. "not near stop") so
+        # this layer doesn't crash and skip every symbol behind the culprit.
+        stop_dist   = safe_float(health_rec.get("stop_dist_atr"), 999.0)
 
         ledger_entry = ledger_map.get(sym, {})
-        entry_price  = float(ledger_entry.get("entry_price", price))
-        high_water   = float(ledger_entry.get("metadata", {}).get("high_water", price))
+        entry_price  = safe_float(ledger_entry.get("entry_price"), price)
+        high_water   = safe_float(ledger_entry.get("metadata", {}).get("high_water"), price)
 
         # ── Triple deterioration ──────────────────────────────────────────────
         # health < -0.15 AND composite < 0 AND pnl < -2%
@@ -733,9 +809,14 @@ def run_layer5(alpaca_positions: List[dict]) -> List[dict]:
     market_dec = load_json(MARKET_DECISION_PATH) or {}
 
     current_regime = macro.get("macro_regime", "UNKNOWN")
-    macro_score    = float(macro.get("macro_score", 0.0))
-    vix_data       = macro.get("signals", {}).get("vix", {})
-    vix_value      = float(vix_data.get("value", 0))
+    macro_score    = safe_float(macro.get("macro_score"), 0.0)
+    # macro_context.py explicitly writes {"value": None, "regime": "UNKNOWN"} for the VIX
+    # signal (and several other signals) whenever the underlying fetch fails — every other
+    # consumer of this field in the codebase already guards against that with `.get(...) or
+    # 0` (exit_monitor.py, market_agent.py, premarket_scanner.py); this was the one call
+    # site that didn't, and float(None) would crash this whole layer exactly like the L3 bug.
+    vix_data       = macro.get("signals", {}).get("vix") or {}
+    vix_value      = safe_float(vix_data.get("value"), 0.0)
 
     # ── 5a. STANDBY alert ────────────────────────────────────────────────────
     decision = market_dec.get("decision", "")

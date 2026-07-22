@@ -22,6 +22,17 @@ from config import CONFIG
 from data_feeds import DataManager
 from signals import QuantSignalEngine, Factors, FACTOR_NAMES
 
+# Windows' default console/redirect encoding is cp1252, which cannot encode
+# characters like → used in some log messages — this crashed the StreamHandler
+# with UnicodeEncodeError repeatedly across recent runs (raptor_run.log),
+# silently dropping that log line each time even though the cycle itself kept
+# running. Same fix already in raptor_monitor.py.
+for _stream in (sys.stdout, sys.stderr):
+    try:
+        _stream.reconfigure(encoding="utf-8", errors="replace")
+    except (AttributeError, ValueError):
+        pass
+
 os.makedirs(CONFIG.log.log_dir, exist_ok=True)
 logging.basicConfig(
     level=getattr(logging, CONFIG.log.log_level),
@@ -34,6 +45,59 @@ logging.basicConfig(
 logger = logging.getLogger("raptor.exits")
 
 _OUTCOME_PENDING_PATH = Path(__file__).parent / "outcome_pending.json"
+
+# ── Process lock ──────────────────────────────────────────────────────────────
+# ADDED 2026-07-01: exit_monitor.py had no lock at all, unlike main.py (which
+# added one 2026-06-19 after a duplicate-task race caused doubled orders and
+# ~$26K margin — see main.py's LOCK_FILE comment). exit_monitor.py runs as one
+# long-lived process (self-managing loop, 9:35 AM-3:50 PM) that reads/writes
+# position_ledger.json, hold_health.json, outcome_pending.json, slippage_log.json
+# every cycle. Start_Afternoon_Monitor.bat also calls `python exit_monitor.py`
+# (no args) at 3:50 PM as a safety net in case the morning loop died — if the
+# morning loop is in fact still alive at that moment, both processes would write
+# to the same JSON files concurrently. Same pattern as main.py: a timestamped
+# lock file, TTL longer than the longest possible loop (9:35-3:50 = 6h15m).
+EXIT_LOCK_FILE        = "logs/exit_monitor.lock"
+EXIT_LOCK_TTL_SECONDS = 8 * 3600  # 8h — covers the full 9:35 AM-3:50 PM window with margin
+
+
+def _acquire_exit_lock() -> bool:
+    """
+    Same fail-open pattern as main.py's _acquire_lock(): a younger lock than
+    EXIT_LOCK_TTL_SECONDS means another instance is already running (abort);
+    a missing/stale/unreadable lock means proceed (and don't block trading
+    over a permissions hiccup).
+    """
+    os.makedirs(os.path.dirname(EXIT_LOCK_FILE), exist_ok=True)
+    if os.path.exists(EXIT_LOCK_FILE):
+        try:
+            age = (datetime.now() - datetime.fromisoformat(open(EXIT_LOCK_FILE).read().strip())).total_seconds()
+            if age < EXIT_LOCK_TTL_SECONDS:
+                logger.warning(
+                    "LOCK: another exit_monitor instance is already running (lock age %.0fs < %ds TTL). "
+                    "Aborting this instance to avoid concurrent writes to position_ledger.json etc. "
+                    "If stale, delete: %s",
+                    age, EXIT_LOCK_TTL_SECONDS, os.path.abspath(EXIT_LOCK_FILE),
+                )
+                return False
+            logger.warning("LOCK: stale exit_monitor lock (age %.0fs) — overwriting.", age)
+        except Exception as e:
+            logger.warning("LOCK: could not read exit_monitor lock file (%s) — overwriting.", e)
+    try:
+        with open(EXIT_LOCK_FILE, "w") as f:
+            f.write(datetime.now().isoformat())
+        return True
+    except Exception as e:
+        logger.warning("LOCK: could not write exit_monitor lock file (%s) — proceeding without lock.", e)
+        return True
+
+
+def _release_exit_lock():
+    try:
+        if os.path.exists(EXIT_LOCK_FILE):
+            os.remove(EXIT_LOCK_FILE)
+    except Exception as e:
+        logger.warning("LOCK: could not remove exit_monitor lock file (%s).", e)
 
 
 def _write_outcome_pending(order_id: str, symbol: str, reason: str,
@@ -68,7 +132,7 @@ def _write_outcome_pending(order_id: str, symbol: str, reason: str,
         tmp = _OUTCOME_PENDING_PATH.with_suffix(".tmp")
         tmp.write_text(json.dumps(existing, indent=2))
         os.replace(tmp, _OUTCOME_PENDING_PATH)
-        logger.debug("outcome_pending: %s → %s [%s]", order_id[:8], symbol, reason)
+        logger.debug("outcome_pending: %s -> %s [%s]", order_id[:8], symbol, reason)
     except Exception as e:
         logger.warning("outcome_pending write failed for %s: %s", symbol, e)
 
@@ -189,7 +253,7 @@ def run_exit_monitor(dry_run=False):
         _label = _mc_fresh.get("macro_regime")
         if _label in ("RISK_ON", "NEUTRAL", "RISK_OFF", "CRISIS"):
             macro["regime"] = _label
-            logger.info("[MacroOverride] regime → %s (live refresh, score=%.3f, VIX=%.1f)",
+            logger.info("[MacroOverride] regime -> %s (live refresh, score=%.3f, VIX=%.1f)",
                         _label,
                         _mc_fresh.get("macro_score", 0),
                         (_mc_fresh.get("signals", {}).get("vix") or {}).get("value") or 0)
@@ -202,7 +266,7 @@ def run_exit_monitor(dry_run=False):
             _label = _mc.get("macro_regime") or _mc.get("regime")
             if _label in ("RISK_ON", "NEUTRAL", "RISK_OFF", "CRISIS"):
                 macro["regime"] = _label
-                logger.info("[MacroOverride] regime → %s (cached fallback)", _label)
+                logger.info("[MacroOverride] regime -> %s (cached fallback)", _label)
         except Exception as _mce2:
             logger.warning("[MacroOverride] cached fallback also failed (%s) — keeping data_feeds regime", _mce2)
 
@@ -922,43 +986,73 @@ if __name__ == "__main__":
     CYCLE_SECONDS       = 1800 # 30 minutes
 
     def _run_once():
+        # RACE CONDITION FIX 2026-07-01: watchdog.py (every 15 min) and this
+        # script (every 30 min) both load position_ledger.json, mutate it, and
+        # overwrite the whole file, with no coordination between the two
+        # processes — a classic lost-update race. If watchdog executes a
+        # hard-stop and writes record_exit() while this cycle is already mid-
+        # flight (loaded its own, now-stale snapshot earlier), this cycle's
+        # later _save() calls would silently revert that exit back to "open"
+        # in the ledger, even though the position is genuinely flat on
+        # Alpaca. See ledger_lock.py for the full writeup. Held for the whole
+        # cycle (load through every _save() in it), not just one write.
+        from ledger_lock import ledger_lock
         try:
-            run_exit_monitor(dry_run=args.dry_run)
+            with ledger_lock("exit_monitor"):
+                run_exit_monitor(dry_run=args.dry_run)
         except SystemExit:
             raise
         except BaseException:
             logger.exception("FATAL: uncaught exception — exit monitor cycle aborted")
 
-    if args.once:
-        _run_once()
-    else:
-        cycle = 0
-        while True:
-            now = datetime.now()
-            past_cutoff = (now.hour > MARKET_CLOSE_HOUR or
-                           (now.hour == MARKET_CLOSE_HOUR and
-                            now.minute >= MARKET_CLOSE_MINUTE))
-            if past_cutoff:
-                logger.info("EXIT MONITOR: past 3:50 PM cutoff — shutting down loop after %d cycle(s).", cycle)
-                break
+    if not _acquire_exit_lock():
+        _sys.exit(0)
 
-            cycle += 1
-            logger.info("EXIT MONITOR LOOP: cycle %d starting at %s", cycle, now.strftime("%H:%M:%S"))
+    try:
+        if args.once:
             _run_once()
+        else:
+            cycle = 0
+            while True:
+                now = datetime.now()
+                # BUG FIX 2026-07-01: this cutoff check used to run BEFORE the
+                # first cycle too, so a fresh invocation started at/after 3:50 PM
+                # (e.g. Start_Afternoon_Monitor.bat's 3:50 PM safety-net call,
+                # meant to cover for a morning loop that died mid-day — see
+                # 2026-06-29's exits log, where the self-loop silently stopped
+                # after cycle 3 at 10:35 AM with no traceback, and the 3:50 PM
+                # call then logged "shutting down loop after 0 cycle(s)" and did
+                # nothing) hit past_cutoff immediately and exited with zero
+                # cycles run — the safety net was a complete no-op every day.
+                # Now the cutoff only stops the loop from starting a NEW cycle
+                # after at least one has already run; the very first cycle
+                # always executes regardless of what time it's invoked.
+                past_cutoff = (now.hour > MARKET_CLOSE_HOUR or
+                               (now.hour == MARKET_CLOSE_HOUR and
+                                now.minute >= MARKET_CLOSE_MINUTE))
+                if past_cutoff and cycle > 0:
+                    logger.info("EXIT MONITOR: past 3:50 PM cutoff — shutting down loop after %d cycle(s).", cycle)
+                    break
 
-            # Re-check cutoff before sleeping — final cycle may have run close to 3:50
-            now_after = datetime.now()
-            past_cutoff_after = (now_after.hour > MARKET_CLOSE_HOUR or
-                                  (now_after.hour == MARKET_CLOSE_HOUR and
-                                   now_after.minute >= MARKET_CLOSE_MINUTE))
-            if past_cutoff_after:
-                logger.info("EXIT MONITOR: past 3:50 PM after cycle %d — shutting down.", cycle)
-                break
+                cycle += 1
+                logger.info("EXIT MONITOR LOOP: cycle %d starting at %s", cycle, now.strftime("%H:%M:%S"))
+                _run_once()
 
-            next_run = now_after.replace(second=0, microsecond=0)
-            sleep_secs = CYCLE_SECONDS - (now_after - now).seconds
-            sleep_secs = max(60, min(sleep_secs, CYCLE_SECONDS))  # clamp 60s–30min
-            logger.info("EXIT MONITOR LOOP: cycle %d complete. Next in %.0f min at ~%s.",
-                        cycle, sleep_secs / 60,
-                        (now_after + __import__("datetime").timedelta(seconds=sleep_secs)).strftime("%H:%M"))
-            _time.sleep(sleep_secs)
+                # Re-check cutoff before sleeping — final cycle may have run close to 3:50
+                now_after = datetime.now()
+                past_cutoff_after = (now_after.hour > MARKET_CLOSE_HOUR or
+                                      (now_after.hour == MARKET_CLOSE_HOUR and
+                                       now_after.minute >= MARKET_CLOSE_MINUTE))
+                if past_cutoff_after:
+                    logger.info("EXIT MONITOR: past 3:50 PM after cycle %d — shutting down.", cycle)
+                    break
+
+                next_run = now_after.replace(second=0, microsecond=0)
+                sleep_secs = CYCLE_SECONDS - (now_after - now).seconds
+                sleep_secs = max(60, min(sleep_secs, CYCLE_SECONDS))  # clamp 60s–30min
+                logger.info("EXIT MONITOR LOOP: cycle %d complete. Next in %.0f min at ~%s.",
+                            cycle, sleep_secs / 60,
+                            (now_after + __import__("datetime").timedelta(seconds=sleep_secs)).strftime("%H:%M"))
+                _time.sleep(sleep_secs)
+    finally:
+        _release_exit_lock()

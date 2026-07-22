@@ -210,8 +210,27 @@ def api_data():
     recent_trims = sorted(trim_log, key=lambda x: x.get("timestamp", ""), reverse=True)[:10] if trim_log else []
 
     # Recent closed trades
+    # SCHEMA FIX 2026-07-01 (JSON schema audit): this used to read `outcome` only,
+    # so `closed_all` (outcome_log.json + position_ledger.json's closed list,
+    # built above) was computed but never actually consumed — a position closed
+    # via any path that skipped outcome_tracker.py tagging (manual ledger repair,
+    # or a run where outcome_tracker.py itself failed) was invisible here even
+    # though it was correctly present in the ledger. Now dedups closed_all by
+    # (symbol, exit_date) — outcome_log's record wins on a collision since it
+    # carries the richer agent-decision context, ledger's closed record is the
+    # fallback for anything outcome_log never tagged.
+    _seen_closed = set()
+    _deduped_closed = []
+    for t in closed_all:
+        if not t.get("exit_date"):
+            continue
+        _key = (t.get("symbol"), str(t.get("exit_date"))[:10])
+        if _key in _seen_closed:
+            continue
+        _seen_closed.add(_key)
+        _deduped_closed.append(t)
     recent_closed = sorted(
-        [t for t in outcome if t.get("exit_date")],
+        _deduped_closed,
         key=lambda x: x.get("exit_date", ""), reverse=True
     )[:15]
 

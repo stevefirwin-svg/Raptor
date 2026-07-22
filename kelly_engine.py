@@ -170,7 +170,16 @@ def load_outcomes() -> List[Dict]:
         # time_decay) represent the full realized outcome of a trade.
         if t.get("actual_exit_path") == "math_trim":
             continue
-        pnl_norm   = pnl / 100.0 if abs(pnl) > 1.0 else pnl
+        # SCHEMA/LOGIC FIX 2026-07-01 (Tier 1/2 audit): outcome_tracker.py always
+        # writes actual_pnl_pct as a percentage (e.g. 0.4093 means +0.41%, per
+        # its own `(exit-entry)/entry*100` computation). The old heuristic
+        # "divide by 100 only if abs()>1.0" left near-breakeven trades
+        # un-normalized, so e.g. a real +0.41% trade (WFC) or -0.20% trade
+        # (CSX, UBER) was fed into the Kelly f*=mu/sigma^2 math as a +41% or
+        # -20% return — corrupting mean/variance/skew and f_recommended for
+        # every trade under ~1% magnitude. dsr.py already uses the correct
+        # unconditional /100.0 normalization for the same field — matched here.
+        pnl_norm   = pnl / 100.0
         trade_type = t.get("trade_type") or "MOMENTUM"
         clean.append({**t, "actual_pnl_pct": pnl_norm, "trade_type": trade_type})
 

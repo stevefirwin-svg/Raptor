@@ -196,3 +196,177 @@
 [Tue 06/30/2026 16:15:17.91] Start_Recap complete 
 [Tue 06/30/2026 17:00:00.99] After-close sequence starting 
 [Tue 06/30/2026 17:00:15.28] After-close sequence complete 
+[Wed 07/01/2026  9:00:00.79] Start_PreMarket starting 
+[Wed 07/01/2026  9:00:01.08] Start_PreMarket complete 
+[Wed 07/01/2026  9:28:00.69] Start_PreMarket starting 
+[Wed 07/01/2026  9:28:00.89] Start_PreMarket complete 
+[Wed 07/01/2026  9:35:00.96] Start_Entry starting 
+[Wed 07/01/2026  9:38:29.76] Start_Entry complete 
+[Wed 07/01/2026 16:05:25.75] Start_Afternoon_Monitor starting 
+[Wed 07/01/2026 16:05:56.41] Start_Afternoon_Monitor complete 
+[Wed 07/01/2026 16:15:00.43] Start_Recap starting 
+[Wed 07/01/2026 16:15:17.64] Start_Recap complete 
+[Wed 07/01/2026 17:00:00.49] After-close sequence starting 
+[Wed 07/01/2026 17:00:24.08] After-close sequence complete 
+[Thu 07/02/2026  9:00:01.09] Start_PreMarket starting 
+[Thu 07/02/2026  9:00:01.48] Start_PreMarket complete 
+[Thu 07/02/2026  9:28:01.00] Start_PreMarket starting 
+[Thu 07/02/2026  9:28:01.26] Start_PreMarket complete 
+[Thu 07/02/2026  9:35:01.18] Start_Entry starting 
+[Thu 07/02/2026  9:38:25.03] Start_Entry complete 
+[Thu 07/02/2026 15:50:00.92] Start_Afternoon_Monitor starting 
+[Thu 07/02/2026 15:50:22.91] Start_Afternoon_Monitor complete 
+[Thu 07/02/2026 16:15:00.83] Start_Recap starting 
+[Thu 07/02/2026 16:15:24.96] Start_Recap complete 
+[Thu 07/02/2026 17:00:00.87] After-close sequence starting 
+[Thu 07/02/2026 17:00:19.23] After-close sequence complete 
+[Fri 07/03/2026  9:00:00.54] Start_PreMarket starting 
+[Fri 07/03/2026  9:00:00.90] Start_PreMarket complete 
+[Fri 07/03/2026  9:28:00.38] Start_PreMarket starting 
+[Fri 07/03/2026  9:28:00.60] Start_PreMarket complete 
+[Fri 07/03/2026  9:35:00.52] Start_Entry starting 
+[Fri 07/03/2026  9:36:18.62] Start_Entry complete 
+[Fri 07/03/2026 15:50:00.55] Start_Afternoon_Monitor starting 
+[Fri 07/03/2026 15:50:19.98] Start_Afternoon_Monitor complete 
+[Fri 07/03/2026 16:15:00.43] Start_Recap starting 
+[Fri 07/03/2026 16:15:27.66] Start_Recap complete 
+[Fri 07/03/2026 17:00:00.47] After-close sequence starting 
+[Fri 07/03/2026 17:00:17.01] After-close sequence complete 
+[Mon 07/06/2026  9:00:01.11] Start_PreMarket starting 
+[Mon 07/06/2026  9:00:01.41] Start_PreMarket complete 
+[Mon 07/06/2026  9:28:00.91] Start_PreMarket starting 
+[Mon 07/06/2026  9:28:01.19] Start_PreMarket complete 
+[Mon 07/06/2026  9:35:01.24] Start_Entry starting 
+[Mon 07/06/2026  9:35:09.71] Start_Entry complete 
+[Mon 07/06/2026 15:50:00.83] Start_Afternoon_Monitor starting 
+[Mon 07/06/2026 15:50:15.18] Start_Afternoon_Monitor complete 
+[Mon 07/06/2026 16:15:00.80] Start_Recap starting 
+[Mon 07/06/2026 16:15:06.85] Start_Recap complete 
+[Mon 07/06/2026 17:00:00.84] After-close sequence starting 
+[Mon 07/06/2026 17:00:16.94] After-close sequence complete 
+[Tue 07/07/2026  9:00:01.41] Start_PreMarket starting 
+[Tue 07/07/2026  9:00:01.70] Start_PreMarket complete 
+[Tue 07/07/2026  9:28:01.42] Start_PreMarket starting 
+[Tue 07/07/2026  9:28:01.63] Start_PreMarket complete 
+[Tue 07/07/2026  9:35:01.60] Start_Entry starting 
+[Tue 07/07/2026  9:37:17.29] Start_Entry complete 
+[Tue 07/07/2026 15:50:00.89] Start_Afternoon_Monitor starting 
+[Tue 07/07/2026 15:50:20.92] Start_Afternoon_Monitor complete 
+[Tue 07/07/2026 16:15:00.78] Start_Recap starting 
+[Tue 07/07/2026 16:15:21.87] Start_Recap complete 
+[Tue 07/07/2026 17:00:00.82] After-close sequence starting 
+[Tue 07/07/2026 17:00:17.50] After-close sequence complete 
+[Wed 07/08/2026  9:00:01.53] Start_PreMarket starting 
+[Wed 07/08/2026  9:00:01.82] Start_PreMarket complete 
+[Wed 07/08/2026  9:28:01.52] Start_PreMarket starting 
+[Wed 07/08/2026  9:28:01.74] Start_PreMarket complete 
+[Wed 07/08/2026  9:35:01.77] Start_Entry starting 
+[Wed 07/08/2026  9:38:48.89] Start_Entry complete 
+[Wed 07/08/2026 15:50:01.12] Start_Afternoon_Monitor starting 
+[Wed 07/08/2026 15:50:34.34] Start_Afternoon_Monitor complete 
+[Wed 07/08/2026 16:15:01.23] Start_Recap starting 
+[Wed 07/08/2026 16:15:24.86] Start_Recap complete 
+[Wed 07/08/2026 17:00:00.80] After-close sequence starting 
+[Wed 07/08/2026 17:00:17.56] After-close sequence complete 
+[Thu 07/09/2026  9:00:00.57] Start_PreMarket starting 
+[Thu 07/09/2026  9:00:00.87] Start_PreMarket complete 
+[Thu 07/09/2026  9:28:00.46] Start_PreMarket starting 
+[Thu 07/09/2026  9:28:00.67] Start_PreMarket complete 
+[Thu 07/09/2026  9:35:00.67] Start_Entry starting 
+[Thu 07/09/2026  9:38:27.69] Start_Entry complete 
+[Thu 07/09/2026 15:50:00.28] Start_Afternoon_Monitor starting 
+[Thu 07/09/2026 15:50:33.98] Start_Afternoon_Monitor complete 
+[Thu 07/09/2026 16:15:00.23] Start_Recap starting 
+[Thu 07/09/2026 16:15:22.57] Start_Recap complete 
+[Thu 07/09/2026 17:00:00.29] After-close sequence starting 
+[Thu 07/09/2026 17:00:18.56] After-close sequence complete 
+[Fri 07/10/2026  9:00:01.03] Start_PreMarket starting 
+[Fri 07/10/2026  9:00:01.32] Start_PreMarket complete 
+[Fri 07/10/2026  9:28:00.95] Start_PreMarket starting 
+[Fri 07/10/2026  9:28:01.22] Start_PreMarket complete 
+[Fri 07/10/2026  9:35:01.15] Start_Entry starting 
+[Fri 07/10/2026  9:38:09.66] Start_Entry complete 
+[Fri 07/10/2026 15:50:00.82] Start_Afternoon_Monitor starting 
+[Fri 07/10/2026 15:50:31.30] Start_Afternoon_Monitor complete 
+[Fri 07/10/2026 16:15:00.73] Start_Recap starting 
+[Fri 07/10/2026 16:15:19.86] Start_Recap complete 
+[Fri 07/10/2026 17:00:00.78] After-close sequence starting 
+[Fri 07/10/2026 17:00:17.21] After-close sequence complete 
+[Mon 07/13/2026  9:00:00.88] Start_PreMarket starting 
+[Mon 07/13/2026  9:00:01.16] Start_PreMarket complete 
+[Mon 07/13/2026  9:28:00.79] Start_PreMarket starting 
+[Mon 07/13/2026  9:28:01.00] Start_PreMarket complete 
+[Mon 07/13/2026  9:35:00.95] Start_Entry starting 
+[Mon 07/13/2026  9:37:49.74] Start_Entry complete 
+[Mon 07/13/2026 15:50:00.53] Start_Afternoon_Monitor starting 
+[Mon 07/13/2026 15:50:19.68] Start_Afternoon_Monitor complete 
+[Mon 07/13/2026 16:15:00.51] Start_Recap starting 
+[Mon 07/13/2026 16:15:20.84] Start_Recap complete 
+[Mon 07/13/2026 17:00:00.59] After-close sequence starting 
+[Mon 07/13/2026 17:00:18.54] After-close sequence complete 
+[Tue 07/14/2026  9:00:01.13] Start_PreMarket starting 
+[Tue 07/14/2026  9:00:01.41] Start_PreMarket complete 
+[Tue 07/14/2026  9:28:00.99] Start_PreMarket starting 
+[Tue 07/14/2026  9:28:01.22] Start_PreMarket complete 
+[Tue 07/14/2026  9:35:01.17] Start_Entry starting 
+[Tue 07/14/2026  9:37:27.69] Start_Entry complete 
+[Tue 07/14/2026 15:50:01.02] Start_Afternoon_Monitor starting 
+[Tue 07/14/2026 15:50:21.41] Start_Afternoon_Monitor complete 
+[Tue 07/14/2026 16:15:01.00] Start_Recap starting 
+[Tue 07/14/2026 16:15:21.45] Start_Recap complete 
+[Tue 07/14/2026 17:00:01.14] After-close sequence starting 
+[Tue 07/14/2026 17:00:17.21] After-close sequence complete 
+[Thu 07/16/2026  9:00:00.71] Start_PreMarket starting 
+[Thu 07/16/2026  9:00:00.99] Start_PreMarket complete 
+[Thu 07/16/2026  9:28:00.77] Start_PreMarket starting 
+[Thu 07/16/2026  9:28:01.18] Start_PreMarket complete 
+[Thu 07/16/2026  9:35:00.90] Start_Entry starting 
+[Thu 07/16/2026  9:38:44.45] Start_Entry complete 
+[Thu 07/16/2026 15:50:00.47] Start_Afternoon_Monitor starting 
+[Thu 07/16/2026 15:50:21.78] Start_Afternoon_Monitor complete 
+[Thu 07/16/2026 16:15:00.38] Start_Recap starting 
+[Thu 07/16/2026 16:15:25.60] Start_Recap complete 
+[Thu 07/16/2026 17:00:00.39] After-close sequence starting 
+[Thu 07/16/2026 17:00:17.90] After-close sequence complete 
+[Fri 07/17/2026  9:00:01.15] Start_PreMarket starting 
+[Fri 07/17/2026  9:00:01.41] Start_PreMarket complete 
+[Fri 07/17/2026  9:28:00.71] Start_PreMarket starting 
+[Fri 07/17/2026  9:28:00.96] Start_PreMarket complete 
+[Fri 07/17/2026  9:35:00.85] Start_Entry starting 
+[Fri 07/17/2026  9:38:42.35] Start_Entry complete 
+[Fri 07/17/2026 15:50:00.74] Start_Afternoon_Monitor starting 
+[Fri 07/17/2026 15:50:23.85] Start_Afternoon_Monitor complete 
+[Fri 07/17/2026 16:15:00.71] Start_Recap starting 
+[Fri 07/17/2026 16:15:22.31] Start_Recap complete 
+[Fri 07/17/2026 17:00:00.75] After-close sequence starting 
+[Fri 07/17/2026 17:00:18.87] After-close sequence complete 
+[Mon 07/20/2026  9:00:00.63] Start_PreMarket starting 
+[Mon 07/20/2026  9:00:00.96] Start_PreMarket complete 
+[Mon 07/20/2026  9:28:00.64] Start_PreMarket starting 
+[Mon 07/20/2026  9:28:00.87] Start_PreMarket complete 
+[Mon 07/20/2026  9:35:00.77] Start_Entry starting 
+[Mon 07/20/2026  9:37:08.90] Start_Entry complete 
+[Mon 07/20/2026 15:50:00.30] Start_Afternoon_Monitor starting 
+[Mon 07/20/2026 15:50:34.53] Start_Afternoon_Monitor complete 
+[Mon 07/20/2026 16:15:00.27] Start_Recap starting 
+[Mon 07/20/2026 16:15:22.71] Start_Recap complete 
+[Mon 07/20/2026 17:00:00.30] After-close sequence starting 
+[Mon 07/20/2026 17:00:17.73] After-close sequence complete 
+[Tue 07/21/2026  9:00:00.66] Start_PreMarket starting 
+[Tue 07/21/2026  9:00:00.90] Start_PreMarket complete 
+[Tue 07/21/2026  9:28:00.61] Start_PreMarket starting 
+[Tue 07/21/2026  9:28:00.79] Start_PreMarket complete 
+[Tue 07/21/2026  9:35:00.78] Start_Entry starting 
+[Tue 07/21/2026  9:38:13.80] Start_Entry complete 
+[Tue 07/21/2026 15:50:00.29] Start_Afternoon_Monitor starting 
+[Tue 07/21/2026 15:50:22.85] Start_Afternoon_Monitor complete 
+[Tue 07/21/2026 16:15:00.29] Start_Recap starting 
+[Tue 07/21/2026 16:15:53.60] Start_Recap complete 
+[Tue 07/21/2026 17:00:00.31] After-close sequence starting 
+[Tue 07/21/2026 17:00:17.92] After-close sequence complete 
+[Wed 07/22/2026  9:00:00.75] Start_PreMarket starting 
+[Wed 07/22/2026  9:00:01.04] Start_PreMarket complete 
+[Wed 07/22/2026  9:28:00.72] Start_PreMarket starting 
+[Wed 07/22/2026  9:28:00.96] Start_PreMarket complete 
+[Wed 07/22/2026  9:35:00.88] Start_Entry starting 
+[Wed 07/22/2026  9:38:41.56] Start_Entry complete 

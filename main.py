@@ -23,6 +23,17 @@ COOLDOWN_LOG_PATH    = "cooldown_log.json"
 LOCK_FILE        = "logs/raptor_scan.lock"
 LOCK_TTL_SECONDS = 30 * 60  # 30 min — longer than any normal scan
 
+# Windows' default console/redirect encoding is cp1252, which cannot encode
+# characters like → used in some log messages (e.g. "[MacroOverride] regime →
+# %s") — this crashed the StreamHandler with UnicodeEncodeError 24+ times across
+# recent runs (raptor_run.log), silently dropping that log line each time even
+# though the scan itself kept running. Same fix already in raptor_monitor.py.
+for _stream in (sys.stdout, sys.stderr):
+    try:
+        _stream.reconfigure(encoding="utf-8", errors="replace")
+    except (AttributeError, ValueError):
+        pass
+
 os.makedirs(CONFIG.log.log_dir, exist_ok=True)
 logging.basicConfig(
     level=getattr(logging, CONFIG.log.log_level),
@@ -244,7 +255,7 @@ def _run_scan():
         _label = _mc.get("macro_regime") or _mc.get("regime")
         if _label in ("RISK_ON", "NEUTRAL", "RISK_OFF", "CRISIS"):
             macro["regime"] = _label
-            logger.info("[MacroOverride] regime → %s (from macro_context.json)", _label)
+            logger.info("[MacroOverride] regime -> %s (from macro_context.json)", _label)
         else:
             logger.warning("[MacroOverride] unrecognised label %r — keeping data_feeds value", _label)
     except Exception as _mce:

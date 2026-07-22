@@ -123,3 +123,28 @@ NameError: name 'trades' is not defined
 [2026-06-26T16:15:27.574704] Recap email sent OK.
 [2026-06-29T16:15:18.933005] Recap email sent OK.
 [2026-06-30T16:15:17.563664] Recap email sent OK.
+[2026-07-01T16:15:17.299737] Recap email sent OK.
+[2026-07-02T16:15:24.593975] Recap email sent OK.
+[2026-07-03T16:15:27.300723] Recap email sent OK.
+[2026-07-06T16:15:04.990874] FATAL: daily_recap.py crashed
+Traceback (most recent call last):
+  File "C:\Raptor\daily_recap.py", line 1325, in main
+    dm, account, positions = get_account_data()
+                             ~~~~~~~~~~~~~~~~^^
+  File "C:\Raptor\daily_recap.py", line 60, in get_account_data
+    account = dm.alpaca.get_account()
+  File "C:\Raptor\data_feeds.py", line 132, in get_account
+    "day_trade_count": int(acct.daytrade_count),
+                       ~~~^^^^^^^^^^^^^^^^^^^^^
+TypeError: int() argument must be a string, a bytes-like object or a real number, not 'NoneType'
+
+[2026-07-07T16:15:21.329053] Recap email sent OK.
+[2026-07-08T16:15:24.381715] Recap email sent OK.
+[2026-07-09T16:15:22.201341] Recap email sent OK.
+[2026-07-10T16:15:19.509246] Recap email sent OK.
+[2026-07-13T16:15:20.478446] Recap email sent OK.
+[2026-07-14T16:15:21.112211] Recap email sent OK.
+[2026-07-16T16:15:25.263642] Recap email sent OK.
+[2026-07-17T16:15:21.958430] Recap email sent OK.
+[2026-07-20T16:15:22.378117] Recap email sent OK.
+[2026-07-21T16:15:53.259187] Recap email sent OK.
