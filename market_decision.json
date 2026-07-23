@@ -1,9 +1,9 @@
 {
   "decision": "SCAN",
   "risk_scalar": 1.0,
-  "confidence": 0.8,
-  "reasoning": "Neutral macro regime with broad strength and stable interest rates support full sizing.",
-  "source": "rule+llama3.2",
+  "confidence": 1.0,
+  "reasoning": "Macro NEUTRAL \u2014 full scan, normal sizing.",
+  "source": "rule_deterministic",
   "macro_regime": "NEUTRAL",
-  "timestamp": "2026-06-26T14:40:50.207562+00:00"
+  "timestamp": "2026-07-23T13:28:07.813275+00:00"
 }

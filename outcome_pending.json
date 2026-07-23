@@ -1562,5 +1562,25 @@
     "entry_reasoning": null,
     "entry_flags": [],
     "submitted_at": "2026-07-22T13:35:23.124849"
+  },
+  "e5562833-c4ed-4f55-b944-40056b1e7e64": {
+    "symbol": "AMZN",
+    "exit_reason": "hard_stop",
+    "composite": 0.0387,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-07-23T09:39:34.338969"
+  },
+  "236fc885-8c8f-49f6-a342-c2ed2374de37": {
+    "symbol": "MSFT",
+    "exit_reason": "hard_stop",
+    "composite": 0.0043,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-07-23T11:05:21.640790"
   }
 }
