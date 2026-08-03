@@ -1909,5 +1909,31 @@
     "agent_decision": "HOLD",
     "agent_conf": 0.9,
     "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-08-03T12:35:20.547853",
+    "symbol": "KRE",
+    "trim_qty": 35,
+    "price": 76.705,
+    "pnl_pct": 1.49,
+    "reason": "math_trim_43%",
+    "composite": -0.1685,
+    "trim_detail": "severity=0.217 x stop_mult=1.25 x far_mult=1.30 x pnl_mult=1.00 + slope_adj=0.077 = 0.429 -> 42.9% (35 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-08-03T12:35:20.547907",
+    "symbol": "T",
+    "trim_qty": 287,
+    "price": 23.615,
+    "pnl_pct": 2.05,
+    "reason": "math_trim_76%",
+    "composite": -0.0414,
+    "trim_detail": "severity=0.387 x stop_mult=1.25 x far_mult=1.17 x pnl_mult=1.00 + slope_adj=0.200 = 0.764 -> 76.4% (287 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
   }
 ]
