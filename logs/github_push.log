@@ -452,3 +452,10 @@ To https://github.com/stevefirwin-svg/Raptor
    639187c..3853891  main -> main
 [Sun 08/02/2026 18:00:05.90] RESULT: SUCCESS — push verified. 
 [Mon 08/03/2026 18:00:01.72] Starting daily GitHub push... 
+warning: in the working copy of 'logs/github_push.log', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'logs/raptor_auto_start.log', CRLF will be replaced by LF the next time Git touches it
+[main 8b2d031] Daily update 2026-08-03
+ 2 files changed, 2 insertions(+)
+To https://github.com/stevefirwin-svg/Raptor
+   73c769a..8b2d031  main -> main
+[Mon 08/03/2026 18:00:04.33] RESULT: SUCCESS — push verified. 

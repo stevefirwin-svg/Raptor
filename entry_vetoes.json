@@ -1928,5 +1928,57 @@
     "agent_math_disagree": false,
     "flags": [],
     "timestamp": "2026-08-03T09:38:13.402605"
+  },
+  {
+    "symbol": "GOOGL",
+    "decision": "PASS",
+    "confidence": 1.0,
+    "veto_reason": null,
+    "decision_source": "deterministic",
+    "agent_decision": "PASS",
+    "agent_confidence": null,
+    "agent_veto_reason": null,
+    "agent_math_disagree": false,
+    "flags": [],
+    "timestamp": "2026-08-04T09:38:56.184118"
+  },
+  {
+    "symbol": "PLTR",
+    "decision": "PASS",
+    "confidence": 1.0,
+    "veto_reason": null,
+    "decision_source": "deterministic",
+    "agent_decision": "PASS",
+    "agent_confidence": null,
+    "agent_veto_reason": null,
+    "agent_math_disagree": false,
+    "flags": [],
+    "timestamp": "2026-08-04T09:38:56.184142"
+  },
+  {
+    "symbol": "CCL",
+    "decision": "PASS",
+    "confidence": 1.0,
+    "veto_reason": null,
+    "decision_source": "deterministic",
+    "agent_decision": "PASS",
+    "agent_confidence": null,
+    "agent_veto_reason": null,
+    "agent_math_disagree": false,
+    "flags": [],
+    "timestamp": "2026-08-04T09:38:56.184153"
+  },
+  {
+    "symbol": "AAL",
+    "decision": "PASS",
+    "confidence": 1.0,
+    "veto_reason": null,
+    "decision_source": "deterministic",
+    "agent_decision": "PASS",
+    "agent_confidence": null,
+    "agent_veto_reason": null,
+    "agent_math_disagree": false,
+    "flags": [],
+    "timestamp": "2026-08-04T09:38:56.184161"
   }
 ]

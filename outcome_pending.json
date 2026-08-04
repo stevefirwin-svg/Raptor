@@ -1622,5 +1622,55 @@
     "entry_reasoning": null,
     "entry_flags": [],
     "submitted_at": "2026-08-03T12:35:20.490195"
+  },
+  "364ec40a-cbd0-4e7d-b64d-d9d50fd3c5d1": {
+    "symbol": "KRE",
+    "exit_reason": "math_trim_35%",
+    "composite": -0.0965,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-08-04T09:38:58.078384"
+  },
+  "87025de2-a40b-4f4f-936a-23529e8bbda2": {
+    "symbol": "T",
+    "exit_reason": "math_trim_75%",
+    "composite": -0.1218,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-08-04T09:38:58.273638"
+  },
+  "96d6a709-372e-4501-84ef-657d0bc4bcb3": {
+    "symbol": "FCX",
+    "exit_reason": "math_trim_21%",
+    "composite": -0.0735,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-08-04T12:35:19.098522"
+  },
+  "53675f52-6ea9-4d3c-a042-d7a48daad64a": {
+    "symbol": "KRE",
+    "exit_reason": "math_trim_38%",
+    "composite": -0.1172,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-08-04T12:35:19.204419"
+  },
+  "6869cbea-e7db-4a2d-ae13-0776bc6266fc": {
+    "symbol": "T",
+    "exit_reason": "math_trim_86%",
+    "composite": -0.104,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-08-04T12:35:19.310302"
   }
 }
