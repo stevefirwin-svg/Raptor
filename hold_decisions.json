@@ -16389,5 +16389,221 @@
     "symbol": "T",
     "timestamp": "2026-08-04T16:15:20.508442",
     "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "BSX",
+    "timestamp": "2026-08-05T12:30:33.497100",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "CMCSA",
+    "timestamp": "2026-08-05T12:30:33.497132",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "FCX",
+    "timestamp": "2026-08-05T12:30:33.497140",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "FXI",
+    "timestamp": "2026-08-05T12:30:33.497145",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "GOOGL",
+    "timestamp": "2026-08-05T12:30:33.497151",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "KRE",
+    "timestamp": "2026-08-05T12:30:33.497156",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "MSFT",
+    "timestamp": "2026-08-05T12:30:33.497162",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "NOW",
+    "timestamp": "2026-08-05T12:30:33.497167",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "PLTR",
+    "timestamp": "2026-08-05T12:30:33.497172",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "BSX",
+    "timestamp": "2026-08-05T15:50:31.239785",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "CMCSA",
+    "timestamp": "2026-08-05T15:50:31.239816",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "FCX",
+    "timestamp": "2026-08-05T15:50:31.239825",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "FXI",
+    "timestamp": "2026-08-05T15:50:31.239831",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "GOOGL",
+    "timestamp": "2026-08-05T15:50:31.239837",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "KRE",
+    "timestamp": "2026-08-05T15:50:31.239842",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "MSFT",
+    "timestamp": "2026-08-05T15:50:31.239847",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "NOW",
+    "timestamp": "2026-08-05T15:50:31.239850",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "PLTR",
+    "timestamp": "2026-08-05T15:50:31.239854",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "BSX",
+    "timestamp": "2026-08-05T16:15:19.287919",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "CMCSA",
+    "timestamp": "2026-08-05T16:15:19.287936",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "FCX",
+    "timestamp": "2026-08-05T16:15:19.287941",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "FXI",
+    "timestamp": "2026-08-05T16:15:19.287944",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "GOOGL",
+    "timestamp": "2026-08-05T16:15:19.287947",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "KRE",
+    "timestamp": "2026-08-05T16:15:19.287949",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "MSFT",
+    "timestamp": "2026-08-05T16:15:19.287952",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "NOW",
+    "timestamp": "2026-08-05T16:15:19.287955",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "PLTR",
+    "timestamp": "2026-08-05T16:15:19.287957",
+    "agent": "HoldAgent"
   }
 ]

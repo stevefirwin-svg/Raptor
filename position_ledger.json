@@ -186,7 +186,7 @@
       "entry_price": 43.9,
       "entry_date": "2026-07-20",
       "metadata": {
-        "stop": 46.4407,
+        "stop": 46.5811,
         "regime": "BACKFILL",
         "t_stat": null,
         "kelly_fraction": null,
@@ -255,7 +255,7 @@
       "entry_price": 34.76,
       "entry_date": "2026-07-21",
       "metadata": {
-        "stop": 35.7689,
+        "stop": 35.8091,
         "regime": "BACKFILL",
         "t_stat": null,
         "kelly_fraction": null,
@@ -267,18 +267,18 @@
     "v5.4:KRE": {
       "model": "v5.4",
       "symbol": "KRE",
-      "shares": 19,
+      "shares": 9,
       "entry_price": 75.58,
       "entry_date": "2026-07-21",
       "metadata": {
-        "stop": 76.2857,
+        "stop": 76.4545,
         "regime": "BACKFILL",
         "t_stat": null,
         "kelly_fraction": null,
         "composite_score": null,
         "note": "Backfilled from Alpaca \u2014 entry_date approximate",
         "high_water": 78.225,
-        "last_trim_ts": "2026-08-04T12:35:19.232079"
+        "last_trim_ts": "2026-08-05T09:39:11.059478"
       },
       "trims": [
         {
@@ -310,6 +310,16 @@
           "pnl_abs": 26.4,
           "shares_before": 30,
           "shares_after": 19
+        },
+        {
+          "date": "2026-08-05",
+          "reason": "math_trim_52%",
+          "shares_sold": 10,
+          "trim_price": 77.63,
+          "pnl_pct": 2.7124,
+          "pnl_abs": 20.5,
+          "shares_before": 19,
+          "shares_after": 9
         }
       ]
     },
@@ -331,55 +341,6 @@
         "pending_exit_ts": "2026-08-03T09:38:15.895512"
       }
     },
-    "v5.4:T": {
-      "model": "v5.4",
-      "symbol": "T",
-      "shares": 3,
-      "entry_price": 23.14,
-      "entry_date": "2026-07-22",
-      "metadata": {
-        "stop": 22.5568,
-        "regime": "BACKFILL",
-        "t_stat": null,
-        "kelly_fraction": null,
-        "composite_score": null,
-        "note": "Backfilled from Alpaca \u2014 entry_date approximate",
-        "high_water": 23.73,
-        "last_trim_ts": "2026-08-04T12:35:19.338655"
-      },
-      "trims": [
-        {
-          "date": "2026-08-03",
-          "reason": "math_trim_76%",
-          "shares_sold": 287,
-          "trim_price": 23.615,
-          "pnl_pct": 2.0527,
-          "pnl_abs": 136.32,
-          "shares_before": 376,
-          "shares_after": 89
-        },
-        {
-          "date": "2026-08-04",
-          "reason": "math_trim_75%",
-          "shares_sold": 67,
-          "trim_price": 23.355,
-          "pnl_pct": 0.9291,
-          "pnl_abs": 14.4,
-          "shares_before": 89,
-          "shares_after": 22
-        },
-        {
-          "date": "2026-08-04",
-          "reason": "math_trim_86%",
-          "shares_sold": 19,
-          "trim_price": 23.265,
-          "pnl_pct": 0.5402,
-          "pnl_abs": 2.38,
-          "shares_before": 22,
-          "shares_after": 3
-        }
-      ]
-    },
     "v5.4:CMCSA": {
       "model": "v5.4",
       "symbol": "CMCSA",
@@ -399,18 +360,18 @@
     "v5.4:FCX": {
       "model": "v5.4",
       "symbol": "FCX",
-      "shares": 127,
+      "shares": 84,
       "entry_price": 64.151563,
       "entry_date": "2026-07-23",
       "metadata": {
-        "stop": 63.1871,
+        "stop": 65.5223,
         "regime": "BACKFILL",
         "t_stat": null,
         "kelly_fraction": null,
         "composite_score": null,
         "note": "Backfilled from Alpaca \u2014 entry_date approximate",
-        "high_water": 67.55,
-        "last_trim_ts": "2026-08-04T12:35:19.130012"
+        "high_water": 69.89,
+        "last_trim_ts": "2026-08-05T09:39:10.945315"
       },
       "trims": [
         {
@@ -422,6 +383,16 @@
           "pnl_abs": 93.67,
           "shares_before": 160,
           "shares_after": 127
+        },
+        {
+          "date": "2026-08-05",
+          "reason": "math_trim_34%",
+          "shares_sold": 43,
+          "trim_price": 69.27,
+          "pnl_pct": 7.9787,
+          "pnl_abs": 220.09,
+          "shares_before": 127,
+          "shares_after": 84
         }
       ]
     },
@@ -454,7 +425,7 @@
         "kelly_fraction": null,
         "composite_score": null,
         "note": "Backfilled from Alpaca \u2014 entry_date approximate",
-        "high_water": 117.84
+        "high_water": 118.17
       }
     },
     "v5.4:GOOGL": {
@@ -469,7 +440,8 @@
         "t_stat": null,
         "kelly_fraction": null,
         "composite_score": null,
-        "note": "Backfilled from Alpaca \u2014 entry_date approximate"
+        "note": "Backfilled from Alpaca \u2014 entry_date approximate",
+        "high_water": 383.1999
       }
     },
     "v5.4:PLTR": {
@@ -484,7 +456,8 @@
         "t_stat": null,
         "kelly_fraction": null,
         "composite_score": null,
-        "note": "Backfilled from Alpaca \u2014 entry_date approximate"
+        "note": "Backfilled from Alpaca \u2014 entry_date approximate",
+        "high_water": 162.88
       }
     }
   },
@@ -3050,6 +3023,78 @@
       "pnl": 203.0,
       "pnl_pct": 2.654,
       "hold_days": 20,
+      "entry_regime": null
+    },
+    {
+      "model": "v5.4",
+      "symbol": "T",
+      "shares": 1,
+      "entry_price": 23.14,
+      "entry_date": "2026-07-22",
+      "metadata": {
+        "stop": 22.8332,
+        "regime": "BACKFILL",
+        "t_stat": null,
+        "kelly_fraction": null,
+        "composite_score": null,
+        "note": "Backfilled from Alpaca \u2014 entry_date approximate",
+        "high_water": 23.73,
+        "last_trim_ts": "2026-08-05T09:39:11.169465",
+        "pending_exit": true,
+        "pending_exit_ts": "2026-08-05T10:35:19.674766"
+      },
+      "trims": [
+        {
+          "date": "2026-08-03",
+          "reason": "math_trim_76%",
+          "shares_sold": 287,
+          "trim_price": 23.615,
+          "pnl_pct": 2.0527,
+          "pnl_abs": 136.32,
+          "shares_before": 376,
+          "shares_after": 89
+        },
+        {
+          "date": "2026-08-04",
+          "reason": "math_trim_75%",
+          "shares_sold": 67,
+          "trim_price": 23.355,
+          "pnl_pct": 0.9291,
+          "pnl_abs": 14.4,
+          "shares_before": 89,
+          "shares_after": 22
+        },
+        {
+          "date": "2026-08-04",
+          "reason": "math_trim_86%",
+          "shares_sold": 19,
+          "trim_price": 23.265,
+          "pnl_pct": 0.5402,
+          "pnl_abs": 2.38,
+          "shares_before": 22,
+          "shares_after": 3
+        },
+        {
+          "date": "2026-08-05",
+          "reason": "math_trim_73%",
+          "shares_sold": 2,
+          "trim_price": 23.17,
+          "pnl_pct": 0.1296,
+          "pnl_abs": 0.06,
+          "shares_before": 3,
+          "shares_after": 1
+        }
+      ],
+      "exit_price": 22.755,
+      "exit_date": "2026-08-05",
+      "exit_reason": "hard_stop",
+      "exit_path": "hard_stop",
+      "final_leg_pnl": -0.39,
+      "final_leg_pnl_pct": -1.6638,
+      "entry_value": 8700.64,
+      "pnl": 152.78,
+      "pnl_pct": 1.756,
+      "hold_days": 14,
       "entry_regime": null
     }
   ]

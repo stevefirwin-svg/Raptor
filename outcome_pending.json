@@ -1672,5 +1672,45 @@
     "entry_reasoning": null,
     "entry_flags": [],
     "submitted_at": "2026-08-04T12:35:19.310302"
+  },
+  "e8f71210-04d8-4826-ae79-500867d2ddfb": {
+    "symbol": "FCX",
+    "exit_reason": "math_trim_34%",
+    "composite": -0.009,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-08-05T09:39:10.914638"
+  },
+  "91662fdb-b291-4ade-bff2-2fe1be56688f": {
+    "symbol": "KRE",
+    "exit_reason": "math_trim_52%",
+    "composite": -0.0626,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-08-05T09:39:11.028662"
+  },
+  "4aade9f1-82e9-4a59-825b-af1f1c1e3cca": {
+    "symbol": "T",
+    "exit_reason": "math_trim_73%",
+    "composite": -0.1262,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-08-05T09:39:11.142815"
+  },
+  "f8da03fd-c6c2-4553-82ce-0ec6070da8cd": {
+    "symbol": "T",
+    "exit_reason": "hard_stop",
+    "composite": -0.1621,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-08-05T10:35:19.671969"
   }
 }

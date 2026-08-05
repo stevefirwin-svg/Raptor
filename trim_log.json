@@ -2000,5 +2000,44 @@
     "agent_decision": "HOLD",
     "agent_conf": 0.9,
     "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-08-05T09:39:11.201677",
+    "symbol": "FCX",
+    "trim_qty": 43,
+    "price": 69.27,
+    "pnl_pct": 7.98,
+    "reason": "math_trim_34%",
+    "composite": -0.009,
+    "trim_detail": "severity=0.091 x stop_mult=1.25 x far_mult=1.24 x pnl_mult=1.00 + slope_adj=0.200 = 0.341 -> 34.1% (43 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-08-05T09:39:11.201725",
+    "symbol": "KRE",
+    "trim_qty": 10,
+    "price": 77.63,
+    "pnl_pct": 2.71,
+    "reason": "math_trim_52%",
+    "composite": -0.0626,
+    "trim_detail": "severity=0.195 x stop_mult=1.25 x far_mult=1.30 x pnl_mult=1.00 + slope_adj=0.200 = 0.517 -> 51.7% (10 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-08-05T09:39:11.201752",
+    "symbol": "T",
+    "trim_qty": 2,
+    "price": 23.17,
+    "pnl_pct": 0.13,
+    "reason": "math_trim_73%",
+    "composite": -0.1262,
+    "trim_detail": "severity=0.365 x stop_mult=1.25 x far_mult=1.17 x pnl_mult=1.00 + slope_adj=0.200 = 0.732 -> 73.2% (2 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
   }
 ]

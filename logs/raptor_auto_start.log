@@ -412,3 +412,14 @@
 [Tue 08/04/2026 16:15:22.75] Start_Recap complete 
 [Tue 08/04/2026 17:00:00.99] After-close sequence starting 
 [Tue 08/04/2026 17:00:21.03] After-close sequence complete 
+[Wed 08/05/2026  9:00:00.39] Start_PreMarket starting 
+[Wed 08/05/2026  9:00:43.26] Start_PreMarket complete 
+[Wed 08/05/2026  9:28:00.35] Start_PreMarket starting 
+[Wed 08/05/2026  9:28:07.53] Start_PreMarket complete 
+[Wed 08/05/2026  9:35:00.47] Start_Entry starting 
+[Wed 08/05/2026  9:39:09.36] Start_Entry complete 
+[Wed 08/05/2026 15:50:01.06] Start_Afternoon_Monitor starting 
+[Wed 08/05/2026 15:50:35.45] Start_Afternoon_Monitor complete 
+[Wed 08/05/2026 16:15:01.05] Start_Recap starting 
+[Wed 08/05/2026 16:15:21.36] Start_Recap complete 
+[Wed 08/05/2026 17:00:01.12] After-close sequence starting 

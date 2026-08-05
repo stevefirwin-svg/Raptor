@@ -1980,5 +1980,31 @@
     "agent_math_disagree": false,
     "flags": [],
     "timestamp": "2026-08-04T09:38:56.184161"
+  },
+  {
+    "symbol": "NVDA",
+    "decision": "PASS",
+    "confidence": 1.0,
+    "veto_reason": null,
+    "decision_source": "deterministic",
+    "agent_decision": "PASS",
+    "agent_confidence": null,
+    "agent_veto_reason": null,
+    "agent_math_disagree": false,
+    "flags": [],
+    "timestamp": "2026-08-05T09:39:08.986260"
+  },
+  {
+    "symbol": "SOFI",
+    "decision": "PASS",
+    "confidence": 1.0,
+    "veto_reason": null,
+    "decision_source": "deterministic",
+    "agent_decision": "PASS",
+    "agent_confidence": null,
+    "agent_veto_reason": null,
+    "agent_math_disagree": false,
+    "flags": [],
+    "timestamp": "2026-08-05T09:39:08.986276"
   }
 ]
