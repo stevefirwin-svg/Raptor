@@ -1712,5 +1712,55 @@
     "entry_reasoning": null,
     "entry_flags": [],
     "submitted_at": "2026-08-05T10:35:19.671969"
+  },
+  "c9ce9986-fc88-4193-badf-5afec3309563": {
+    "symbol": "KRE",
+    "exit_reason": "math_trim_22%",
+    "composite": -0.0,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-08-06T09:40:16.977784"
+  },
+  "b5eba82e-2e25-4c0e-96f4-d3b79dd4ec2b": {
+    "symbol": "FXI",
+    "exit_reason": "hard_stop",
+    "composite": 0.0,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-08-06T12:05:26.431423"
+  },
+  "94951a58-cacd-4774-bb63-6105051b8d14": {
+    "symbol": "FCX",
+    "exit_reason": "math_trim_58%",
+    "composite": -0.0,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-08-06T12:35:25.442029"
+  },
+  "5879bff0-73a4-4f43-94f6-554259bfb68d": {
+    "symbol": "KRE",
+    "exit_reason": "math_trim_25%",
+    "composite": -0.0,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-08-06T12:35:25.562666"
+  },
+  "960345de-fedf-49ed-b346-8045a8b12f8a": {
+    "symbol": "NOW",
+    "exit_reason": "math_trim_18%",
+    "composite": 0.0,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-08-06T12:35:25.677734"
   }
 }

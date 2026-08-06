@@ -2006,5 +2006,44 @@
     "agent_math_disagree": false,
     "flags": [],
     "timestamp": "2026-08-05T09:39:08.986276"
+  },
+  {
+    "symbol": "IREN",
+    "decision": "PASS",
+    "confidence": 1.0,
+    "veto_reason": null,
+    "decision_source": "deterministic",
+    "agent_decision": "PASS",
+    "agent_confidence": null,
+    "agent_veto_reason": null,
+    "agent_math_disagree": false,
+    "flags": [],
+    "timestamp": "2026-08-06T09:40:13.538338"
+  },
+  {
+    "symbol": "FIG",
+    "decision": "PASS",
+    "confidence": 1.0,
+    "veto_reason": null,
+    "decision_source": "deterministic",
+    "agent_decision": "PASS",
+    "agent_confidence": null,
+    "agent_veto_reason": null,
+    "agent_math_disagree": false,
+    "flags": [],
+    "timestamp": "2026-08-06T09:40:13.538363"
+  },
+  {
+    "symbol": "WBD",
+    "decision": "PASS",
+    "confidence": 1.0,
+    "veto_reason": null,
+    "decision_source": "deterministic",
+    "agent_decision": "PASS",
+    "agent_confidence": null,
+    "agent_veto_reason": null,
+    "agent_math_disagree": false,
+    "flags": [],
+    "timestamp": "2026-08-06T09:40:13.538371"
   }
 ]
