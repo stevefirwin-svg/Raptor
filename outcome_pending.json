@@ -1762,5 +1762,35 @@
     "entry_reasoning": null,
     "entry_flags": [],
     "submitted_at": "2026-08-06T12:35:25.677734"
+  },
+  "7c14582f-0336-42a6-afc2-a54d211cdadb": {
+    "symbol": "KRE",
+    "exit_reason": "hard_stop",
+    "composite": -0.1836,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-08-07T09:39:34.931820"
+  },
+  "bf4bb089-ca3f-4e62-a811-29e7d1c25f17": {
+    "symbol": "FCX",
+    "exit_reason": "math_trim_42%",
+    "composite": -0.0029,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-08-07T09:39:35.039269"
+  },
+  "7e66a230-ccba-449f-958c-eb68d61bd59a": {
+    "symbol": "GOOGL",
+    "exit_reason": "math_trim_12%",
+    "composite": 0.1259,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-08-07T12:35:21.274184"
   }
 }
