@@ -2117,5 +2117,44 @@
     "agent_decision": "HOLD",
     "agent_conf": 0.9,
     "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-08-10T09:38:05.774316",
+    "symbol": "MSFT",
+    "trim_qty": 6,
+    "price": 503.61,
+    "pnl_pct": 3.53,
+    "reason": "math_trim_25%",
+    "composite": -0.1797,
+    "trim_detail": "severity=0.050 x stop_mult=1.00 x far_mult=1.07 x pnl_mult=1.00 + slope_adj=0.200 = 0.254 -> 25.4% (6 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-08-10T12:35:15.406287",
+    "symbol": "CMCSA",
+    "trim_qty": 127,
+    "price": 25.045,
+    "pnl_pct": 6.3,
+    "reason": "math_trim_28%",
+    "composite": 0.224,
+    "trim_detail": "severity=0.068 x stop_mult=1.50 x far_mult=1.02 x pnl_mult=0.80 + slope_adj=0.200 = 0.284 -> 28.4% (127 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-08-10T12:35:15.406339",
+    "symbol": "MSFT",
+    "trim_qty": 6,
+    "price": 508.87,
+    "pnl_pct": 4.61,
+    "reason": "math_trim_36%",
+    "composite": -0.3046,
+    "trim_detail": "severity=0.145 x stop_mult=1.00 x far_mult=1.09 x pnl_mult=1.00 + slope_adj=0.200 = 0.359 -> 35.9% (6 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
   }
 ]

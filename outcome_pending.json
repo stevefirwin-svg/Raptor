@@ -1792,5 +1792,45 @@
     "entry_reasoning": null,
     "entry_flags": [],
     "submitted_at": "2026-08-07T12:35:21.274184"
+  },
+  "599cb22e-1c4f-4a72-9c3a-4bf8d7147215": {
+    "symbol": "GOOGL",
+    "exit_reason": "trailing_stop",
+    "composite": -0.0998,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-08-10T09:38:05.531646"
+  },
+  "d27da786-a1d1-41e2-bda6-7b2850c75282": {
+    "symbol": "MSFT",
+    "exit_reason": "math_trim_25%",
+    "composite": -0.1797,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-08-10T09:38:05.686181"
+  },
+  "6d16d033-9bbe-40e4-b646-bc6aa032d93b": {
+    "symbol": "CMCSA",
+    "exit_reason": "math_trim_28%",
+    "composite": 0.224,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-08-10T12:35:15.225020"
+  },
+  "a9868388-2a5e-4166-aa14-3a3edd85c840": {
+    "symbol": "MSFT",
+    "exit_reason": "math_trim_36%",
+    "composite": -0.3046,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-08-10T12:35:15.339819"
   }
 }
