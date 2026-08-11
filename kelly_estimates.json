@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-08-10T17:00:14.812257",
-  "n_total": 98,
+  "generated_at": "2026-08-11T17:00:13.643149",
+  "n_total": 99,
   "min_for_shadow": 10,
   "min_for_active": 100,
   "half_kelly": 0.5,
@@ -13,26 +13,26 @@
   "n_bootstrap": 10000,
   "books": {
     "MOMENTUM": {
-      "n_trades": 98,
+      "n_trades": 99,
       "status": "OK",
       "mode": "SHADOW",
       "diagnostics": {
-        "n": 98,
-        "mu_pct": -0.536,
-        "sigma_pct": 10.026,
+        "n": 99,
+        "mu_pct": -0.501,
+        "sigma_pct": 9.981,
         "skewness": 3.59,
-        "kurtosis": 20.0,
-        "win_rate": 0.306,
-        "avg_win_pct": 8.702,
+        "kurtosis": 20.11,
+        "win_rate": 0.313,
+        "avg_win_pct": 8.516,
         "avg_loss_pct": -4.612,
         "normal_assumption_valid": false,
-        "per_trade_sharpe_eta": -0.0535,
-        "f_star_correction_factor_DIAGNOSTIC_ONLY": 0.751
+        "per_trade_sharpe_eta": -0.0502,
+        "f_star_correction_factor_DIAGNOSTIC_ONLY": 0.769
       },
-      "f_empirical": -0.5335,
-      "f_bayesian": -0.3465,
-      "f_half_kelly": -0.1732,
-      "f_dd_constrained": -0.0549,
+      "f_empirical": -0.5031,
+      "f_bayesian": -0.3276,
+      "f_half_kelly": -0.1638,
+      "f_dd_constrained": -0.0518,
       "dd_budget_lambda": 0.1029,
       "dd_budget_inputs": {
         "dd_tolerance": 0.15,
@@ -45,18 +45,18 @@
         "f_rec_p25": 0.01,
         "f_rec_p50": 0.01,
         "f_rec_p75": 0.01,
-        "f_rec_std": 0.0164,
-        "f_star_p10": -4.9244,
-        "f_star_p25": -2.6222,
-        "f_star_p50": -1.1511,
-        "f_star_pct_negative": 82.85,
+        "f_rec_std": 0.0174,
+        "f_star_p10": -4.9671,
+        "f_star_p25": -2.5488,
+        "f_star_p50": -1.0822,
+        "f_star_pct_negative": 82.08,
         "n_boot": 10000
       },
       "f_recommended": 0.01,
       "f_recommended_basis": "bootstrap_p25_final_f",
       "f_current_avg": null,
       "cap_applied": 0.12,
-      "interpretation": "Recommended (bootstrap P25): 1.00% per trade. Point estimate: 1.00%.  Bootstrap range: 1.00%\u20131.00%. WARNING: 83% of raw f* resamples are negative \u2014 distribution is unstable, bootstrap protection active. SHADOW MODE (98/100 trades for active)."
+      "interpretation": "Recommended (bootstrap P25): 1.00% per trade. Point estimate: 1.00%.  Bootstrap range: 1.00%\u20131.00%. WARNING: 82% of raw f* resamples are negative \u2014 distribution is unstable, bootstrap protection active. SHADOW MODE (99/100 trades for active)."
     },
     "MEAN_REVERSION": {
       "n_trades": 0,
