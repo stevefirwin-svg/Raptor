@@ -17477,5 +17477,205 @@
     "symbol": "UBER",
     "timestamp": "2026-08-11T16:15:34.178558",
     "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "BSX",
+    "timestamp": "2026-08-20T12:30:30.222322",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "CMCSA",
+    "timestamp": "2026-08-20T12:30:30.222343",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "IREN",
+    "timestamp": "2026-08-20T12:30:30.222349",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "NOW",
+    "timestamp": "2026-08-20T12:30:30.222353",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "PLTR",
+    "timestamp": "2026-08-20T12:30:30.222357",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "SMCI",
+    "timestamp": "2026-08-20T12:30:30.222361",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "TSLA",
+    "timestamp": "2026-08-20T12:30:30.222364",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "UBER",
+    "timestamp": "2026-08-20T12:30:30.222368",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "XLP",
+    "timestamp": "2026-08-20T12:30:30.222371",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "CMCSA",
+    "timestamp": "2026-08-20T15:50:21.935394",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "IREN",
+    "timestamp": "2026-08-20T15:50:21.935414",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "NOW",
+    "timestamp": "2026-08-20T15:50:21.935419",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "PLTR",
+    "timestamp": "2026-08-20T15:50:21.935422",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "SMCI",
+    "timestamp": "2026-08-20T15:50:21.935425",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "TSLA",
+    "timestamp": "2026-08-20T15:50:21.935428",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "UBER",
+    "timestamp": "2026-08-20T15:50:21.935430",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "XLP",
+    "timestamp": "2026-08-20T15:50:21.935433",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "CMCSA",
+    "timestamp": "2026-08-20T16:15:19.838169",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "IREN",
+    "timestamp": "2026-08-20T16:15:19.838186",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "NOW",
+    "timestamp": "2026-08-20T16:15:19.838190",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "PLTR",
+    "timestamp": "2026-08-20T16:15:19.838193",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "SMCI",
+    "timestamp": "2026-08-20T16:15:19.838196",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "TSLA",
+    "timestamp": "2026-08-20T16:15:19.838199",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "UBER",
+    "timestamp": "2026-08-20T16:15:19.838202",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "XLP",
+    "timestamp": "2026-08-20T16:15:19.838205",
+    "agent": "HoldAgent"
   }
 ]
