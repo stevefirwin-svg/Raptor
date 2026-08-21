@@ -2403,5 +2403,70 @@
     "agent_decision": "HOLD",
     "agent_conf": 0.9,
     "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-08-21T09:45:49.687065",
+    "symbol": "CMCSA",
+    "trim_qty": 22,
+    "price": 26.475,
+    "pnl_pct": 12.37,
+    "reason": "math_trim_35%",
+    "composite": 0.019,
+    "trim_detail": "severity=0.119 x stop_mult=1.50 x far_mult=1.06 x pnl_mult=0.80 + slope_adj=0.200 = 0.351 -> 35.1% (22 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-08-21T09:45:49.687118",
+    "symbol": "IREN",
+    "trim_qty": 22,
+    "price": 45.5918,
+    "pnl_pct": 19.42,
+    "reason": "math_trim_44%",
+    "composite": -0.1831,
+    "trim_detail": "severity=0.233 x stop_mult=1.25 x far_mult=1.04 x pnl_mult=0.80 + slope_adj=0.200 = 0.441 -> 44.1% (22 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-08-21T09:45:49.687144",
+    "symbol": "PLTR",
+    "trim_qty": 11,
+    "price": 174.47,
+    "pnl_pct": 15.95,
+    "reason": "math_trim_64%",
+    "composite": -0.272,
+    "trim_detail": "severity=0.473 x stop_mult=1.25 x far_mult=1.24 x pnl_mult=0.60 + slope_adj=0.200 = 0.640 -> 64.0% (11 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-08-21T09:45:49.687166",
+    "symbol": "SMCI",
+    "trim_qty": 45,
+    "price": 36.8966,
+    "pnl_pct": 13.02,
+    "reason": "math_trim_14%",
+    "composite": 0.0649,
+    "trim_detail": "severity=0.120 x stop_mult=1.25 x far_mult=1.09 x pnl_mult=0.80 + slope_adj=0.012 = 0.143 -> 14.3% (45 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-08-21T09:45:49.687187",
+    "symbol": "UBER",
+    "trim_qty": 37,
+    "price": 78.51,
+    "pnl_pct": 7.01,
+    "reason": "math_trim_33%",
+    "composite": -0.2046,
+    "trim_detail": "severity=0.153 x stop_mult=1.25 x far_mult=1.13 x pnl_mult=0.80 + slope_adj=0.160 = 0.332 -> 33.2% (37 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
   }
 ]

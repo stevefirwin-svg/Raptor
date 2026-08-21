@@ -2052,5 +2052,55 @@
     "entry_reasoning": null,
     "entry_flags": [],
     "submitted_at": "2026-08-20T13:05:20.377786"
+  },
+  "66df1ac6-53f7-4df3-b1c3-39395d781e3f": {
+    "symbol": "CMCSA",
+    "exit_reason": "math_trim_35%",
+    "composite": 0.019,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-08-21T09:45:49.146847"
+  },
+  "30ac55ca-450b-48c4-915c-d6145f8dde2c": {
+    "symbol": "IREN",
+    "exit_reason": "math_trim_44%",
+    "composite": -0.1831,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-08-21T09:45:49.244153"
+  },
+  "9ec8997d-020a-497e-8d3a-487fe1e70e89": {
+    "symbol": "PLTR",
+    "exit_reason": "math_trim_64%",
+    "composite": -0.272,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-08-21T09:45:49.345742"
+  },
+  "51d8722f-f606-4ab6-9f24-053ff8e09083": {
+    "symbol": "SMCI",
+    "exit_reason": "math_trim_14%",
+    "composite": 0.0649,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-08-21T09:45:49.520012"
+  },
+  "6e7329e4-fce0-46fb-8762-741669cbb771": {
+    "symbol": "UBER",
+    "exit_reason": "math_trim_33%",
+    "composite": -0.2046,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-08-21T09:45:49.625388"
   }
 }
