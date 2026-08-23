@@ -544,3 +544,14 @@ fatal: could not read Username for 'https://github.com': No such file or directo
 [Fri 08/21/2026 18:00:03.47] FATAL: git push failed (errorlevel 128) 
 [Fri 08/21/2026 18:00:03.47] RESULT: FAILED — see logs\github_push.log 
 [Sat 08/22/2026 18:00:02.14] Starting daily GitHub push... 
+warning: in the working copy of 'logs/github_push.log', CRLF will be replaced by LF the next time Git touches it
+[main faa8ba2] Daily update 2026-08-22
+ 1 file changed, 11 insertions(+)
+fatal: Unable to persist credentials with the 'wincredman' credential store.
+See https://aka.ms/gcm/credstores for more information.
+bash: line 1: /dev/tty: No such device or address
+error: failed to execute prompt script (exit code 1)
+fatal: could not read Username for 'https://github.com': No such file or directory
+[Sat 08/22/2026 18:00:04.44] FATAL: git push failed (errorlevel 128) 
+[Sat 08/22/2026 18:00:04.44] RESULT: FAILED — see logs\github_push.log 
+[Sun 08/23/2026 18:00:01.43] Starting daily GitHub push... 
