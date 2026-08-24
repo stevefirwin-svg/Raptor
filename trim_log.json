@@ -2468,5 +2468,57 @@
     "agent_decision": "HOLD",
     "agent_conf": 0.9,
     "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-08-24T09:39:50.394735",
+    "symbol": "CMCSA",
+    "trim_qty": 7,
+    "price": 27.075,
+    "pnl_pct": 14.92,
+    "reason": "math_trim_16%",
+    "composite": 0.0423,
+    "trim_detail": "severity=0.015 x stop_mult=1.25 x far_mult=1.09 x pnl_mult=0.80 + slope_adj=0.149 = 0.165 -> 16.5% (7 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-08-24T09:39:50.394783",
+    "symbol": "PLTR",
+    "trim_qty": 2,
+    "price": 172.2051,
+    "pnl_pct": 14.44,
+    "reason": "math_trim_37%",
+    "composite": -0.1294,
+    "trim_detail": "severity=0.196 x stop_mult=1.25 x far_mult=1.13 x pnl_mult=0.60 + slope_adj=0.200 = 0.366 -> 36.6% (2 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-08-24T09:39:50.394810",
+    "symbol": "SMCI",
+    "trim_qty": 119,
+    "price": 35.95,
+    "pnl_pct": 10.12,
+    "reason": "math_trim_44%",
+    "composite": 0.1384,
+    "trim_detail": "severity=0.283 x stop_mult=1.25 x far_mult=1.09 x pnl_mult=0.80 + slope_adj=0.133 = 0.441 -> 44.1% (119 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-08-24T09:39:50.394832",
+    "symbol": "UBER",
+    "trim_qty": 39,
+    "price": 78.655,
+    "pnl_pct": 7.2,
+    "reason": "math_trim_52%",
+    "composite": -0.155,
+    "trim_detail": "severity=0.265 x stop_mult=1.25 x far_mult=1.20 x pnl_mult=0.80 + slope_adj=0.200 = 0.519 -> 51.9% (39 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
   }
 ]

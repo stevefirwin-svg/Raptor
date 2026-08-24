@@ -2279,5 +2279,44 @@
     "agent_math_disagree": false,
     "flags": [],
     "timestamp": "2026-08-21T09:45:42.275543"
+  },
+  {
+    "symbol": "BMY",
+    "decision": "PASS",
+    "confidence": 1.0,
+    "veto_reason": null,
+    "decision_source": "deterministic",
+    "agent_decision": "PASS",
+    "agent_confidence": null,
+    "agent_veto_reason": null,
+    "agent_math_disagree": false,
+    "flags": [],
+    "timestamp": "2026-08-24T09:39:47.291062"
+  },
+  {
+    "symbol": "PCG",
+    "decision": "PASS",
+    "confidence": 1.0,
+    "veto_reason": null,
+    "decision_source": "deterministic",
+    "agent_decision": "PASS",
+    "agent_confidence": null,
+    "agent_veto_reason": null,
+    "agent_math_disagree": false,
+    "flags": [],
+    "timestamp": "2026-08-24T09:39:47.291082"
+  },
+  {
+    "symbol": "IBIT",
+    "decision": "PASS",
+    "confidence": 1.0,
+    "veto_reason": null,
+    "decision_source": "deterministic",
+    "agent_decision": "PASS",
+    "agent_confidence": null,
+    "agent_veto_reason": null,
+    "agent_math_disagree": false,
+    "flags": [],
+    "timestamp": "2026-08-24T09:39:47.291088"
   }
 ]
