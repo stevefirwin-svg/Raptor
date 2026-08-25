@@ -2520,5 +2520,44 @@
     "agent_decision": "HOLD",
     "agent_conf": 0.9,
     "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-08-25T09:37:01.018377",
+    "symbol": "UBER",
+    "trim_qty": 13,
+    "price": 79.2,
+    "pnl_pct": 7.95,
+    "reason": "math_trim_36%",
+    "composite": 0.0983,
+    "trim_detail": "severity=0.137 x stop_mult=1.25 x far_mult=1.20 x pnl_mult=0.80 + slope_adj=0.200 = 0.365 -> 36.5% (13 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-08-25T12:35:15.177517",
+    "symbol": "F",
+    "trim_qty": 749,
+    "price": 13.98,
+    "pnl_pct": -3.19,
+    "reason": "math_trim_86%",
+    "composite": 0.0219,
+    "trim_detail": "severity=0.316 x stop_mult=1.50 x far_mult=1.17 x pnl_mult=1.20 + slope_adj=0.200 = 0.863 -> 86.3% (749 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-08-25T12:35:15.177566",
+    "symbol": "PLTR",
+    "trim_qty": 1,
+    "price": 175.6204,
+    "pnl_pct": 16.71,
+    "reason": "math_trim_16%",
+    "composite": -0.1627,
+    "trim_detail": "severity=0.066 x stop_mult=1.50 x far_mult=1.04 x pnl_mult=0.60 + slope_adj=0.097 = 0.158 -> 15.8% (1 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
   }
 ]

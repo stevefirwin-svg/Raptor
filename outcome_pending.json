@@ -2162,5 +2162,35 @@
     "entry_reasoning": null,
     "entry_flags": [],
     "submitted_at": "2026-08-24T10:05:30.835768"
+  },
+  "1b9e5e57-04c3-4d39-ba8a-c28f45aaee52": {
+    "symbol": "UBER",
+    "exit_reason": "math_trim_36%",
+    "composite": 0.0983,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-08-25T09:37:00.940133"
+  },
+  "63c43f2a-cb73-44fd-b71d-4e03f48e453f": {
+    "symbol": "F",
+    "exit_reason": "math_trim_86%",
+    "composite": 0.0219,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-08-25T12:35:15.006138"
+  },
+  "8b1f2be2-a484-4128-a51b-5da5f465838b": {
+    "symbol": "PLTR",
+    "exit_reason": "math_trim_16%",
+    "composite": -0.1627,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-08-25T12:35:15.121072"
   }
 }

@@ -8180,5 +8180,31 @@
     "tagged_at": "2026-08-24T21:00:04.466845+00:00",
     "exit_regime": "RISK_ON",
     "entry_regime": null
+  },
+  {
+    "symbol": "UBER",
+    "entry_date": "2026-08-07T13:39:32.542761Z",
+    "exit_date": "2026-08-25T13:37:02.395039Z",
+    "hold_days": 17,
+    "entry_price": 73.369136,
+    "exit_price": 79.03,
+    "qty": 13.0,
+    "actual_pnl_pct": 7.7156,
+    "actual_exit_path": "math_trim",
+    "sell_order_id": "1b9e5e57-04c3-4d39-ba8a-c28f45aaee52",
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "entry_timestamp": "2026-08-25T09:37:00.940133",
+    "hold_decision": "HOLD",
+    "hold_confidence": 0.9,
+    "hold_reasoning": "insufficient history: 0 days",
+    "hold_flags": [],
+    "hold_timestamp": "2026-08-24T16:15:27.586633",
+    "hold_trim_pct": null,
+    "tagged_at": "2026-08-25T14:05:14.217088+00:00",
+    "exit_regime": "RISK_ON",
+    "entry_regime": null
   }
 ]
