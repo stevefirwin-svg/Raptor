@@ -2357,5 +2357,44 @@
     "agent_math_disagree": false,
     "flags": [],
     "timestamp": "2026-08-25T09:36:58.098134"
+  },
+  {
+    "symbol": "CIFR",
+    "decision": "PASS",
+    "confidence": 1.0,
+    "veto_reason": null,
+    "decision_source": "deterministic",
+    "agent_decision": "PASS",
+    "agent_confidence": null,
+    "agent_veto_reason": null,
+    "agent_math_disagree": false,
+    "flags": [],
+    "timestamp": "2026-08-26T09:37:11.710260"
+  },
+  {
+    "symbol": "EEM",
+    "decision": "PASS",
+    "confidence": 1.0,
+    "veto_reason": null,
+    "decision_source": "deterministic",
+    "agent_decision": "PASS",
+    "agent_confidence": null,
+    "agent_veto_reason": null,
+    "agent_math_disagree": false,
+    "flags": [],
+    "timestamp": "2026-08-26T09:37:11.710280"
+  },
+  {
+    "symbol": "NOK",
+    "decision": "PASS",
+    "confidence": 1.0,
+    "veto_reason": null,
+    "decision_source": "deterministic",
+    "agent_decision": "PASS",
+    "agent_confidence": null,
+    "agent_veto_reason": null,
+    "agent_math_disagree": false,
+    "flags": [],
+    "timestamp": "2026-08-26T09:37:11.710287"
   }
 ]
