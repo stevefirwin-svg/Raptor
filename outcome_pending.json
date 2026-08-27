@@ -2242,5 +2242,95 @@
     "entry_reasoning": null,
     "entry_flags": [],
     "submitted_at": "2026-08-26T12:35:27.198708"
+  },
+  "f99f7ec0-8c83-4d14-b419-a4b7743ec0eb": {
+    "symbol": "CMCSA",
+    "exit_reason": "hard_stop",
+    "composite": 0.1217,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-08-27T09:37:07.139837"
+  },
+  "b8574c86-930b-4f1e-9e94-26be349df748": {
+    "symbol": "UBER",
+    "exit_reason": "hard_stop",
+    "composite": 0.2749,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-08-27T09:37:07.279925"
+  },
+  "7719a014-716b-4d81-8f51-011d18c9cd70": {
+    "symbol": "CMG",
+    "exit_reason": "math_trim_31%",
+    "composite": 0.1208,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-08-27T09:37:07.461200"
+  },
+  "81bc7fba-98c0-4592-941f-bb99cdc17f67": {
+    "symbol": "TSLA",
+    "exit_reason": "math_trim_29%",
+    "composite": -0.0017,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-08-27T09:37:07.604940"
+  },
+  "9f922ed2-cbc5-460e-bdb5-efc106ed37d1": {
+    "symbol": "XLP",
+    "exit_reason": "math_trim_16%",
+    "composite": 0.2079,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-08-27T09:37:07.793514"
+  },
+  "5638e91d-78eb-443e-b2f8-d7a06a8e1b83": {
+    "symbol": "CMG",
+    "exit_reason": "math_trim_53%",
+    "composite": 0.1591,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-08-27T12:35:15.887091"
+  },
+  "26ea9168-0a84-4d98-8df8-79546a0b61ad": {
+    "symbol": "DRAM",
+    "exit_reason": "math_trim_82%",
+    "composite": -0.0491,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-08-27T12:35:16.004942"
+  },
+  "d8cc3d71-2c96-443a-8bdf-68d174bb2bbb": {
+    "symbol": "TSLA",
+    "exit_reason": "math_trim_34%",
+    "composite": 0.0929,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-08-27T12:35:16.112888"
+  },
+  "cb48f86c-e8ff-47a2-844e-bbb6eb4c8495": {
+    "symbol": "XLP",
+    "exit_reason": "math_trim_47%",
+    "composite": 0.1982,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-08-27T12:35:16.214103"
   }
 }
