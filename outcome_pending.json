@@ -2332,5 +2332,85 @@
     "entry_reasoning": null,
     "entry_flags": [],
     "submitted_at": "2026-08-27T12:35:16.214103"
+  },
+  "fe342165-d102-4b37-8308-635dffc52b07": {
+    "symbol": "CMG",
+    "exit_reason": "math_trim_51%",
+    "composite": 0.0,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-08-28T09:37:17.182911"
+  },
+  "20436ff2-1c6e-406b-82af-dbd9f8fba8d2": {
+    "symbol": "DRAM",
+    "exit_reason": "math_trim_51%",
+    "composite": 0.0,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-08-28T09:37:17.303992"
+  },
+  "a43020c8-457b-4570-a873-292075ee2ab2": {
+    "symbol": "TSLA",
+    "exit_reason": "math_trim_34%",
+    "composite": 0.0,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-08-28T09:37:17.442155"
+  },
+  "54939b9c-65e4-4a86-a5eb-73adc850292b": {
+    "symbol": "XLP",
+    "exit_reason": "math_trim_63%",
+    "composite": 0.0,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-08-28T09:37:17.556645"
+  },
+  "27c8e7ea-bfbb-40b2-8dbe-4ca039f7654b": {
+    "symbol": "CMG",
+    "exit_reason": "math_trim_28%",
+    "composite": 0.1616,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-08-28T12:35:14.185261"
+  },
+  "a27490a2-ae32-46d6-a447-c923d6ad161b": {
+    "symbol": "DRAM",
+    "exit_reason": "math_trim_65%",
+    "composite": 0.0223,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-08-28T12:35:14.287125"
+  },
+  "2984c289-6a43-470d-a305-0d57461202aa": {
+    "symbol": "TSLA",
+    "exit_reason": "math_trim_33%",
+    "composite": -0.0053,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-08-28T12:35:14.401016"
+  },
+  "45a845a2-cf0b-404a-baf5-a7723dba3462": {
+    "symbol": "XLP",
+    "exit_reason": "math_trim_89%",
+    "composite": 0.1775,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-08-28T12:35:14.504028"
   }
 }
