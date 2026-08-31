@@ -2793,5 +2793,57 @@
     "agent_decision": "HOLD",
     "agent_conf": 0.9,
     "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-08-31T09:36:28.958145",
+    "symbol": "CMG",
+    "trim_qty": 11,
+    "price": 37.85,
+    "pnl_pct": 6.17,
+    "reason": "math_trim_27%",
+    "composite": 0.2495,
+    "trim_detail": "severity=0.090 x stop_mult=1.00 x far_mult=1.00 x pnl_mult=0.80 + slope_adj=0.200 = 0.272 -> 27.2% (11 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-08-31T09:36:28.958246",
+    "symbol": "DRAM",
+    "trim_qty": 3,
+    "price": 56.415,
+    "pnl_pct": 0.2,
+    "reason": "math_trim_48%",
+    "composite": 0.1306,
+    "trim_detail": "severity=0.154 x stop_mult=1.50 x far_mult=1.00 x pnl_mult=1.20 + slope_adj=0.200 = 0.478 -> 47.8% (3 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-08-31T09:36:28.958374",
+    "symbol": "TSLA",
+    "trim_qty": 3,
+    "price": 352.33,
+    "pnl_pct": 6.47,
+    "reason": "math_trim_48%",
+    "composite": -0.0052,
+    "trim_detail": "severity=0.231 x stop_mult=1.50 x far_mult=1.00 x pnl_mult=0.80 + slope_adj=0.200 = 0.478 -> 47.8% (3 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-08-31T12:35:16.606945",
+    "symbol": "NVO",
+    "trim_qty": 108,
+    "price": 45.5601,
+    "pnl_pct": -1.12,
+    "reason": "math_trim_40%",
+    "composite": 0.1989,
+    "trim_detail": "severity=0.191 x stop_mult=1.00 x far_mult=1.00 x pnl_mult=1.20 + slope_adj=0.168 = 0.398 -> 39.8% (108 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
   }
 ]

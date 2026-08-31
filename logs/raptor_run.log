@@ -5270,3 +5270,119 @@ Recap email sent.
 
 [MacroContext] Regime: RISK_ON  Score: +0.500
 Recap email sent.
+2026-08-31 09:35:05,565 [raptor.main] INFO: ============================================================
+2026-08-31 09:35:05,566 [raptor.main] INFO: RAPTOR v5.4 DAILY SCAN - 2026-08-31T09:35:05.566349
+2026-08-31 09:35:05,566 [raptor.main] INFO: ============================================================
+[CONFIG] Raptor v5.4.0 validated
+2026-08-31 09:35:05,568 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-08-31 09:35:06,102 [raptor.data_feeds] WARNING: safe_int: account.daytrade_count was None, defaulting to 0
+2026-08-31 09:35:06,102 [raptor.main] INFO: Account: equity=$102484.24  cap=none (compound)  sizing_base=$102484.24  positions=10
+2026-08-31 09:35:06,121 [raptor.main] INFO: [MarketAgent] SCAN | scalar=1.00 | Macro RISK_ON â€” full scan, normal sizing.
+2026-08-31 09:35:06,158 [raptor.data_feeds] WARNING: safe_int: account.daytrade_count was None, defaulting to 0
+2026-08-31 09:35:06,210 [raptor.margin_guard] INFO: MARGIN GUARD: equity=$102,484  cap=none (compound)  cash=$49,809  positions=10
+2026-08-31 09:35:06,211 [raptor.margin_guard] INFO: MARGIN GUARD: market_value=$52,675  utilization=51.4% of base  margin=NO
+2026-08-31 09:35:06,213 [raptor.universe] INFO: Building universe...
+2026-08-31 09:35:07,254 [raptor.universe] INFO: Alpaca tradeable assets: 7147 after initial filter
+2026-08-31 09:35:07,279 [raptor.universe] INFO: Step 1: 7147 tradeable assets from Alpaca
+2026-08-31 09:35:07,281 [raptor.universe] INFO: Step 2: Fetching bars for 7147 symbols (this takes 1-2 min)...
+2026-08-31 09:35:56,114 [raptor.universe] INFO: Step 2: Got bars for 7136 symbols
+2026-08-31 09:36:10,454 [raptor.universe] INFO: Step 3: 50 symbols passed all screens
+2026-08-31 09:36:10,585 [raptor.main] INFO: Dynamic universe: 50 symbols
+2026-08-31 09:36:11,841 [raptor.data_feeds] INFO: Fetched 51 new bars / 51 total cached
+2026-08-31 09:36:12,703 [raptor.data_feeds] INFO: FRED fetch OK: T10Y2Y (747 observations)
+2026-08-31 09:36:13,365 [raptor.data_feeds] INFO: FRED fetch OK: FEDFUNDS (35 observations)
+2026-08-31 09:36:14,410 [raptor.data_feeds] INFO: FRED fetch OK: ICSA (156 observations)
+2026-08-31 09:36:15,072 [raptor.data_feeds] INFO: FRED fetch OK: VIXCLS (771 observations)
+2026-08-31 09:36:15,796 [raptor.data_feeds] INFO: FRED fetch OK: BAMLC0A4CBBB (784 observations)
+2026-08-31 09:36:16,495 [raptor.data_feeds] INFO: FRED fetch OK: CPIAUCSL (34 observations)
+2026-08-31 09:36:17,137 [raptor.data_feeds] INFO: FRED fetch OK: IPMAN (35 observations)
+2026-08-31 09:36:17,888 [raptor.data_feeds] INFO: FRED fetch OK: M2SL (35 observations)
+2026-08-31 09:36:18,582 [raptor.data_feeds] INFO: FRED fetch OK: RSXFS (35 observations)
+2026-08-31 09:36:19,206 [raptor.data_feeds] INFO: FRED fetch OK: UNRATE (34 observations)
+2026-08-31 09:36:19,209 [raptor.data_feeds] INFO: FRED regime: BULLISH (score=0.300)
+2026-08-31 09:36:19,210 [raptor.main] INFO: [MacroOverride] regime -> RISK_ON (from macro_context.json)
+2026-08-31 09:36:19,211 [raptor.main] INFO: Data: 51 symbols | Macro: RISK_ON (0.300)
+2026-08-31 09:36:20,927 [raptor.signals] INFO: v5.4 Signals: 5 from 50 | Macro=RISK_ON Scale=0.8 | Micro={'MIXED': 34, 'REVERTING': 5, 'TRENDING': 11} | SNR min=1.03 max=1.69
+2026-08-31 09:36:20,955 [raptor.main] INFO: Velocity gate: 1 signals remain | velocities: {'T': '+0.000'}
+2026-08-31 09:36:20,982 [raptor.main] INFO: Signals:
+2026-08-31 09:36:20,983 [raptor.main] INFO:   1. T  t=1.076  pctl=94%  entry=$26.00  stop=$24.94  tp=$0.00  kelly=0.082  hold~30d
+2026-08-31 09:36:23,096 [AgentLayer] WARNING: EntryAgent batch failed ('"decision"') â€” deterministic rules only.
+2026-08-31 09:36:23,121 [raptor.main] INFO: Deployable: cap=none  market_value=$52672  cash=$49809  headroom=$47319  available=$47319  (margin=OFF)
+2026-08-31 09:36:23,122 [raptor.main] INFO: Scan complete. 0 orders placed for v5.4.
+2026-08-31 15:50:05,004 [raptor.hold_monitor] INFO: ============================================================
+2026-08-31 15:50:05,004 [raptor.hold_monitor] INFO: RAPTOR HOLD MONITOR - 2026-08-31T15:50:05.004253
+2026-08-31 15:50:05,004 [raptor.hold_monitor] INFO: ============================================================
+2026-08-31 15:50:05,004 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-08-31 15:50:05,488 [raptor.universe] INFO: Universe from cache: 50 symbols
+2026-08-31 15:50:05,489 [raptor.hold_monitor] INFO: Fetching data for 52 symbols...
+2026-08-31 15:50:06,614 [raptor.data_feeds] INFO: Fetched 52 new bars / 52 total cached
+2026-08-31 15:50:07,262 [raptor.data_feeds] INFO: FRED fetch OK: T10Y2Y (747 observations)
+2026-08-31 15:50:08,297 [raptor.data_feeds] INFO: FRED fetch OK: FEDFUNDS (35 observations)
+2026-08-31 15:50:09,005 [raptor.data_feeds] INFO: FRED fetch OK: ICSA (156 observations)
+2026-08-31 15:50:09,567 [raptor.data_feeds] INFO: FRED fetch OK: VIXCLS (772 observations)
+2026-08-31 15:50:10,408 [raptor.data_feeds] INFO: FRED fetch OK: BAMLC0A4CBBB (785 observations)
+2026-08-31 15:50:10,978 [raptor.data_feeds] INFO: FRED fetch OK: CPIAUCSL (34 observations)
+2026-08-31 15:50:11,573 [raptor.data_feeds] INFO: FRED fetch OK: IPMAN (35 observations)
+2026-08-31 15:50:12,106 [raptor.data_feeds] INFO: FRED fetch OK: M2SL (35 observations)
+2026-08-31 15:50:12,783 [raptor.data_feeds] INFO: FRED fetch OK: RSXFS (35 observations)
+2026-08-31 15:50:13,300 [raptor.data_feeds] INFO: FRED fetch OK: UNRATE (34 observations)
+2026-08-31 15:50:13,302 [raptor.data_feeds] INFO: FRED regime: BULLISH (score=0.300)
+2026-08-31 15:50:14,191 [raptor.signals] INFO: v5.4 Signals: 5 from 51 | Macro=BULLISH Scale=0.8 | Micro={'MIXED': 34, 'REVERTING': 6, 'TRENDING': 11} | SNR min=1.06 max=2.07
+2026-08-31 15:50:14,197 [raptor.hold_monitor] INFO: Pre-entry tracker: 11 candidates monitored
+2026-08-31 15:50:14,201 [raptor.hold_monitor] INFO:   [YLW] CMG     health=-0.096  FAR=8/16  pnl=+6.6%  stop=1.88ATR  -> HOLD
+2026-08-31 15:50:14,205 [raptor.hold_monitor] INFO:   [YLW] DRAM    health=+0.052  FAR=10/16  pnl=+0.4%  stop=1.17ATR  -> HOLD
+2026-08-31 15:50:14,209 [raptor.hold_monitor] INFO:   [GRN] FIG     health=+0.259  FAR=11/16  pnl=-4.0%  stop=0.42ATR  -> HOLD
+2026-08-31 15:50:14,212 [raptor.hold_monitor] INFO:   [GRN] HPQ     health=+0.430  FAR=10/16  pnl=-2.1%  stop=0.87ATR  -> HOLD
+2026-08-31 15:50:14,216 [raptor.hold_monitor] INFO:   [---] NOK     health=+0.021  FAR=9/16  pnl=-3.6%  stop=0.48ATR  -> HOLD
+2026-08-31 15:50:14,219 [raptor.hold_monitor] INFO:   [RED] NVO     health=-0.289  FAR=9/16  pnl=-1.5%  stop=1.43ATR  -> TRIM_MODERATE
+2026-08-31 15:50:14,219 [raptor.hold_monitor] INFO:     DECAY: composite_slope: slope=-0.0709/day over 3d
+2026-08-31 15:50:14,219 [raptor.hold_monitor] INFO:     TRIM:  severity=0.163 x stop_mult=1.25 x far_mult=1.00 x pnl_mult=1.20 + slope_adj=0.142 = 0.387 -> 38.7% (63 sh)
+2026-08-31 15:50:14,223 [raptor.hold_monitor] INFO:   [YLW] PLTR    health=+0.126  FAR=7/16  pnl=+24.2%  stop=0.79ATR  -> HOLD
+2026-08-31 15:50:14,226 [raptor.hold_monitor] INFO:   [YLW] TSLA    health=+0.179  FAR=9/16  pnl=+11.1%  stop=1.43ATR  -> HOLD
+2026-08-31 15:50:16,528 [AgentLayer] INFO: HoldAgent | Flushed 8 decisions -> hold_decisions.json
+2026-08-31 15:50:16,528 [raptor.hold_monitor] INFO: ============================================================
+2026-08-31 15:50:16,529 [raptor.hold_monitor] INFO: COMPLETE — 8 positions | STR=2  STA=4  DEC=1  INS=1
+2026-08-31 15:50:16,529 [raptor.hold_monitor] INFO: ============================================================
+2026-08-31 15:50:20,916 [raptor.exits] WARNING: LOCK: another exit_monitor instance is already running (lock age 22515s < 28800s TTL). Aborting this instance to avoid concurrent writes to position_ledger.json etc. If stale, delete: C:\Raptor\logs\exit_monitor.lock
+2026-08-31 16:15:04,341 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-08-31 16:15:04,741 [raptor.data_feeds] WARNING: safe_int: account.daytrade_count was None, defaulting to 0
+2026-08-31 16:15:04,812 [raptor.universe] INFO: Universe from cache: 50 symbols
+2026-08-31 16:15:05,844 [raptor.data_feeds] INFO: Fetched 51 new bars / 51 total cached
+2026-08-31 16:15:05,944 [raptor.data_feeds] INFO: FRED regime: BULLISH (score=0.300)
+2026-08-31 16:15:06,799 [raptor.signals] INFO: v5.4 Signals: 5 from 50 | Macro=BULLISH Scale=0.8 | Micro={'MIXED': 33, 'REVERTING': 6, 'TRENDING': 11} | SNR min=0.97 max=2.01
+2026-08-31 16:15:11,979 [raptor.recap] WARNING: [Recap] inline macro refresh failed ('charmap' codec can't encode character '\u2192' in position 23: character maps to <undefined>) — using cached macro_context.json
+2026-08-31 16:15:11,983 [raptor.hold_monitor] INFO: ============================================================
+2026-08-31 16:15:11,983 [raptor.hold_monitor] INFO: RAPTOR HOLD MONITOR - 2026-08-31T16:15:11.983415
+2026-08-31 16:15:11,983 [raptor.hold_monitor] INFO: ============================================================
+2026-08-31 16:15:11,984 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-08-31 16:15:12,367 [raptor.universe] INFO: Universe from cache: 50 symbols
+2026-08-31 16:15:12,368 [raptor.hold_monitor] INFO: Fetching data for 52 symbols...
+2026-08-31 16:15:13,138 [raptor.data_feeds] INFO: Fetched 52 new bars / 52 total cached
+2026-08-31 16:15:13,162 [raptor.data_feeds] INFO: FRED regime: BULLISH (score=0.300)
+2026-08-31 16:15:14,030 [raptor.signals] INFO: v5.4 Signals: 5 from 51 | Macro=BULLISH Scale=0.8 | Micro={'MIXED': 34, 'REVERTING': 6, 'TRENDING': 11} | SNR min=1.05 max=2.01
+2026-08-31 16:15:14,036 [raptor.hold_monitor] INFO: Pre-entry tracker: 11 candidates monitored
+2026-08-31 16:15:14,041 [raptor.hold_monitor] INFO:   [YLW] CMG     health=-0.134  FAR=8/16  pnl=+6.7%  stop=1.85ATR  -> HOLD
+2026-08-31 16:15:14,044 [raptor.hold_monitor] INFO:   [YLW] DRAM    health=+0.158  FAR=12/16  pnl=+0.7%  stop=1.37ATR  -> HOLD
+2026-08-31 16:15:14,048 [raptor.hold_monitor] INFO:   [GRN] FIG     health=+0.262  FAR=11/16  pnl=-4.2%  stop=0.39ATR  -> HOLD
+2026-08-31 16:15:14,052 [raptor.hold_monitor] INFO:   [GRN] HPQ     health=+0.414  FAR=10/16  pnl=-2.2%  stop=0.80ATR  -> HOLD
+2026-08-31 16:15:14,055 [raptor.hold_monitor] INFO:   [---] NOK     health=+0.011  FAR=9/16  pnl=-3.7%  stop=0.57ATR  -> HOLD
+2026-08-31 16:15:14,059 [raptor.hold_monitor] INFO:   [RED] NVO     health=-0.329  FAR=9/16  pnl=-1.4%  stop=1.38ATR  -> TRIM_MODERATE
+2026-08-31 16:15:14,059 [raptor.hold_monitor] INFO:     DECAY: composite_slope: slope=-0.0834/day over 3d
+2026-08-31 16:15:14,059 [raptor.hold_monitor] INFO:     TRIM:  severity=0.210 x stop_mult=1.25 x far_mult=1.00 x pnl_mult=1.20 + slope_adj=0.167 = 0.482 -> 48.2% (79 sh)
+2026-08-31 16:15:14,062 [raptor.hold_monitor] INFO:   [YLW] PLTR    health=+0.023  FAR=6/16  pnl=+23.8%  stop=0.69ATR  -> HOLD
+2026-08-31 16:15:14,066 [raptor.hold_monitor] INFO:   [YLW] TSLA    health=+0.179  FAR=9/16  pnl=+11.4%  stop=1.52ATR  -> HOLD
+2026-08-31 16:15:16,321 [AgentLayer] INFO: HoldAgent | Flushed 8 decisions -> hold_decisions.json
+2026-08-31 16:15:16,322 [raptor.hold_monitor] INFO: ============================================================
+2026-08-31 16:15:16,322 [raptor.hold_monitor] INFO: COMPLETE — 8 positions | STR=2  STA=4  DEC=1  INS=1
+2026-08-31 16:15:16,322 [raptor.hold_monitor] INFO: ============================================================
+2026-08-31 16:15:16,427 [raptor.data_feeds] INFO: Fetched 1 new bars / 9 total cached
+[MacroContext] Fetching macro signals...
+  Fetching VIX...
+  Fetching SPY trend...
+  Fetching sector breadth...
+  Fetching yield curve (FRED T10Y2Y)...
+  Fetching credit spread (FRED BAMLC0A4CBBB)...
+  Fetching Fed funds rate (FRED FEDFUNDS)...
+
+[MacroContext] Regime: RISK_ON  Score: +0.500
+Recap email sent.
