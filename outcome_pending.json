@@ -2472,5 +2472,45 @@
     "entry_reasoning": null,
     "entry_flags": [],
     "submitted_at": "2026-08-31T12:35:16.544143"
+  },
+  "e6c77abe-3416-446d-8210-f39866a12f3d": {
+    "symbol": "NVO",
+    "exit_reason": "math_trim_48%",
+    "composite": 0.3688,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-09-01T09:37:09.837930"
+  },
+  "fa43ea79-b0bf-4c67-bf0f-814df11bbaa2": {
+    "symbol": "FIG",
+    "exit_reason": "trailing_stop",
+    "composite": 0.3027,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-09-01T10:05:29.591777"
+  },
+  "7ee2402e-bfef-463f-96e3-627ed331b4f2": {
+    "symbol": "NOK",
+    "exit_reason": "hard_stop",
+    "composite": 0.3029,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-09-01T10:05:29.707618"
+  },
+  "3a0bcee6-3117-4b6e-a13f-94f055f0b74a": {
+    "symbol": "NVO",
+    "exit_reason": "math_trim_50%",
+    "composite": 0.2505,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-09-01T12:35:15.663013"
   }
 }

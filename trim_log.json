@@ -2845,5 +2845,31 @@
     "agent_decision": "HOLD",
     "agent_conf": 0.9,
     "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-09-01T09:37:09.921046",
+    "symbol": "NVO",
+    "trim_qty": 79,
+    "price": 46.115,
+    "pnl_pct": 0.08,
+    "reason": "math_trim_48%",
+    "composite": 0.3688,
+    "trim_detail": "severity=0.210 x stop_mult=1.25 x far_mult=1.00 x pnl_mult=1.20 + slope_adj=0.167 = 0.482 -> 48.2% (79 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-09-01T12:35:15.717270",
+    "symbol": "NVO",
+    "trim_qty": 42,
+    "price": 45.265,
+    "pnl_pct": -1.76,
+    "reason": "math_trim_50%",
+    "composite": 0.2505,
+    "trim_detail": "severity=0.256 x stop_mult=1.25 x far_mult=1.09 x pnl_mult=1.20 + slope_adj=0.079 = 0.497 -> 49.7% (42 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
   }
 ]
