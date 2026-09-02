@@ -1,17 +1,17 @@
 {
-  "timestamp": "2026-09-01T20:30:23.357115+00:00",
+  "timestamp": "2026-09-02T20:30:13.774140+00:00",
   "macro_regime": "RISK_ON",
   "macro_score": 0.375,
   "signals": {
     "vix": {
-      "value": 16.33,
+      "value": 15.23,
       "regime": "CALM"
     },
     "spy_trend": {
-      "price": 761.72,
-      "ma50": 754.71,
-      "ma200": 708.29,
-      "trend_20d": -1.05,
+      "price": 765.2,
+      "ma50": 755.34,
+      "ma200": 708.78,
+      "trend_20d": -0.44,
       "above_50ma": true,
       "above_200ma": true,
       "regime": "NEUTRAL"
@@ -22,12 +22,12 @@
       "regime": "MIXED"
     },
     "yield_curve": {
-      "spread_pct": 0.41,
+      "spread_pct": 0.4,
       "inverted": false,
       "regime": "FLAT"
     },
     "credit_spread": {
-      "spread_pct": 0.98,
+      "spread_pct": 0.99,
       "regime": "TIGHT"
     },
     "fed_rate": {
@@ -35,5 +35,5 @@
       "direction": "STABLE"
     }
   },
-  "agent_summary": "MACRO REGIME: RISK_ON | VIX: 16.33 (CALM) | SPY: -1.05% 20d trend, above 200MA (NEUTRAL) | Sector breadth: 63.6% above 50MA (MIXED) | Yield curve (T10Y2Y): 0.41% (FLAT) | Credit spread (BBB): 0.98% (TIGHT) | Fed funds: 3.63% (STABLE)"
+  "agent_summary": "MACRO REGIME: RISK_ON | VIX: 15.23 (CALM) | SPY: -0.44% 20d trend, above 200MA (NEUTRAL) | Sector breadth: 63.6% above 50MA (MIXED) | Yield curve (T10Y2Y): 0.4% (FLAT) | Credit spread (BBB): 0.99% (TIGHT) | Fed funds: 3.63% (STABLE)"
 }

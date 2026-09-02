@@ -2512,5 +2512,45 @@
     "entry_reasoning": null,
     "entry_flags": [],
     "submitted_at": "2026-09-01T12:35:15.663013"
+  },
+  "954be8fe-a330-41c9-aaf6-088af21a87fe": {
+    "symbol": "PLTR",
+    "exit_reason": "hard_stop",
+    "composite": -0.1037,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-09-02T09:37:00.246159"
+  },
+  "3a4c8d0a-5598-4e15-b8e3-4e38456ce040": {
+    "symbol": "NVO",
+    "exit_reason": "math_trim_61%",
+    "composite": 0.1244,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-09-02T09:37:00.376116"
+  },
+  "dcb15614-921a-4fe9-9351-233b74207326": {
+    "symbol": "TSLA",
+    "exit_reason": "trailing_stop",
+    "composite": 0.1563,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-09-02T10:05:25.245956"
+  },
+  "1a0297b9-496c-49cc-849b-370d47f3e256": {
+    "symbol": "DRAM",
+    "exit_reason": "math_trim_26%",
+    "composite": -0.0012,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-09-02T12:35:14.578148"
   }
 }
