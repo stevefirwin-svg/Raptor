@@ -2897,5 +2897,44 @@
     "agent_decision": "HOLD",
     "agent_conf": 0.9,
     "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-09-03T12:35:14.166585",
+    "symbol": "CMG",
+    "trim_qty": 10,
+    "price": 37.755,
+    "pnl_pct": 5.91,
+    "reason": "math_trim_36%",
+    "composite": -0.0347,
+    "trim_detail": "severity=0.188 x stop_mult=1.50 x far_mult=1.20 x pnl_mult=0.80 + slope_adj=0.091 = 0.362 -> 36.2% (10 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-09-03T12:35:14.166681",
+    "symbol": "HPQ",
+    "trim_qty": 63,
+    "price": 32.19,
+    "pnl_pct": 4.85,
+    "reason": "math_trim_31%",
+    "composite": -0.1066,
+    "trim_detail": "severity=0.085 x stop_mult=1.00 x far_mult=1.24 x pnl_mult=1.00 + slope_adj=0.200 = 0.305 -> 30.5% (63 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-09-03T12:35:14.166734",
+    "symbol": "XLB",
+    "trim_qty": 67,
+    "price": 52.75,
+    "pnl_pct": 1.01,
+    "reason": "math_trim_30%",
+    "composite": 0.0361,
+    "trim_detail": "severity=0.104 x stop_mult=1.00 x far_mult=1.00 x pnl_mult=1.00 + slope_adj=0.200 = 0.304 -> 30.4% (67 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
   }
 ]
