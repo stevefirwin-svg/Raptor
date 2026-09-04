@@ -2591,5 +2591,31 @@
     "agent_math_disagree": false,
     "flags": [],
     "timestamp": "2026-09-03T09:38:31.620248"
+  },
+  {
+    "symbol": "IREN",
+    "decision": "PASS",
+    "confidence": 1.0,
+    "veto_reason": null,
+    "decision_source": "deterministic",
+    "agent_decision": "PASS",
+    "agent_confidence": null,
+    "agent_veto_reason": null,
+    "agent_math_disagree": false,
+    "flags": [],
+    "timestamp": "2026-09-04T09:37:41.219395"
+  },
+  {
+    "symbol": "PFE",
+    "decision": "PASS",
+    "confidence": 1.0,
+    "veto_reason": null,
+    "decision_source": "deterministic",
+    "agent_decision": "PASS",
+    "agent_confidence": null,
+    "agent_veto_reason": null,
+    "agent_math_disagree": false,
+    "flags": [],
+    "timestamp": "2026-09-04T09:37:41.219418"
   }
 ]
