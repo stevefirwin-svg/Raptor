@@ -3027,5 +3027,83 @@
     "agent_decision": "HOLD",
     "agent_conf": 0.9,
     "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-09-09T08:14:33.833622",
+    "symbol": "XLB",
+    "trim_qty": 9,
+    "price": 52.04,
+    "pnl_pct": -0.34,
+    "reason": "math_trim_21%",
+    "composite": 0.2001,
+    "trim_detail": "severity=0.068 x stop_mult=1.50 x far_mult=1.00 x pnl_mult=1.20 + slope_adj=0.092 = 0.214 -> 21.4% (9 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-09-09T08:43:23.537903",
+    "symbol": "NVO",
+    "trim_qty": 6,
+    "price": 44.9187,
+    "pnl_pct": -2.52,
+    "reason": "math_trim_62%",
+    "composite": -0.0715,
+    "trim_detail": "severity=0.239 x stop_mult=1.50 x far_mult=1.00 x pnl_mult=1.20 + slope_adj=0.193 = 0.623 -> 62.3% (6 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-09-09T08:43:23.537952",
+    "symbol": "SPY",
+    "trim_qty": 3,
+    "price": 763.2,
+    "pnl_pct": 0.18,
+    "reason": "math_trim_35%",
+    "composite": 0.0302,
+    "trim_detail": "severity=0.135 x stop_mult=1.50 x far_mult=1.09 x pnl_mult=1.00 + slope_adj=0.128 = 0.349 -> 34.9% (3 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-09-09T08:43:23.537977",
+    "symbol": "XLB",
+    "trim_qty": 9,
+    "price": 51.97,
+    "pnl_pct": -0.48,
+    "reason": "math_trim_21%",
+    "composite": 0.2001,
+    "trim_detail": "severity=0.068 x stop_mult=1.50 x far_mult=1.00 x pnl_mult=1.20 + slope_adj=0.092 = 0.214 -> 21.4% (9 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-09-09T09:13:23.942870",
+    "symbol": "NVO",
+    "trim_qty": 6,
+    "price": 44.91,
+    "pnl_pct": -2.54,
+    "reason": "math_trim_62%",
+    "composite": -0.0715,
+    "trim_detail": "severity=0.239 x stop_mult=1.50 x far_mult=1.00 x pnl_mult=1.20 + slope_adj=0.193 = 0.623 -> 62.3% (6 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-09-09T09:13:23.942950",
+    "symbol": "SPY",
+    "trim_qty": 3,
+    "price": 763.65,
+    "pnl_pct": 0.24,
+    "reason": "math_trim_35%",
+    "composite": 0.0302,
+    "trim_detail": "severity=0.135 x stop_mult=1.50 x far_mult=1.09 x pnl_mult=1.00 + slope_adj=0.128 = 0.349 -> 34.9% (3 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
   }
 ]

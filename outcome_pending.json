@@ -2682,5 +2682,65 @@
     "entry_reasoning": null,
     "entry_flags": [],
     "submitted_at": "2026-09-04T12:35:17.714698"
+  },
+  "2d63d7a6-7b8c-4f4b-8310-92e39bab22cd": {
+    "symbol": "AAPL",
+    "exit_reason": "trailing_stop",
+    "composite": -0.0408,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-09-09T08:14:33.088805"
+  },
+  "70c9fb38-7fa1-4060-b812-0051bdc33dfd": {
+    "symbol": "NVO",
+    "exit_reason": "hard_stop",
+    "composite": -0.0715,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-09-09T08:14:33.285715"
+  },
+  "880061c1-5238-43d3-b0d8-85443179aae2": {
+    "symbol": "SPY",
+    "exit_reason": "hard_stop",
+    "composite": 0.0302,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-09-09T08:14:33.430326"
+  },
+  "358411d9-b666-40ff-81c4-ce57f41f456e": {
+    "symbol": "XLB",
+    "exit_reason": "math_trim_21%",
+    "composite": 0.2001,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-09-09T08:14:33.573990"
+  },
+  "904188f5-5855-47a6-b1c2-7e29996262c4": {
+    "symbol": "XLB",
+    "exit_reason": "math_trim_21%",
+    "composite": 0.2001,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-09-09T08:43:23.480567"
+  },
+  "bfb6dc8b-744e-431a-b18d-cb26105a0952": {
+    "symbol": "XLB",
+    "exit_reason": "hard_stop",
+    "composite": 0.0851,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-09-09T10:13:23.933158"
   }
 }
