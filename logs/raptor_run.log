@@ -6052,3 +6052,128 @@ Email failed: (535, b'5.7.8 Username and Password not accepted. For more informa
 
 [MacroContext] Regime: NEUTRAL  Score: +0.250
 Email failed: (535, b'5.7.8 Username and Password not accepted. For more information, go to\n5.7.8  https://support.google.com/mail/?p=BadCredentials 956f58d0204a3-66fb48b32f9sm12823380d50.5 - gsmtp')
+2026-09-17 09:35:04,458 [raptor.main] INFO: ============================================================
+2026-09-17 09:35:04,459 [raptor.main] INFO: RAPTOR v5.4 DAILY SCAN - 2026-09-17T09:35:04.459175
+2026-09-17 09:35:04,459 [raptor.main] INFO: ============================================================
+[CONFIG] Raptor v5.4.0 validated
+2026-09-17 09:35:04,460 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-09-17 09:35:04,986 [raptor.data_feeds] WARNING: safe_int: account.daytrade_count was None, defaulting to 0
+2026-09-17 09:35:04,986 [raptor.main] INFO: Account: equity=$101681.23  cap=none (compound)  sizing_base=$101681.23  positions=8
+2026-09-17 09:35:05,001 [raptor.main] INFO: [MarketAgent] SCAN | scalar=1.00 | Macro NEUTRAL â€” full scan, normal sizing.
+2026-09-17 09:35:05,035 [raptor.data_feeds] WARNING: safe_int: account.daytrade_count was None, defaulting to 0
+2026-09-17 09:35:05,064 [raptor.margin_guard] INFO: MARGIN GUARD: equity=$101,682  cap=none (compound)  cash=$40,633  positions=8
+2026-09-17 09:35:05,064 [raptor.margin_guard] INFO: MARGIN GUARD: market_value=$61,050  utilization=60.0% of base  margin=NO
+2026-09-17 09:35:05,068 [raptor.universe] INFO: Building universe...
+2026-09-17 09:35:06,305 [raptor.universe] INFO: Alpaca tradeable assets: 7214 after initial filter
+2026-09-17 09:35:06,329 [raptor.universe] INFO: Step 1: 7214 tradeable assets from Alpaca
+2026-09-17 09:35:06,331 [raptor.universe] INFO: Step 2: Fetching bars for 7214 symbols (this takes 1-2 min)...
+2026-09-17 09:37:35,787 [raptor.universe] INFO: Step 2: Got bars for 7199 symbols
+2026-09-17 09:37:46,799 [raptor.universe] INFO: Step 3: 41 symbols passed all screens
+2026-09-17 09:37:46,873 [raptor.main] INFO: Dynamic universe: 41 symbols
+2026-09-17 09:37:48,014 [raptor.data_feeds] INFO: Fetched 42 new bars / 42 total cached
+2026-09-17 09:37:48,971 [raptor.data_feeds] INFO: FRED fetch OK: BAMLC0A4CBBB (786 observations)
+2026-09-17 09:37:49,742 [raptor.data_feeds] INFO: FRED fetch OK: CPIAUCSL (35 observations)
+2026-09-17 09:37:50,380 [raptor.data_feeds] INFO: FRED fetch OK: IPMAN (35 observations)
+2026-09-17 09:37:51,243 [raptor.data_feeds] INFO: FRED fetch OK: M2SL (35 observations)
+2026-09-17 09:37:52,129 [raptor.data_feeds] INFO: FRED fetch OK: RSXFS (36 observations)
+2026-09-17 09:37:52,676 [raptor.data_feeds] INFO: FRED fetch OK: UNRATE (35 observations)
+2026-09-17 09:37:52,679 [raptor.data_feeds] INFO: FRED regime: BULLISH (score=0.200)
+2026-09-17 09:37:52,680 [raptor.main] INFO: [MacroOverride] regime -> NEUTRAL (from macro_context.json)
+2026-09-17 09:37:52,680 [raptor.main] INFO: Data: 42 symbols | Macro: NEUTRAL (0.200)
+2026-09-17 09:37:53,404 [raptor.signals] INFO: v5.4 Signals: 5 from 41 | Macro=NEUTRAL Scale=0.8 | Micro={'MIXED': 32, 'TRENDING': 5, 'REVERTING': 4} | SNR min=1.21 max=1.77
+2026-09-17 09:37:53,417 [raptor.main] INFO: Velocity gate: 4 signals remain | velocities: {'NOK': '+0.000', 'ETHA': '+0.000', 'KRE': '+0.000', 'KO': '+0.000'}
+2026-09-17 09:37:53,430 [raptor.main] INFO: Signals:
+2026-09-17 09:37:53,431 [raptor.main] INFO:   1. NOK  t=1.773  pctl=98%  entry=$10.74  stop=$9.73  tp=$0.00  kelly=0.105  hold~30d
+2026-09-17 09:37:53,431 [raptor.main] INFO:   2. ETHA  t=1.453  pctl=100%  entry=$18.38  stop=$16.31  tp=$0.00  kelly=0.095  hold~30d
+2026-09-17 09:37:53,431 [raptor.main] INFO:   3. KRE  t=1.211  pctl=93%  entry=$73.00  stop=$69.84  tp=$0.00  kelly=0.087  hold~30d
+2026-09-17 09:37:53,431 [raptor.main] INFO:   4. KO  t=1.211  pctl=90%  entry=$88.24  stop=$85.33  tp=$0.00  kelly=0.087  hold~4d
+2026-09-17 09:37:55,540 [AgentLayer] WARNING: EntryAgent batch failed ('"decision"') â€” deterministic rules only.
+2026-09-17 09:37:55,568 [raptor.main] INFO: Deployable: cap=none  market_value=$61043  cash=$40633  headroom=$38602  available=$38602  (margin=OFF)
+2026-09-17 09:37:55,912 [raptor.data_feeds] INFO: Order submitted: BUY 990 NOK @ 10.76
+2026-09-17 09:37:55,924 [raptor.main] INFO: ORDER [v5.4]: BUY 990 NOK @ $10.76
+2026-09-17 09:37:55,947 [raptor.slippage] INFO: SLIPPAGE BUY 990 NOK: decision=$10.7450 fill=PENDING (order ddb9e8e2)
+2026-09-17 09:37:55,980 [raptor.data_feeds] INFO: Order submitted: BUY 522 ETHA @ 18.4
+2026-09-17 09:37:55,992 [raptor.main] INFO: ORDER [v5.4]: BUY 522 ETHA @ $18.40
+2026-09-17 09:37:56,009 [raptor.slippage] INFO: SLIPPAGE BUY 522 ETHA: decision=$18.3800 fill=PENDING (order 249156fa)
+2026-09-17 09:37:56,010 [raptor.main] INFO: Scan complete. 2 orders placed for v5.4.
+2026-09-17 15:50:02,907 [raptor.hold_monitor] INFO: ============================================================
+2026-09-17 15:50:02,907 [raptor.hold_monitor] INFO: RAPTOR HOLD MONITOR - 2026-09-17T15:50:02.907509
+2026-09-17 15:50:02,907 [raptor.hold_monitor] INFO: ============================================================
+2026-09-17 15:50:02,908 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-09-17 15:50:03,348 [raptor.universe] INFO: Universe from cache: 41 symbols
+2026-09-17 15:50:03,348 [raptor.hold_monitor] INFO: Fetching data for 44 symbols...
+2026-09-17 15:50:04,823 [raptor.data_feeds] INFO: Fetched 44 new bars / 44 total cached
+2026-09-17 15:50:05,600 [raptor.data_feeds] INFO: FRED fetch OK: T10Y2Y (749 observations)
+2026-09-17 15:50:06,228 [raptor.data_feeds] INFO: FRED fetch OK: FEDFUNDS (36 observations)
+2026-09-17 15:50:06,798 [raptor.data_feeds] INFO: FRED fetch OK: ICSA (156 observations)
+2026-09-17 15:50:07,336 [raptor.data_feeds] INFO: FRED fetch OK: VIXCLS (774 observations)
+2026-09-17 15:50:07,909 [raptor.data_feeds] INFO: FRED fetch OK: BAMLC0A4CBBB (787 observations)
+2026-09-17 15:50:08,488 [raptor.data_feeds] INFO: FRED fetch OK: CPIAUCSL (35 observations)
+2026-09-17 15:50:09,062 [raptor.data_feeds] INFO: FRED fetch OK: IPMAN (35 observations)
+2026-09-17 15:50:09,614 [raptor.data_feeds] INFO: FRED fetch OK: M2SL (35 observations)
+2026-09-17 15:50:10,104 [raptor.data_feeds] INFO: FRED fetch OK: RSXFS (36 observations)
+2026-09-17 15:50:10,678 [raptor.data_feeds] INFO: FRED fetch OK: UNRATE (35 observations)
+2026-09-17 15:50:10,680 [raptor.data_feeds] INFO: FRED regime: BULLISH (score=0.300)
+2026-09-17 15:50:11,394 [raptor.signals] INFO: v5.4 Signals: 5 from 43 | Macro=BULLISH Scale=0.8 | Micro={'MIXED': 33, 'TRENDING': 5, 'REVERTING': 5} | SNR min=1.23 max=1.87
+2026-09-17 15:50:11,403 [raptor.hold_monitor] INFO: Pre-entry tracker: 4 candidates monitored
+2026-09-17 15:50:11,407 [raptor.hold_monitor] INFO:   [---] CIFR    health=-0.106  FAR=9/16  pnl=-8.2%  stop=1.00ATR  -> HOLD
+2026-09-17 15:50:11,410 [raptor.hold_monitor] WARNING: No stop in ledger metadata for ETHA — stop_dist_atr skipped
+2026-09-17 15:50:11,410 [raptor.hold_monitor] INFO:   [---] ETHA    health=+0.011  FAR=9/16  pnl=+0.6%  stop=—  -> HOLD
+2026-09-17 15:50:11,414 [raptor.hold_monitor] INFO:   [YLW] HPQ     health=+0.145  FAR=9/16  pnl=+13.0%  stop=1.59ATR  -> HOLD
+2026-09-17 15:50:11,418 [raptor.hold_monitor] INFO:   [GRN] INTC    health=+0.575  FAR=9/16  pnl=+5.7%  stop=2.29ATR  -> HOLD
+2026-09-17 15:50:11,421 [raptor.hold_monitor] INFO:   [GRN] IREN    health=+0.237  FAR=8/16  pnl=-8.4%  stop=0.66ATR  -> HOLD
+2026-09-17 15:50:11,424 [raptor.hold_monitor] WARNING: No stop in ledger metadata for NOK — stop_dist_atr skipped
+2026-09-17 15:50:11,425 [raptor.hold_monitor] INFO:   [YLW] NOK     health=+0.023  FAR=5/16  pnl=-0.9%  stop=—  -> HOLD
+2026-09-17 15:50:11,429 [raptor.hold_monitor] INFO:   [RED] PBR     health=-0.241  FAR=9/16  pnl=-1.0%  stop=1.06ATR  -> TRIM_MODERATE
+2026-09-17 15:50:11,429 [raptor.hold_monitor] INFO:     DECAY: composite_slope: slope=-0.0662/day over 4d
+2026-09-17 15:50:11,429 [raptor.hold_monitor] INFO:     TRIM:  severity=0.107 x stop_mult=1.25 x far_mult=1.02 x pnl_mult=1.20 + slope_adj=0.132 = 0.295 -> 29.5% (80 sh)
+2026-09-17 15:50:11,432 [raptor.hold_monitor] INFO:   [YLW] TSLA    health=-0.013  FAR=6/16  pnl=-1.8%  stop=1.50ATR  -> HOLD
+2026-09-17 15:50:13,657 [AgentLayer] INFO: HoldAgent | Flushed 8 decisions -> hold_decisions.json
+2026-09-17 15:50:13,658 [raptor.hold_monitor] INFO: ============================================================
+2026-09-17 15:50:13,658 [raptor.hold_monitor] INFO: COMPLETE — 8 positions | STR=2  STA=3  DEC=1  INS=2
+2026-09-17 15:50:13,658 [raptor.hold_monitor] INFO: ============================================================
+2026-09-17 15:50:16,724 [raptor.exits] WARNING: LOCK: another exit_monitor instance is already running (lock age 22512s < 28800s TTL). Aborting this instance to avoid concurrent writes to position_ledger.json etc. If stale, delete: C:\Raptor\logs\exit_monitor.lock
+2026-09-17 16:15:02,992 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-09-17 16:15:03,362 [raptor.data_feeds] WARNING: safe_int: account.daytrade_count was None, defaulting to 0
+2026-09-17 16:15:03,426 [raptor.universe] INFO: Universe from cache: 41 symbols
+2026-09-17 16:15:04,473 [raptor.data_feeds] INFO: Fetched 42 new bars / 42 total cached
+2026-09-17 16:15:04,550 [raptor.data_feeds] INFO: FRED regime: BULLISH (score=0.300)
+2026-09-17 16:15:05,252 [raptor.signals] INFO: v5.4 Signals: 5 from 41 | Macro=BULLISH Scale=0.8 | Micro={'MIXED': 32, 'TRENDING': 5, 'REVERTING': 4} | SNR min=1.23 max=1.82
+2026-09-17 16:15:12,291 [raptor.recap] WARNING: [Recap] inline macro refresh failed ('charmap' codec can't encode character '\u2192' in position 23: character maps to <undefined>) — using cached macro_context.json
+2026-09-17 16:15:12,293 [raptor.hold_monitor] INFO: ============================================================
+2026-09-17 16:15:12,293 [raptor.hold_monitor] INFO: RAPTOR HOLD MONITOR - 2026-09-17T16:15:12.293549
+2026-09-17 16:15:12,293 [raptor.hold_monitor] INFO: ============================================================
+2026-09-17 16:15:12,294 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-09-17 16:15:12,659 [raptor.universe] INFO: Universe from cache: 41 symbols
+2026-09-17 16:15:12,659 [raptor.hold_monitor] INFO: Fetching data for 44 symbols...
+2026-09-17 16:15:13,956 [raptor.data_feeds] INFO: Fetched 44 new bars / 44 total cached
+2026-09-17 16:15:13,972 [raptor.data_feeds] INFO: FRED regime: BULLISH (score=0.300)
+2026-09-17 16:15:14,707 [raptor.signals] INFO: v5.4 Signals: 5 from 43 | Macro=BULLISH Scale=0.8 | Micro={'MIXED': 33, 'TRENDING': 5, 'REVERTING': 5} | SNR min=1.23 max=1.80
+2026-09-17 16:15:14,716 [raptor.hold_monitor] INFO: Pre-entry tracker: 4 candidates monitored
+2026-09-17 16:15:14,720 [raptor.hold_monitor] INFO:   [---] CIFR    health=-0.105  FAR=9/16  pnl=-8.2%  stop=0.99ATR  -> HOLD
+2026-09-17 16:15:14,723 [raptor.hold_monitor] WARNING: No stop in ledger metadata for ETHA — stop_dist_atr skipped
+2026-09-17 16:15:14,723 [raptor.hold_monitor] INFO:   [---] ETHA    health=+0.011  FAR=9/16  pnl=+0.8%  stop=—  -> HOLD
+2026-09-17 16:15:14,727 [raptor.hold_monitor] INFO:   [YLW] HPQ     health=+0.123  FAR=8/16  pnl=+12.9%  stop=1.56ATR  -> HOLD
+2026-09-17 16:15:14,730 [raptor.hold_monitor] INFO:   [GRN] INTC    health=+0.566  FAR=9/16  pnl=+5.3%  stop=2.18ATR  -> HOLD
+2026-09-17 16:15:14,734 [raptor.hold_monitor] INFO:   [GRN] IREN    health=+0.297  FAR=8/16  pnl=-7.3%  stop=0.87ATR  -> HOLD
+2026-09-17 16:15:14,737 [raptor.hold_monitor] WARNING: No stop in ledger metadata for NOK — stop_dist_atr skipped
+2026-09-17 16:15:14,738 [raptor.hold_monitor] INFO:   [YLW] NOK     health=+0.000  FAR=5/16  pnl=-1.0%  stop=—  -> HOLD
+2026-09-17 16:15:14,741 [raptor.hold_monitor] INFO:   [RED] PBR     health=-0.235  FAR=9/16  pnl=-0.9%  stop=1.05ATR  -> TRIM_MODERATE
+2026-09-17 16:15:14,742 [raptor.hold_monitor] INFO:     DECAY: composite_slope: slope=-0.0668/day over 4d
+2026-09-17 16:15:14,742 [raptor.hold_monitor] INFO:     TRIM:  severity=0.100 x stop_mult=1.25 x far_mult=1.02 x pnl_mult=1.20 + slope_adj=0.134 = 0.287 -> 28.7% (77 sh)
+2026-09-17 16:15:14,746 [raptor.hold_monitor] INFO:   [YLW] TSLA    health=-0.044  FAR=6/16  pnl=-2.0%  stop=1.46ATR  -> HOLD
+2026-09-17 16:15:17,014 [AgentLayer] INFO: HoldAgent | Flushed 8 decisions -> hold_decisions.json
+2026-09-17 16:15:17,015 [raptor.hold_monitor] INFO: ============================================================
+2026-09-17 16:15:17,015 [raptor.hold_monitor] INFO: COMPLETE — 8 positions | STR=2  STA=3  DEC=1  INS=2
+2026-09-17 16:15:17,015 [raptor.hold_monitor] INFO: ============================================================
+2026-09-17 16:15:17,134 [raptor.data_feeds] INFO: Fetched 2 new bars / 9 total cached
+[MacroContext] Fetching macro signals...
+  Fetching VIX...
+  Fetching SPY trend...
+  Fetching sector breadth...
+  Fetching yield curve (FRED T10Y2Y)...
+  Fetching credit spread (FRED BAMLC0A4CBBB)...
+  Fetching Fed funds rate (FRED FEDFUNDS)...
+
+[MacroContext] Regime: NEUTRAL  Score: +0.250
+Email failed: (535, b'5.7.8 Username and Password not accepted. For more information, go to\n5.7.8  https://support.google.com/mail/?p=BadCredentials 00721157ae682-896ca8fe451sm3047417b3.28 - gsmtp')

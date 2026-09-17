@@ -2742,5 +2742,35 @@
     "entry_reasoning": null,
     "entry_flags": [],
     "submitted_at": "2026-09-09T10:13:23.933158"
+  },
+  "4f5e803b-3de1-4cd2-b79b-4cb1c2361e77": {
+    "symbol": "DRAM",
+    "exit_reason": "hard_stop",
+    "composite": 0.1434,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-09-17T09:37:58.217600"
+  },
+  "531196f7-4fdd-4666-b0bf-77b9b99e23ea": {
+    "symbol": "EEM",
+    "exit_reason": "hard_stop",
+    "composite": 0.0969,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-09-17T09:37:58.318950"
+  },
+  "698704de-7f8a-4e7c-a63f-88b6184dc61f": {
+    "symbol": "PBR",
+    "exit_reason": "math_trim_31%",
+    "composite": 0.1248,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-09-17T12:35:15.541939"
   }
 }

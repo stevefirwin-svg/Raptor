@@ -3105,5 +3105,18 @@
     "agent_decision": "HOLD",
     "agent_conf": 0.9,
     "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-09-17T12:35:15.603728",
+    "symbol": "PBR",
+    "trim_qty": 118,
+    "price": 20.975,
+    "pnl_pct": -0.87,
+    "reason": "math_trim_31%",
+    "composite": 0.1248,
+    "trim_detail": "severity=0.119 x stop_mult=1.25 x far_mult=1.02 x pnl_mult=1.20 + slope_adj=0.123 = 0.305 -> 30.5% (118 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
   }
 ]
