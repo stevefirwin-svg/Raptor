@@ -2772,5 +2772,35 @@
     "entry_reasoning": null,
     "entry_flags": [],
     "submitted_at": "2026-09-17T12:35:15.541939"
+  },
+  "d541caf9-27fd-4545-8bcf-9fa0657efe08": {
+    "symbol": "PBR",
+    "exit_reason": "math_trim_29%",
+    "composite": 0.2173,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-09-18T09:37:44.041931"
+  },
+  "570a88e0-1fec-424f-a579-6897e7ac1448": {
+    "symbol": "CIFR",
+    "exit_reason": "math_trim_32%",
+    "composite": 0.1688,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-09-18T12:35:11.800748"
+  },
+  "1f328336-b54c-40a9-9508-4759ee449385": {
+    "symbol": "TSLA",
+    "exit_reason": "math_trim_57%",
+    "composite": 0.0777,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-09-18T12:35:11.908211"
   }
 }

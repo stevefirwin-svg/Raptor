@@ -3118,5 +3118,44 @@
     "agent_decision": "HOLD",
     "agent_conf": 0.9,
     "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-09-18T09:37:44.100312",
+    "symbol": "PBR",
+    "trim_qty": 77,
+    "price": 20.77,
+    "pnl_pct": -1.84,
+    "reason": "math_trim_29%",
+    "composite": 0.2173,
+    "trim_detail": "severity=0.100 x stop_mult=1.25 x far_mult=1.02 x pnl_mult=1.20 + slope_adj=0.134 = 0.287 -> 28.7% (77 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-09-18T12:35:11.966924",
+    "symbol": "CIFR",
+    "trim_qty": 146,
+    "price": 17.935,
+    "pnl_pct": -2.84,
+    "reason": "math_trim_32%",
+    "composite": 0.1688,
+    "trim_detail": "severity=0.090 x stop_mult=1.00 x far_mult=1.09 x pnl_mult=1.20 + slope_adj=0.200 = 0.318 -> 31.8% (146 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-09-18T12:35:11.966976",
+    "symbol": "TSLA",
+    "trim_qty": 17,
+    "price": 362.605,
+    "pnl_pct": -2.85,
+    "reason": "math_trim_57%",
+    "composite": 0.0777,
+    "trim_detail": "severity=0.236 x stop_mult=1.25 x far_mult=1.13 x pnl_mult=1.20 + slope_adj=0.171 = 0.572 -> 57.2% (17 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
   }
 ]
