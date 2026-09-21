@@ -2747,5 +2747,31 @@
     "agent_math_disagree": false,
     "flags": [],
     "timestamp": "2026-09-18T09:37:38.508573"
+  },
+  {
+    "symbol": "WBD",
+    "decision": "PASS",
+    "confidence": 1.0,
+    "veto_reason": null,
+    "decision_source": "deterministic",
+    "agent_decision": "PASS",
+    "agent_confidence": null,
+    "agent_veto_reason": null,
+    "agent_math_disagree": false,
+    "flags": [],
+    "timestamp": "2026-09-21T09:36:40.702584"
+  },
+  {
+    "symbol": "BMNR",
+    "decision": "PASS",
+    "confidence": 1.0,
+    "veto_reason": null,
+    "decision_source": "deterministic",
+    "agent_decision": "PASS",
+    "agent_confidence": null,
+    "agent_veto_reason": null,
+    "agent_math_disagree": false,
+    "flags": [],
+    "timestamp": "2026-09-21T09:36:40.702606"
   }
 ]
