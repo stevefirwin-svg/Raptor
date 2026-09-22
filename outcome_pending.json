@@ -2862,5 +2862,25 @@
     "entry_reasoning": null,
     "entry_flags": [],
     "submitted_at": "2026-09-21T15:05:15.513951"
+  },
+  "8cc38c4c-5a19-4cb3-bb73-a4a25bbd5602": {
+    "symbol": "PBR",
+    "exit_reason": "hard_stop",
+    "composite": 0.1021,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-09-22T09:37:00.023224"
+  },
+  "483a2653-b481-46c5-8744-50b7e7ae8637": {
+    "symbol": "TSLA",
+    "exit_reason": "math_trim_39%",
+    "composite": -0.0841,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-09-22T09:37:00.172609"
   }
 }

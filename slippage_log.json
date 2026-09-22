@@ -4978,5 +4978,50 @@
     "notional": 2195.59,
     "status": "OrderStatus.PENDING_NEW",
     "backfilled": true
+  },
+  {
+    "ts": "2026-09-22T13:36:56.486808+00:00",
+    "symbol": "BMNR",
+    "side": "BUY",
+    "qty": 414,
+    "decision_price": 28.33,
+    "fill_price": 28.173,
+    "is_bps": -55.4,
+    "is_dollars": -64.9802,
+    "order_id": "82ba876f-a483-460f-bdf9-f1f32ef6869d",
+    "exit_reason": null,
+    "notional": 11728.62,
+    "status": "OrderStatus.PENDING_NEW",
+    "backfilled": true
+  },
+  {
+    "ts": "2026-09-22T13:36:59.963809+00:00",
+    "symbol": "PBR",
+    "side": "SELL",
+    "qty": 65.0,
+    "decision_price": 20.28,
+    "fill_price": 20.27,
+    "is_bps": 4.93,
+    "is_dollars": 0.65,
+    "order_id": "8cc38c4c-5a19-4cb3-bb73-a4a25bbd5602",
+    "exit_reason": "hard_stop",
+    "notional": 1318.2,
+    "status": "OrderStatus.PENDING_NEW",
+    "backfilled": true
+  },
+  {
+    "ts": "2026-09-22T13:37:00.131302+00:00",
+    "symbol": "TSLA",
+    "side": "SELL",
+    "qty": 2,
+    "decision_price": 374.845,
+    "fill_price": 373.49,
+    "is_bps": 36.15,
+    "is_dollars": 2.71,
+    "order_id": "483a2653-b481-46c5-8744-50b7e7ae8637",
+    "exit_reason": "math_trim_39%",
+    "notional": 749.69,
+    "status": "OrderStatus.PENDING_NEW",
+    "backfilled": true
   }
 ]

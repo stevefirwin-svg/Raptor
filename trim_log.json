@@ -3222,5 +3222,18 @@
     "agent_decision": "HOLD",
     "agent_conf": 0.9,
     "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-09-22T09:37:00.246682",
+    "symbol": "TSLA",
+    "trim_qty": 2,
+    "price": 374.845,
+    "pnl_pct": 0.43,
+    "reason": "math_trim_39%",
+    "composite": -0.0841,
+    "trim_detail": "severity=0.134 x stop_mult=1.25 x far_mult=1.17 x pnl_mult=1.00 + slope_adj=0.193 = 0.389 -> 38.9% (2 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
   }
 ]

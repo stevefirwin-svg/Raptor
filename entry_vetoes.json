@@ -2773,5 +2773,31 @@
     "agent_math_disagree": false,
     "flags": [],
     "timestamp": "2026-09-21T09:36:40.702606"
+  },
+  {
+    "symbol": "BMNR",
+    "decision": "PASS",
+    "confidence": 1.0,
+    "veto_reason": null,
+    "decision_source": "deterministic",
+    "agent_decision": "PASS",
+    "agent_confidence": null,
+    "agent_veto_reason": null,
+    "agent_math_disagree": false,
+    "flags": [],
+    "timestamp": "2026-09-22T09:36:56.011877"
+  },
+  {
+    "symbol": "DRAM",
+    "decision": "PASS",
+    "confidence": 1.0,
+    "veto_reason": null,
+    "decision_source": "deterministic",
+    "agent_decision": "PASS",
+    "agent_confidence": null,
+    "agent_veto_reason": null,
+    "agent_math_disagree": false,
+    "flags": [],
+    "timestamp": "2026-09-22T09:36:56.011891"
   }
 ]
