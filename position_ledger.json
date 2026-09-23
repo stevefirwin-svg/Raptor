@@ -397,41 +397,10 @@
         }
       ]
     },
-    "v5.4:AAPL": {
-      "model": "v5.4",
-      "symbol": "AAPL",
-      "shares": 20,
-      "entry_price": 324.33,
-      "entry_date": "2026-09-02",
-      "metadata": {
-        "stop": 332.7323,
-        "regime": "BACKFILL",
-        "t_stat": null,
-        "kelly_fraction": null,
-        "composite_score": null,
-        "note": "Backfilled from Alpaca \u2014 entry_date approximate",
-        "high_water": 343.31,
-        "last_trim_ts": "2026-09-04T12:35:17.348248",
-        "pending_exit": false,
-        "pending_exit_ts": null
-      },
-      "trims": [
-        {
-          "date": "2026-09-04",
-          "reason": "math_trim_28%",
-          "shares_sold": 8,
-          "trim_price": 321.04,
-          "pnl_pct": -1.0144,
-          "pnl_abs": -26.32,
-          "shares_before": 28,
-          "shares_after": 20
-        }
-      ]
-    },
     "v5.4:INTC": {
       "model": "v5.4",
       "symbol": "INTC",
-      "shares": 118,
+      "shares": 95,
       "entry_price": 103.595,
       "entry_date": "2026-09-09",
       "metadata": {
@@ -443,8 +412,21 @@
         "composite_score": 0.6298,
         "velocity": 0.0,
         "macro_regime": "RISK_ON",
-        "high_water": 123.9
-      }
+        "high_water": 123.9,
+        "last_trim_ts": "2026-09-23T12:35:17.624813"
+      },
+      "trims": [
+        {
+          "date": "2026-09-23",
+          "reason": "math_trim_19%",
+          "shares_sold": 23,
+          "trim_price": 120.59,
+          "pnl_pct": 16.4052,
+          "pnl_abs": 390.89,
+          "shares_before": 118,
+          "shares_after": 95
+        }
+      ]
     },
     "v5.4:TSLA": {
       "model": "v5.4",
@@ -454,14 +436,14 @@
       "entry_date": "2026-09-09",
       "metadata": {
         "t_stat": 1.9785,
-        "stop": 358.8513,
+        "stop": 367.1888,
         "tp": 0.0,
         "regime": "RISK_ON/MIXED",
         "kelly_fraction": 0.1113,
         "composite_score": 0.4798,
         "velocity": 0.0,
         "macro_regime": "RISK_ON",
-        "high_water": 378.04,
+        "high_water": 386.25,
         "last_trim_ts": "2026-09-22T09:37:00.210803"
       },
       "trims": [
@@ -515,14 +497,14 @@
       "entry_date": "2026-09-09",
       "metadata": {
         "t_stat": 1.859,
-        "stop": 44.3846,
+        "stop": 44.8852,
         "tp": 0.0,
         "regime": "RISK_ON/MIXED",
         "kelly_fraction": 0.1075,
         "composite_score": 0.4509,
         "velocity": 0.0,
         "macro_regime": "RISK_ON",
-        "high_water": 48.71
+        "high_water": 48.91
       }
     },
     "v5.4:CIFR": {
@@ -533,7 +515,7 @@
       "entry_date": "2026-09-09",
       "metadata": {
         "t_stat": 1.0849,
-        "stop": 17.2375,
+        "stop": 17.2916,
         "tp": 0.0,
         "regime": "RISK_ON/MIXED",
         "kelly_fraction": 0.0827,
@@ -605,7 +587,7 @@
       "entry_price": 29.79,
       "entry_date": "2026-09-21",
       "metadata": {
-        "stop": 29.5719,
+        "stop": 29.6387,
         "regime": "BACKFILL",
         "t_stat": null,
         "kelly_fraction": null,
@@ -626,7 +608,8 @@
         "t_stat": null,
         "kelly_fraction": null,
         "composite_score": null,
-        "note": "Backfilled from Alpaca \u2014 entry_date approximate"
+        "note": "Backfilled from Alpaca \u2014 entry_date approximate",
+        "high_water": 28.23
       }
     }
   },
@@ -4742,6 +4725,48 @@
       "pnl": -168.21,
       "pnl_pct": -2.0488,
       "hold_days": 19,
+      "entry_regime": null
+    },
+    {
+      "model": "v5.4",
+      "symbol": "AAPL",
+      "shares": 20,
+      "entry_price": 324.33,
+      "entry_date": "2026-09-02",
+      "metadata": {
+        "stop": 336.4189,
+        "regime": "BACKFILL",
+        "t_stat": null,
+        "kelly_fraction": null,
+        "composite_score": null,
+        "note": "Backfilled from Alpaca \u2014 entry_date approximate",
+        "high_water": 343.31,
+        "last_trim_ts": "2026-09-04T12:35:17.348248",
+        "pending_exit": true,
+        "pending_exit_ts": "2026-09-23T11:35:14.869283"
+      },
+      "trims": [
+        {
+          "date": "2026-09-04",
+          "reason": "math_trim_28%",
+          "shares_sold": 8,
+          "trim_price": 321.04,
+          "pnl_pct": -1.0144,
+          "pnl_abs": -26.32,
+          "shares_before": 28,
+          "shares_after": 20
+        }
+      ],
+      "exit_price": 336.115,
+      "exit_date": "2026-09-23",
+      "exit_reason": "hard_stop",
+      "exit_path": "hard_stop",
+      "final_leg_pnl": 235.7,
+      "final_leg_pnl_pct": 3.6336,
+      "entry_value": 9081.24,
+      "pnl": 209.38,
+      "pnl_pct": 2.3056,
+      "hold_days": 21,
       "entry_regime": null
     }
   ]

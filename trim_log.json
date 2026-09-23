@@ -3235,5 +3235,18 @@
     "agent_decision": "HOLD",
     "agent_conf": 0.9,
     "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-09-23T12:35:17.653355",
+    "symbol": "INTC",
+    "trim_qty": 23,
+    "price": 120.59,
+    "pnl_pct": 16.51,
+    "reason": "math_trim_19%",
+    "composite": 0.0413,
+    "trim_detail": "severity=0.071 x stop_mult=1.50 x far_mult=1.17 x pnl_mult=0.60 + slope_adj=0.120 = 0.194 -> 19.4% (23 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
   }
 ]

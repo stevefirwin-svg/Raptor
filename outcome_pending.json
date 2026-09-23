@@ -2882,5 +2882,25 @@
     "entry_reasoning": null,
     "entry_flags": [],
     "submitted_at": "2026-09-22T09:37:00.172609"
+  },
+  "8757ca9e-386a-4d80-8a43-182a9d3cf299": {
+    "symbol": "AAPL",
+    "exit_reason": "hard_stop",
+    "composite": -0.0542,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-09-23T11:35:14.866506"
+  },
+  "15e29f36-4c35-462f-82b0-ab1478ac28f2": {
+    "symbol": "INTC",
+    "exit_reason": "math_trim_19%",
+    "composite": 0.0413,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-09-23T12:35:17.608094"
   }
 }

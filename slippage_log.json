@@ -5023,5 +5023,35 @@
     "notional": 749.69,
     "status": "OrderStatus.PENDING_NEW",
     "backfilled": true
+  },
+  {
+    "ts": "2026-09-23T15:35:14.854684+00:00",
+    "symbol": "AAPL",
+    "side": "SELL",
+    "qty": 27.0,
+    "decision_price": 336.115,
+    "fill_price": 336.0719,
+    "is_bps": 1.28,
+    "is_dollars": 1.165,
+    "order_id": "8757ca9e-386a-4d80-8a43-182a9d3cf299",
+    "exit_reason": "hard_stop",
+    "notional": 9075.1,
+    "status": "OrderStatus.PENDING_NEW",
+    "backfilled": true
+  },
+  {
+    "ts": "2026-09-23T16:35:17.588147+00:00",
+    "symbol": "INTC",
+    "side": "SELL",
+    "qty": 23,
+    "decision_price": 120.59,
+    "fill_price": 120.61,
+    "is_bps": -1.66,
+    "is_dollars": -0.46,
+    "order_id": "15e29f36-4c35-462f-82b0-ab1478ac28f2",
+    "exit_reason": "math_trim_19%",
+    "notional": 2773.57,
+    "status": "OrderStatus.PENDING_NEW",
+    "backfilled": true
   }
 ]
