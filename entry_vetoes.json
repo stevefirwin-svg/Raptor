@@ -2799,5 +2799,31 @@
     "agent_math_disagree": false,
     "flags": [],
     "timestamp": "2026-09-22T09:36:56.011891"
+  },
+  {
+    "symbol": "DRAM",
+    "decision": "PASS",
+    "confidence": 1.0,
+    "veto_reason": null,
+    "decision_source": "deterministic",
+    "agent_decision": "PASS",
+    "agent_confidence": null,
+    "agent_veto_reason": null,
+    "agent_math_disagree": false,
+    "flags": [],
+    "timestamp": "2026-09-24T09:37:41.153988"
+  },
+  {
+    "symbol": "PFE",
+    "decision": "PASS",
+    "confidence": 1.0,
+    "veto_reason": null,
+    "decision_source": "deterministic",
+    "agent_decision": "PASS",
+    "agent_confidence": null,
+    "agent_veto_reason": null,
+    "agent_math_disagree": false,
+    "flags": [],
+    "timestamp": "2026-09-24T09:37:41.154003"
   }
 ]

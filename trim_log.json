@@ -3248,5 +3248,31 @@
     "agent_decision": "HOLD",
     "agent_conf": 0.9,
     "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-09-24T09:37:45.110207",
+    "symbol": "INTC",
+    "trim_qty": 13,
+    "price": 121.243,
+    "pnl_pct": 17.14,
+    "reason": "math_trim_14%",
+    "composite": 0.0621,
+    "trim_detail": "severity=0.030 x stop_mult=1.25 x far_mult=1.17 x pnl_mult=0.60 + slope_adj=0.113 = 0.139 -> 13.9% (13 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-09-24T12:35:13.403039",
+    "symbol": "NOK",
+    "trim_qty": 389,
+    "price": 10.37,
+    "pnl_pct": -3.45,
+    "reason": "math_trim_39%",
+    "composite": -0.0125,
+    "trim_detail": "severity=0.138 x stop_mult=1.50 x far_mult=1.00 x pnl_mult=1.20 + slope_adj=0.145 = 0.393 -> 39.3% (389 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
   }
 ]

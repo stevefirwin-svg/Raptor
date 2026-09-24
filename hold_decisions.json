@@ -21285,5 +21285,245 @@
     "symbol": "WBD",
     "timestamp": "2026-09-23T16:15:30.158450",
     "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "BMNR",
+    "timestamp": "2026-09-24T12:30:09.916585",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "CIFR",
+    "timestamp": "2026-09-24T12:30:09.916608",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "DRAM",
+    "timestamp": "2026-09-24T12:30:09.916615",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "ETHA",
+    "timestamp": "2026-09-24T12:30:09.916619",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "INTC",
+    "timestamp": "2026-09-24T12:30:09.916624",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "IREN",
+    "timestamp": "2026-09-24T12:30:09.916628",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "NOK",
+    "timestamp": "2026-09-24T12:30:09.916632",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "PFE",
+    "timestamp": "2026-09-24T12:30:09.916636",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "TSLA",
+    "timestamp": "2026-09-24T12:30:09.916639",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "WBD",
+    "timestamp": "2026-09-24T12:30:09.916644",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "BMNR",
+    "timestamp": "2026-09-24T15:50:26.123048",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "CIFR",
+    "timestamp": "2026-09-24T15:50:26.123072",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "DRAM",
+    "timestamp": "2026-09-24T15:50:26.123078",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "ETHA",
+    "timestamp": "2026-09-24T15:50:26.123083",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "INTC",
+    "timestamp": "2026-09-24T15:50:26.123086",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "IREN",
+    "timestamp": "2026-09-24T15:50:26.123091",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "NOK",
+    "timestamp": "2026-09-24T15:50:26.123094",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "PFE",
+    "timestamp": "2026-09-24T15:50:26.123098",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "TSLA",
+    "timestamp": "2026-09-24T15:50:26.123102",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "WBD",
+    "timestamp": "2026-09-24T15:50:26.123106",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "BMNR",
+    "timestamp": "2026-09-24T16:15:21.446201",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "CIFR",
+    "timestamp": "2026-09-24T16:15:21.446221",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "DRAM",
+    "timestamp": "2026-09-24T16:15:21.446227",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "ETHA",
+    "timestamp": "2026-09-24T16:15:21.446231",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "INTC",
+    "timestamp": "2026-09-24T16:15:21.446234",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "IREN",
+    "timestamp": "2026-09-24T16:15:21.446237",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "NOK",
+    "timestamp": "2026-09-24T16:15:21.446240",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "PFE",
+    "timestamp": "2026-09-24T16:15:21.446243",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "TSLA",
+    "timestamp": "2026-09-24T16:15:21.446245",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "WBD",
+    "timestamp": "2026-09-24T16:15:21.446248",
+    "agent": "HoldAgent"
   }
 ]
