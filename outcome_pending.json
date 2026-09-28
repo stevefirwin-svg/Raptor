@@ -2982,5 +2982,85 @@
     "entry_reasoning": null,
     "entry_flags": [],
     "submitted_at": "2026-09-25T12:35:19.219162"
+  },
+  "5879c572-1a17-42f5-b6c2-4e9874264f34": {
+    "symbol": "NOK",
+    "exit_reason": "trailing_stop",
+    "composite": 0.0564,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-09-28T09:37:53.984960"
+  },
+  "2a2e61da-05a8-4140-90a0-2d8dce1fd259": {
+    "symbol": "CIFR",
+    "exit_reason": "math_trim_18%",
+    "composite": 0.0937,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-09-28T09:37:54.111935"
+  },
+  "bfebcd43-1f5a-4072-819a-8c83415aff40": {
+    "symbol": "ETHA",
+    "exit_reason": "math_trim_9%",
+    "composite": 0.2331,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-09-28T09:37:54.229943"
+  },
+  "85c87a6c-fa07-4cc4-afbb-fb392e856142": {
+    "symbol": "CIFR",
+    "exit_reason": "hard_stop",
+    "composite": 0.0651,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-09-28T10:05:14.038035"
+  },
+  "1229af81-a8bc-468b-8e56-ad6a59040f62": {
+    "symbol": "CRWV",
+    "exit_reason": "hard_stop",
+    "composite": 0.3773,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-09-28T10:05:14.143139"
+  },
+  "688e2fdf-ee22-4428-ae43-567b9c579e6a": {
+    "symbol": "DRAM",
+    "exit_reason": "hard_stop",
+    "composite": 0.3685,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-09-28T10:05:14.244112"
+  },
+  "6ea289e9-3760-4038-afd6-345cda435c81": {
+    "symbol": "INTC",
+    "exit_reason": "hard_stop",
+    "composite": -0.0717,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-09-28T11:05:13.145899"
+  },
+  "73db0d71-fcd0-4b38-aefb-c37fd7dce521": {
+    "symbol": "ETHA",
+    "exit_reason": "math_trim_53%",
+    "composite": 0.1986,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-09-28T12:35:15.085899"
   }
 }

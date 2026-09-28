@@ -2825,5 +2825,31 @@
     "agent_math_disagree": false,
     "flags": [],
     "timestamp": "2026-09-24T09:37:41.154003"
+  },
+  {
+    "symbol": "CRWV",
+    "decision": "PASS",
+    "confidence": 1.0,
+    "veto_reason": null,
+    "decision_source": "deterministic",
+    "agent_decision": "PASS",
+    "agent_confidence": null,
+    "agent_veto_reason": null,
+    "agent_math_disagree": false,
+    "flags": [],
+    "timestamp": "2026-09-28T09:37:50.327862"
+  },
+  {
+    "symbol": "SMCI",
+    "decision": "PASS",
+    "confidence": 1.0,
+    "veto_reason": null,
+    "decision_source": "deterministic",
+    "agent_decision": "PASS",
+    "agent_confidence": null,
+    "agent_veto_reason": null,
+    "agent_math_disagree": false,
+    "flags": [],
+    "timestamp": "2026-09-28T09:37:50.327886"
   }
 ]

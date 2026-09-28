@@ -3326,5 +3326,44 @@
     "agent_decision": "HOLD",
     "agent_conf": 0.9,
     "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-09-28T09:37:54.294199",
+    "symbol": "CIFR",
+    "trim_qty": 37,
+    "price": 17.485,
+    "pnl_pct": -5.28,
+    "reason": "math_trim_18%",
+    "composite": 0.0937,
+    "trim_detail": "severity=0.097 x stop_mult=1.50 x far_mult=1.05 x pnl_mult=1.20 + slope_adj=0.000 = 0.184 -> 18.4% (37 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-09-28T09:37:54.294249",
+    "symbol": "ETHA",
+    "trim_qty": 41,
+    "price": 20.26,
+    "pnl_pct": 10.41,
+    "reason": "math_trim_9%",
+    "composite": 0.2331,
+    "trim_detail": "severity=0.022 x stop_mult=1.25 x far_mult=1.06 x pnl_mult=0.80 + slope_adj=0.062 = 0.085 -> 8.5% (41 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-09-28T12:35:15.149025",
+    "symbol": "ETHA",
+    "trim_qty": 231,
+    "price": 20.31,
+    "pnl_pct": 10.68,
+    "reason": "math_trim_53%",
+    "composite": 0.1986,
+    "trim_detail": "severity=0.257 x stop_mult=1.50 x far_mult=1.06 x pnl_mult=0.80 + slope_adj=0.200 = 0.526 -> 52.6% (231 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
   }
 ]
