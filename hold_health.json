@@ -1,20 +1,20 @@
 {
   "BMNR": {
     "symbol": "BMNR",
-    "timestamp": "2026-09-28T16:15:21.447692",
+    "timestamp": "2026-09-29T16:15:16.179180",
     "tier": "DECAYING",
-    "health": -0.2095,
-    "pnl_pct": -4.408,
-    "days_held": 6,
-    "days_history": 9,
+    "health": -0.1893,
+    "pnl_pct": -4.874,
+    "days_held": 7,
+    "days_history": 10,
     "pre_entry_days": 0,
-    "composite": 0.4525,
+    "composite": 0.419,
     "factors_positive": 9,
-    "stop_dist_atr": 0.228,
+    "stop_dist_atr": 0.169,
     "layers": {
       "composite_slope": {
-        "score": -0.3365,
-        "detail": "slope=-0.0337/day over 5d",
+        "score": -0.083,
+        "detail": "slope=-0.0083/day over 5d",
         "weight": 0.25
       },
       "factor_agreement": {
@@ -23,593 +23,319 @@
         "weight": 0.2
       },
       "price_momentum": {
-        "score": -0.6617,
-        "detail": "ROC5=-4.94%  HH=0 HL=0  ClosePos=0.45  ROCtrend=-1.00",
-        "weight": 0.15
-      },
-      "cluster_health": {
-        "score": 0.2599,
-        "detail": "TREND=+1.32  MR=-0.83  VOL=+0.25  VOLAT=+1.19  REV=-0.04",
-        "weight": 0.15
-      },
-      "volume": {
-        "score": -0.5574,
-        "detail": "OBV_slope=-427848  UD_ratio=0.84  OBVtrend=-1.00",
-        "weight": 0.1
-      },
-      "volatility": {
-        "score": 0.1,
-        "detail": "ATR_exp=1.00  BB_width=0.143",
-        "weight": 0.08
-      },
-      "stop_distance": {
-        "score": -0.848,
-        "detail": "stop_dist=0.23 ATR",
-        "weight": 0.05
-      },
-      "hold_duration": {
-        "score": 0.0,
-        "detail": "hold_ratio=0.40  pnl=-4.4%",
-        "weight": 0.02
-      }
-    },
-    "decay_driver": "price_momentum: ROC5=-4.94%  HH=0 HL=0  ClosePos=0.45  ROCtrend=-1.00",
-    "trim": {
-      "action": "TRIM_MINOR",
-      "action_label": "Minor trim 19% \u2014 early warning, reduce exposure",
-      "trim_pct": 0.1933,
-      "trim_shares": 80,
-      "reasoning": "severity=0.070 x stop_mult=1.50 x far_mult=1.00 x pnl_mult=1.20 + slope_adj=0.067 = 0.193 -> 19.3% (80 sh)",
-      "components": {
-        "severity": 0.07,
-        "stop_mult": 1.5,
-        "far_mult": 1.0,
-        "pnl_mult": 1.2,
-        "slope_adj": 0.0673
-      }
-    },
-    "snapshot": {
-      "timestamp": "2026-09-28T16:15:21.444107",
-      "symbol": "BMNR",
-      "composite": 0.4525,
-      "t_stat": 1.9946,
-      "factors_positive": 9,
-      "factor_agreement": 0.5625,
-      "factor_scores": {
-        "rsi_mr": -0.3656,
-        "bollinger_z": -1.758,
-        "crowd_panic": 1.1285,
-        "ma_distance": -3.5533,
-        "hurst": 0.4099,
-        "ma_stack": 1.444,
-        "macd_accel": -1.09,
-        "adx_dir": 3.372,
-        "price_cloud": 1.5417,
-        "vol_ratio": -1.4385,
-        "obv_r2": 1.5501,
-        "accum_dist": 0.644,
-        "atr_pctile": -0.1635,
-        "bb_squeeze": 1.0699,
-        "rel_strength": 2.6623,
-        "rev_momentum": -0.0416
-      },
-      "factor_contributions": {
-        "rsi_mr": -0.017164,
-        "bollinger_z": -0.102413,
-        "crowd_panic": 0.042915,
-        "ma_distance": -0.121549,
-        "hurst": 0.021337,
-        "ma_stack": 0.130802,
-        "macd_accel": -0.063845,
-        "adx_dir": 0.15242,
-        "price_cloud": 0.091084,
-        "vol_ratio": -0.032871,
-        "obv_r2": 0.081298,
-        "accum_dist": 0.058477,
-        "atr_pctile": -0.00966,
-        "bb_squeeze": 0.066478,
-        "rel_strength": 0.155852,
-        "rev_momentum": -0.000709
-      },
-      "cluster_scores": {
-        "MR": -0.8277,
-        "TREND": 1.3169,
-        "VOL": 0.2519,
-        "VOLAT": 1.1896,
-        "REV": -0.0416
-      },
-      "regime": "BULLISH/MIXED",
-      "price": 26.84,
-      "roc_5d": -0.0494,
-      "higher_highs": 0,
-      "higher_lows": 0,
-      "close_pos_5d": 0.4515,
-      "vol_ratio": 0.6639,
-      "obv_slope": -427847.6,
-      "ud_ratio": 0.8431,
-      "atr": 1.7146,
-      "atr_expansion": 0.9972,
-      "bb_width": 0.1432,
-      "entry_price": 28.173043,
-      "current_price": 26.84,
-      "qty": 414.0,
-      "market_value": 11111.76,
-      "pnl_pct": -4.408,
-      "stop_price": 26.4493,
-      "stop_dist_atr": 0.228,
-      "days_held": 6,
-      "hold_target": 15,
-      "hold_ratio": 0.4
-    }
-  },
-  "ETHA": {
-    "symbol": "ETHA",
-    "timestamp": "2026-09-28T16:15:21.451435",
-    "tier": "DECAYING",
-    "health": -0.3795,
-    "pnl_pct": 10.356,
-    "days_held": 11,
-    "days_history": 8,
-    "pre_entry_days": 0,
-    "composite": 0.2002,
-    "factors_positive": 8,
-    "stop_dist_atr": 0.369,
-    "layers": {
-      "composite_slope": {
-        "score": -1.0,
-        "detail": "slope=-0.1047/day over 5d",
-        "weight": 0.25
-      },
-      "factor_agreement": {
-        "score": -0.1875,
-        "detail": "FAR=8/16  trend=-0.062",
-        "weight": 0.2
-      },
-      "price_momentum": {
-        "score": -0.1926,
-        "detail": "ROC5=-3.26%  HH=1 HL=0  ClosePos=0.59  ROCtrend=-1.00",
-        "weight": 0.15
-      },
-      "cluster_health": {
-        "score": 0.112,
-        "detail": "TREND=+1.37  MR=-1.63  VOL=-0.09  VOLAT=+0.90  REV=+0.54",
-        "weight": 0.15
-      },
-      "volume": {
-        "score": -0.6017,
-        "detail": "OBV_slope=-849351  UD_ratio=0.17  OBVtrend=-0.23",
-        "weight": 0.1
-      },
-      "volatility": {
-        "score": 0.2,
-        "detail": "ATR_exp=0.99  BB_width=0.098",
-        "weight": 0.08
-      },
-      "stop_distance": {
-        "score": -0.754,
-        "detail": "stop_dist=0.37 ATR",
-        "weight": 0.05
-      },
-      "hold_duration": {
-        "score": 0.1,
-        "detail": "hold_ratio=0.73  pnl=+10.4%",
-        "weight": 0.02
-      }
-    },
-    "decay_driver": "composite_slope: slope=-0.1047/day over 5d",
-    "trim": {
-      "action": "TRIM_MAJOR",
-      "action_label": "Major trim 54% \u2014 significant thesis decay",
-      "trim_pct": 0.5422,
-      "trim_shares": 113,
-      "reasoning": "severity=0.270 x stop_mult=1.50 x far_mult=1.06 x pnl_mult=0.80 + slope_adj=0.200 = 0.542 -> 54.2% (113 sh)",
-      "components": {
-        "severity": 0.27,
-        "stop_mult": 1.5,
-        "far_mult": 1.0562,
-        "pnl_mult": 0.8,
-        "slope_adj": 0.2
-      }
-    },
-    "snapshot": {
-      "timestamp": "2026-09-28T16:15:21.447921",
-      "symbol": "ETHA",
-      "composite": 0.2002,
-      "t_stat": 0.8826,
-      "factors_positive": 8,
-      "factor_agreement": 0.5,
-      "factor_scores": {
-        "rsi_mr": -0.7552,
-        "bollinger_z": -1.9908,
-        "crowd_panic": -0.869,
-        "ma_distance": -3.4466,
-        "hurst": -1.0751,
-        "ma_stack": 1.444,
-        "macd_accel": -0.9695,
-        "adx_dir": 3.3786,
-        "price_cloud": 1.6251,
-        "vol_ratio": -1.5613,
-        "obv_r2": 0.3433,
-        "accum_dist": 0.9524,
-        "atr_pctile": -0.4905,
-        "bb_squeeze": 0.9768,
-        "rel_strength": 2.228,
-        "rev_momentum": 0.5426
-      },
-      "factor_contributions": {
-        "rsi_mr": -0.039874,
-        "bollinger_z": -0.116707,
-        "crowd_panic": -0.032261,
-        "ma_distance": -0.117797,
-        "hurst": -0.063696,
-        "ma_stack": 0.130802,
-        "macd_accel": -0.056203,
-        "adx_dir": 0.152729,
-        "price_cloud": 0.096312,
-        "vol_ratio": -0.035861,
-        "obv_r2": 0.01484,
-        "accum_dist": 0.090422,
-        "atr_pctile": -0.038796,
-        "bb_squeeze": 0.060207,
-        "rel_strength": 0.129512,
-        "rev_momentum": 0.026568
-      },
-      "cluster_scores": {
-        "MR": -1.6273,
-        "TREND": 1.3696,
-        "VOL": -0.0885,
-        "VOLAT": 0.9048,
-        "REV": 0.5426
-      },
-      "regime": "BULLISH/MIXED",
-      "price": 20.16,
-      "roc_5d": -0.0326,
-      "higher_highs": 1,
-      "higher_lows": 0,
-      "close_pos_5d": 0.5894,
-      "vol_ratio": 0.6302,
-      "obv_slope": -849351.3,
-      "ud_ratio": 0.1726,
-      "atr": 0.7404,
-      "atr_expansion": 0.9871,
-      "bb_width": 0.0975,
-      "entry_price": 18.35,
-      "current_price": 20.16,
-      "qty": 209.0,
-      "market_value": 4213.44,
-      "pnl_pct": 10.356,
-      "stop_price": 19.8866,
-      "stop_dist_atr": 0.369,
-      "days_held": 11,
-      "hold_target": 15,
-      "hold_ratio": 0.733
-    }
-  },
-  "PFE": {
-    "symbol": "PFE",
-    "timestamp": "2026-09-28T16:15:21.455083",
-    "tier": "STABLE",
-    "health": 0.1314,
-    "pnl_pct": 0.5950000000000001,
-    "days_held": 4,
-    "days_history": 9,
-    "pre_entry_days": 0,
-    "composite": 0.4495,
-    "factors_positive": 10,
-    "stop_dist_atr": 2.342,
-    "layers": {
-      "composite_slope": {
-        "score": -0.14,
-        "detail": "slope=-0.0140/day over 5d",
-        "weight": 0.25
-      },
-      "factor_agreement": {
-        "score": 0.0625,
-        "detail": "FAR=10/16  trend=-0.062",
-        "weight": 0.2
-      },
-      "price_momentum": {
-        "score": 0.0451,
-        "detail": "ROC5=+3.57%  HH=0 HL=0  ClosePos=0.76  ROCtrend=+0.13",
-        "weight": 0.15
-      },
-      "cluster_health": {
-        "score": 0.2455,
-        "detail": "TREND=+1.57  MR=-1.57  VOL=+0.64  VOLAT=+0.65  REV=+2.92",
-        "weight": 0.15
-      },
-      "volume": {
-        "score": 0.6621,
-        "detail": "OBV_slope=1538635  UD_ratio=7692122000000000.00  OBVtrend=-0.13",
-        "weight": 0.1
-      },
-      "volatility": {
-        "score": 0.2,
-        "detail": "ATR_exp=0.99  BB_width=0.035",
-        "weight": 0.08
-      },
-      "stop_distance": {
-        "score": 0.5613,
-        "detail": "stop_dist=2.34 ATR",
-        "weight": 0.05
-      },
-      "hold_duration": {
-        "score": 0.0,
-        "detail": "hold_ratio=0.27  pnl=+0.6%",
-        "weight": 0.02
-      }
-    },
-    "decay_driver": "",
-    "trim": {
-      "action": "HOLD",
-      "trim_pct": 0.0,
-      "trim_shares": 0,
-      "action_label": "",
-      "reasoning": "",
-      "components": {}
-    },
-    "snapshot": {
-      "timestamp": "2026-09-28T16:15:21.451669",
-      "symbol": "PFE",
-      "composite": 0.4495,
-      "t_stat": 1.9815,
-      "factors_positive": 10,
-      "factor_agreement": 0.625,
-      "factor_scores": {
-        "rsi_mr": -2.8072,
-        "bollinger_z": -1.6667,
-        "crowd_panic": -1.3943,
-        "ma_distance": -1.6364,
-        "hurst": -0.3678,
-        "ma_stack": 0.7696,
-        "macd_accel": 1.4376,
-        "adx_dir": 2.3796,
-        "price_cloud": 1.7076,
-        "vol_ratio": -1.1506,
-        "obv_r2": 2.0444,
-        "accum_dist": 1.0166,
-        "atr_pctile": 0.8789,
-        "bb_squeeze": 0.3256,
-        "rel_strength": 0.7392,
-        "rev_momentum": 2.9224
-      },
-      "factor_contributions": {
-        "rsi_mr": -0.162076,
-        "bollinger_z": -0.096808,
-        "crowd_panic": -0.05386,
-        "ma_distance": -0.054239,
-        "hurst": -0.018723,
-        "ma_stack": 0.065962,
-        "macd_accel": 0.085958,
-        "adx_dir": 0.106286,
-        "price_cloud": 0.10149,
-        "vol_ratio": -0.025872,
-        "obv_r2": 0.108817,
-        "accum_dist": 0.097105,
-        "atr_pctile": 0.075131,
-        "bb_squeeze": 0.016926,
-        "rel_strength": 0.039546,
-        "rev_momentum": 0.163843
-      },
-      "cluster_scores": {
-        "MR": -1.5745,
-        "TREND": 1.5736,
-        "VOL": 0.6368,
-        "VOLAT": 0.6479,
-        "REV": 2.9224
-      },
-      "regime": "BULLISH/MIXED",
-      "price": 28.74,
-      "roc_5d": 0.0357,
-      "higher_highs": 0,
-      "higher_lows": 0,
-      "close_pos_5d": 0.7556,
-      "vol_ratio": 0.646,
-      "obv_slope": 1538634.8,
-      "ud_ratio": 7692122000000000.0,
-      "atr": 0.43,
-      "atr_expansion": 0.9908,
-      "bb_width": 0.0354,
-      "entry_price": 28.55,
-      "current_price": 28.74,
-      "qty": 327.0,
-      "market_value": 9397.98,
-      "pnl_pct": 0.5950000000000001,
-      "stop_price": 27.7329,
-      "stop_dist_atr": 2.342,
-      "days_held": 4,
-      "hold_target": 15,
-      "hold_ratio": 0.267
-    }
-  },
-  "SMCI": {
-    "symbol": "SMCI",
-    "timestamp": "2026-09-28T16:15:21.458715",
-    "tier": "STABLE",
-    "health": 0.0239,
-    "pnl_pct": -1.879,
-    "days_held": 0,
-    "days_history": 32,
-    "pre_entry_days": 0,
-    "composite": 0.3993,
-    "factors_positive": 11,
-    "stop_dist_atr": null,
-    "layers": {
-      "composite_slope": {
-        "score": -0.8621,
-        "detail": "slope=-0.0862/day over 5d",
-        "weight": 0.25
-      },
-      "factor_agreement": {
-        "score": 0.675,
-        "detail": "FAR=11/16  trend=+0.250",
-        "weight": 0.2
-      },
-      "price_momentum": {
-        "score": -0.0222,
-        "detail": "ROC5=+1.48%  HH=0 HL=0  ClosePos=0.59  ROCtrend=+1.00",
-        "weight": 0.15
-      },
-      "cluster_health": {
-        "score": 0.2987,
-        "detail": "TREND=+1.45  MR=-1.35  VOL=+0.90  VOLAT=+0.74  REV=+1.50",
-        "weight": 0.15
-      },
-      "volume": {
-        "score": 0.5492,
-        "detail": "OBV_slope=460036  UD_ratio=1.58  OBVtrend=+1.00",
-        "weight": 0.1
-      },
-      "volatility": {
-        "score": 0.1,
-        "detail": "ATR_exp=1.03  BB_width=0.111",
-        "weight": 0.08
-      },
-      "stop_distance": {
-        "score": 0.0,
-        "detail": "no_stop_data",
-        "weight": 0.05
-      },
-      "hold_duration": {
-        "score": 0.0,
-        "detail": "hold_ratio=0.00  pnl=-1.9%",
-        "weight": 0.02
-      }
-    },
-    "decay_driver": "",
-    "trim": {
-      "action": "HOLD",
-      "trim_pct": 0.0,
-      "trim_shares": 0,
-      "action_label": "",
-      "reasoning": "",
-      "components": {}
-    },
-    "snapshot": {
-      "timestamp": "2026-09-28T16:15:21.455272",
-      "symbol": "SMCI",
-      "composite": 0.3993,
-      "t_stat": 1.7602,
-      "factors_positive": 11,
-      "factor_agreement": 0.6875,
-      "factor_scores": {
-        "rsi_mr": -1.1839,
-        "bollinger_z": -1.2567,
-        "crowd_panic": 0.1776,
-        "ma_distance": -3.2903,
-        "hurst": -1.2057,
-        "ma_stack": 0.718,
-        "macd_accel": 1.2029,
-        "adx_dir": 2.32,
-        "price_cloud": 1.5777,
-        "vol_ratio": 0.0506,
-        "obv_r2": 1.6928,
-        "accum_dist": 0.9672,
-        "atr_pctile": -0.2861,
-        "bb_squeeze": 0.3721,
-        "rel_strength": 2.136,
-        "rev_momentum": 1.503
-      },
-      "factor_contributions": {
-        "rsi_mr": -0.065278,
-        "bollinger_z": -0.071671,
-        "crowd_panic": 0.004704,
-        "ma_distance": -0.112304,
-        "hurst": -0.072099,
-        "ma_stack": 0.061036,
-        "macd_accel": 0.071023,
-        "adx_dir": 0.103519,
-        "price_cloud": 0.093342,
-        "vol_ratio": 0.000415,
-        "obv_r2": 0.089239,
-        "accum_dist": 0.091958,
-        "atr_pctile": -0.020189,
-        "bb_squeeze": 0.019929,
-        "rel_strength": 0.123938,
-        "rev_momentum": 0.081709
-      },
-      "cluster_scores": {
-        "MR": -1.3518,
-        "TREND": 1.4546,
-        "VOL": 0.9035,
-        "VOLAT": 0.7407,
-        "REV": 1.503
-      },
-      "regime": "BULLISH/MIXED",
-      "price": 41.79,
-      "roc_5d": 0.0148,
-      "higher_highs": 0,
-      "higher_lows": 0,
-      "close_pos_5d": 0.595,
-      "vol_ratio": 0.7966,
-      "obv_slope": 460035.8,
-      "ud_ratio": 1.5814,
-      "atr": 2.3289,
-      "atr_expansion": 1.0316,
-      "bb_width": 0.1111,
-      "entry_price": 42.58,
-      "current_price": 41.79,
-      "qty": 255.0,
-      "market_value": 10656.449999999999,
-      "pnl_pct": -1.879,
-      "stop_price": null,
-      "stop_dist_atr": null,
-      "days_held": 0,
-      "hold_target": 15,
-      "hold_ratio": 0.0
-    }
-  },
-  "WBD": {
-    "symbol": "WBD",
-    "timestamp": "2026-09-28T16:15:21.462157",
-    "tier": "STABLE",
-    "health": -0.0068,
-    "pnl_pct": 3.659,
-    "days_held": 7,
-    "days_history": 9,
-    "pre_entry_days": 0,
-    "composite": 0.3207,
-    "factors_positive": 8,
-    "stop_dist_atr": 2.043,
-    "layers": {
-      "composite_slope": {
-        "score": -0.2281,
-        "detail": "slope=-0.0228/day over 5d",
-        "weight": 0.25
-      },
-      "factor_agreement": {
-        "score": -0.1875,
-        "detail": "FAR=8/16  trend=-0.062",
-        "weight": 0.2
-      },
-      "price_momentum": {
-        "score": 0.0598,
-        "detail": "ROC5=+0.28%  HH=0 HL=1  ClosePos=0.77  ROCtrend=-1.00",
+        "score": -0.8387,
+        "detail": "ROC5=-6.99%  HH=0 HL=0  ClosePos=0.32  ROCtrend=-1.00",
         "weight": 0.15
       },
       "cluster_health": {
         "score": 0.279,
-        "detail": "TREND=+1.57  MR=-2.08  VOL=+1.18  VOLAT=+1.06  REV=+0.49",
+        "detail": "TREND=+1.33  MR=-0.85  VOL=+0.29  VOLAT=+1.55  REV=-0.20",
         "weight": 0.15
       },
       "volume": {
-        "score": 0.0277,
-        "detail": "OBV_slope=685385  UD_ratio=1.76  OBVtrend=-0.78",
+        "score": -0.7323,
+        "detail": "OBV_slope=-575247  UD_ratio=0.28  OBVtrend=-1.00",
         "weight": 0.1
       },
       "volatility": {
-        "score": 0.2,
-        "detail": "ATR_exp=0.88  BB_width=0.087",
+        "score": 0.1,
+        "detail": "ATR_exp=1.08  BB_width=0.144",
         "weight": 0.08
       },
       "stop_distance": {
-        "score": 0.362,
-        "detail": "stop_dist=2.04 ATR",
+        "score": -0.8873,
+        "detail": "stop_dist=0.17 ATR",
         "weight": 0.05
       },
       "hold_duration": {
         "score": 0.0,
-        "detail": "hold_ratio=0.47  pnl=+3.7%",
+        "detail": "hold_ratio=0.47  pnl=-4.9%",
+        "weight": 0.02
+      }
+    },
+    "decay_driver": "price_momentum: ROC5=-6.99%  HH=0 HL=0  ClosePos=0.32  ROCtrend=-1.00",
+    "trim": {
+      "action": "TRIM_MINOR",
+      "action_label": "Minor trim 10% \u2014 early warning, reduce exposure",
+      "trim_pct": 0.0998,
+      "trim_shares": 33,
+      "reasoning": "severity=0.046 x stop_mult=1.50 x far_mult=1.00 x pnl_mult=1.20 + slope_adj=0.017 = 0.100 -> 10.0% (33 sh)",
+      "components": {
+        "severity": 0.0462,
+        "stop_mult": 1.5,
+        "far_mult": 1.0,
+        "pnl_mult": 1.2,
+        "slope_adj": 0.0166
+      }
+    },
+    "snapshot": {
+      "timestamp": "2026-09-29T16:15:16.175514",
+      "symbol": "BMNR",
+      "composite": 0.419,
+      "t_stat": 2.0925,
+      "factors_positive": 9,
+      "factor_agreement": 0.5625,
+      "factor_scores": {
+        "rsi_mr": -0.7805,
+        "bollinger_z": -1.9041,
+        "crowd_panic": 0.4739,
+        "ma_distance": -2.9412,
+        "hurst": 0.8853,
+        "ma_stack": 1.5738,
+        "macd_accel": -1.6026,
+        "adx_dir": 3.5217,
+        "price_cloud": 1.8388,
+        "vol_ratio": -1.165,
+        "obv_r2": 1.4022,
+        "accum_dist": 0.6397,
+        "atr_pctile": -0.119,
+        "bb_squeeze": 1.2225,
+        "rel_strength": 3.5592,
+        "rev_momentum": -0.1992
+      },
+      "factor_contributions": {
+        "rsi_mr": -0.042352,
+        "bollinger_z": -0.101716,
+        "crowd_panic": 0.018658,
+        "ma_distance": -0.12,
+        "hurst": 0.053004,
+        "ma_stack": 0.143931,
+        "macd_accel": -0.106376,
+        "adx_dir": 0.158755,
+        "price_cloud": 0.099475,
+        "vol_ratio": -0.030186,
+        "obv_r2": 0.059594,
+        "accum_dist": 0.053137,
+        "atr_pctile": -0.006376,
+        "bb_squeeze": 0.084668,
+        "rel_strength": 0.163341,
+        "rev_momentum": -0.008552
+      },
+      "cluster_scores": {
+        "MR": -0.8533,
+        "TREND": 1.3329,
+        "VOL": 0.2923,
+        "VOLAT": 1.5542,
+        "REV": -0.1992
+      },
+      "regime": "BULLISH/MIXED",
+      "price": 26.74,
+      "roc_5d": -0.0699,
+      "higher_highs": 0,
+      "higher_lows": 0,
+      "close_pos_5d": 0.3199,
+      "vol_ratio": 0.6152,
+      "obv_slope": -575247.0,
+      "ud_ratio": 0.277,
+      "atr": 1.7229,
+      "atr_expansion": 1.0805,
+      "bb_width": 0.1443,
+      "entry_price": 28.173043,
+      "current_price": 26.74,
+      "qty": 334.0,
+      "market_value": 8931.16,
+      "pnl_pct": -4.874,
+      "stop_price": 26.4493,
+      "stop_dist_atr": 0.169,
+      "days_held": 7,
+      "hold_target": 15,
+      "hold_ratio": 0.467
+    }
+  },
+  "ETHA": {
+    "symbol": "ETHA",
+    "timestamp": "2026-09-29T16:15:16.182955",
+    "tier": "DECAYING",
+    "health": -0.2679,
+    "pnl_pct": 10.523,
+    "days_held": 12,
+    "days_history": 9,
+    "pre_entry_days": 0,
+    "composite": 0.1895,
+    "factors_positive": 8,
+    "stop_dist_atr": 0.521,
+    "layers": {
+      "composite_slope": {
+        "score": -0.9666,
+        "detail": "slope=-0.0967/day over 5d",
+        "weight": 0.25
+      },
+      "factor_agreement": {
+        "score": 0.0,
+        "detail": "FAR=8/16  trend=+0.000",
+        "weight": 0.2
+      },
+      "price_momentum": {
+        "score": -0.2122,
+        "detail": "ROC5=-2.34%  HH=1 HL=0  ClosePos=0.50  ROCtrend=-0.89",
+        "weight": 0.15
+      },
+      "cluster_health": {
+        "score": 0.1791,
+        "detail": "TREND=+1.58  MR=-1.87  VOL=+0.13  VOLAT=+1.28  REV=+0.26",
+        "weight": 0.15
+      },
+      "volume": {
+        "score": -0.0866,
+        "detail": "OBV_slope=-345415  UD_ratio=0.48  OBVtrend=+0.67",
+        "weight": 0.1
+      },
+      "volatility": {
+        "score": 0.2,
+        "detail": "ATR_exp=1.13  BB_width=0.099",
+        "weight": 0.08
+      },
+      "stop_distance": {
+        "score": -0.6527,
+        "detail": "stop_dist=0.52 ATR",
+        "weight": 0.05
+      },
+      "hold_duration": {
+        "score": 0.2,
+        "detail": "hold_ratio=0.80  pnl=+10.5%",
+        "weight": 0.02
+      }
+    },
+    "decay_driver": "composite_slope: slope=-0.0967/day over 5d",
+    "trim": {
+      "action": "TRIM_MODERATE",
+      "action_label": "Moderate trim 36% \u2014 thesis weakening",
+      "trim_pct": 0.3598,
+      "trim_shares": 22,
+      "reasoning": "severity=0.139 x stop_mult=1.50 x far_mult=1.00 x pnl_mult=0.80 + slope_adj=0.193 = 0.360 -> 36.0% (22 sh)",
+      "components": {
+        "severity": 0.1387,
+        "stop_mult": 1.5,
+        "far_mult": 1.0,
+        "pnl_mult": 0.8,
+        "slope_adj": 0.1933
+      }
+    },
+    "snapshot": {
+      "timestamp": "2026-09-29T16:15:16.179431",
+      "symbol": "ETHA",
+      "composite": 0.1895,
+      "t_stat": 0.9461,
+      "factors_positive": 8,
+      "factor_agreement": 0.5,
+      "factor_scores": {
+        "rsi_mr": -1.7961,
+        "bollinger_z": -2.2757,
+        "crowd_panic": -1.3149,
+        "ma_distance": -3.0443,
+        "hurst": -0.9135,
+        "ma_stack": 1.5738,
+        "macd_accel": -0.8295,
+        "adx_dir": 3.5999,
+        "price_cloud": 1.9894,
+        "vol_ratio": -1.3702,
+        "obv_r2": 0.6103,
+        "accum_dist": 1.1409,
+        "atr_pctile": -0.4364,
+        "bb_squeeze": 1.2647,
+        "rel_strength": 3.0224,
+        "rev_momentum": 0.2574
+      },
+      "factor_contributions": {
+        "rsi_mr": -0.104153,
+        "bollinger_z": -0.122563,
+        "crowd_panic": -0.058261,
+        "ma_distance": -0.124346,
+        "hurst": -0.054864,
+        "ma_stack": 0.143931,
+        "macd_accel": -0.052204,
+        "adx_dir": 0.162377,
+        "price_cloud": 0.108041,
+        "vol_ratio": -0.035929,
+        "obv_r2": 0.023877,
+        "accum_dist": 0.100743,
+        "atr_pctile": -0.034998,
+        "bb_squeeze": 0.087809,
+        "rel_strength": 0.138036,
+        "rev_momentum": 0.011958
+      },
+      "cluster_scores": {
+        "MR": -1.8689,
+        "TREND": 1.5834,
+        "VOL": 0.127,
+        "VOLAT": 1.2836,
+        "REV": 0.2574
+      },
+      "regime": "BULLISH/MIXED",
+      "price": 20.275,
+      "roc_5d": -0.0234,
+      "higher_highs": 1,
+      "higher_lows": 0,
+      "close_pos_5d": 0.504,
+      "vol_ratio": 0.5639,
+      "obv_slope": -345415.2,
+      "ud_ratio": 0.4796,
+      "atr": 0.7454,
+      "atr_expansion": 1.1251,
+      "bb_width": 0.0994,
+      "entry_price": 18.35,
+      "current_price": 20.275,
+      "qty": 60.0,
+      "market_value": 1216.5,
+      "pnl_pct": 10.523,
+      "stop_price": 19.8866,
+      "stop_dist_atr": 0.521,
+      "days_held": 12,
+      "hold_target": 15,
+      "hold_ratio": 0.8
+    }
+  },
+  "PFE": {
+    "symbol": "PFE",
+    "timestamp": "2026-09-29T16:15:16.186683",
+    "tier": "STABLE",
+    "health": 0.1714,
+    "pnl_pct": 0.462,
+    "days_held": 5,
+    "days_history": 10,
+    "pre_entry_days": 0,
+    "composite": 0.4749,
+    "factors_positive": 11,
+    "stop_dist_atr": 1.624,
+    "layers": {
+      "composite_slope": {
+        "score": 0.0605,
+        "detail": "slope=+0.0060/day over 5d",
+        "weight": 0.25
+      },
+      "factor_agreement": {
+        "score": 0.1875,
+        "detail": "FAR=11/16  trend=-0.062",
+        "weight": 0.2
+      },
+      "price_momentum": {
+        "score": -0.032,
+        "detail": "ROC5=+2.86%  HH=0 HL=0  ClosePos=0.77  ROCtrend=-0.21",
+        "weight": 0.15
+      },
+      "cluster_health": {
+        "score": 0.3365,
+        "detail": "TREND=+1.60  MR=-1.65  VOL=+1.55  VOLAT=+0.71  REV=+2.29",
+        "weight": 0.15
+      },
+      "volume": {
+        "score": 0.5297,
+        "detail": "OBV_slope=740164  UD_ratio=3.99  OBVtrend=-0.57",
+        "weight": 0.1
+      },
+      "volatility": {
+        "score": 0.2,
+        "detail": "ATR_exp=1.00  BB_width=0.036",
+        "weight": 0.08
+      },
+      "stop_distance": {
+        "score": 0.0827,
+        "detail": "stop_dist=1.62 ATR",
+        "weight": 0.05
+      },
+      "hold_duration": {
+        "score": 0.0,
+        "detail": "hold_ratio=0.33  pnl=+0.5%",
         "weight": 0.02
       }
     },
@@ -623,77 +349,357 @@
       "components": {}
     },
     "snapshot": {
-      "timestamp": "2026-09-28T16:15:21.458800",
+      "timestamp": "2026-09-29T16:15:16.183191",
+      "symbol": "PFE",
+      "composite": 0.4749,
+      "t_stat": 2.3717,
+      "factors_positive": 11,
+      "factor_agreement": 0.6875,
+      "factor_scores": {
+        "rsi_mr": -2.8575,
+        "bollinger_z": -1.9435,
+        "crowd_panic": -1.3015,
+        "ma_distance": -1.4032,
+        "hurst": -0.7227,
+        "ma_stack": 0.8993,
+        "macd_accel": 1.15,
+        "adx_dir": 2.4441,
+        "price_cloud": 1.8935,
+        "vol_ratio": 0.2102,
+        "obv_r2": 3.0,
+        "accum_dist": 1.4291,
+        "atr_pctile": 0.8729,
+        "bb_squeeze": 0.2108,
+        "rel_strength": 1.0351,
+        "rev_momentum": 2.2874
+      },
+      "factor_contributions": {
+        "rsi_mr": -0.169017,
+        "bollinger_z": -0.103925,
+        "crowd_panic": -0.057623,
+        "ma_distance": -0.05526,
+        "hurst": -0.042305,
+        "ma_stack": 0.078719,
+        "macd_accel": 0.074611,
+        "adx_dir": 0.108853,
+        "price_cloud": 0.102586,
+        "vol_ratio": 0.004007,
+        "obv_r2": 0.13219,
+        "accum_dist": 0.128285,
+        "atr_pctile": 0.077192,
+        "bb_squeeze": 0.010711,
+        "rel_strength": 0.044536,
+        "rev_momentum": 0.141344
+      },
+      "cluster_scores": {
+        "MR": -1.6457,
+        "TREND": 1.5967,
+        "VOL": 1.5464,
+        "VOLAT": 0.7063,
+        "REV": 2.2874
+      },
+      "regime": "BULLISH/MIXED",
+      "price": 28.73,
+      "roc_5d": 0.0286,
+      "higher_highs": 0,
+      "higher_lows": 0,
+      "close_pos_5d": 0.7697,
+      "vol_ratio": 0.9865,
+      "obv_slope": 740164.3,
+      "ud_ratio": 3.9921,
+      "atr": 0.4364,
+      "atr_expansion": 1.0044,
+      "bb_width": 0.0363,
+      "entry_price": 28.55,
+      "current_price": 28.73,
+      "qty": 327.0,
+      "market_value": 9394.710000000001,
+      "pnl_pct": 0.462,
+      "stop_price": 28.0214,
+      "stop_dist_atr": 1.624,
+      "days_held": 5,
+      "hold_target": 15,
+      "hold_ratio": 0.333
+    }
+  },
+  "SMCI": {
+    "symbol": "SMCI",
+    "timestamp": "2026-09-29T16:15:16.190211",
+    "tier": "STABLE",
+    "health": 0.0036,
+    "pnl_pct": -3.488,
+    "days_held": 1,
+    "days_history": 33,
+    "pre_entry_days": 0,
+    "composite": 0.2333,
+    "factors_positive": 9,
+    "stop_dist_atr": 0.404,
+    "layers": {
+      "composite_slope": {
+        "score": -0.2547,
+        "detail": "slope=-0.0255/day over 5d",
+        "weight": 0.25
+      },
+      "factor_agreement": {
+        "score": 0.3125,
+        "detail": "FAR=9/16  trend=+0.062",
+        "weight": 0.2
+      },
+      "price_momentum": {
+        "score": -0.2355,
+        "detail": "ROC5=-1.20%  HH=0 HL=0  ClosePos=0.45  ROCtrend=+1.00",
+        "weight": 0.15
+      },
+      "cluster_health": {
+        "score": 0.2281,
+        "detail": "TREND=+1.15  MR=-0.32  VOL=+0.68  VOLAT=+0.45  REV=-2.02",
+        "weight": 0.15
+      },
+      "volume": {
+        "score": 0.3446,
+        "detail": "OBV_slope=355874  UD_ratio=0.90  OBVtrend=+1.00",
+        "weight": 0.1
+      },
+      "volatility": {
+        "score": 0.1,
+        "detail": "ATR_exp=1.05  BB_width=0.110",
+        "weight": 0.08
+      },
+      "stop_distance": {
+        "score": -0.7307,
+        "detail": "stop_dist=0.40 ATR",
+        "weight": 0.05
+      },
+      "hold_duration": {
+        "score": 0.0,
+        "detail": "hold_ratio=0.07  pnl=-3.5%",
+        "weight": 0.02
+      }
+    },
+    "decay_driver": "",
+    "trim": {
+      "action": "HOLD",
+      "trim_pct": 0.0,
+      "trim_shares": 0,
+      "action_label": "",
+      "reasoning": "",
+      "components": {}
+    },
+    "snapshot": {
+      "timestamp": "2026-09-29T16:15:16.186831",
+      "symbol": "SMCI",
+      "composite": 0.2333,
+      "t_stat": 1.1651,
+      "factors_positive": 9,
+      "factor_agreement": 0.5625,
+      "factor_scores": {
+        "rsi_mr": 0.2601,
+        "bollinger_z": -0.7478,
+        "crowd_panic": 1.6484,
+        "ma_distance": -1.8374,
+        "hurst": -0.9318,
+        "ma_stack": 0.8993,
+        "macd_accel": 0.0,
+        "adx_dir": 2.2886,
+        "price_cloud": 1.4256,
+        "vol_ratio": -1.0043,
+        "obv_r2": 2.1324,
+        "accum_dist": 0.9014,
+        "atr_pctile": -0.5555,
+        "bb_squeeze": 0.0843,
+        "rel_strength": 1.8072,
+        "rev_momentum": -2.0218
+      },
+      "factor_contributions": {
+        "rsi_mr": 0.011504,
+        "bollinger_z": -0.037084,
+        "crowd_panic": 0.074093,
+        "ma_distance": -0.073512,
+        "hurst": -0.056072,
+        "ma_stack": 0.078719,
+        "macd_accel": 0.0,
+        "adx_dir": 0.101655,
+        "price_cloud": 0.075984,
+        "vol_ratio": -0.025698,
+        "obv_r2": 0.092742,
+        "accum_dist": 0.077927,
+        "atr_pctile": -0.046397,
+        "bb_squeeze": 0.00289,
+        "rel_strength": 0.080797,
+        "rev_momentum": -0.124251
+      },
+      "cluster_scores": {
+        "MR": -0.3217,
+        "TREND": 1.1534,
+        "VOL": 0.6765,
+        "VOLAT": 0.4453,
+        "REV": -2.0218
+      },
+      "regime": "BULLISH/MIXED",
+      "price": 41.025,
+      "roc_5d": -0.012,
+      "higher_highs": 0,
+      "higher_lows": 0,
+      "close_pos_5d": 0.4456,
+      "vol_ratio": 0.5715,
+      "obv_slope": 355874.0,
+      "ud_ratio": 0.8983,
+      "atr": 2.3568,
+      "atr_expansion": 1.0496,
+      "bb_width": 0.1098,
+      "entry_price": 42.58,
+      "current_price": 41.025,
+      "qty": 255.0,
+      "market_value": 10461.375,
+      "pnl_pct": -3.488,
+      "stop_price": 40.0738,
+      "stop_dist_atr": 0.404,
+      "days_held": 1,
+      "hold_target": 15,
+      "hold_ratio": 0.067
+    }
+  },
+  "WBD": {
+    "symbol": "WBD",
+    "timestamp": "2026-09-29T16:15:16.193727",
+    "tier": "DECAYING",
+    "health": -0.2265,
+    "pnl_pct": 3.558,
+    "days_held": 8,
+    "days_history": 10,
+    "pre_entry_days": 0,
+    "composite": 0.2261,
+    "factors_positive": 8,
+    "stop_dist_atr": 1.944,
+    "layers": {
+      "composite_slope": {
+        "score": -1.0,
+        "detail": "slope=-0.1225/day over 5d",
+        "weight": 0.25
+      },
+      "factor_agreement": {
+        "score": -0.1875,
+        "detail": "FAR=8/16  trend=-0.062",
+        "weight": 0.2
+      },
+      "price_momentum": {
+        "score": -0.3239,
+        "detail": "ROC5=+0.08%  HH=0 HL=0  ClosePos=0.65  ROCtrend=-1.00",
+        "weight": 0.15
+      },
+      "cluster_health": {
+        "score": 0.2507,
+        "detail": "TREND=+1.51  MR=-1.90  VOL=+1.27  VOLAT=+1.10  REV=-0.27",
+        "weight": 0.15
+      },
+      "volume": {
+        "score": 0.3915,
+        "detail": "OBV_slope=1422676  UD_ratio=0.83  OBVtrend=+0.77",
+        "weight": 0.1
+      },
+      "volatility": {
+        "score": 0.2,
+        "detail": "ATR_exp=0.90  BB_width=0.090",
+        "weight": 0.08
+      },
+      "stop_distance": {
+        "score": 0.296,
+        "detail": "stop_dist=1.94 ATR",
+        "weight": 0.05
+      },
+      "hold_duration": {
+        "score": 0.1,
+        "detail": "hold_ratio=0.53  pnl=+3.6%",
+        "weight": 0.02
+      }
+    },
+    "decay_driver": "composite_slope: slope=-0.1225/day over 5d",
+    "trim": {
+      "action": "TRIM_MODERATE",
+      "action_label": "Moderate trim 30% \u2014 thesis weakening",
+      "trim_pct": 0.2951,
+      "trim_shares": 85,
+      "reasoning": "severity=0.090 x stop_mult=1.00 x far_mult=1.06 x pnl_mult=1.00 + slope_adj=0.200 = 0.295 -> 29.5% (85 sh)",
+      "components": {
+        "severity": 0.09,
+        "stop_mult": 1.0,
+        "far_mult": 1.0562,
+        "pnl_mult": 1.0,
+        "slope_adj": 0.2
+      }
+    },
+    "snapshot": {
+      "timestamp": "2026-09-29T16:15:16.190358",
       "symbol": "WBD",
-      "composite": 0.3207,
-      "t_stat": 1.4137,
+      "composite": 0.2261,
+      "t_stat": 1.129,
       "factors_positive": 8,
       "factor_agreement": 0.5,
       "factor_scores": {
-        "rsi_mr": -3.1472,
-        "bollinger_z": -2.3671,
-        "crowd_panic": -1.3392,
-        "ma_distance": -2.9617,
-        "hurst": -0.5807,
-        "ma_stack": 0.8252,
-        "macd_accel": 0.0,
-        "adx_dir": 3.5835,
-        "price_cloud": 1.8899,
-        "vol_ratio": -0.6335,
-        "obv_r2": 2.9484,
-        "accum_dist": 1.2253,
-        "atr_pctile": 0.3679,
-        "bb_squeeze": 0.0,
-        "rel_strength": 2.8121,
-        "rev_momentum": 0.4919
+        "rsi_mr": -2.5415,
+        "bollinger_z": -2.4134,
+        "crowd_panic": -2.2198,
+        "ma_distance": -2.5273,
+        "hurst": 0.1982,
+        "ma_stack": 0.8515,
+        "macd_accel": -0.334,
+        "adx_dir": 3.4761,
+        "price_cloud": 2.0393,
+        "vol_ratio": -0.3215,
+        "obv_r2": 2.7553,
+        "accum_dist": 1.3734,
+        "atr_pctile": 0.119,
+        "bb_squeeze": -0.0843,
+        "rel_strength": 3.2662,
+        "rev_momentum": -0.2671
       },
       "factor_contributions": {
-        "rsi_mr": -0.182385,
-        "bollinger_z": -0.139832,
-        "crowd_panic": -0.051586,
-        "ma_distance": -0.100761,
-        "hurst": -0.032081,
-        "ma_stack": 0.071282,
-        "macd_accel": 0.0,
-        "adx_dir": 0.162257,
-        "price_cloud": 0.112926,
-        "vol_ratio": -0.013371,
-        "obv_r2": 0.159206,
-        "accum_dist": 0.118851,
-        "atr_pctile": 0.027542,
-        "bb_squeeze": 0.0,
-        "rel_strength": 0.164942,
-        "rev_momentum": 0.023701
+        "rsi_mr": -0.149696,
+        "bollinger_z": -0.130294,
+        "crowd_panic": -0.101269,
+        "ma_distance": -0.102561,
+        "hurst": 0.008777,
+        "ma_stack": 0.074121,
+        "macd_accel": -0.018129,
+        "adx_dir": 0.156643,
+        "price_cloud": 0.110882,
+        "vol_ratio": -0.006899,
+        "obv_r2": 0.121062,
+        "accum_dist": 0.122955,
+        "atr_pctile": 0.006376,
+        "bb_squeeze": -0.00289,
+        "rel_strength": 0.149525,
+        "rev_momentum": -0.012536
       },
       "cluster_scores": {
-        "MR": -2.0792,
-        "TREND": 1.5746,
-        "VOL": 1.1801,
-        "VOLAT": 1.06,
-        "REV": 0.4919
+        "MR": -1.9008,
+        "TREND": 1.5082,
+        "VOL": 1.2691,
+        "VOLAT": 1.1003,
+        "REV": -0.2671
       },
       "regime": "BULLISH/MIXED",
-      "price": 30.885,
-      "roc_5d": 0.0028,
+      "price": 30.845,
+      "roc_5d": 0.0008,
       "higher_highs": 0,
-      "higher_lows": 1,
-      "close_pos_5d": 0.7708,
-      "vol_ratio": 0.7274,
-      "obv_slope": 685384.9,
-      "ud_ratio": 1.76,
-      "atr": 0.4339,
-      "atr_expansion": 0.8829,
-      "bb_width": 0.0866,
+      "higher_lows": 0,
+      "close_pos_5d": 0.6541,
+      "vol_ratio": 0.8298,
+      "obv_slope": 1422675.9,
+      "ud_ratio": 0.8272,
+      "atr": 0.4211,
+      "atr_expansion": 0.8988,
+      "bb_width": 0.0905,
       "entry_price": 29.79,
-      "current_price": 30.885,
-      "qty": 372.0,
-      "market_value": 11489.220000000001,
-      "pnl_pct": 3.659,
-      "stop_price": 29.9986,
-      "stop_dist_atr": 2.043,
-      "days_held": 7,
+      "current_price": 30.845,
+      "qty": 288.0,
+      "market_value": 8883.36,
+      "pnl_pct": 3.558,
+      "stop_price": 30.0264,
+      "stop_dist_atr": 1.944,
+      "days_held": 8,
       "hold_target": 15,
-      "hold_ratio": 0.467
+      "hold_ratio": 0.533
     }
   }
 }

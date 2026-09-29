@@ -3062,5 +3062,45 @@
     "entry_reasoning": null,
     "entry_flags": [],
     "submitted_at": "2026-09-28T12:35:15.085899"
+  },
+  "7f3d7511-6875-42cc-8aa6-d798d9ed463e": {
+    "symbol": "BMNR",
+    "exit_reason": "math_trim_19%",
+    "composite": 0.5496,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-09-29T09:37:51.115018"
+  },
+  "f8b66964-3c94-43a9-bfe3-681f5fba8256": {
+    "symbol": "ETHA",
+    "exit_reason": "math_trim_54%",
+    "composite": 0.3229,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-09-29T09:37:51.216542"
+  },
+  "d3a24da4-d68a-481f-b03c-a7426fb8f479": {
+    "symbol": "ETHA",
+    "exit_reason": "math_trim_37%",
+    "composite": 0.2064,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-09-29T12:35:15.066753"
+  },
+  "738008ee-026a-4313-bdfe-8bbf635138fa": {
+    "symbol": "WBD",
+    "exit_reason": "math_trim_23%",
+    "composite": 0.1995,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-09-29T12:35:15.157757"
   }
 }

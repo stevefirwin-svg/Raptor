@@ -392,7 +392,7 @@
     "v5.4:ETHA": {
       "model": "v5.4",
       "symbol": "ETHA",
-      "shares": 209,
+      "shares": 60,
       "entry_price": 18.35,
       "entry_date": "2026-09-17",
       "metadata": {
@@ -403,7 +403,7 @@
         "composite_score": null,
         "note": "Backfilled from Alpaca \u2014 entry_date approximate",
         "high_water": 20.95,
-        "last_trim_ts": "2026-09-28T12:35:15.117410"
+        "last_trim_ts": "2026-09-29T12:35:15.084638"
       },
       "trims": [
         {
@@ -435,29 +435,62 @@
           "pnl_abs": 452.76,
           "shares_before": 440,
           "shares_after": 209
+        },
+        {
+          "date": "2026-09-29",
+          "reason": "math_trim_54%",
+          "shares_sold": 113,
+          "trim_price": 20.5804,
+          "pnl_pct": 12.1548,
+          "pnl_abs": 252.04,
+          "shares_before": 209,
+          "shares_after": 96
+        },
+        {
+          "date": "2026-09-29",
+          "reason": "math_trim_37%",
+          "shares_sold": 36,
+          "trim_price": 20.22,
+          "pnl_pct": 10.1907,
+          "pnl_abs": 67.32,
+          "shares_before": 96,
+          "shares_after": 60
         }
       ]
     },
     "v5.4:WBD": {
       "model": "v5.4",
       "symbol": "WBD",
-      "shares": 372,
+      "shares": 288,
       "entry_price": 29.79,
       "entry_date": "2026-09-21",
       "metadata": {
-        "stop": 29.9986,
+        "stop": 30.0264,
         "regime": "BACKFILL",
         "t_stat": null,
         "kelly_fraction": null,
         "composite_score": null,
         "note": "Backfilled from Alpaca \u2014 entry_date approximate",
-        "high_water": 30.865
-      }
+        "high_water": 30.865,
+        "last_trim_ts": "2026-09-29T12:35:15.185213"
+      },
+      "trims": [
+        {
+          "date": "2026-09-29",
+          "reason": "math_trim_23%",
+          "shares_sold": 84,
+          "trim_price": 30.86,
+          "pnl_pct": 3.5918,
+          "pnl_abs": 89.88,
+          "shares_before": 372,
+          "shares_after": 288
+        }
+      ]
     },
     "v5.4:BMNR": {
       "model": "v5.4",
       "symbol": "BMNR",
-      "shares": 414,
+      "shares": 334,
       "entry_price": 28.173043,
       "entry_date": "2026-09-22",
       "metadata": {
@@ -467,8 +500,21 @@
         "kelly_fraction": null,
         "composite_score": null,
         "note": "Backfilled from Alpaca \u2014 entry_date approximate",
-        "high_water": 28.31
-      }
+        "high_water": 28.31,
+        "last_trim_ts": "2026-09-29T09:37:51.142666"
+      },
+      "trims": [
+        {
+          "date": "2026-09-29",
+          "reason": "math_trim_19%",
+          "shares_sold": 80,
+          "trim_price": 27.2227,
+          "pnl_pct": -3.3732,
+          "pnl_abs": -76.03,
+          "shares_before": 414,
+          "shares_after": 334
+        }
+      ]
     },
     "v5.4:PFE": {
       "model": "v5.4",
@@ -477,7 +523,7 @@
       "entry_price": 28.55,
       "entry_date": "2026-09-24",
       "metadata": {
-        "stop": 27.7329,
+        "stop": 28.0214,
         "regime": "BACKFILL",
         "t_stat": null,
         "kelly_fraction": null,
@@ -498,7 +544,8 @@
         "t_stat": null,
         "kelly_fraction": null,
         "composite_score": null,
-        "note": "Backfilled from Alpaca \u2014 entry_date approximate"
+        "note": "Backfilled from Alpaca \u2014 entry_date approximate",
+        "high_water": 42.58
       }
     }
   },
