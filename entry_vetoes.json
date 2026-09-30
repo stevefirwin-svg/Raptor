@@ -2851,5 +2851,31 @@
     "agent_math_disagree": false,
     "flags": [],
     "timestamp": "2026-09-28T09:37:50.327886"
+  },
+  {
+    "symbol": "PBR",
+    "decision": "PASS",
+    "confidence": 1.0,
+    "veto_reason": null,
+    "decision_source": "deterministic",
+    "agent_decision": "PASS",
+    "agent_confidence": null,
+    "agent_veto_reason": null,
+    "agent_math_disagree": false,
+    "flags": [],
+    "timestamp": "2026-09-30T09:38:06.743462"
+  },
+  {
+    "symbol": "CCL",
+    "decision": "PASS",
+    "confidence": 1.0,
+    "veto_reason": null,
+    "decision_source": "deterministic",
+    "agent_decision": "PASS",
+    "agent_confidence": null,
+    "agent_veto_reason": null,
+    "agent_math_disagree": false,
+    "flags": [],
+    "timestamp": "2026-09-30T09:38:06.743478"
   }
 ]
