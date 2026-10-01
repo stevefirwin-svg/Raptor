@@ -3162,5 +3162,45 @@
     "entry_reasoning": null,
     "entry_flags": [],
     "submitted_at": "2026-09-30T12:35:15.471408"
+  },
+  "df8eac77-78ba-49ec-9912-6e11f65084be": {
+    "symbol": "ETHA",
+    "exit_reason": "math_trim_13%",
+    "composite": 0.3091,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-10-01T09:38:16.686269"
+  },
+  "42fae0cf-7a52-49a7-bbc6-cd367d847977": {
+    "symbol": "ETHA",
+    "exit_reason": "math_trim_25%",
+    "composite": 0.252,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-10-01T12:35:23.210417"
+  },
+  "ff8652af-c1a6-4d3a-b239-37997c68ba6a": {
+    "symbol": "SMCI",
+    "exit_reason": "math_trim_47%",
+    "composite": 0.1308,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-10-01T12:35:23.305388"
+  },
+  "4301e2cc-e94d-4bd5-8db7-642b0c94f146": {
+    "symbol": "WBD",
+    "exit_reason": "math_trim_20%",
+    "composite": 0.2564,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-10-01T12:35:23.403996"
   }
 }
