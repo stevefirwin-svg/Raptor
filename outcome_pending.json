@@ -3202,5 +3202,45 @@
     "entry_reasoning": null,
     "entry_flags": [],
     "submitted_at": "2026-10-01T12:35:23.403996"
+  },
+  "3b6e2ef3-63ed-4d69-b7a6-8791a56029c6": {
+    "symbol": "PFE",
+    "exit_reason": "hard_stop",
+    "composite": 0.3262,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-10-02T09:38:51.513741"
+  },
+  "b800dfc7-124a-4d42-9e39-87b7c83665e8": {
+    "symbol": "ETHA",
+    "exit_reason": "math_trim_29%",
+    "composite": 0.1275,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-10-02T09:38:51.635618"
+  },
+  "9c4bd028-4ffa-4780-80a9-9b8898f333c0": {
+    "symbol": "SMCI",
+    "exit_reason": "math_trim_49%",
+    "composite": -0.0167,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-10-02T09:38:51.744238"
+  },
+  "5c02d070-0b1f-4f2d-a28e-8c17591c441f": {
+    "symbol": "SMCI",
+    "exit_reason": "math_trim_21%",
+    "composite": 0.0511,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-10-02T12:35:14.897571"
   }
 }

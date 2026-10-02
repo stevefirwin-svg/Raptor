@@ -3534,5 +3534,44 @@
     "agent_decision": "HOLD",
     "agent_conf": 0.9,
     "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-10-02T09:38:51.809068",
+    "symbol": "ETHA",
+    "trim_qty": 7,
+    "price": 20.86,
+    "pnl_pct": 13.68,
+    "reason": "math_trim_29%",
+    "composite": 0.1275,
+    "trim_detail": "severity=0.149 x stop_mult=1.50 x far_mult=1.17 x pnl_mult=0.80 + slope_adj=0.078 = 0.286 -> 28.6% (7 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-10-02T09:38:51.809123",
+    "symbol": "SMCI",
+    "trim_qty": 66,
+    "price": 42.7749,
+    "pnl_pct": 0.46,
+    "reason": "math_trim_49%",
+    "composite": -0.0167,
+    "trim_detail": "severity=0.182 x stop_mult=1.50 x far_mult=1.17 x pnl_mult=1.20 + slope_adj=0.108 = 0.489 -> 48.9% (66 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-10-02T12:35:14.957691",
+    "symbol": "SMCI",
+    "trim_qty": 14,
+    "price": 43.43,
+    "pnl_pct": 2.0,
+    "reason": "math_trim_21%",
+    "composite": 0.0511,
+    "trim_detail": "severity=0.022 x stop_mult=1.25 x far_mult=1.00 x pnl_mult=1.00 + slope_adj=0.179 = 0.207 -> 20.7% (14 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
   }
 ]
