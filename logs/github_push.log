@@ -930,3 +930,10 @@ fatal: could not read Username for 'https://github.com': No such file or directo
 [Sun 10/11/2026 18:00:04.57] FATAL: git push failed (errorlevel 128) 
 [Sun 10/11/2026 18:00:04.57] RESULT: FAILED — see logs\github_push.log 
 [Wed 10/14/2026 16:23:34.74] Starting daily GitHub push... 
+warning: in the working copy of 'logs/github_push.log', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'logs/raptor_auto_start.log', CRLF will be replaced by LF the next time Git touches it
+[main 3d5386c] Daily update 2026-10-14
+ 2 files changed, 13 insertions(+)
+fatal: unable to access 'https://github.com/stevefirwin-svg/Raptor/': Failed to connect to github.com port 443 after 21160 ms: Could not connect to server
+[Wed 10/14/2026 16:24:01.28] FATAL: git push failed (errorlevel 128) 
+[Wed 10/14/2026 16:24:01.28] RESULT: FAILED — see logs\github_push.log 
