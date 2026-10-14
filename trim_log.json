@@ -3573,5 +3573,31 @@
     "agent_decision": "HOLD",
     "agent_conf": 0.9,
     "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-10-14T16:41:31.947837",
+    "symbol": "ETHA",
+    "trim_qty": 6,
+    "price": 54.64,
+    "pnl_pct": 197.77,
+    "reason": "math_trim_36%",
+    "composite": -0.1073,
+    "trim_detail": "severity=0.348 x stop_mult=0.75 x far_mult=1.17 x pnl_mult=0.60 + slope_adj=0.173 = 0.356 -> 35.6% (6 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-10-14T16:41:31.947938",
+    "symbol": "NU",
+    "trim_qty": 276,
+    "price": 14.889,
+    "pnl_pct": 12.2,
+    "reason": "math_trim_38%",
+    "composite": -0.1325,
+    "trim_detail": "severity=0.277 x stop_mult=0.75 x far_mult=1.06 x pnl_mult=0.80 + slope_adj=0.200 = 0.376 -> 37.6% (276 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
   }
 ]

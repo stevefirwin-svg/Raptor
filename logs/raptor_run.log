@@ -7508,3 +7508,43 @@ Email failed: Connection unexpectedly closed
 
 [MacroContext] Regime: NEUTRAL  Score: +0.125
 Email failed: Connection unexpectedly closed
+2026-10-14 16:40:53,156 [raptor.main] INFO: ============================================================
+2026-10-14 16:40:53,157 [raptor.main] INFO: RAPTOR v5.4 DAILY SCAN - 2026-10-14T16:40:53.157508
+2026-10-14 16:40:53,157 [raptor.main] INFO: ============================================================
+[CONFIG] Raptor v5.4.0 validated
+2026-10-14 16:40:53,231 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-10-14 16:40:55,881 [raptor.data_feeds] WARNING: safe_int: account.daytrade_count was None, defaulting to 0
+2026-10-14 16:40:55,881 [raptor.main] INFO: Account: equity=$106704.73  cap=none (compound)  sizing_base=$106704.73  positions=6
+2026-10-14 16:40:55,912 [raptor.main] INFO: [MarketAgent] SCAN | scalar=1.00 | Macro NEUTRAL — full scan, normal sizing.
+2026-10-14 16:40:55,937 [raptor.data_feeds] WARNING: safe_int: account.daytrade_count was None, defaulting to 0
+2026-10-14 16:40:55,964 [raptor.margin_guard] INFO: MARGIN GUARD: equity=$106,705  cap=none (compound)  cash=$59,736  positions=6
+2026-10-14 16:40:55,965 [raptor.margin_guard] INFO: MARGIN GUARD: market_value=$46,969  utilization=44.0% of base  margin=NO
+2026-10-14 16:40:56,044 [raptor.universe] INFO: Universe from cache: 56 symbols
+2026-10-14 16:40:56,045 [raptor.main] INFO: Dynamic universe: 56 symbols
+2026-10-14 16:40:58,973 [raptor.data_feeds] INFO: Fetched 57 new bars / 57 total cached
+2026-10-14 16:40:59,518 [raptor.data_feeds] INFO: FRED regime: BULLISH (score=0.300)
+2026-10-14 16:40:59,537 [raptor.main] INFO: [MacroOverride] regime -> NEUTRAL (from macro_context.json)
+2026-10-14 16:40:59,537 [raptor.main] INFO: Data: 57 symbols | Macro: NEUTRAL (0.300)
+2026-10-14 16:41:03,641 [raptor.signals] INFO: v5.4 Signals: 5 from 57 | Macro=NEUTRAL Scale=1.0 | Micro={'MIXED': 46, 'TRENDING': 9, 'REVERTING': 2} | SNR min=1.47 max=2.25
+2026-10-14 16:41:03,661 [raptor.main] INFO: Velocity gate: 5 signals remain | velocities: {'PCG': '+0.000', 'ONON': '+0.000', 'XLU': '+0.000', 'CSX': '+0.000', 'GOOGL': '+0.000'}
+2026-10-14 16:41:03,668 [raptor.main] INFO: Signals:
+2026-10-14 16:41:03,669 [raptor.main] INFO:   1. PCG  t=2.247  pctl=98%  entry=$13.16  stop=$12.27  tp=$0.00  kelly=0.120  hold~30d
+2026-10-14 16:41:03,669 [raptor.main] INFO:   2. ONON  t=1.817  pctl=100%  entry=$35.52  stop=$32.63  tp=$0.00  kelly=0.120  hold~30d
+2026-10-14 16:41:03,669 [raptor.main] INFO:   3. XLU  t=1.673  pctl=93%  entry=$41.74  stop=$40.17  tp=$0.00  kelly=0.120  hold~30d
+2026-10-14 16:41:03,669 [raptor.main] INFO:   4. CSX  t=1.661  pctl=88%  entry=$48.31  stop=$46.99  tp=$0.00  kelly=0.120  hold~30d
+2026-10-14 16:41:03,669 [raptor.main] INFO:   5. GOOGL  t=1.468  pctl=89%  entry=$347.78  stop=$327.98  tp=$0.00  kelly=0.119  hold~6d
+2026-10-14 16:41:06,059 [AgentLayer] WARNING: EntryAgent batch failed ('"decision"') — deterministic rules only.
+2026-10-14 16:41:06,103 [raptor.main] INFO: Deployable: cap=none  market_value=$46969  cash=$59736  headroom=$56749  available=$56749  (margin=OFF)
+2026-10-14 16:41:06,914 [raptor.data_feeds] INFO: Order submitted: BUY 972 PCG @ 13.17
+2026-10-14 16:41:06,935 [raptor.main] INFO: ORDER [v5.4]: BUY 972 PCG @ $13.17
+2026-10-14 16:41:07,460 [raptor.slippage] INFO: SLIPPAGE BUY 972 PCG: decision=$13.1600 fill=PENDING (order b9ed3a79)
+2026-10-14 16:41:07,489 [raptor.data_feeds] INFO: Order submitted: BUY 360 ONON @ 35.56
+2026-10-14 16:41:07,507 [raptor.main] INFO: ORDER [v5.4]: BUY 360 ONON @ $35.56
+2026-10-14 16:41:07,534 [raptor.slippage] INFO: SLIPPAGE BUY 360 ONON: decision=$35.5250 fill=PENDING (order 6d303f45)
+2026-10-14 16:41:07,565 [raptor.data_feeds] INFO: Order submitted: BUY 306 XLU @ 41.78
+2026-10-14 16:41:07,587 [raptor.main] INFO: ORDER [v5.4]: BUY 306 XLU @ $41.78
+2026-10-14 16:41:07,698 [raptor.slippage] INFO: SLIPPAGE BUY 306 XLU: decision=$41.7400 fill=PENDING (order 627fc39f)
+2026-10-14 16:41:07,726 [raptor.data_feeds] INFO: Order submitted: BUY 265 CSX @ 48.36
+2026-10-14 16:41:07,751 [raptor.main] INFO: ORDER [v5.4]: BUY 265 CSX @ $48.36
+2026-10-14 16:41:07,781 [raptor.slippage] INFO: SLIPPAGE BUY 265 CSX: decision=$48.3100 fill=PENDING (order 1f607dd0)
+2026-10-14 16:41:07,782 [raptor.main] INFO: Scan complete. 4 orders placed for v5.4.

@@ -3242,5 +3242,45 @@
     "entry_reasoning": null,
     "entry_flags": [],
     "submitted_at": "2026-10-02T12:35:14.897571"
+  },
+  "95e4f7fc-2212-448b-a563-94f302f783c0": {
+    "symbol": "NVDA",
+    "exit_reason": "hard_stop",
+    "composite": -0.0249,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-10-14T16:41:30.754922"
+  },
+  "44a7059a-ce32-4859-ad5c-601813967a7d": {
+    "symbol": "SMCI",
+    "exit_reason": "hard_stop",
+    "composite": -0.2528,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-10-14T16:41:31.135522"
+  },
+  "d80e384b-f5ae-4ecf-aa29-5fa414bf0ee4": {
+    "symbol": "ETHA",
+    "exit_reason": "math_trim_36%",
+    "composite": -0.1073,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-10-14T16:41:31.554742"
+  },
+  "c07038e4-a11a-4a3d-b05f-66185a5d5fcd": {
+    "symbol": "NU",
+    "exit_reason": "math_trim_38%",
+    "composite": -0.1325,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-10-14T16:41:31.823295"
   }
 }
