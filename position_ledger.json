@@ -660,6 +660,66 @@
         "composite_score": null,
         "note": "Backfilled from Alpaca \u2014 entry_date approximate"
       }
+    },
+    "v5.4:CSX": {
+      "model": "v5.4",
+      "symbol": "CSX",
+      "shares": 265,
+      "entry_price": 48.351283,
+      "entry_date": "2026-10-15",
+      "metadata": {
+        "stop": 45.4058,
+        "regime": "BACKFILL",
+        "t_stat": null,
+        "kelly_fraction": null,
+        "composite_score": null,
+        "note": "Backfilled from Alpaca \u2014 entry_date approximate"
+      }
+    },
+    "v5.4:ONON": {
+      "model": "v5.4",
+      "symbol": "ONON",
+      "shares": 360,
+      "entry_price": 35.526778,
+      "entry_date": "2026-10-15",
+      "metadata": {
+        "stop": 33.4208,
+        "regime": "BACKFILL",
+        "t_stat": null,
+        "kelly_fraction": null,
+        "composite_score": null,
+        "note": "Backfilled from Alpaca \u2014 entry_date approximate"
+      }
+    },
+    "v5.4:PCG": {
+      "model": "v5.4",
+      "symbol": "PCG",
+      "shares": 972,
+      "entry_price": 13.14,
+      "entry_date": "2026-10-15",
+      "metadata": {
+        "stop": 12.3603,
+        "regime": "BACKFILL",
+        "t_stat": null,
+        "kelly_fraction": null,
+        "composite_score": null,
+        "note": "Backfilled from Alpaca \u2014 entry_date approximate"
+      }
+    },
+    "v5.4:XLU": {
+      "model": "v5.4",
+      "symbol": "XLU",
+      "shares": 306,
+      "entry_price": 41.78,
+      "entry_date": "2026-10-15",
+      "metadata": {
+        "stop": 39.278,
+        "regime": "BACKFILL",
+        "t_stat": null,
+        "kelly_fraction": null,
+        "composite_score": null,
+        "note": "Backfilled from Alpaca \u2014 entry_date approximate"
+      }
     }
   },
   "closed": [

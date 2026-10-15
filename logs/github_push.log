@@ -938,3 +938,13 @@ fatal: unable to access 'https://github.com/stevefirwin-svg/Raptor/': Failed to 
 [Wed 10/14/2026 16:24:01.28] FATAL: git push failed (errorlevel 128) 
 [Wed 10/14/2026 16:24:01.28] RESULT: FAILED — see logs\github_push.log 
 [Wed 10/14/2026 18:00:01.67] Starting daily GitHub push... 
+warning: in the working copy of 'logs/github_push.log', CRLF will be replaced by LF the next time Git touches it
+[main a13b260] Daily update 2026-10-14
+ 1 file changed, 1 insertion(+)
+fatal: Unable to persist credentials with the 'wincredman' credential store.
+See https://aka.ms/gcm/credstores for more information.
+bash: line 1: /dev/tty: No such device or address
+error: failed to execute prompt script (exit code 1)
+fatal: could not read Username for 'https://github.com': No such file or directory
+[Wed 10/14/2026 18:00:03.62] FATAL: git push failed (errorlevel 128) 
+[Wed 10/14/2026 18:00:03.62] RESULT: FAILED — see logs\github_push.log 
