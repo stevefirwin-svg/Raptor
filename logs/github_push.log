@@ -960,3 +960,8 @@ fatal: could not read Username for 'https://github.com': No such file or directo
 [Thu 10/15/2026 18:00:02.98] FATAL: git push failed (errorlevel 128) 
 [Thu 10/15/2026 18:00:02.98] RESULT: FAILED — see logs\github_push.log 
 [Fri 10/16/2026 18:32:05.51] Starting daily GitHub push... 
+warning: in the working copy of 'logs/github_push.log', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'logs/raptor_auto_start.log', CRLF will be replaced by LF the next time Git touches it
+[main fe21f9d] Daily update 2026-10-16
+ 2 files changed, 13 insertions(+)
+^C[Sat 10/17/2026 18:00:01.69] Starting daily GitHub push... 

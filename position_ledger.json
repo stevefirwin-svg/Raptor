@@ -392,7 +392,7 @@
     "v5.4:ETHA": {
       "model": "v5.4",
       "symbol": "ETHA",
-      "shares": 12,
+      "shares": 4,
       "entry_price": 18.35,
       "entry_date": "2026-09-17",
       "metadata": {
@@ -403,7 +403,7 @@
         "composite_score": null,
         "note": "Backfilled from Alpaca \u2014 entry_date approximate",
         "high_water": 54.64,
-        "last_trim_ts": "2026-10-14T16:41:31.638815"
+        "last_trim_ts": "2026-10-16T18:42:50.705648"
       },
       "trims": [
         {
@@ -505,6 +505,16 @@
           "pnl_abs": 217.74,
           "shares_before": 18,
           "shares_after": 12
+        },
+        {
+          "date": "2026-10-16",
+          "reason": "math_trim_68%",
+          "shares_sold": 8,
+          "trim_price": 54.63,
+          "pnl_pct": 197.7112,
+          "pnl_abs": 290.24,
+          "shares_before": 12,
+          "shares_after": 4
         }
       ]
     },
@@ -570,7 +580,7 @@
     "v5.4:CCL": {
       "model": "v5.4",
       "symbol": "CCL",
-      "shares": 387,
+      "shares": 233,
       "entry_price": 25.02,
       "entry_date": "2026-09-30",
       "metadata": {
@@ -580,8 +590,21 @@
         "kelly_fraction": null,
         "composite_score": null,
         "note": "Backfilled from Alpaca \u2014 entry_date approximate",
-        "high_water": 25.92
-      }
+        "high_water": 25.92,
+        "last_trim_ts": "2026-10-16T18:42:50.564416"
+      },
+      "trims": [
+        {
+          "date": "2026-10-16",
+          "reason": "math_trim_40%",
+          "shares_sold": 154,
+          "trim_price": 25.8,
+          "pnl_pct": 3.1175,
+          "pnl_abs": 120.12,
+          "shares_before": 387,
+          "shares_after": 233
+        }
+      ]
     },
     "v5.4:PBR": {
       "model": "v5.4",
@@ -590,30 +613,30 @@
       "entry_price": 20.956685,
       "entry_date": "2026-09-30",
       "metadata": {
-        "stop": 24.3002,
+        "stop": 24.8339,
         "regime": "BACKFILL",
         "t_stat": null,
         "kelly_fraction": null,
         "composite_score": null,
         "note": "Backfilled from Alpaca \u2014 entry_date approximate",
-        "high_water": 25.8191
+        "high_water": 26.05
       }
     },
     "v5.4:NU": {
       "model": "v5.4",
       "symbol": "NU",
-      "shares": 458,
+      "shares": 142,
       "entry_price": 13.27,
       "entry_date": "2026-10-01",
       "metadata": {
-        "stop": 13.907,
+        "stop": 14.1875,
         "regime": "BACKFILL",
         "t_stat": null,
         "kelly_fraction": null,
         "composite_score": null,
         "note": "Backfilled from Alpaca \u2014 entry_date approximate",
         "high_water": 14.889,
-        "last_trim_ts": "2026-10-14T16:41:31.871855"
+        "last_trim_ts": "2026-10-16T18:42:50.839572"
       },
       "trims": [
         {
@@ -625,6 +648,16 @@
           "pnl_abs": 446.84,
           "shares_before": 734,
           "shares_after": 458
+        },
+        {
+          "date": "2026-10-16",
+          "reason": "math_trim_69%",
+          "shares_sold": 316,
+          "trim_price": 14.56,
+          "pnl_pct": 9.7212,
+          "pnl_abs": 407.64,
+          "shares_before": 458,
+          "shares_after": 142
         }
       ]
     },
@@ -668,12 +701,13 @@
       "entry_price": 48.351283,
       "entry_date": "2026-10-15",
       "metadata": {
-        "stop": 45.4058,
+        "stop": 46.4607,
         "regime": "BACKFILL",
         "t_stat": null,
         "kelly_fraction": null,
         "composite_score": null,
-        "note": "Backfilled from Alpaca \u2014 entry_date approximate"
+        "note": "Backfilled from Alpaca \u2014 entry_date approximate",
+        "high_water": 48.68
       }
     },
     "v5.4:ONON": {
@@ -688,7 +722,8 @@
         "t_stat": null,
         "kelly_fraction": null,
         "composite_score": null,
-        "note": "Backfilled from Alpaca \u2014 entry_date approximate"
+        "note": "Backfilled from Alpaca \u2014 entry_date approximate",
+        "high_water": 35.5268
       }
     },
     "v5.4:PCG": {
@@ -703,23 +738,38 @@
         "t_stat": null,
         "kelly_fraction": null,
         "composite_score": null,
-        "note": "Backfilled from Alpaca \u2014 entry_date approximate"
+        "note": "Backfilled from Alpaca \u2014 entry_date approximate",
+        "high_water": 13.14
       }
     },
     "v5.4:XLU": {
       "model": "v5.4",
       "symbol": "XLU",
-      "shares": 306,
+      "shares": 224,
       "entry_price": 41.78,
       "entry_date": "2026-10-15",
       "metadata": {
-        "stop": 39.278,
+        "stop": 40.5118,
         "regime": "BACKFILL",
         "t_stat": null,
         "kelly_fraction": null,
         "composite_score": null,
-        "note": "Backfilled from Alpaca \u2014 entry_date approximate"
-      }
+        "note": "Backfilled from Alpaca \u2014 entry_date approximate",
+        "high_water": 42.16,
+        "last_trim_ts": "2026-10-16T18:42:50.970933"
+      },
+      "trims": [
+        {
+          "date": "2026-10-16",
+          "reason": "math_trim_27%",
+          "shares_sold": 82,
+          "trim_price": 42.16,
+          "pnl_pct": 0.9095,
+          "pnl_abs": 31.16,
+          "shares_before": 306,
+          "shares_after": 224
+        }
+      ]
     }
   },
   "closed": [

@@ -7548,3 +7548,46 @@ Email failed: Connection unexpectedly closed
 2026-10-14 16:41:07,751 [raptor.main] INFO: ORDER [v5.4]: BUY 265 CSX @ $48.36
 2026-10-14 16:41:07,781 [raptor.slippage] INFO: SLIPPAGE BUY 265 CSX: decision=$48.3100 fill=PENDING (order 1f607dd0)
 2026-10-14 16:41:07,782 [raptor.main] INFO: Scan complete. 4 orders placed for v5.4.
+2026-10-16 18:39:50,927 [raptor.main] INFO: ============================================================
+2026-10-16 18:39:50,928 [raptor.main] INFO: RAPTOR v5.4 DAILY SCAN - 2026-10-16T18:39:50.928418
+2026-10-16 18:39:50,928 [raptor.main] INFO: ============================================================
+[CONFIG] Raptor v5.4.0 validated
+2026-10-16 18:39:50,929 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-10-16 18:39:51,339 [raptor.data_feeds] WARNING: safe_int: account.daytrade_count was None, defaulting to 0
+2026-10-16 18:39:51,339 [raptor.main] INFO: Account: equity=$105965.31  cap=none (compound)  sizing_base=$105965.31  positions=8
+2026-10-16 18:39:51,356 [raptor.main] INFO: [MarketAgent] SCAN | scalar=1.00 | Macro NEUTRAL — full scan, normal sizing.
+2026-10-16 18:39:51,379 [raptor.data_feeds] WARNING: safe_int: account.daytrade_count was None, defaulting to 0
+2026-10-16 18:39:51,401 [raptor.margin_guard] INFO: MARGIN GUARD: equity=$105,965  cap=none (compound)  cash=$22,910  positions=8
+2026-10-16 18:39:51,401 [raptor.margin_guard] INFO: MARGIN GUARD: market_value=$83,055  utilization=78.4% of base  margin=NO
+2026-10-16 18:39:51,402 [raptor.margin_guard] WARNING: MARGIN GUARD: WARNING — utilization 78.4% of base
+2026-10-16 18:39:51,404 [raptor.universe] INFO: Building universe...
+2026-10-16 18:39:52,286 [raptor.universe] INFO: Alpaca tradeable assets: 7219 after initial filter
+2026-10-16 18:39:52,302 [raptor.universe] INFO: Step 1: 7219 tradeable assets from Alpaca
+2026-10-16 18:39:52,303 [raptor.universe] INFO: Step 2: Fetching bars for 7219 symbols (this takes 1-2 min)...
+2026-10-16 18:42:11,641 [raptor.universe] INFO: Step 2: Got bars for 7215 symbols
+2026-10-16 18:42:20,943 [raptor.universe] INFO: Step 3: 55 symbols passed all screens
+2026-10-16 18:42:21,083 [raptor.main] INFO: Dynamic universe: 55 symbols
+2026-10-16 18:42:23,897 [raptor.data_feeds] INFO: Fetched 56 new bars / 56 total cached
+2026-10-16 18:42:24,637 [raptor.data_feeds] INFO: FRED fetch OK: T10Y2Y (750 observations)
+2026-10-16 18:42:25,654 [raptor.data_feeds] INFO: FRED fetch OK: FEDFUNDS (36 observations)
+2026-10-16 18:42:29,444 [raptor.data_feeds] INFO: FRED fetch OK: ICSA (156 observations)
+2026-10-16 18:42:30,505 [raptor.data_feeds] INFO: FRED fetch OK: CPIAUCSL (35 observations)
+2026-10-16 18:42:31,524 [raptor.data_feeds] INFO: FRED fetch OK: IPMAN (36 observations)
+2026-10-16 18:42:34,115 [raptor.data_feeds] INFO: FRED fetch OK: M2SL (35 observations)
+2026-10-16 18:42:36,549 [raptor.data_feeds] INFO: FRED fetch OK: RSXFS (36 observations)
+2026-10-16 18:42:40,278 [raptor.data_feeds] INFO: FRED fetch OK: UNRATE (35 observations)
+2026-10-16 18:42:40,282 [raptor.data_feeds] INFO: FRED regime: BULLISH (score=0.200)
+2026-10-16 18:42:40,285 [raptor.main] INFO: [MacroOverride] regime -> NEUTRAL (from macro_context.json)
+2026-10-16 18:42:40,285 [raptor.main] INFO: Data: 56 symbols | Macro: NEUTRAL (0.200)
+2026-10-16 18:42:42,439 [raptor.signals] INFO: v5.4 Signals: 5 from 56 | Macro=NEUTRAL Scale=0.8 | Micro={'MIXED': 44, 'TRENDING': 12} | SNR min=1.79 max=2.01
+2026-10-16 18:42:42,474 [raptor.main] INFO: Velocity gate: 2 signals remain | velocities: {'CMCSA': '+0.000', 'NEE': '+0.000'}
+2026-10-16 18:42:42,477 [raptor.main] INFO: Signals:
+2026-10-16 18:42:42,477 [raptor.main] INFO:   1. CMCSA  t=1.926  pctl=95%  entry=$21.91  stop=$20.67  tp=$0.00  kelly=0.110  hold~30d
+2026-10-16 18:42:42,477 [raptor.main] INFO:   2. NEE  t=1.789  pctl=98%  entry=$79.78  stop=$75.79  tp=$0.00  kelly=0.105  hold~30d
+2026-10-16 18:42:44,664 [AgentLayer] WARNING: EntryAgent batch failed ('"decision"') — deterministic rules only.
+2026-10-16 18:42:44,705 [raptor.main] INFO: Deployable: cap=none  market_value=$83055  cash=$22910  headroom=$21764  available=$21764  (margin=OFF)
+2026-10-16 18:42:45,463 [raptor.data_feeds] INFO: Order submitted: BUY 530 CMCSA @ 21.93
+2026-10-16 18:42:45,535 [raptor.main] INFO: ORDER [v5.4]: BUY 530 CMCSA @ $21.93
+2026-10-16 18:42:45,811 [raptor.slippage] INFO: SLIPPAGE BUY 530 CMCSA: decision=$21.9100 fill=PENDING (order 8fe5ccc2)
+2026-10-16 18:42:45,813 [raptor.main] INFO: SKIP NEE — insufficient deployable capital ($11089.42 needed, $10152.20 available; no margin)
+2026-10-16 18:42:45,814 [raptor.main] INFO: Scan complete. 1 orders placed for v5.4.
