@@ -965,3 +965,19 @@ warning: in the working copy of 'logs/raptor_auto_start.log', CRLF will be repla
 [main fe21f9d] Daily update 2026-10-16
  2 files changed, 13 insertions(+)
 ^C[Sat 10/17/2026 18:00:01.69] Starting daily GitHub push... 
+warning: in the working copy of 'entry_vetoes.json', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'logs/github_push.log', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'logs/raptor_auto_start.log', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'logs/raptor_run.log', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'macro_context.json', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'market_decision.json', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'outcome_pending.json', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'position_ledger.json', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'slippage_log.json', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'trim_log.json', CRLF will be replaced by LF the next time Git touches it
+[main f79a706] Daily update 2026-10-17
+ 11 files changed, 330 insertions(+), 32 deletions(-)
+To https://github.com/stevefirwin-svg/Raptor
+   e77b688..f79a706  main -> main
+[Sat 10/17/2026 18:00:10.32] RESULT: SUCCESS — push verified. 
+[Wed 10/21/2026 11:47:02.52] Starting daily GitHub push... 
