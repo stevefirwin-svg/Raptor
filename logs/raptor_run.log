@@ -7625,3 +7625,96 @@ Email failed: Connection unexpectedly closed
 11597.exchange
   Input should be 'AMEX', 'ARCA', 'ASCX', 'BATS', 'NYSE', 'NASDAQ', 'NYSEARCA', 'FTXU', 'CBSE', 'GNSS', 'ERSX', 'OTC', 'CRYPTO' or '' [type=enum, input_value='TXSE', input_type=str]
     For further information visit https://errors.pydantic.dev/2.12/v/enum) â€” aborting scan.
+2026-10-21 15:50:05,519 [raptor.hold_monitor] INFO: ============================================================
+2026-10-21 15:50:05,519 [raptor.hold_monitor] INFO: RAPTOR HOLD MONITOR - 2026-10-21T15:50:05.519853
+2026-10-21 15:50:05,520 [raptor.hold_monitor] INFO: ============================================================
+2026-10-21 15:50:05,521 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-10-21 15:50:06,207 [raptor.universe] INFO: Building universe...
+2026-10-21 15:50:07,903 [raptor.hold_monitor] INFO: Fetching data for 10 symbols...
+2026-10-21 15:50:08,679 [raptor.data_feeds] INFO: Fetched 10 new bars / 10 total cached
+2026-10-21 15:50:09,374 [raptor.data_feeds] ERROR: FRED fetch failed for T10Y2Y: Expecting value: line 1 column 1 (char 0)
+2026-10-21 15:50:09,975 [raptor.data_feeds] ERROR: FRED fetch failed for FEDFUNDS: Expecting value: line 1 column 1 (char 0)
+2026-10-21 15:50:10,538 [raptor.data_feeds] ERROR: FRED fetch failed for ICSA: Expecting value: line 1 column 1 (char 0)
+2026-10-21 15:50:11,065 [raptor.data_feeds] ERROR: FRED fetch failed for VIXCLS: Expecting value: line 1 column 1 (char 0)
+2026-10-21 15:50:11,602 [raptor.data_feeds] ERROR: FRED fetch failed for BAMLC0A4CBBB: Expecting value: line 1 column 1 (char 0)
+2026-10-21 15:50:12,091 [raptor.data_feeds] ERROR: FRED fetch failed for CPIAUCSL: Expecting value: line 1 column 1 (char 0)
+2026-10-21 15:50:12,624 [raptor.data_feeds] ERROR: FRED fetch failed for IPMAN: Expecting value: line 1 column 1 (char 0)
+2026-10-21 15:50:13,076 [raptor.data_feeds] ERROR: FRED fetch failed for M2SL: Expecting value: line 1 column 1 (char 0)
+2026-10-21 15:50:13,573 [raptor.data_feeds] ERROR: FRED fetch failed for RSXFS: Expecting value: line 1 column 1 (char 0)
+2026-10-21 15:50:14,094 [raptor.data_feeds] ERROR: FRED fetch failed for UNRATE: Expecting value: line 1 column 1 (char 0)
+2026-10-21 15:50:14,317 [raptor.signals] INFO: v5.4 Signals: 5 from 10 | Macro=UNKNOWN Scale=0.8 | Micro={'MIXED': 8, 'TRENDING': 2} | SNR min=0.60 max=1.95
+2026-10-21 15:50:14,319 [raptor.hold_monitor] INFO: Pre-entry tracker: 3 candidates monitored
+2026-10-21 15:50:14,325 [raptor.hold_monitor] INFO:   [YLW] CCL     health=-0.010  FAR=6/16  pnl=+9.1%  stop=0.92ATR  -> HOLD
+2026-10-21 15:50:14,329 [raptor.hold_monitor] INFO:   [GRN] CMCSA   health=+0.460  FAR=12/16  pnl=+1.8%  stop=3.03ATR  -> HOLD
+2026-10-21 15:50:14,334 [raptor.hold_monitor] INFO:   [GRN] CSX     health=+0.291  FAR=10/16  pnl=-0.4%  stop=1.38ATR  -> HOLD
+2026-10-21 15:50:14,338 [raptor.hold_monitor] INFO:   [RED] ETHA    health=-0.237  FAR=5/16  pnl=+207.4%  stop=0.93ATR  -> TRIM_MODERATE
+2026-10-21 15:50:14,338 [raptor.hold_monitor] INFO:     DECAY: composite_slope: slope=-0.1318/day over 5d
+2026-10-21 15:50:14,338 [raptor.hold_monitor] INFO:     TRIM:  severity=0.102 x stop_mult=1.50 x far_mult=1.11 x pnl_mult=0.60 + slope_adj=0.200 = 0.302 -> 30.2% (1 sh)
+2026-10-21 15:50:14,342 [raptor.hold_monitor] INFO:   [RED] NU      health=-0.426  FAR=4/16  pnl=+13.7%  stop=0.75ATR  -> TRIM_MAJOR
+2026-10-21 15:50:14,342 [raptor.hold_monitor] INFO:     DECAY: composite_slope: slope=-0.1937/day over 5d
+2026-10-21 15:50:14,342 [raptor.hold_monitor] INFO:     TRIM:  severity=0.325 x stop_mult=1.50 x far_mult=1.21 x pnl_mult=0.80 + slope_adj=0.200 = 0.670 -> 67.0% (60 sh)
+2026-10-21 15:50:14,346 [raptor.hold_monitor] INFO:   [---] ONON    health=+0.260  FAR=10/16  pnl=-3.1%  stop=0.90ATR  -> HOLD
+2026-10-21 15:50:14,350 [raptor.hold_monitor] INFO:   [RED] PBR     health=-0.229  FAR=8/16  pnl=+22.7%  stop=0.60ATR  -> TRIM_MINOR
+2026-10-21 15:50:14,350 [raptor.hold_monitor] INFO:     DECAY: composite_slope: slope=-0.0711/day over 5d
+2026-10-21 15:50:14,350 [raptor.hold_monitor] INFO:     TRIM:  severity=0.093 x stop_mult=1.50 x far_mult=1.00 x pnl_mult=0.60 + slope_adj=0.142 = 0.226 -> 22.6% (128 sh)
+2026-10-21 15:50:14,354 [raptor.hold_monitor] INFO:   [---] PCG     health=-0.247  FAR=8/16  pnl=+0.6%  stop=1.89ATR  -> HOLD
+2026-10-21 15:50:14,358 [raptor.hold_monitor] INFO:   [YLW] XLU     health=-0.059  FAR=9/16  pnl=+0.8%  stop=1.92ATR  -> HOLD
+2026-10-21 15:50:16,626 [AgentLayer] INFO: HoldAgent | Flushed 9 decisions -> hold_decisions.json
+2026-10-21 15:50:16,627 [raptor.hold_monitor] INFO: ============================================================
+2026-10-21 15:50:16,627 [raptor.hold_monitor] INFO: COMPLETE — 9 positions | STR=2  STA=2  DEC=3  INS=2
+2026-10-21 15:50:16,627 [raptor.hold_monitor] INFO: ============================================================
+2026-10-21 15:50:21,546 [raptor.exits] WARNING: LOCK: another exit_monitor instance is already running (lock age 14586s < 28800s TTL). Aborting this instance to avoid concurrent writes to position_ledger.json etc. If stale, delete: C:\Raptor\logs\exit_monitor.lock
+2026-10-21 16:15:04,626 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-10-21 16:15:05,303 [raptor.data_feeds] WARNING: safe_int: account.daytrade_count was None, defaulting to 0
+2026-10-21 16:15:05,444 [raptor.universe] INFO: Building universe...
+2026-10-21 16:15:07,227 [raptor.data_feeds] INFO: Fetched 8 new bars / 8 total cached
+2026-10-21 16:15:07,843 [raptor.data_feeds] ERROR: FRED fetch failed for T10Y2Y: Expecting value: line 1 column 1 (char 0)
+2026-10-21 16:15:08,297 [raptor.data_feeds] ERROR: FRED fetch failed for FEDFUNDS: Expecting value: line 1 column 1 (char 0)
+2026-10-21 16:15:08,954 [raptor.data_feeds] ERROR: FRED fetch failed for ICSA: Expecting value: line 1 column 1 (char 0)
+2026-10-21 16:15:09,414 [raptor.data_feeds] ERROR: FRED fetch failed for VIXCLS: Expecting value: line 1 column 1 (char 0)
+2026-10-21 16:15:09,943 [raptor.data_feeds] ERROR: FRED fetch failed for BAMLC0A4CBBB: Expecting value: line 1 column 1 (char 0)
+2026-10-21 16:15:10,362 [raptor.data_feeds] ERROR: FRED fetch failed for CPIAUCSL: Expecting value: line 1 column 1 (char 0)
+2026-10-21 16:15:10,907 [raptor.data_feeds] ERROR: FRED fetch failed for IPMAN: Expecting value: line 1 column 1 (char 0)
+2026-10-21 16:15:11,389 [raptor.data_feeds] ERROR: FRED fetch failed for M2SL: Expecting value: line 1 column 1 (char 0)
+2026-10-21 16:15:11,866 [raptor.data_feeds] ERROR: FRED fetch failed for RSXFS: Expecting value: line 1 column 1 (char 0)
+2026-10-21 16:15:12,356 [raptor.data_feeds] ERROR: FRED fetch failed for UNRATE: Expecting value: line 1 column 1 (char 0)
+2026-10-21 16:15:22,496 [raptor.recap] WARNING: [Recap] inline macro refresh failed ('charmap' codec can't encode character '\u2192' in position 23: character maps to <undefined>) — using cached macro_context.json
+2026-10-21 16:15:22,502 [raptor.hold_monitor] INFO: ============================================================
+2026-10-21 16:15:22,503 [raptor.hold_monitor] INFO: RAPTOR HOLD MONITOR - 2026-10-21T16:15:22.503036
+2026-10-21 16:15:22,503 [raptor.hold_monitor] INFO: ============================================================
+2026-10-21 16:15:22,503 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-10-21 16:15:22,913 [raptor.universe] INFO: Building universe...
+2026-10-21 16:15:25,851 [raptor.hold_monitor] INFO: Fetching data for 10 symbols...
+2026-10-21 16:15:26,440 [raptor.data_feeds] INFO: Fetched 10 new bars / 10 total cached
+2026-10-21 16:15:26,895 [raptor.data_feeds] ERROR: FRED fetch failed for T10Y2Y: Expecting value: line 1 column 1 (char 0)
+2026-10-21 16:15:27,347 [raptor.data_feeds] ERROR: FRED fetch failed for FEDFUNDS: Expecting value: line 1 column 1 (char 0)
+2026-10-21 16:15:27,979 [raptor.data_feeds] ERROR: FRED fetch failed for ICSA: Expecting value: line 1 column 1 (char 0)
+2026-10-21 16:15:28,467 [raptor.data_feeds] ERROR: FRED fetch failed for VIXCLS: Expecting value: line 1 column 1 (char 0)
+2026-10-21 16:15:28,995 [raptor.data_feeds] ERROR: FRED fetch failed for BAMLC0A4CBBB: Expecting value: line 1 column 1 (char 0)
+2026-10-21 16:15:29,478 [raptor.data_feeds] ERROR: FRED fetch failed for CPIAUCSL: Expecting value: line 1 column 1 (char 0)
+2026-10-21 16:15:30,073 [raptor.data_feeds] ERROR: FRED fetch failed for IPMAN: Expecting value: line 1 column 1 (char 0)
+2026-10-21 16:15:30,583 [raptor.data_feeds] ERROR: FRED fetch failed for M2SL: Expecting value: line 1 column 1 (char 0)
+2026-10-21 16:15:31,097 [raptor.data_feeds] ERROR: FRED fetch failed for RSXFS: Expecting value: line 1 column 1 (char 0)
+2026-10-21 16:15:31,660 [raptor.data_feeds] ERROR: FRED fetch failed for UNRATE: Expecting value: line 1 column 1 (char 0)
+2026-10-21 16:15:31,866 [raptor.signals] INFO: v5.4 Signals: 5 from 10 | Macro=UNKNOWN Scale=0.8 | Micro={'MIXED': 8, 'TRENDING': 2} | SNR min=0.48 max=1.86
+2026-10-21 16:15:31,868 [raptor.hold_monitor] INFO: Pre-entry tracker: 3 candidates monitored
+2026-10-21 16:15:31,873 [raptor.hold_monitor] INFO:   [YLW] CCL     health=+0.028  FAR=7/16  pnl=+9.1%  stop=0.93ATR  -> HOLD
+2026-10-21 16:15:31,877 [raptor.hold_monitor] INFO:   [GRN] CMCSA   health=+0.403  FAR=11/16  pnl=+2.2%  stop=3.08ATR  -> HOLD
+2026-10-21 16:15:31,881 [raptor.hold_monitor] INFO:   [GRN] CSX     health=+0.345  FAR=12/16  pnl=+5.0%  stop=1.46ATR  -> HOLD
+2026-10-21 16:15:31,885 [raptor.hold_monitor] INFO:   [RED] ETHA    health=-0.244  FAR=5/16  pnl=+207.6%  stop=0.92ATR  -> TRIM_MODERATE
+2026-10-21 16:15:31,886 [raptor.hold_monitor] INFO:     DECAY: composite_slope: slope=-0.1390/day over 5d
+2026-10-21 16:15:31,886 [raptor.hold_monitor] INFO:     TRIM:  severity=0.111 x stop_mult=1.50 x far_mult=1.11 x pnl_mult=0.60 + slope_adj=0.200 = 0.311 -> 31.1% (1 sh)
+2026-10-21 16:15:31,889 [raptor.hold_monitor] INFO:   [RED] NU      health=-0.374  FAR=5/16  pnl=+13.4%  stop=0.66ATR  -> TRIM_MAJOR
+2026-10-21 16:15:31,890 [raptor.hold_monitor] INFO:     DECAY: composite_slope: slope=-0.2023/day over 5d
+2026-10-21 16:15:31,890 [raptor.hold_monitor] INFO:     TRIM:  severity=0.264 x stop_mult=1.50 x far_mult=1.11 x pnl_mult=0.80 + slope_adj=0.200 = 0.552 -> 55.2% (50 sh)
+2026-10-21 16:15:31,893 [raptor.hold_monitor] INFO:   [---] ONON    health=+0.247  FAR=10/16  pnl=-3.4%  stop=0.73ATR  -> HOLD
+2026-10-21 16:15:31,897 [raptor.hold_monitor] INFO:   [RED] PBR     health=-0.242  FAR=8/16  pnl=+22.4%  stop=0.54ATR  -> TRIM_MINOR
+2026-10-21 16:15:31,897 [raptor.hold_monitor] INFO:     DECAY: composite_slope: slope=-0.0726/day over 5d
+2026-10-21 16:15:31,897 [raptor.hold_monitor] INFO:     TRIM:  severity=0.108 x stop_mult=1.50 x far_mult=1.00 x pnl_mult=0.60 + slope_adj=0.145 = 0.243 -> 24.3% (138 sh)
+2026-10-21 16:15:31,901 [raptor.hold_monitor] INFO:   [---] PCG     health=-0.282  FAR=8/16  pnl=+0.1%  stop=1.76ATR  -> HOLD
+2026-10-21 16:15:31,904 [raptor.hold_monitor] INFO:   [YLW] XLU     health=-0.102  FAR=9/16  pnl=+0.5%  stop=1.77ATR  -> HOLD
+2026-10-21 16:15:34,206 [AgentLayer] INFO: HoldAgent | Flushed 9 decisions -> hold_decisions.json
+2026-10-21 16:15:34,207 [raptor.hold_monitor] INFO: ============================================================
+2026-10-21 16:15:34,207 [raptor.hold_monitor] INFO: COMPLETE — 9 positions | STR=2  STA=2  DEC=3  INS=2
+2026-10-21 16:15:34,207 [raptor.hold_monitor] INFO: ============================================================
+2026-10-21 16:15:34,533 [raptor.data_feeds] INFO: Fetched 9 new bars / 10 total cached
