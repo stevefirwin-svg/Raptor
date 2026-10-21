@@ -3322,5 +3322,15 @@
     "entry_reasoning": null,
     "entry_flags": [],
     "submitted_at": "2026-10-16T18:42:50.931176"
+  },
+  "4a96da9d-9393-45ef-9fbf-d2f0ef5c8c55": {
+    "symbol": "NU",
+    "exit_reason": "math_trim_37%",
+    "composite": -0.4968,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-10-21T11:47:36.529360"
   }
 }

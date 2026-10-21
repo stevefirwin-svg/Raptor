@@ -5810,14 +5810,14 @@
     "side": "BUY",
     "qty": 530,
     "decision_price": 21.91,
-    "fill_price": null,
-    "is_bps": null,
-    "is_dollars": null,
+    "fill_price": 21.6626,
+    "is_bps": -112.9,
+    "is_dollars": -131.0997,
     "order_id": "8fe5ccc2-8859-4338-bfcc-9a52db5b3151",
     "exit_reason": null,
     "notional": 11612.3,
     "status": "OrderStatus.ACCEPTED",
-    "backfilled": false
+    "backfilled": true
   },
   {
     "ts": "2026-10-16T22:42:50.451850+00:00",
@@ -5825,14 +5825,14 @@
     "side": "SELL",
     "qty": 154,
     "decision_price": 25.8,
-    "fill_price": null,
-    "is_bps": null,
-    "is_dollars": null,
+    "fill_price": 26.0114,
+    "is_bps": -81.95,
+    "is_dollars": -32.5601,
     "order_id": "9017cf98-7f29-4f9a-91e8-c85eeac3f9d8",
     "exit_reason": "math_trim_40%",
     "notional": 3973.2,
     "status": "OrderStatus.ACCEPTED",
-    "backfilled": false
+    "backfilled": true
   },
   {
     "ts": "2026-10-16T22:42:50.614537+00:00",
@@ -5840,14 +5840,14 @@
     "side": "SELL",
     "qty": 8,
     "decision_price": 54.63,
-    "fill_price": null,
-    "is_bps": null,
-    "is_dollars": null,
+    "fill_price": 54.6788,
+    "is_bps": -8.92,
+    "is_dollars": -0.39,
     "order_id": "e3ec7814-de61-4f74-b412-34e03d06ee3e",
     "exit_reason": "math_trim_68%",
     "notional": 437.04,
     "status": "OrderStatus.ACCEPTED",
-    "backfilled": false
+    "backfilled": true
   },
   {
     "ts": "2026-10-16T22:42:50.753606+00:00",
@@ -5855,14 +5855,14 @@
     "side": "SELL",
     "qty": 316,
     "decision_price": 14.56,
-    "fill_price": null,
-    "is_bps": null,
-    "is_dollars": null,
+    "fill_price": 14.8312,
+    "is_bps": -186.29,
+    "is_dollars": -85.7099,
     "order_id": "a05f3eeb-385c-4906-a25c-95637e5985a2",
     "exit_reason": "math_trim_69%",
     "notional": 4600.96,
     "status": "OrderStatus.ACCEPTED",
-    "backfilled": false
+    "backfilled": true
   },
   {
     "ts": "2026-10-16T22:42:50.885595+00:00",
@@ -5870,13 +5870,28 @@
     "side": "SELL",
     "qty": 82,
     "decision_price": 42.16,
-    "fill_price": null,
-    "is_bps": null,
-    "is_dollars": null,
+    "fill_price": 42.13,
+    "is_bps": 7.12,
+    "is_dollars": 2.46,
     "order_id": "38eabafe-0709-4de5-99c4-2d30b7520d59",
     "exit_reason": "math_trim_27%",
     "notional": 3457.12,
     "status": "OrderStatus.ACCEPTED",
-    "backfilled": false
+    "backfilled": true
+  },
+  {
+    "ts": "2026-10-21T15:47:36.493140+00:00",
+    "symbol": "NU",
+    "side": "SELL",
+    "qty": 52,
+    "decision_price": 15.345,
+    "fill_price": 15.3409,
+    "is_bps": 2.65,
+    "is_dollars": 0.2112,
+    "order_id": "4a96da9d-9393-45ef-9fbf-d2f0ef5c8c55",
+    "exit_reason": "math_trim_37%",
+    "notional": 797.94,
+    "status": "OrderStatus.PENDING_NEW",
+    "backfilled": true
   }
 ]

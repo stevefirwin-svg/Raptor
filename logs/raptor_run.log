@@ -7591,3 +7591,37 @@ Email failed: Connection unexpectedly closed
 2026-10-16 18:42:45,811 [raptor.slippage] INFO: SLIPPAGE BUY 530 CMCSA: decision=$21.9100 fill=PENDING (order 8fe5ccc2)
 2026-10-16 18:42:45,813 [raptor.main] INFO: SKIP NEE — insufficient deployable capital ($11089.42 needed, $10152.20 available; no margin)
 2026-10-16 18:42:45,814 [raptor.main] INFO: Scan complete. 1 orders placed for v5.4.
+2026-10-21 11:47:15,456 [raptor.main] INFO: ============================================================
+2026-10-21 11:47:15,457 [raptor.main] INFO: RAPTOR v5.4 DAILY SCAN - 2026-10-21T11:47:15.457655
+2026-10-21 11:47:15,457 [raptor.main] INFO: ============================================================
+[CONFIG] Raptor v5.4.0 validated
+2026-10-21 11:47:15,460 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-10-21 11:47:16,183 [raptor.data_feeds] WARNING: safe_int: account.daytrade_count was None, defaulting to 0
+2026-10-21 11:47:16,183 [raptor.main] INFO: Account: equity=$106534.35  cap=none (compound)  sizing_base=$106534.35  positions=9
+2026-10-21 11:47:16,201 [MarketAgent] WARNING: [MarketAgent] market_decision.json is 113.1h old — defaulting to REDUCE (fail-closed)
+2026-10-21 11:47:16,201 [raptor.main] INFO: [MarketAgent] REDUCE | scalar=0.75 | Stale decision file (113.1h old) — fail-closed default
+2026-10-21 11:47:16,201 [raptor.main] INFO: [MarketAgent] REDUCE — equity allocation scaled to $79900.76
+2026-10-21 11:47:16,230 [raptor.data_feeds] WARNING: safe_int: account.daytrade_count was None, defaulting to 0
+2026-10-21 11:47:16,257 [raptor.margin_guard] INFO: MARGIN GUARD: equity=$106,534  cap=none (compound)  cash=$24,013  positions=9
+2026-10-21 11:47:16,258 [raptor.margin_guard] INFO: MARGIN GUARD: market_value=$82,521  utilization=77.5% of base  margin=NO
+2026-10-21 11:47:16,258 [raptor.margin_guard] WARNING: MARGIN GUARD: WARNING — utilization 77.5% of base
+2026-10-21 11:47:16,261 [raptor.universe] INFO: Building universe...
+2026-10-21 11:47:17,818 [raptor.main] ERROR: Universe builder failed (6 validation errors for list[Asset]
+1733.exchange
+  Input should be 'AMEX', 'ARCA', 'ASCX', 'BATS', 'NYSE', 'NASDAQ', 'NYSEARCA', 'FTXU', 'CBSE', 'GNSS', 'ERSX', 'OTC', 'CRYPTO' or '' [type=enum, input_value='TXSE', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.12/v/enum
+2875.exchange
+  Input should be 'AMEX', 'ARCA', 'ASCX', 'BATS', 'NYSE', 'NASDAQ', 'NYSEARCA', 'FTXU', 'CBSE', 'GNSS', 'ERSX', 'OTC', 'CRYPTO' or '' [type=enum, input_value='TXSE', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.12/v/enum
+7451.exchange
+  Input should be 'AMEX', 'ARCA', 'ASCX', 'BATS', 'NYSE', 'NASDAQ', 'NYSEARCA', 'FTXU', 'CBSE', 'GNSS', 'ERSX', 'OTC', 'CRYPTO' or '' [type=enum, input_value='TXSE', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.12/v/enum
+8709.exchange
+  Input should be 'AMEX', 'ARCA', 'ASCX', 'BATS', 'NYSE', 'NASDAQ', 'NYSEARCA', 'FTXU', 'CBSE', 'GNSS', 'ERSX', 'OTC', 'CRYPTO' or '' [type=enum, input_value='TXSE', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.12/v/enum
+9223.exchange
+  Input should be 'AMEX', 'ARCA', 'ASCX', 'BATS', 'NYSE', 'NASDAQ', 'NYSEARCA', 'FTXU', 'CBSE', 'GNSS', 'ERSX', 'OTC', 'CRYPTO' or '' [type=enum, input_value='TXSE', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.12/v/enum
+11597.exchange
+  Input should be 'AMEX', 'ARCA', 'ASCX', 'BATS', 'NYSE', 'NASDAQ', 'NYSEARCA', 'FTXU', 'CBSE', 'GNSS', 'ERSX', 'OTC', 'CRYPTO' or '' [type=enum, input_value='TXSE', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.12/v/enum) — aborting scan.

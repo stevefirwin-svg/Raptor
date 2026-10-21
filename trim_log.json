@@ -3651,5 +3651,18 @@
     "agent_decision": "HOLD",
     "agent_conf": 0.9,
     "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-10-21T11:47:36.641485",
+    "symbol": "NU",
+    "trim_qty": 52,
+    "price": 15.345,
+    "pnl_pct": 15.64,
+    "reason": "math_trim_37%",
+    "composite": -0.4968,
+    "trim_detail": "severity=0.229 x stop_mult=1.00 x far_mult=1.21 x pnl_mult=0.60 + slope_adj=0.200 = 0.366 -> 36.6% (52 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
   }
 ]
