@@ -7718,3 +7718,133 @@ Email failed: Connection unexpectedly closed
 2026-10-21 16:15:34,207 [raptor.hold_monitor] INFO: COMPLETE — 9 positions | STR=2  STA=2  DEC=3  INS=2
 2026-10-21 16:15:34,207 [raptor.hold_monitor] INFO: ============================================================
 2026-10-21 16:15:34,533 [raptor.data_feeds] INFO: Fetched 9 new bars / 10 total cached
+2026-10-22 09:35:04,621 [raptor.main] INFO: ============================================================
+2026-10-22 09:35:04,622 [raptor.main] INFO: RAPTOR v5.4 DAILY SCAN - 2026-10-22T09:35:04.622500
+2026-10-22 09:35:04,622 [raptor.main] INFO: ============================================================
+[CONFIG] Raptor v5.4.0 validated
+2026-10-22 09:35:04,623 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-10-22 09:35:05,327 [raptor.data_feeds] WARNING: safe_int: account.daytrade_count was None, defaulting to 0
+2026-10-22 09:35:05,327 [raptor.main] INFO: Account: equity=$107170.45  cap=none (compound)  sizing_base=$107170.45  positions=9
+2026-10-22 09:35:05,346 [raptor.main] INFO: [MarketAgent] SCAN | scalar=1.00 | Macro NEUTRAL â€” full scan, normal sizing.
+2026-10-22 09:35:05,380 [raptor.data_feeds] WARNING: safe_int: account.daytrade_count was None, defaulting to 0
+2026-10-22 09:35:05,533 [raptor.margin_guard] INFO: MARGIN GUARD: equity=$107,168  cap=none (compound)  cash=$24,811  positions=9
+2026-10-22 09:35:05,534 [raptor.margin_guard] INFO: MARGIN GUARD: market_value=$82,357  utilization=76.8% of base  margin=NO
+2026-10-22 09:35:05,534 [raptor.margin_guard] WARNING: MARGIN GUARD: WARNING â€” utilization 76.8% of base
+2026-10-22 09:35:05,537 [raptor.universe] INFO: Building universe...
+2026-10-22 09:35:07,087 [raptor.main] ERROR: Universe builder failed (9 validation errors for list[Asset]
+1632.exchange
+  Input should be 'AMEX', 'ARCA', 'ASCX', 'BATS', 'NYSE', 'NASDAQ', 'NYSEARCA', 'FTXU', 'CBSE', 'GNSS', 'ERSX', 'OTC', 'CRYPTO' or '' [type=enum, input_value='TXSE', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.12/v/enum
+1978.exchange
+  Input should be 'AMEX', 'ARCA', 'ASCX', 'BATS', 'NYSE', 'NASDAQ', 'NYSEARCA', 'FTXU', 'CBSE', 'GNSS', 'ERSX', 'OTC', 'CRYPTO' or '' [type=enum, input_value='TXSE', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.12/v/enum
+5292.exchange
+  Input should be 'AMEX', 'ARCA', 'ASCX', 'BATS', 'NYSE', 'NASDAQ', 'NYSEARCA', 'FTXU', 'CBSE', 'GNSS', 'ERSX', 'OTC', 'CRYPTO' or '' [type=enum, input_value='TXSE', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.12/v/enum
+5315.exchange
+  Input should be 'AMEX', 'ARCA', 'ASCX', 'BATS', 'NYSE', 'NASDAQ', 'NYSEARCA', 'FTXU', 'CBSE', 'GNSS', 'ERSX', 'OTC', 'CRYPTO' or '' [type=enum, input_value='TXSE', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.12/v/enum
+6191.exchange
+  Input should be 'AMEX', 'ARCA', 'ASCX', 'BATS', 'NYSE', 'NASDAQ', 'NYSEARCA', 'FTXU', 'CBSE', 'GNSS', 'ERSX', 'OTC', 'CRYPTO' or '' [type=enum, input_value='TXSE', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.12/v/enum
+8799.exchange
+  Input should be 'AMEX', 'ARCA', 'ASCX', 'BATS', 'NYSE', 'NASDAQ', 'NYSEARCA', 'FTXU', 'CBSE', 'GNSS', 'ERSX', 'OTC', 'CRYPTO' or '' [type=enum, input_value='TXSE', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.12/v/enum
+11267.exchange
+  Input should be 'AMEX', 'ARCA', 'ASCX', 'BATS', 'NYSE', 'NASDAQ', 'NYSEARCA', 'FTXU', 'CBSE', 'GNSS', 'ERSX', 'OTC', 'CRYPTO' or '' [type=enum, input_value='TXSE', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.12/v/enum
+11426.exchange
+  Input should be 'AMEX', 'ARCA', 'ASCX', 'BATS', 'NYSE', 'NASDAQ', 'NYSEARCA', 'FTXU', 'CBSE', 'GNSS', 'ERSX', 'OTC', 'CRYPTO' or '' [type=enum, input_value='TXSE', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.12/v/enum
+12856.exchange
+  Input should be 'AMEX', 'ARCA', 'ASCX', 'BATS', 'NYSE', 'NASDAQ', 'NYSEARCA', 'FTXU', 'CBSE', 'GNSS', 'ERSX', 'OTC', 'CRYPTO' or '' [type=enum, input_value='TXSE', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.12/v/enum) â€” aborting scan.
+2026-10-22 15:50:13,581 [raptor.hold_monitor] INFO: ============================================================
+2026-10-22 15:50:13,582 [raptor.hold_monitor] INFO: RAPTOR HOLD MONITOR - 2026-10-22T15:50:13.582637
+2026-10-22 15:50:13,582 [raptor.hold_monitor] INFO: ============================================================
+2026-10-22 15:50:13,583 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-10-22 15:50:14,136 [raptor.hold_monitor] INFO: Cleaned 1 ghost(s) from hold_health.json: ['PCG']
+2026-10-22 15:50:14,140 [raptor.universe] INFO: Building universe...
+2026-10-22 15:50:15,444 [raptor.hold_monitor] INFO: Fetching data for 7 symbols...
+2026-10-22 15:50:16,543 [raptor.data_feeds] INFO: Fetched 7 new bars / 7 total cached
+2026-10-22 15:50:17,570 [raptor.data_feeds] INFO: FRED fetch OK: IPMAN (36 observations)
+2026-10-22 15:50:18,178 [raptor.data_feeds] INFO: FRED fetch OK: M2SL (35 observations)
+2026-10-22 15:50:18,787 [raptor.data_feeds] INFO: FRED fetch OK: RSXFS (36 observations)
+2026-10-22 15:50:19,399 [raptor.data_feeds] INFO: FRED fetch OK: UNRATE (35 observations)
+2026-10-22 15:50:19,401 [raptor.data_feeds] INFO: FRED regime: NEUTRAL (score=-0.000)
+2026-10-22 15:50:19,536 [raptor.hold_monitor] INFO: Pre-entry tracker: 2 candidates monitored
+2026-10-22 15:50:19,536 [raptor.hold_monitor] WARNING: No signal for held CCL — using neutral Dummy (comp=0.0)
+2026-10-22 15:50:19,541 [raptor.hold_monitor] INFO:   [RED] CCL     health=-0.199  FAR=0/16  pnl=+8.2%  stop=0.35ATR  -> TRIM_MINOR
+2026-10-22 15:50:19,541 [raptor.hold_monitor] INFO:     DECAY: factor_agreement: FAR=0/16  trend=-0.188
+2026-10-22 15:50:19,541 [raptor.hold_monitor] INFO:     TRIM:  severity=0.057 x stop_mult=1.50 x far_mult=1.30 x pnl_mult=0.80 + slope_adj=0.074 = 0.164 -> 16.4% (31 sh)
+2026-10-22 15:50:19,541 [raptor.hold_monitor] WARNING: No signal for held CMCSA — using neutral Dummy (comp=0.0)
+2026-10-22 15:50:19,545 [raptor.hold_monitor] INFO:   [YLW] CMCSA   health=-0.080  FAR=0/16  pnl=+5.5%  stop=1.70ATR  -> HOLD
+2026-10-22 15:50:19,545 [raptor.hold_monitor] WARNING: No signal for held CSX — using neutral Dummy (comp=0.0)
+2026-10-22 15:50:19,549 [raptor.hold_monitor] INFO:   [YLW] CSX     health=-0.018  FAR=0/16  pnl=+7.5%  stop=2.06ATR  -> HOLD
+2026-10-22 15:50:19,550 [raptor.hold_monitor] WARNING: No signal for held ETHA — using neutral Dummy (comp=0.0)
+2026-10-22 15:50:19,554 [raptor.hold_monitor] INFO:   [RED] ETHA    health=-0.385  FAR=0/16  pnl=+193.3%  stop=0.34ATR  -> TRIM_MODERATE
+2026-10-22 15:50:19,554 [raptor.hold_monitor] INFO:     DECAY: factor_agreement: FAR=0/16  trend=-0.312
+2026-10-22 15:50:19,554 [raptor.hold_monitor] INFO:     TRIM:  severity=0.277 x stop_mult=1.50 x far_mult=1.30 x pnl_mult=0.60 + slope_adj=0.104 = 0.427 -> 42.7% (0 sh)
+2026-10-22 15:50:19,554 [raptor.hold_monitor] WARNING: No signal for held ONON — using neutral Dummy (comp=0.0)
+2026-10-22 15:50:19,558 [raptor.hold_monitor] INFO:   [RED] ONON    health=-0.533  FAR=0/16  pnl=-4.3%  stop=0.52ATR  -> EXIT
+2026-10-22 15:50:19,558 [raptor.hold_monitor] INFO:     DECAY: factor_agreement: FAR=0/16  trend=-0.438
+2026-10-22 15:50:19,558 [raptor.hold_monitor] INFO:     TRIM:  severity=0.450 x stop_mult=1.50 x far_mult=1.30 x pnl_mult=1.20 + slope_adj=0.127 = 1.181 -> 100.0% (1 sh)
+2026-10-22 15:50:19,558 [raptor.hold_monitor] WARNING: No signal for held XLU — using neutral Dummy (comp=0.0)
+2026-10-22 15:50:19,563 [raptor.hold_monitor] INFO:   [RED] XLU     health=-0.204  FAR=0/16  pnl=+2.3%  stop=1.91ATR  -> TRIM_MODERATE
+2026-10-22 15:50:19,563 [raptor.hold_monitor] INFO:     DECAY: composite_slope: slope=-0.0844/day over 5d
+2026-10-22 15:50:19,563 [raptor.hold_monitor] INFO:     TRIM:  severity=0.063 x stop_mult=1.00 x far_mult=1.30 x pnl_mult=1.00 + slope_adj=0.169 = 0.251 -> 25.1% (43 sh)
+2026-10-22 15:50:22,018 [AgentLayer] INFO: HoldAgent | Flushed 6 decisions -> hold_decisions.json
+2026-10-22 15:50:22,019 [raptor.hold_monitor] INFO: ============================================================
+2026-10-22 15:50:22,019 [raptor.hold_monitor] INFO: COMPLETE — 6 positions | STR=0  STA=2  DEC=4  INS=0
+2026-10-22 15:50:22,019 [raptor.hold_monitor] INFO: ============================================================
+2026-10-22 15:50:26,252 [raptor.exits] WARNING: LOCK: another exit_monitor instance is already running (lock age 22522s < 28800s TTL). Aborting this instance to avoid concurrent writes to position_ledger.json etc. If stale, delete: C:\Raptor\logs\exit_monitor.lock
+2026-10-22 16:15:03,618 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-10-22 16:15:04,207 [raptor.data_feeds] WARNING: safe_int: account.daytrade_count was None, defaulting to 0
+2026-10-22 16:15:04,340 [raptor.universe] INFO: Building universe...
+2026-10-22 16:15:06,156 [raptor.data_feeds] INFO: Fetched 8 new bars / 8 total cached
+2026-10-22 16:15:06,196 [raptor.data_feeds] INFO: FRED regime: NEUTRAL (score=-0.000)
+2026-10-22 16:15:18,533 [raptor.recap] WARNING: [Recap] inline macro refresh failed ('charmap' codec can't encode character '\u2192' in position 23: character maps to <undefined>) — using cached macro_context.json
+2026-10-22 16:15:18,543 [raptor.hold_monitor] INFO: ============================================================
+2026-10-22 16:15:18,543 [raptor.hold_monitor] INFO: RAPTOR HOLD MONITOR - 2026-10-22T16:15:18.543549
+2026-10-22 16:15:18,543 [raptor.hold_monitor] INFO: ============================================================
+2026-10-22 16:15:18,544 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-10-22 16:15:19,059 [raptor.universe] INFO: Building universe...
+2026-10-22 16:15:20,082 [raptor.hold_monitor] INFO: Fetching data for 7 symbols...
+2026-10-22 16:15:20,790 [raptor.data_feeds] INFO: Fetched 7 new bars / 7 total cached
+2026-10-22 16:15:20,807 [raptor.data_feeds] INFO: FRED regime: NEUTRAL (score=-0.000)
+2026-10-22 16:15:20,926 [raptor.hold_monitor] INFO: Pre-entry tracker: 2 candidates monitored
+2026-10-22 16:15:20,926 [raptor.hold_monitor] WARNING: No signal for held CCL — using neutral Dummy (comp=0.0)
+2026-10-22 16:15:20,930 [raptor.hold_monitor] INFO:   [RED] CCL     health=-0.202  FAR=0/16  pnl=+8.0%  stop=0.39ATR  -> TRIM_MINOR
+2026-10-22 16:15:20,930 [raptor.hold_monitor] INFO:     DECAY: factor_agreement: FAR=0/16  trend=-0.188
+2026-10-22 16:15:20,931 [raptor.hold_monitor] INFO:     TRIM:  severity=0.061 x stop_mult=1.50 x far_mult=1.30 x pnl_mult=0.80 + slope_adj=0.074 = 0.169 -> 16.9% (32 sh)
+2026-10-22 16:15:20,931 [raptor.hold_monitor] WARNING: No signal for held CMCSA — using neutral Dummy (comp=0.0)
+2026-10-22 16:15:20,935 [raptor.hold_monitor] INFO:   [YLW] CMCSA   health=-0.072  FAR=0/16  pnl=+5.5%  stop=1.66ATR  -> HOLD
+2026-10-22 16:15:20,935 [raptor.hold_monitor] WARNING: No signal for held CSX — using neutral Dummy (comp=0.0)
+2026-10-22 16:15:20,939 [raptor.hold_monitor] INFO:   [YLW] CSX     health=-0.033  FAR=0/16  pnl=+7.7%  stop=1.80ATR  -> HOLD
+2026-10-22 16:15:20,939 [raptor.hold_monitor] WARNING: No signal for held ETHA — using neutral Dummy (comp=0.0)
+2026-10-22 16:15:20,943 [raptor.hold_monitor] INFO:   [RED] ETHA    health=-0.382  FAR=0/16  pnl=+193.6%  stop=0.36ATR  -> TRIM_MODERATE
+2026-10-22 16:15:20,943 [raptor.hold_monitor] INFO:     DECAY: factor_agreement: FAR=0/16  trend=-0.312
+2026-10-22 16:15:20,943 [raptor.hold_monitor] INFO:     TRIM:  severity=0.273 x stop_mult=1.50 x far_mult=1.30 x pnl_mult=0.60 + slope_adj=0.104 = 0.423 -> 42.3% (0 sh)
+2026-10-22 16:15:20,943 [raptor.hold_monitor] WARNING: No signal for held ONON — using neutral Dummy (comp=0.0)
+2026-10-22 16:15:20,948 [raptor.hold_monitor] INFO:   [RED] ONON    health=-0.540  FAR=0/16  pnl=-6.2%  stop=0.50ATR  -> EXIT
+2026-10-22 16:15:20,948 [raptor.hold_monitor] INFO:     DECAY: factor_agreement: FAR=0/16  trend=-0.438
+2026-10-22 16:15:20,948 [raptor.hold_monitor] INFO:     TRIM:  severity=0.459 x stop_mult=1.50 x far_mult=1.30 x pnl_mult=1.40 + slope_adj=0.127 = 1.381 -> 100.0% (1 sh)
+2026-10-22 16:15:20,948 [raptor.hold_monitor] WARNING: No signal for held XLU — using neutral Dummy (comp=0.0)
+2026-10-22 16:15:20,952 [raptor.hold_monitor] INFO:   [RED] XLU     health=-0.193  FAR=0/16  pnl=+2.4%  stop=2.08ATR  -> TRIM_MINOR
+2026-10-22 16:15:20,952 [raptor.hold_monitor] INFO:     DECAY: composite_slope: slope=-0.0844/day over 5d
+2026-10-22 16:15:20,952 [raptor.hold_monitor] INFO:     TRIM:  severity=0.051 x stop_mult=0.75 x far_mult=1.30 x pnl_mult=1.00 + slope_adj=0.169 = 0.218 -> 21.8% (38 sh)
+2026-10-22 16:15:23,229 [AgentLayer] INFO: HoldAgent | Flushed 6 decisions -> hold_decisions.json
+2026-10-22 16:15:23,230 [raptor.hold_monitor] INFO: ============================================================
+2026-10-22 16:15:23,230 [raptor.hold_monitor] INFO: COMPLETE — 6 positions | STR=0  STA=2  DEC=4  INS=0
+2026-10-22 16:15:23,230 [raptor.hold_monitor] INFO: ============================================================
+2026-10-22 16:15:23,680 [raptor.data_feeds] INFO: Fetched 6 new bars / 7 total cached
+[MacroContext] Fetching macro signals...
+  Fetching VIX...
+  Fetching SPY trend...
+  Fetching sector breadth...
+  Fetching yield curve (FRED T10Y2Y)...
+  Fetching credit spread (FRED BAMLC0A4CBBB)...
+  Fetching Fed funds rate (FRED FEDFUNDS)...
+
+[MacroContext] Regime: NEUTRAL  Score: +0.250
+Email failed: Connection unexpectedly closed
