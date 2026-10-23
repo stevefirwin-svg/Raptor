@@ -3462,5 +3462,45 @@
     "entry_reasoning": null,
     "entry_flags": [],
     "submitted_at": "2026-10-22T13:05:17.338272"
+  },
+  "f8220709-9e66-441c-8427-581cbfb72757": {
+    "symbol": "CCL",
+    "exit_reason": "hard_stop",
+    "composite": 0.0,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-10-23T09:35:23.083818"
+  },
+  "9ad513b1-2b88-4e7f-bf87-9880f9844bec": {
+    "symbol": "ONON",
+    "exit_reason": "hard_stop",
+    "composite": 0.0,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-10-23T09:35:23.225903"
+  },
+  "d537a082-f74c-45fb-827c-5b966f838e45": {
+    "symbol": "XLU",
+    "exit_reason": "math_trim_22%",
+    "composite": 0.0,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-10-23T09:35:23.384759"
+  },
+  "69a87103-4c6e-446d-b72e-780519f21211": {
+    "symbol": "XLU",
+    "exit_reason": "math_trim_44%",
+    "composite": 0.0,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-10-23T12:35:19.053396"
   }
 }

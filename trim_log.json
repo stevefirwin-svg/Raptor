@@ -3794,5 +3794,31 @@
     "agent_decision": "HOLD",
     "agent_conf": 0.9,
     "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-10-23T09:35:23.463984",
+    "symbol": "XLU",
+    "trim_qty": 38,
+    "price": 42.655,
+    "pnl_pct": 2.09,
+    "reason": "math_trim_22%",
+    "composite": 0.0,
+    "trim_detail": "severity=0.051 x stop_mult=0.75 x far_mult=1.30 x pnl_mult=1.00 + slope_adj=0.169 = 0.218 -> 21.8% (38 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-10-23T12:35:19.109014",
+    "symbol": "XLU",
+    "trim_qty": 59,
+    "price": 42.56,
+    "pnl_pct": 1.87,
+    "reason": "math_trim_44%",
+    "composite": 0.0,
+    "trim_detail": "severity=0.202 x stop_mult=1.00 x far_mult=1.30 x pnl_mult=1.00 + slope_adj=0.178 = 0.440 -> 44.0% (59 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
   }
 ]
