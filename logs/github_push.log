@@ -1027,3 +1027,9 @@ To https://github.com/stevefirwin-svg/Raptor
    3911a90..2c3d4c2  main -> main
 [Sun 10/25/2026 18:00:05.87] RESULT: SUCCESS — push verified. 
 [Wed 10/28/2026 13:32:59.67] Starting daily GitHub push... 
+warning: in the working copy of 'logs/github_push.log', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'logs/raptor_auto_start.log', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'macro_context.json', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'market_decision.json', CRLF will be replaced by LF the next time Git touches it
+[main 1f76256] Daily update 2026-10-28
+ 4 files changed, 20 insertions(+), 4 deletions(-)
