@@ -809,3 +809,12 @@
 [Fri 10/23/2026 16:15:24.76] Start_Recap complete 
 [Fri 10/23/2026 17:00:00.92] After-close sequence starting 
 [Fri 10/23/2026 17:00:22.89] After-close sequence complete 
+[Mon 10/26/2026  9:28:00.48] Start_PreMarket starting 
+[Mon 10/26/2026  9:28:18.20] Start_PreMarket complete 
+[Wed 10/28/2026 13:32:59.39] Start_Afternoon_Monitor starting 
+[Wed 10/28/2026 13:32:59.85] Start_Entry starting 
+[Wed 10/28/2026 13:32:59.85] Start_PreMarket starting 
+[Wed 10/28/2026 13:32:59.93] Start_Recap starting 
+[Wed 10/28/2026 13:33:00.18] Start_Recap complete 
+[Wed 10/28/2026 13:33:00.57] Start_PreMarket starting 
+[Wed 10/28/2026 13:33:00.65] Start_PreMarket complete 
