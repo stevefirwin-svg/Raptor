@@ -7954,4 +7954,590 @@ Email failed: Connection unexpectedly closed
 
 [MacroContext] Regime: NEUTRAL  Score: +0.125
 Email failed: Connection unexpectedly closed
-^C
+^C2026-10-29 07:02:50,347 [raptor.hold_monitor] INFO: ============================================================
+2026-10-29 07:02:50,347 [raptor.hold_monitor] INFO: RAPTOR HOLD MONITOR - 2026-10-29T07:02:50.347482
+2026-10-29 07:02:50,347 [raptor.hold_monitor] INFO: ============================================================
+2026-10-29 07:02:50,349 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-10-29 07:02:50,873 [raptor.universe] INFO: Building universe...
+2026-10-29 07:02:51,811 [raptor.hold_monitor] INFO: Fetching data for 5 symbols...
+2026-10-29 07:02:52,418 [raptor.data_feeds] INFO: Fetched 5 new bars / 5 total cached
+2026-10-29 07:02:53,076 [raptor.data_feeds] INFO: FRED fetch OK: T10Y2Y (749 observations)
+2026-10-29 07:02:53,692 [raptor.data_feeds] INFO: FRED fetch OK: FEDFUNDS (36 observations)
+2026-10-29 07:02:54,354 [raptor.data_feeds] INFO: FRED fetch OK: ICSA (155 observations)
+2026-10-29 07:02:55,005 [raptor.data_feeds] INFO: FRED fetch OK: VIXCLS (773 observations)
+2026-10-29 07:02:56,153 [raptor.data_feeds] INFO: FRED fetch OK: BAMLC0A4CBBB (785 observations)
+2026-10-29 07:02:57,195 [raptor.data_feeds] INFO: FRED fetch OK: CPIAUCSL (35 observations)
+2026-10-29 07:02:58,245 [raptor.data_feeds] INFO: FRED fetch OK: IPMAN (36 observations)
+2026-10-29 07:02:58,840 [raptor.data_feeds] INFO: FRED fetch OK: M2SL (36 observations)
+2026-10-29 07:02:59,729 [raptor.data_feeds] INFO: FRED fetch OK: RSXFS (36 observations)
+2026-10-29 07:03:00,800 [raptor.data_feeds] INFO: FRED fetch OK: UNRATE (35 observations)
+2026-10-29 07:03:00,803 [raptor.data_feeds] INFO: FRED regime: NEUTRAL (score=-0.000)
+2026-10-29 07:03:00,905 [raptor.hold_monitor] INFO: Pre-entry tracker: 0 candidates monitored
+2026-10-29 07:03:00,905 [raptor.hold_monitor] WARNING: No signal for held CMCSA � using neutral Dummy (comp=0.0)
+2026-10-29 07:03:00,910 [raptor.hold_monitor] INFO:   [RED] CMCSA   health=-0.525  FAR=0/16  pnl=+1.3%  stop=-0.41ATR  -> EXIT
+2026-10-29 07:03:00,910 [raptor.hold_monitor] INFO:     DECAY: factor_agreement: FAR=0/16  trend=+0.000
+2026-10-29 07:03:00,910 [raptor.hold_monitor] INFO:     TRIM:  severity=0.441 x stop_mult=1.50 x far_mult=1.30 x pnl_mult=1.00 + slope_adj=0.096 = 0.957 -> 95.7% (507 sh)
+2026-10-29 07:03:00,910 [raptor.hold_monitor] WARNING: No signal for held CSX � using neutral Dummy (comp=0.0)
+2026-10-29 07:03:00,915 [raptor.hold_monitor] INFO:   [RED] CSX     health=-0.356  FAR=0/16  pnl=+9.4%  stop=1.91ATR  -> TRIM_MODERATE
+2026-10-29 07:03:00,915 [raptor.hold_monitor] INFO:     DECAY: composite_slope: slope=-0.0918/day over 5d
+2026-10-29 07:03:00,915 [raptor.hold_monitor] INFO:     TRIM:  severity=0.242 x stop_mult=1.00 x far_mult=1.30 x pnl_mult=0.80 + slope_adj=0.184 = 0.436 -> 43.6% (115 sh)
+2026-10-29 07:03:00,915 [raptor.hold_monitor] WARNING: No signal for held ETHA � using neutral Dummy (comp=0.0)
+2026-10-29 07:03:00,919 [raptor.hold_monitor] INFO:   [YLW] ETHA    health=-0.037  FAR=0/16  pnl=-186.8%  stop=0.86ATR  -> HOLD
+2026-10-29 07:03:00,919 [raptor.hold_monitor] WARNING: No signal for held XLU � using neutral Dummy (comp=0.0)
+2026-10-29 07:03:00,923 [raptor.hold_monitor] INFO:   [RED] XLU     health=-0.403  FAR=0/16  pnl=+2.7%  stop=1.73ATR  -> TRIM_MAJOR
+2026-10-29 07:03:00,923 [raptor.hold_monitor] INFO:     DECAY: factor_agreement: FAR=0/16  trend=+0.000
+2026-10-29 07:03:00,923 [raptor.hold_monitor] INFO:     TRIM:  severity=0.298 x stop_mult=1.00 x far_mult=1.30 x pnl_mult=1.00 + slope_adj=0.128 = 0.515 -> 51.5% (39 sh)
+2026-10-29 07:03:03,366 [AgentLayer] INFO: HoldAgent | Flushed 4 decisions -> hold_decisions.json
+2026-10-29 07:03:03,367 [raptor.hold_monitor] INFO: ============================================================
+2026-10-29 07:03:03,368 [raptor.hold_monitor] INFO: COMPLETE � 4 positions | STR=0  STA=1  DEC=3  INS=0
+2026-10-29 07:03:03,368 [raptor.hold_monitor] INFO: ============================================================
+2026-10-29 07:03:07,482 [raptor.exits] INFO: EXIT MONITOR LOOP: cycle 1 starting at 07:03:07
+2026-10-29 07:03:07,486 [raptor.exits] INFO: ============================================================
+2026-10-29 07:03:07,486 [raptor.exits] INFO: RAPTOR v5.4 EXIT MONITOR - 2026-10-29T07:03:07.486498
+2026-10-29 07:03:07,486 [raptor.exits] INFO: ============================================================
+2026-10-29 07:03:07,487 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-10-29 07:03:07,862 [raptor.data_feeds] WARNING: safe_int: account.daytrade_count was None, defaulting to 0
+2026-10-29 07:03:07,863 [raptor.exits] INFO: Account: equity=$106455.37  cash=$78164.85  positions=4
+2026-10-29 07:03:07,871 [raptor.universe] INFO: Building universe...
+2026-10-29 07:03:09,921 [raptor.data_feeds] INFO: Fetched 5 new bars / 5 total cached
+2026-10-29 07:03:10,035 [raptor.data_feeds] INFO: FRED regime: NEUTRAL (score=-0.000)
+[MacroContext] Fetching macro signals...
+  Fetching VIX...
+  Fetching SPY trend...
+  Fetching sector breadth...
+  Fetching yield curve (FRED T10Y2Y)...
+  Fetching credit spread (FRED BAMLC0A4CBBB)...
+  Fetching Fed funds rate (FRED FEDFUNDS)...
+
+[MacroContext] Regime: RISK_ON  Score: +0.500
+[MacroContext] Written → macro_context.json
+2026-10-29 07:03:14,686 [raptor.exits] INFO: [MacroOverride] regime -> RISK_ON (live refresh, score=0.500, VIX=17.1)
+2026-10-29 07:03:14,763 [raptor.exits] WARNING: No composite score for held CMCSA — defaulting 0.0 (data gap, not thesis judgment)
+2026-10-29 07:03:14,763 [raptor.exits] WARNING: No composite score for held CSX — defaulting 0.0 (data gap, not thesis judgment)
+2026-10-29 07:03:14,763 [raptor.exits] WARNING: No composite score for held ETHA — defaulting 0.0 (data gap, not thesis judgment)
+2026-10-29 07:03:14,763 [raptor.exits] WARNING: No composite score for held XLU — defaulting 0.0 (data gap, not thesis judgment)
+2026-10-29 07:03:14,763 [raptor.exits] INFO: Portfolio unrealized: $1064.58 (1.00%)
+2026-10-29 07:03:14,803 [raptor.exits] INFO: EXIT 2 [TRAIL] ETHA $52.53 <= $55.08 (1.0x ATR) comp=0.00 health=-0.04
+2026-10-29 07:03:14,833 [raptor.exits] WARNING: MATH EXIT [EXIT] CMCSA — Full exit — math supports complete liquidation
+2026-10-29 07:03:14,833 [raptor.exits] WARNING: MATH TRIM [TRIM_MODERATE] CSX — 115 of 265 shares (44%) — Moderate trim 44% — thesis weakening
+2026-10-29 07:03:14,833 [raptor.exits] WARNING: MATH TRIM [TRIM_MAJOR] XLU — 39 of 75 shares (52%) — Major trim 52% — significant thesis decay
+2026-10-29 07:03:14,833 [raptor.exits] INFO: 
+2026-10-29 07:03:14,833 [raptor.exits] INFO: ============================================================
+2026-10-29 07:03:14,833 [raptor.exits] INFO:   EXIT SUMMARY
+2026-10-29 07:03:14,833 [raptor.exits] INFO: ============================================================
+2026-10-29 07:03:14,833 [raptor.exits] INFO:   EXITS (4):
+2026-10-29 07:03:14,834 [raptor.exits] INFO:     ETHA  trailing_stop  pnl=-186.3%  comp=0.0000
+2026-10-29 07:03:14,834 [raptor.exits] INFO:     CMCSA  math_exit  pnl=+1.3%  comp=0.0000
+2026-10-29 07:03:14,834 [raptor.exits] INFO:     CSX  math_trim_44%  pnl=+9.4%  comp=0.0000
+2026-10-29 07:03:14,834 [raptor.exits] INFO:     XLU  math_trim_52%  pnl=+2.7%  comp=0.0000
+2026-10-29 07:03:14,834 [raptor.exits] INFO: ============================================================
+2026-10-29 07:03:14,848 [raptor.exits] INFO: AGENT [advisory] HOLD NVDA — insufficient history: 0 days (conf=0.90, from 2026-10-14T16:25:30.509158)
+2026-10-29 07:03:14,849 [raptor.exits] INFO: AGENT [advisory] HOLD AMD — insufficient history: 0 days (conf=0.90, from 2026-06-05T09:52:08.933229)
+2026-10-29 07:03:14,849 [raptor.exits] INFO: AGENT [advisory] HOLD CVE — insufficient history: 0 days (conf=0.90, from 2026-05-28T15:50:34.277447)
+2026-10-29 07:03:14,849 [raptor.exits] INFO: AGENT [advisory] HOLD FXI — insufficient history: 0 days (conf=0.90, from 2026-08-05T16:15:19.287944)
+2026-10-29 07:03:14,849 [raptor.exits] INFO: AGENT [advisory] HOLD CSX — insufficient history: 0 days (conf=0.90, from 2026-10-29T07:03:03.338543)
+2026-10-29 07:03:14,849 [raptor.exits] INFO: AGENT [advisory] HOLD INTC — insufficient history: 0 days (conf=0.90, from 2026-09-25T16:15:19.849297)
+2026-10-29 07:03:14,849 [raptor.exits] INFO: AGENT [advisory] HOLD KDP — insufficient history: 0 days (conf=0.90, from 2026-06-18T09:52:09.166655)
+2026-10-29 07:03:14,849 [raptor.exits] INFO: AGENT [advisory] HOLD OWL — insufficient history: 0 days (conf=0.90, from 2026-05-17T15:50:38.416296)
+2026-10-29 07:03:14,849 [raptor.exits] INFO: AGENT [advisory] HOLD KRE — insufficient history: 0 days (conf=0.90, from 2026-08-06T16:15:30.296480)
+2026-10-29 07:03:14,849 [raptor.exits] INFO: AGENT [advisory] HOLD PLTD — insufficient history: 0 days (conf=0.90, from 2026-05-28T15:50:34.277463)
+2026-10-29 07:03:14,849 [raptor.exits] INFO: AGENT [advisory] HOLD STM — insufficient history: 0 days (conf=0.90, from 2026-07-01T16:15:15.781190)
+2026-10-29 07:03:14,849 [raptor.exits] INFO: AGENT [advisory] HOLD SMCI — insufficient history: 0 days (conf=0.90, from 2026-10-14T16:25:30.509170)
+2026-10-29 07:03:14,849 [raptor.exits] INFO: AGENT [advisory] HOLD TSLA — insufficient history: 0 days (conf=0.90, from 2026-09-24T16:15:21.446245)
+2026-10-29 07:03:14,849 [raptor.exits] INFO: AGENT [advisory] HOLD TSLL — insufficient history: 0 days (conf=0.90, from 2026-05-19T16:30:29.205168)
+2026-10-29 07:03:14,849 [raptor.exits] INFO: AGENT [advisory] HOLD TTD — insufficient history: 0 days (conf=0.90, from 2026-05-19T16:30:29.205175)
+2026-10-29 07:03:14,849 [raptor.exits] INFO: AGENT [advisory] HOLD DKNG — insufficient history: 0 days (conf=0.90, from 2026-05-29T09:52:09.312915)
+2026-10-29 07:03:14,849 [raptor.exits] INFO: AGENT [advisory] HOLD HPQ — insufficient history: 0 days (conf=0.90, from 2026-09-21T12:30:18.247695)
+2026-10-29 07:03:14,850 [raptor.exits] INFO: AGENT [advisory] HOLD MRVL — insufficient history: 0 days (conf=0.90, from 2026-06-24T17:10:55.492840)
+2026-10-29 07:03:14,850 [raptor.exits] INFO: AGENT [advisory] HOLD WFC — insufficient history: 0 days (conf=0.90, from 2026-06-19T15:50:16.055987)
+2026-10-29 07:03:14,850 [raptor.exits] INFO: AGENT [advisory] HOLD SQQQ — insufficient history: 0 days (conf=0.90, from 2026-06-15T09:52:08.207369)
+2026-10-29 07:03:14,850 [raptor.exits] INFO: AGENT [advisory] HOLD XLE — insufficient history: 0 days (conf=0.90, from 2026-07-23T16:15:24.377216)
+2026-10-29 07:03:14,850 [raptor.exits] INFO: AGENT [advisory] HOLD BAC — insufficient history: 0 days (conf=0.90, from 2026-06-30T16:15:15.720631)
+2026-10-29 07:03:14,850 [raptor.exits] INFO: AGENT [advisory] HOLD PFE — insufficient history: 0 days (conf=0.90, from 2026-10-01T16:15:16.743849)
+2026-10-29 07:03:14,850 [raptor.exits] INFO: AGENT [advisory] HOLD WULF — insufficient history: 0 days (conf=0.90, from 2026-06-24T17:10:55.492845)
+2026-10-29 07:03:14,850 [raptor.exits] INFO: AGENT [advisory] HOLD AAL — insufficient history: 0 days (conf=0.90, from 2026-07-06T15:50:10.870762)
+2026-10-29 07:03:14,850 [raptor.exits] INFO: AGENT [advisory] HOLD UBER — insufficient history: 0 days (conf=0.90, from 2026-08-26T16:15:20.398354)
+2026-10-29 07:03:14,850 [raptor.exits] INFO: AGENT [advisory] HOLD CPNG — insufficient history: 0 days (conf=0.90, from 2026-06-30T16:15:15.720636)
+2026-10-29 07:03:14,850 [raptor.exits] INFO: AGENT [advisory] HOLD CRWV — insufficient history: 0 days (conf=0.90, from 2026-06-24T17:10:55.492832)
+2026-10-29 07:03:14,850 [raptor.exits] INFO: AGENT [advisory] HOLD GOOGL — insufficient history: 0 days (conf=0.90, from 2026-08-07T16:15:31.056545)
+2026-10-29 07:03:14,850 [raptor.exits] INFO: AGENT [advisory] HOLD HOOD — insufficient history: 0 days (conf=0.90, from 2026-07-16T12:30:12.081848)
+2026-10-29 07:03:14,850 [raptor.exits] INFO: AGENT [advisory] HOLD XLU — insufficient history: 0 days (conf=0.90, from 2026-10-29T07:03:03.338552)
+2026-10-29 07:03:14,850 [raptor.exits] INFO: AGENT [advisory] HOLD EWZ — insufficient history: 0 days (conf=0.90, from 2026-09-03T16:15:18.569820)
+2026-10-29 07:03:14,850 [raptor.exits] INFO: AGENT [advisory] HOLD NEE — insufficient history: 0 days (conf=0.90, from 2026-07-10T12:30:14.239212)
+2026-10-29 07:03:14,850 [raptor.exits] INFO: AGENT [advisory] HOLD QXO — insufficient history: 0 days (conf=0.90, from 2026-07-01T16:15:15.781187)
+2026-10-29 07:03:14,850 [raptor.exits] INFO: AGENT [advisory] HOLD IGV — insufficient history: 0 days (conf=0.90, from 2026-07-10T16:15:17.130178)
+2026-10-29 07:03:14,850 [raptor.exits] INFO: AGENT [advisory] HOLD NOW — insufficient history: 0 days (conf=0.90, from 2026-08-25T16:15:16.732277)
+2026-10-29 07:03:14,850 [raptor.exits] INFO: AGENT [advisory] HOLD EFA — insufficient history: 0 days (conf=0.90, from 2026-07-16T16:15:22.740757)
+2026-10-29 07:03:14,851 [raptor.exits] INFO: AGENT [advisory] HOLD KWEB — insufficient history: 0 days (conf=0.90, from 2026-07-21T16:15:35.623320)
+2026-10-29 07:03:14,851 [raptor.exits] INFO: AGENT [advisory] HOLD XLV — insufficient history: 0 days (conf=0.90, from 2026-07-13T12:30:11.579981)
+2026-10-29 07:03:14,851 [raptor.exits] INFO: AGENT [advisory] HOLD BSX — insufficient history: 0 days (conf=0.90, from 2026-08-20T12:30:30.222322)
+2026-10-29 07:03:14,851 [raptor.exits] INFO: AGENT [advisory] HOLD XLP — insufficient history: 0 days (conf=0.90, from 2026-08-28T16:15:16.357687)
+2026-10-29 07:03:14,851 [raptor.exits] INFO: AGENT [advisory] HOLD WBD — insufficient history: 0 days (conf=0.90, from 2026-10-02T16:15:20.003061)
+2026-10-29 07:03:14,851 [raptor.exits] INFO: AGENT [advisory] HOLD AMZN — insufficient history: 0 days (conf=0.90, from 2026-07-22T16:15:23.439125)
+2026-10-29 07:03:14,851 [raptor.exits] INFO: AGENT [advisory] HOLD MSFT — insufficient history: 0 days (conf=0.90, from 2026-08-11T12:30:27.560357)
+2026-10-29 07:03:14,851 [raptor.exits] INFO: AGENT [advisory] HOLD PLTR — insufficient history: 0 days (conf=0.90, from 2026-09-01T16:15:19.452015)
+2026-10-29 07:03:14,851 [raptor.exits] INFO: AGENT [advisory] HOLD DVN — insufficient history: 0 days (conf=0.90, from 2026-07-23T16:15:24.377204)
+2026-10-29 07:03:14,851 [raptor.exits] INFO: AGENT [advisory] HOLD T — insufficient history: 0 days (conf=0.90, from 2026-08-04T16:15:20.508442)
+2026-10-29 07:03:14,851 [raptor.exits] INFO: AGENT [advisory] HOLD CMCSA — insufficient history: 0 days (conf=0.90, from 2026-10-29T07:03:03.338522)
+2026-10-29 07:03:14,851 [raptor.exits] INFO: AGENT [advisory] HOLD FCX — insufficient history: 0 days (conf=0.90, from 2026-08-11T16:15:34.178543)
+2026-10-29 07:03:14,851 [raptor.exits] INFO: AGENT [advisory] HOLD IREN — insufficient history: 0 days (conf=0.90, from 2026-09-24T16:15:21.446237)
+2026-10-29 07:03:14,851 [raptor.exits] INFO: AGENT [advisory] HOLD CMG — insufficient history: 0 days (conf=0.90, from 2026-09-03T16:15:18.569811)
+2026-10-29 07:03:14,851 [raptor.exits] INFO: AGENT [advisory] HOLD F — insufficient history: 0 days (conf=0.90, from 2026-08-26T12:30:11.798071)
+2026-10-29 07:03:14,851 [raptor.exits] INFO: AGENT [advisory] HOLD BMNR — insufficient history: 0 days (conf=0.90, from 2026-09-29T16:15:18.425815)
+2026-10-29 07:03:14,851 [raptor.exits] INFO: AGENT [advisory] HOLD DRAM — insufficient history: 0 days (conf=0.90, from 2026-09-25T16:15:19.849292)
+2026-10-29 07:03:14,851 [raptor.exits] INFO: AGENT [advisory] HOLD FIG — insufficient history: 0 days (conf=0.90, from 2026-08-31T16:15:16.285961)
+2026-10-29 07:03:14,851 [raptor.exits] INFO: AGENT [advisory] HOLD NVO — insufficient history: 0 days (conf=0.90, from 2026-09-09T08:14:45.245821)
+2026-10-29 07:03:14,851 [raptor.exits] INFO: AGENT [advisory] HOLD NOK — insufficient history: 0 days (conf=0.90, from 2026-09-25T16:15:19.849299)
+2026-10-29 07:03:14,851 [raptor.exits] INFO: AGENT [advisory] HOLD XLB — insufficient history: 0 days (conf=0.90, from 2026-09-09T08:14:45.245834)
+2026-10-29 07:03:14,851 [raptor.exits] INFO: AGENT [advisory] HOLD AAPL — insufficient history: 0 days (conf=0.90, from 2026-09-22T16:15:29.408462)
+2026-10-29 07:03:14,852 [raptor.exits] INFO: AGENT [advisory] HOLD SPY — insufficient history: 0 days (conf=0.90, from 2026-09-09T08:14:45.245829)
+2026-10-29 07:03:14,852 [raptor.exits] INFO: AGENT [advisory] HOLD PBR — insufficient history: 0 days (conf=0.90, from 2026-10-21T16:15:34.175959)
+2026-10-29 07:03:14,852 [raptor.exits] INFO: AGENT [advisory] HOLD CIFR — insufficient history: 0 days (conf=0.90, from 2026-09-25T16:15:19.849287)
+2026-10-29 07:03:14,852 [raptor.exits] INFO: AGENT [advisory] HOLD EEM — insufficient history: 0 days (conf=0.90, from 2026-09-09T16:15:17.118280)
+2026-10-29 07:03:14,852 [raptor.exits] INFO: AGENT [advisory] HOLD ETHA — insufficient history: 0 days (conf=0.90, from 2026-10-29T07:03:03.338548)
+2026-10-29 07:03:14,852 [raptor.exits] INFO: AGENT [advisory] HOLD CCL — insufficient history: 0 days (conf=0.90, from 2026-10-22T16:15:23.198797)
+2026-10-29 07:03:14,852 [raptor.exits] INFO: AGENT [advisory] HOLD NU — insufficient history: 0 days (conf=0.90, from 2026-10-21T16:15:34.175954)
+2026-10-29 07:03:14,852 [raptor.exits] INFO: AGENT [advisory] HOLD ONON — insufficient history: 0 days (conf=0.90, from 2026-10-22T16:15:23.198833)
+2026-10-29 07:03:14,852 [raptor.exits] INFO: AGENT [advisory] HOLD PCG — insufficient history: 0 days (conf=0.90, from 2026-10-22T12:30:10.760430)
+2026-10-29 07:03:14,852 [raptor.exits] INFO: SELL -11.0 ETHA [trailing_stop]
+2026-10-29 07:03:14,876 [raptor.data_feeds] ERROR: Order submission failed: {"code":40010001,"message":"qty must be \u003e 0"}
+2026-10-29 07:03:14,876 [raptor.exits] ERROR:   FAILED: {"code":40010001,"message":"qty must be \u003e 0"}
+2026-10-29 07:03:14,876 [raptor.exits] INFO: SELL 530.0 CMCSA [math_exit]
+2026-10-29 07:03:14,917 [raptor.data_feeds] INFO: Order submitted: SELL 530.0 CMCSA @ None
+2026-10-29 07:03:14,918 [raptor.exits] INFO:   OK: OrderStatus.PENDING_NEW
+2026-10-29 07:03:14,945 [raptor.slippage] INFO: SLIPPAGE SELL 530.0 CMCSA: decision=$21.9500 fill=PENDING (order 39ecfb01)
+2026-10-29 07:03:14,975 [raptor.exits] INFO: PENDING-EXIT FLAG set for CMCSA
+2026-10-29 07:03:15,000 [raptor.exits] INFO: SELL 115 CSX [math_trim_44%]
+2026-10-29 07:03:15,030 [raptor.data_feeds] INFO: Order submitted: SELL 115 CSX @ None
+2026-10-29 07:03:15,031 [raptor.exits] INFO:   OK: OrderStatus.PENDING_NEW
+2026-10-29 07:03:15,045 [raptor.slippage] INFO: SLIPPAGE SELL 115 CSX: decision=$52.8900 fill=PENDING (order 77d509b3)
+2026-10-29 07:03:15,096 [raptor.exits] INFO: SELL 39 XLU [math_trim_52%]
+2026-10-29 07:03:15,120 [raptor.data_feeds] INFO: Order submitted: SELL 39 XLU @ None
+2026-10-29 07:03:15,120 [raptor.exits] INFO:   OK: OrderStatus.PENDING_NEW
+2026-10-29 07:03:15,134 [raptor.slippage] INFO: SLIPPAGE SELL 39 XLU: decision=$42.9200 fill=PENDING (order d4421c24)
+2026-10-29 07:03:15,220 [raptor.exits] INFO: [TrimLog] Logged 2 trim(s) → trim_log.json
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Users\steve\AppData\Local\Programs\Python\Python313\Lib\logging\__init__.py", line 1154, in emit
+    stream.write(msg + self.terminator)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\steve\AppData\Local\Programs\Python\Python313\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2192' in position 72: character maps to <undefined>
+Call stack:
+  File "C:\Raptor\exit_monitor.py", line 1075, in <module>
+    _run_once()
+  File "C:\Raptor\exit_monitor.py", line 1038, in _run_once
+    run_exit_monitor(dry_run=args.dry_run)
+  File "C:\Raptor\exit_monitor.py", line 983, in run_exit_monitor
+    logger.info("[TrimLog] Logged %d trim(s) → trim_log.json", len(_trim_exits))
+Message: '[TrimLog] Logged %d trim(s) → trim_log.json'
+Arguments: (2,)
+[OutcomeTracker] No new trades to tag.
+2026-10-29 07:03:17,196 [raptor.exits] INFO: EXIT MONITOR LOOP: cycle 1 complete. Next in 30 min at ~07:33.
+2026-10-29 07:33:08,203 [raptor.exits] INFO: EXIT MONITOR LOOP: cycle 2 starting at 07:33:08
+2026-10-29 07:33:08,212 [raptor.exits] INFO: ============================================================
+2026-10-29 07:33:08,212 [raptor.exits] INFO: RAPTOR v5.4 EXIT MONITOR - 2026-10-29T07:33:08.212666
+2026-10-29 07:33:08,213 [raptor.exits] INFO: ============================================================
+2026-10-29 07:33:08,222 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-10-29 07:33:08,882 [raptor.data_feeds] WARNING: safe_int: account.daytrade_count was None, defaulting to 0
+2026-10-29 07:33:08,883 [raptor.exits] INFO: Account: equity=$106434.47  cash=$78164.85  positions=4
+2026-10-29 07:33:08,904 [raptor.universe] INFO: Building universe...
+2026-10-29 07:33:10,601 [raptor.data_feeds] INFO: Fetched 5 new bars / 5 total cached
+2026-10-29 07:33:10,630 [raptor.data_feeds] INFO: FRED regime: NEUTRAL (score=-0.000)
+[MacroContext] Fetching macro signals...
+  Fetching VIX...
+  Fetching SPY trend...
+  Fetching sector breadth...
+  Fetching yield curve (FRED T10Y2Y)...
+  Fetching credit spread (FRED BAMLC0A4CBBB)...
+  Fetching Fed funds rate (FRED FEDFUNDS)...
+
+[MacroContext] Regime: RISK_ON  Score: +0.500
+[MacroContext] Written → macro_context.json
+2026-10-29 07:33:16,048 [raptor.exits] INFO: [MacroOverride] regime -> RISK_ON (live refresh, score=0.500, VIX=17.0)
+2026-10-29 07:33:16,191 [raptor.exits] WARNING: No composite score for held CMCSA — defaulting 0.0 (data gap, not thesis judgment)
+2026-10-29 07:33:16,191 [raptor.exits] WARNING: No composite score for held CSX — defaulting 0.0 (data gap, not thesis judgment)
+2026-10-29 07:33:16,191 [raptor.exits] WARNING: No composite score for held ETHA — defaulting 0.0 (data gap, not thesis judgment)
+2026-10-29 07:33:16,191 [raptor.exits] WARNING: No composite score for held XLU — defaulting 0.0 (data gap, not thesis judgment)
+2026-10-29 07:33:16,191 [raptor.exits] INFO: Portfolio unrealized: $1043.68 (0.98%)
+2026-10-29 07:33:16,195 [raptor.exits] WARNING: days_held missing for CMCSA — using conservative fallback=1
+2026-10-29 07:33:16,199 [raptor.exits] INFO: EXIT 2 [TRAIL] ETHA $52.51 <= $55.08 (1.0x ATR) comp=0.00 health=-0.04
+2026-10-29 07:33:16,251 [raptor.exits] WARNING: MATH EXIT [EXIT] CMCSA — Full exit — math supports complete liquidation
+2026-10-29 07:33:16,251 [raptor.exits] INFO: DOUBLE-TRIM GUARD [skip] CSX — hold_health.json snapshot (2026-10-29T07:03:00.915147) is not newer than last trim (2026-10-29T07:03:15.082696); recommendation is stale, waiting for hold_monitor to re-score
+2026-10-29 07:33:16,251 [raptor.exits] INFO: DOUBLE-TRIM GUARD [skip] XLU — hold_health.json snapshot (2026-10-29T07:03:00.923414) is not newer than last trim (2026-10-29T07:03:15.170924); recommendation is stale, waiting for hold_monitor to re-score
+2026-10-29 07:33:16,251 [raptor.exits] INFO: 
+2026-10-29 07:33:16,251 [raptor.exits] INFO: ============================================================
+2026-10-29 07:33:16,251 [raptor.exits] INFO:   EXIT SUMMARY
+2026-10-29 07:33:16,251 [raptor.exits] INFO: ============================================================
+2026-10-29 07:33:16,251 [raptor.exits] INFO:   EXITS (2):
+2026-10-29 07:33:16,252 [raptor.exits] INFO:     ETHA  trailing_stop  pnl=-186.2%  comp=0.0000
+2026-10-29 07:33:16,252 [raptor.exits] INFO:     CMCSA  math_exit  pnl=+1.1%  comp=0.0000
+2026-10-29 07:33:16,252 [raptor.exits] INFO:   HOLDS (2):
+2026-10-29 07:33:16,252 [raptor.exits] INFO:     CSX  pnl=+9.4%  trail=$51.4  comp=0.0
+2026-10-29 07:33:16,252 [raptor.exits] INFO:     XLU  pnl=+2.8%  trail=$42.08  comp=0.0
+2026-10-29 07:33:16,252 [raptor.exits] INFO: ============================================================
+2026-10-29 07:33:16,263 [raptor.exits] INFO: AGENT [advisory] HOLD NVDA — insufficient history: 0 days (conf=0.90, from 2026-10-14T16:25:30.509158)
+2026-10-29 07:33:16,264 [raptor.exits] INFO: AGENT [advisory] HOLD AMD — insufficient history: 0 days (conf=0.90, from 2026-06-05T09:52:08.933229)
+2026-10-29 07:33:16,264 [raptor.exits] INFO: AGENT [advisory] HOLD CVE — insufficient history: 0 days (conf=0.90, from 2026-05-28T15:50:34.277447)
+2026-10-29 07:33:16,264 [raptor.exits] INFO: AGENT [advisory] HOLD FXI — insufficient history: 0 days (conf=0.90, from 2026-08-05T16:15:19.287944)
+2026-10-29 07:33:16,264 [raptor.exits] INFO: AGENT [advisory] HOLD CSX — insufficient history: 0 days (conf=0.90, from 2026-10-29T07:03:03.338543)
+2026-10-29 07:33:16,264 [raptor.exits] INFO: AGENT [advisory] HOLD INTC — insufficient history: 0 days (conf=0.90, from 2026-09-25T16:15:19.849297)
+2026-10-29 07:33:16,264 [raptor.exits] INFO: AGENT [advisory] HOLD KDP — insufficient history: 0 days (conf=0.90, from 2026-06-18T09:52:09.166655)
+2026-10-29 07:33:16,264 [raptor.exits] INFO: AGENT [advisory] HOLD OWL — insufficient history: 0 days (conf=0.90, from 2026-05-17T15:50:38.416296)
+2026-10-29 07:33:16,264 [raptor.exits] INFO: AGENT [advisory] HOLD KRE — insufficient history: 0 days (conf=0.90, from 2026-08-06T16:15:30.296480)
+2026-10-29 07:33:16,265 [raptor.exits] INFO: AGENT [advisory] HOLD PLTD — insufficient history: 0 days (conf=0.90, from 2026-05-28T15:50:34.277463)
+2026-10-29 07:33:16,265 [raptor.exits] INFO: AGENT [advisory] HOLD STM — insufficient history: 0 days (conf=0.90, from 2026-07-01T16:15:15.781190)
+2026-10-29 07:33:16,265 [raptor.exits] INFO: AGENT [advisory] HOLD SMCI — insufficient history: 0 days (conf=0.90, from 2026-10-14T16:25:30.509170)
+2026-10-29 07:33:16,265 [raptor.exits] INFO: AGENT [advisory] HOLD TSLA — insufficient history: 0 days (conf=0.90, from 2026-09-24T16:15:21.446245)
+2026-10-29 07:33:16,265 [raptor.exits] INFO: AGENT [advisory] HOLD TSLL — insufficient history: 0 days (conf=0.90, from 2026-05-19T16:30:29.205168)
+2026-10-29 07:33:16,265 [raptor.exits] INFO: AGENT [advisory] HOLD TTD — insufficient history: 0 days (conf=0.90, from 2026-05-19T16:30:29.205175)
+2026-10-29 07:33:16,265 [raptor.exits] INFO: AGENT [advisory] HOLD DKNG — insufficient history: 0 days (conf=0.90, from 2026-05-29T09:52:09.312915)
+2026-10-29 07:33:16,265 [raptor.exits] INFO: AGENT [advisory] HOLD HPQ — insufficient history: 0 days (conf=0.90, from 2026-09-21T12:30:18.247695)
+2026-10-29 07:33:16,265 [raptor.exits] INFO: AGENT [advisory] HOLD MRVL — insufficient history: 0 days (conf=0.90, from 2026-06-24T17:10:55.492840)
+2026-10-29 07:33:16,265 [raptor.exits] INFO: AGENT [advisory] HOLD WFC — insufficient history: 0 days (conf=0.90, from 2026-06-19T15:50:16.055987)
+2026-10-29 07:33:16,266 [raptor.exits] INFO: AGENT [advisory] HOLD SQQQ — insufficient history: 0 days (conf=0.90, from 2026-06-15T09:52:08.207369)
+2026-10-29 07:33:16,266 [raptor.exits] INFO: AGENT [advisory] HOLD XLE — insufficient history: 0 days (conf=0.90, from 2026-07-23T16:15:24.377216)
+2026-10-29 07:33:16,266 [raptor.exits] INFO: AGENT [advisory] HOLD BAC — insufficient history: 0 days (conf=0.90, from 2026-06-30T16:15:15.720631)
+2026-10-29 07:33:16,266 [raptor.exits] INFO: AGENT [advisory] HOLD PFE — insufficient history: 0 days (conf=0.90, from 2026-10-01T16:15:16.743849)
+2026-10-29 07:33:16,266 [raptor.exits] INFO: AGENT [advisory] HOLD WULF — insufficient history: 0 days (conf=0.90, from 2026-06-24T17:10:55.492845)
+2026-10-29 07:33:16,266 [raptor.exits] INFO: AGENT [advisory] HOLD AAL — insufficient history: 0 days (conf=0.90, from 2026-07-06T15:50:10.870762)
+2026-10-29 07:33:16,266 [raptor.exits] INFO: AGENT [advisory] HOLD UBER — insufficient history: 0 days (conf=0.90, from 2026-08-26T16:15:20.398354)
+2026-10-29 07:33:16,266 [raptor.exits] INFO: AGENT [advisory] HOLD CPNG — insufficient history: 0 days (conf=0.90, from 2026-06-30T16:15:15.720636)
+2026-10-29 07:33:16,266 [raptor.exits] INFO: AGENT [advisory] HOLD CRWV — insufficient history: 0 days (conf=0.90, from 2026-06-24T17:10:55.492832)
+2026-10-29 07:33:16,266 [raptor.exits] INFO: AGENT [advisory] HOLD GOOGL — insufficient history: 0 days (conf=0.90, from 2026-08-07T16:15:31.056545)
+2026-10-29 07:33:16,266 [raptor.exits] INFO: AGENT [advisory] HOLD HOOD — insufficient history: 0 days (conf=0.90, from 2026-07-16T12:30:12.081848)
+2026-10-29 07:33:16,267 [raptor.exits] INFO: AGENT [advisory] HOLD XLU — insufficient history: 0 days (conf=0.90, from 2026-10-29T07:03:03.338552)
+2026-10-29 07:33:16,267 [raptor.exits] INFO: AGENT [advisory] HOLD EWZ — insufficient history: 0 days (conf=0.90, from 2026-09-03T16:15:18.569820)
+2026-10-29 07:33:16,267 [raptor.exits] INFO: AGENT [advisory] HOLD NEE — insufficient history: 0 days (conf=0.90, from 2026-07-10T12:30:14.239212)
+2026-10-29 07:33:16,267 [raptor.exits] INFO: AGENT [advisory] HOLD QXO — insufficient history: 0 days (conf=0.90, from 2026-07-01T16:15:15.781187)
+2026-10-29 07:33:16,267 [raptor.exits] INFO: AGENT [advisory] HOLD IGV — insufficient history: 0 days (conf=0.90, from 2026-07-10T16:15:17.130178)
+2026-10-29 07:33:16,267 [raptor.exits] INFO: AGENT [advisory] HOLD NOW — insufficient history: 0 days (conf=0.90, from 2026-08-25T16:15:16.732277)
+2026-10-29 07:33:16,267 [raptor.exits] INFO: AGENT [advisory] HOLD EFA — insufficient history: 0 days (conf=0.90, from 2026-07-16T16:15:22.740757)
+2026-10-29 07:33:16,267 [raptor.exits] INFO: AGENT [advisory] HOLD KWEB — insufficient history: 0 days (conf=0.90, from 2026-07-21T16:15:35.623320)
+2026-10-29 07:33:16,267 [raptor.exits] INFO: AGENT [advisory] HOLD XLV — insufficient history: 0 days (conf=0.90, from 2026-07-13T12:30:11.579981)
+2026-10-29 07:33:16,267 [raptor.exits] INFO: AGENT [advisory] HOLD BSX — insufficient history: 0 days (conf=0.90, from 2026-08-20T12:30:30.222322)
+2026-10-29 07:33:16,267 [raptor.exits] INFO: AGENT [advisory] HOLD XLP — insufficient history: 0 days (conf=0.90, from 2026-08-28T16:15:16.357687)
+2026-10-29 07:33:16,267 [raptor.exits] INFO: AGENT [advisory] HOLD WBD — insufficient history: 0 days (conf=0.90, from 2026-10-02T16:15:20.003061)
+2026-10-29 07:33:16,268 [raptor.exits] INFO: AGENT [advisory] HOLD AMZN — insufficient history: 0 days (conf=0.90, from 2026-07-22T16:15:23.439125)
+2026-10-29 07:33:16,268 [raptor.exits] INFO: AGENT [advisory] HOLD MSFT — insufficient history: 0 days (conf=0.90, from 2026-08-11T12:30:27.560357)
+2026-10-29 07:33:16,268 [raptor.exits] INFO: AGENT [advisory] HOLD PLTR — insufficient history: 0 days (conf=0.90, from 2026-09-01T16:15:19.452015)
+2026-10-29 07:33:16,268 [raptor.exits] INFO: AGENT [advisory] HOLD DVN — insufficient history: 0 days (conf=0.90, from 2026-07-23T16:15:24.377204)
+2026-10-29 07:33:16,268 [raptor.exits] INFO: AGENT [advisory] HOLD T — insufficient history: 0 days (conf=0.90, from 2026-08-04T16:15:20.508442)
+2026-10-29 07:33:16,268 [raptor.exits] INFO: AGENT [advisory] HOLD CMCSA — insufficient history: 0 days (conf=0.90, from 2026-10-29T07:03:03.338522)
+2026-10-29 07:33:16,268 [raptor.exits] INFO: AGENT [advisory] HOLD FCX — insufficient history: 0 days (conf=0.90, from 2026-08-11T16:15:34.178543)
+2026-10-29 07:33:16,268 [raptor.exits] INFO: AGENT [advisory] HOLD IREN — insufficient history: 0 days (conf=0.90, from 2026-09-24T16:15:21.446237)
+2026-10-29 07:33:16,268 [raptor.exits] INFO: AGENT [advisory] HOLD CMG — insufficient history: 0 days (conf=0.90, from 2026-09-03T16:15:18.569811)
+2026-10-29 07:33:16,268 [raptor.exits] INFO: AGENT [advisory] HOLD F — insufficient history: 0 days (conf=0.90, from 2026-08-26T12:30:11.798071)
+2026-10-29 07:33:16,268 [raptor.exits] INFO: AGENT [advisory] HOLD BMNR — insufficient history: 0 days (conf=0.90, from 2026-09-29T16:15:18.425815)
+2026-10-29 07:33:16,269 [raptor.exits] INFO: AGENT [advisory] HOLD DRAM — insufficient history: 0 days (conf=0.90, from 2026-09-25T16:15:19.849292)
+2026-10-29 07:33:16,269 [raptor.exits] INFO: AGENT [advisory] HOLD FIG — insufficient history: 0 days (conf=0.90, from 2026-08-31T16:15:16.285961)
+2026-10-29 07:33:16,269 [raptor.exits] INFO: AGENT [advisory] HOLD NVO — insufficient history: 0 days (conf=0.90, from 2026-09-09T08:14:45.245821)
+2026-10-29 07:33:16,269 [raptor.exits] INFO: AGENT [advisory] HOLD NOK — insufficient history: 0 days (conf=0.90, from 2026-09-25T16:15:19.849299)
+2026-10-29 07:33:16,269 [raptor.exits] INFO: AGENT [advisory] HOLD XLB — insufficient history: 0 days (conf=0.90, from 2026-09-09T08:14:45.245834)
+2026-10-29 07:33:16,269 [raptor.exits] INFO: AGENT [advisory] HOLD AAPL — insufficient history: 0 days (conf=0.90, from 2026-09-22T16:15:29.408462)
+2026-10-29 07:33:16,269 [raptor.exits] INFO: AGENT [advisory] HOLD SPY — insufficient history: 0 days (conf=0.90, from 2026-09-09T08:14:45.245829)
+2026-10-29 07:33:16,269 [raptor.exits] INFO: AGENT [advisory] HOLD PBR — insufficient history: 0 days (conf=0.90, from 2026-10-21T16:15:34.175959)
+2026-10-29 07:33:16,269 [raptor.exits] INFO: AGENT [advisory] HOLD CIFR — insufficient history: 0 days (conf=0.90, from 2026-09-25T16:15:19.849287)
+2026-10-29 07:33:16,269 [raptor.exits] INFO: AGENT [advisory] HOLD EEM — insufficient history: 0 days (conf=0.90, from 2026-09-09T16:15:17.118280)
+2026-10-29 07:33:16,269 [raptor.exits] INFO: AGENT [advisory] HOLD ETHA — insufficient history: 0 days (conf=0.90, from 2026-10-29T07:03:03.338548)
+2026-10-29 07:33:16,270 [raptor.exits] INFO: AGENT [advisory] HOLD CCL — insufficient history: 0 days (conf=0.90, from 2026-10-22T16:15:23.198797)
+2026-10-29 07:33:16,270 [raptor.exits] INFO: AGENT [advisory] HOLD NU — insufficient history: 0 days (conf=0.90, from 2026-10-21T16:15:34.175954)
+2026-10-29 07:33:16,270 [raptor.exits] INFO: AGENT [advisory] HOLD ONON — insufficient history: 0 days (conf=0.90, from 2026-10-22T16:15:23.198833)
+2026-10-29 07:33:16,270 [raptor.exits] INFO: AGENT [advisory] HOLD PCG — insufficient history: 0 days (conf=0.90, from 2026-10-22T12:30:10.760430)
+2026-10-29 07:33:16,270 [raptor.exits] INFO: SELL -11.0 ETHA [trailing_stop]
+2026-10-29 07:33:16,294 [raptor.data_feeds] ERROR: Order submission failed: {"code":40010001,"message":"qty must be \u003e 0"}
+2026-10-29 07:33:16,294 [raptor.exits] ERROR:   FAILED: {"code":40010001,"message":"qty must be \u003e 0"}
+2026-10-29 07:33:16,294 [raptor.exits] INFO: SELL 530.0 CMCSA [math_exit]
+2026-10-29 07:33:16,318 [raptor.data_feeds] ERROR: Order submission failed: {"available":"0","code":40310000,"existing_qty":"530","held_for_orders":"530","message":"insufficient qty available for order (requested: 530, available: 0)","related_orders":["39ecfb01-5fd6-4632-a678-e9fcbe62c9fb"],"symbol":"CMCSA"}
+2026-10-29 07:33:16,319 [raptor.exits] ERROR:   FAILED: {"available":"0","code":40310000,"existing_qty":"530","held_for_orders":"530","message":"insufficient qty available for order (requested: 530, available: 0)","related_orders":["39ecfb01-5fd6-4632-a678-e9fcbe62c9fb"],"symbol":"CMCSA"}
+[OutcomeTracker] No new trades to tag.
+2026-10-29 07:33:19,247 [raptor.exits] INFO: EXIT MONITOR LOOP: cycle 2 complete. Next in 30 min at ~08:03.
+^C2026-10-29 09:35:04,133 [raptor.main] INFO: ============================================================
+2026-10-29 09:35:04,134 [raptor.main] INFO: RAPTOR v5.4 DAILY SCAN - 2026-10-29T09:35:04.134147
+2026-10-29 09:35:04,134 [raptor.main] INFO: ============================================================
+[CONFIG] Raptor v5.4.0 validated
+2026-10-29 09:35:04,135 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-10-29 09:35:04,660 [raptor.data_feeds] WARNING: safe_int: account.daytrade_count was None, defaulting to 0
+2026-10-29 09:35:04,661 [raptor.main] INFO: Account: equity=$106467.07  cap=none (compound)  sizing_base=$106467.07  positions=3
+2026-10-29 09:35:04,677 [raptor.main] INFO: [MarketAgent] SCAN | scalar=1.00 | Macro RISK_ON — full scan, normal sizing.
+2026-10-29 09:35:04,951 [raptor.data_feeds] WARNING: safe_int: account.daytrade_count was None, defaulting to 0
+2026-10-29 09:35:04,975 [raptor.margin_guard] INFO: MARGIN GUARD: equity=$106,467  cap=none (compound)  cash=$97,557  positions=3
+2026-10-29 09:35:04,976 [raptor.margin_guard] INFO: MARGIN GUARD: market_value=$10,064  utilization=9.5% of base  margin=NO
+2026-10-29 09:35:04,981 [raptor.universe] INFO: Building universe...
+2026-10-29 09:35:05,937 [raptor.main] ERROR: Universe builder failed (20 validation errors for list[Asset]
+1638.exchange
+  Input should be 'AMEX', 'ARCA', 'ASCX', 'BATS', 'NYSE', 'NASDAQ', 'NYSEARCA', 'FTXU', 'CBSE', 'GNSS', 'ERSX', 'OTC', 'CRYPTO' or '' [type=enum, input_value='TXSE', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.12/v/enum
+5029.exchange
+  Input should be 'AMEX', 'ARCA', 'ASCX', 'BATS', 'NYSE', 'NASDAQ', 'NYSEARCA', 'FTXU', 'CBSE', 'GNSS', 'ERSX', 'OTC', 'CRYPTO' or '' [type=enum, input_value='TXSE', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.12/v/enum
+5728.exchange
+  Input should be 'AMEX', 'ARCA', 'ASCX', 'BATS', 'NYSE', 'NASDAQ', 'NYSEARCA', 'FTXU', 'CBSE', 'GNSS', 'ERSX', 'OTC', 'CRYPTO' or '' [type=enum, input_value='TXSE', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.12/v/enum
+5778.exchange
+  Input should be 'AMEX', 'ARCA', 'ASCX', 'BATS', 'NYSE', 'NASDAQ', 'NYSEARCA', 'FTXU', 'CBSE', 'GNSS', 'ERSX', 'OTC', 'CRYPTO' or '' [type=enum, input_value='TXSE', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.12/v/enum
+6055.exchange
+  Input should be 'AMEX', 'ARCA', 'ASCX', 'BATS', 'NYSE', 'NASDAQ', 'NYSEARCA', 'FTXU', 'CBSE', 'GNSS', 'ERSX', 'OTC', 'CRYPTO' or '' [type=enum, input_value='TXSE', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.12/v/enum
+6060.exchange
+  Input should be 'AMEX', 'ARCA', 'ASCX', 'BATS', 'NYSE', 'NASDAQ', 'NYSEARCA', 'FTXU', 'CBSE', 'GNSS', 'ERSX', 'OTC', 'CRYPTO' or '' [type=enum, input_value='TXSE', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.12/v/enum
+6061.exchange
+  Input should be 'AMEX', 'ARCA', 'ASCX', 'BATS', 'NYSE', 'NASDAQ', 'NYSEARCA', 'FTXU', 'CBSE', 'GNSS', 'ERSX', 'OTC', 'CRYPTO' or '' [type=enum, input_value='TXSE', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.12/v/enum
+6063.exchange
+  Input should be 'AMEX', 'ARCA', 'ASCX', 'BATS', 'NYSE', 'NASDAQ', 'NYSEARCA', 'FTXU', 'CBSE', 'GNSS', 'ERSX', 'OTC', 'CRYPTO' or '' [type=enum, input_value='TXSE', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.12/v/enum
+6822.exchange
+  Input should be 'AMEX', 'ARCA', 'ASCX', 'BATS', 'NYSE', 'NASDAQ', 'NYSEARCA', 'FTXU', 'CBSE', 'GNSS', 'ERSX', 'OTC', 'CRYPTO' or '' [type=enum, input_value='TXSE', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.12/v/enum
+7575.exchange
+  Input should be 'AMEX', 'ARCA', 'ASCX', 'BATS', 'NYSE', 'NASDAQ', 'NYSEARCA', 'FTXU', 'CBSE', 'GNSS', 'ERSX', 'OTC', 'CRYPTO' or '' [type=enum, input_value='TXSE', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.12/v/enum
+10569.exchange
+  Input should be 'AMEX', 'ARCA', 'ASCX', 'BATS', 'NYSE', 'NASDAQ', 'NYSEARCA', 'FTXU', 'CBSE', 'GNSS', 'ERSX', 'OTC', 'CRYPTO' or '' [type=enum, input_value='TXSE', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.12/v/enum
+10744.exchange
+  Input should be 'AMEX', 'ARCA', 'ASCX', 'BATS', 'NYSE', 'NASDAQ', 'NYSEARCA', 'FTXU', 'CBSE', 'GNSS', 'ERSX', 'OTC', 'CRYPTO' or '' [type=enum, input_value='TXSE', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.12/v/enum
+10782.exchange
+  Input should be 'AMEX', 'ARCA', 'ASCX', 'BATS', 'NYSE', 'NASDAQ', 'NYSEARCA', 'FTXU', 'CBSE', 'GNSS', 'ERSX', 'OTC', 'CRYPTO' or '' [type=enum, input_value='TXSE', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.12/v/enum
+10989.exchange
+  Input should be 'AMEX', 'ARCA', 'ASCX', 'BATS', 'NYSE', 'NASDAQ', 'NYSEARCA', 'FTXU', 'CBSE', 'GNSS', 'ERSX', 'OTC', 'CRYPTO' or '' [type=enum, input_value='TXSE', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.12/v/enum
+11604.exchange
+  Input should be 'AMEX', 'ARCA', 'ASCX', 'BATS', 'NYSE', 'NASDAQ', 'NYSEARCA', 'FTXU', 'CBSE', 'GNSS', 'ERSX', 'OTC', 'CRYPTO' or '' [type=enum, input_value='TXSE', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.12/v/enum
+11769.exchange
+  Input should be 'AMEX', 'ARCA', 'ASCX', 'BATS', 'NYSE', 'NASDAQ', 'NYSEARCA', 'FTXU', 'CBSE', 'GNSS', 'ERSX', 'OTC', 'CRYPTO' or '' [type=enum, input_value='TXSE', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.12/v/enum
+12206.exchange
+  Input should be 'AMEX', 'ARCA', 'ASCX', 'BATS', 'NYSE', 'NASDAQ', 'NYSEARCA', 'FTXU', 'CBSE', 'GNSS', 'ERSX', 'OTC', 'CRYPTO' or '' [type=enum, input_value='TXSE', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.12/v/enum
+13008.exchange
+  Input should be 'AMEX', 'ARCA', 'ASCX', 'BATS', 'NYSE', 'NASDAQ', 'NYSEARCA', 'FTXU', 'CBSE', 'GNSS', 'ERSX', 'OTC', 'CRYPTO' or '' [type=enum, input_value='TXSE', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.12/v/enum
+13567.exchange
+  Input should be 'AMEX', 'ARCA', 'ASCX', 'BATS', 'NYSE', 'NASDAQ', 'NYSEARCA', 'FTXU', 'CBSE', 'GNSS', 'ERSX', 'OTC', 'CRYPTO' or '' [type=enum, input_value='TXSE', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.12/v/enum
+13734.exchange
+  Input should be 'AMEX', 'ARCA', 'ASCX', 'BATS', 'NYSE', 'NASDAQ', 'NYSEARCA', 'FTXU', 'CBSE', 'GNSS', 'ERSX', 'OTC', 'CRYPTO' or '' [type=enum, input_value='TXSE', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.12/v/enum) — aborting scan.
+2026-10-29 15:50:14,893 [raptor.hold_monitor] INFO: ============================================================
+2026-10-29 15:50:14,894 [raptor.hold_monitor] INFO: RAPTOR HOLD MONITOR - 2026-10-29T15:50:14.894620
+2026-10-29 15:50:14,894 [raptor.hold_monitor] INFO: ============================================================
+2026-10-29 15:50:14,895 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-10-29 15:50:15,394 [raptor.universe] INFO: Building universe...
+2026-10-29 15:50:16,349 [raptor.hold_monitor] INFO: Fetching data for 4 symbols...
+2026-10-29 15:50:17,279 [raptor.data_feeds] INFO: Fetched 4 new bars / 4 total cached
+2026-10-29 15:50:18,104 [raptor.data_feeds] INFO: FRED fetch OK: T10Y2Y (749 observations)
+2026-10-29 15:50:18,683 [raptor.data_feeds] INFO: FRED fetch OK: FEDFUNDS (36 observations)
+2026-10-29 15:50:19,515 [raptor.data_feeds] INFO: FRED fetch OK: ICSA (156 observations)
+2026-10-29 15:50:20,157 [raptor.data_feeds] INFO: FRED fetch OK: VIXCLS (774 observations)
+2026-10-29 15:50:21,024 [raptor.data_feeds] INFO: FRED fetch OK: BAMLC0A4CBBB (786 observations)
+2026-10-29 15:50:21,641 [raptor.data_feeds] INFO: FRED fetch OK: CPIAUCSL (35 observations)
+2026-10-29 15:50:22,207 [raptor.data_feeds] INFO: FRED fetch OK: IPMAN (36 observations)
+2026-10-29 15:50:22,873 [raptor.data_feeds] INFO: FRED fetch OK: M2SL (36 observations)
+2026-10-29 15:50:23,469 [raptor.data_feeds] INFO: FRED fetch OK: RSXFS (36 observations)
+2026-10-29 15:50:24,018 [raptor.data_feeds] INFO: FRED fetch OK: UNRATE (35 observations)
+2026-10-29 15:50:24,020 [raptor.data_feeds] INFO: FRED regime: BULLISH (score=0.200)
+2026-10-29 15:50:24,106 [raptor.hold_monitor] INFO: Pre-entry tracker: 0 candidates monitored
+2026-10-29 15:50:24,106 [raptor.hold_monitor] WARNING: No signal for held CSX � using neutral Dummy (comp=0.0)
+2026-10-29 15:50:24,110 [raptor.hold_monitor] INFO:   [RED] CSX     health=-0.491  FAR=0/16  pnl=+7.7%  stop=0.60ATR  -> TRIM_MAJOR
+2026-10-29 15:50:24,110 [raptor.hold_monitor] INFO:     DECAY: composite_slope: slope=-0.0918/day over 5d
+2026-10-29 15:50:24,110 [raptor.hold_monitor] INFO:     TRIM:  severity=0.402 x stop_mult=1.50 x far_mult=1.30 x pnl_mult=0.80 + slope_adj=0.184 = 0.810 -> 81.0% (121 sh)
+2026-10-29 15:50:24,110 [raptor.hold_monitor] WARNING: No signal for held ETHA � using neutral Dummy (comp=0.0)
+2026-10-29 15:50:24,114 [raptor.hold_monitor] INFO:   [YLW] ETHA    health=-0.109  FAR=0/16  pnl=-187.7%  stop=0.35ATR  -> HOLD
+2026-10-29 15:50:24,114 [raptor.hold_monitor] WARNING: No signal for held XLU � using neutral Dummy (comp=0.0)
+2026-10-29 15:50:24,118 [raptor.hold_monitor] INFO:   [RED] XLU     health=-0.363  FAR=0/16  pnl=+3.4%  stop=1.76ATR  -> TRIM_MODERATE
+2026-10-29 15:50:24,118 [raptor.hold_monitor] INFO:     DECAY: factor_agreement: FAR=0/16  trend=+0.000
+2026-10-29 15:50:24,118 [raptor.hold_monitor] INFO:     TRIM:  severity=0.250 x stop_mult=1.00 x far_mult=1.30 x pnl_mult=1.00 + slope_adj=0.128 = 0.453 -> 45.3% (16 sh)
+2026-10-29 15:50:26,558 [AgentLayer] INFO: HoldAgent | Flushed 3 decisions -> hold_decisions.json
+2026-10-29 15:50:26,559 [raptor.hold_monitor] INFO: ============================================================
+2026-10-29 15:50:26,559 [raptor.hold_monitor] INFO: COMPLETE � 3 positions | STR=0  STA=1  DEC=2  INS=0
+2026-10-29 15:50:26,559 [raptor.hold_monitor] INFO: ============================================================
+2026-10-29 15:50:31,225 [raptor.exits] WARNING: LOCK: stale exit_monitor lock (age 31644s) — overwriting.
+2026-10-29 15:50:31,227 [raptor.exits] INFO: EXIT MONITOR LOOP: cycle 1 starting at 15:50:31
+2026-10-29 15:50:31,230 [raptor.exits] INFO: ============================================================
+2026-10-29 15:50:31,230 [raptor.exits] INFO: RAPTOR v5.4 EXIT MONITOR - 2026-10-29T15:50:31.230529
+2026-10-29 15:50:31,230 [raptor.exits] INFO: ============================================================
+2026-10-29 15:50:31,231 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-10-29 15:50:31,606 [raptor.data_feeds] WARNING: safe_int: account.daytrade_count was None, defaulting to 0
+2026-10-29 15:50:31,607 [raptor.exits] INFO: Account: equity=$106340.02  cash=$97556.88  positions=3
+2026-10-29 15:50:31,616 [raptor.universe] INFO: Building universe...
+2026-10-29 15:50:33,364 [raptor.data_feeds] INFO: Fetched 4 new bars / 4 total cached
+2026-10-29 15:50:33,515 [raptor.data_feeds] INFO: FRED regime: BULLISH (score=0.200)
+[MacroContext] Fetching macro signals...
+  Fetching VIX...
+  Fetching SPY trend...
+  Fetching sector breadth...
+  Fetching yield curve (FRED T10Y2Y)...
+  Fetching credit spread (FRED BAMLC0A4CBBB)...
+  Fetching Fed funds rate (FRED FEDFUNDS)...
+
+[MacroContext] Regime: RISK_ON  Score: +0.500
+[MacroContext] Written → macro_context.json
+2026-10-29 15:50:43,326 [raptor.exits] INFO: [MacroOverride] regime -> RISK_ON (live refresh, score=0.500, VIX=16.6)
+2026-10-29 15:50:43,393 [raptor.exits] WARNING: No composite score for held CSX — defaulting 0.0 (data gap, not thesis judgment)
+2026-10-29 15:50:43,394 [raptor.exits] WARNING: No composite score for held ETHA — defaulting 0.0 (data gap, not thesis judgment)
+2026-10-29 15:50:43,394 [raptor.exits] WARNING: No composite score for held XLU — defaulting 0.0 (data gap, not thesis judgment)
+2026-10-29 15:50:43,394 [raptor.exits] INFO: Portfolio unrealized: $228.21 (0.21%)
+2026-10-29 15:50:43,409 [raptor.exits] INFO: EXIT 2 [TRAIL] ETHA $52.77 <= $55.03 (1.0x ATR) comp=0.00 health=-0.11
+2026-10-29 15:50:43,445 [raptor.exits] WARNING: MATH TRIM [TRIM_MAJOR] CSX — 121 of 150 shares (81%) — Major trim 81% — significant thesis decay
+2026-10-29 15:50:43,445 [raptor.exits] WARNING: MATH TRIM [TRIM_MODERATE] XLU — 16 of 36 shares (45%) — Moderate trim 45% — thesis weakening
+2026-10-29 15:50:43,445 [raptor.exits] INFO: 
+2026-10-29 15:50:43,445 [raptor.exits] INFO: ============================================================
+2026-10-29 15:50:43,445 [raptor.exits] INFO:   EXIT SUMMARY
+2026-10-29 15:50:43,445 [raptor.exits] INFO: ============================================================
+2026-10-29 15:50:43,445 [raptor.exits] INFO:   EXITS (3):
+2026-10-29 15:50:43,445 [raptor.exits] INFO:     ETHA  trailing_stop  pnl=-187.6%  comp=0.0000
+2026-10-29 15:50:43,445 [raptor.exits] INFO:     CSX  math_trim_81%  pnl=+7.7%  comp=0.0000
+2026-10-29 15:50:43,445 [raptor.exits] INFO:     XLU  math_trim_45%  pnl=+3.4%  comp=0.0000
+2026-10-29 15:50:43,446 [raptor.exits] INFO: ============================================================
+2026-10-29 15:50:43,464 [raptor.exits] INFO: AGENT [advisory] HOLD NVDA — insufficient history: 0 days (conf=0.90, from 2026-10-14T16:25:30.509158)
+2026-10-29 15:50:43,464 [raptor.exits] INFO: AGENT [advisory] HOLD AMD — insufficient history: 0 days (conf=0.90, from 2026-06-05T09:52:08.933229)
+2026-10-29 15:50:43,464 [raptor.exits] INFO: AGENT [advisory] HOLD CVE — insufficient history: 0 days (conf=0.90, from 2026-05-28T15:50:34.277447)
+2026-10-29 15:50:43,464 [raptor.exits] INFO: AGENT [advisory] HOLD FXI — insufficient history: 0 days (conf=0.90, from 2026-08-05T16:15:19.287944)
+2026-10-29 15:50:43,464 [raptor.exits] INFO: AGENT [advisory] HOLD CSX — insufficient history: 0 days (conf=0.90, from 2026-10-29T15:50:26.528891)
+2026-10-29 15:50:43,464 [raptor.exits] INFO: AGENT [advisory] HOLD INTC — insufficient history: 0 days (conf=0.90, from 2026-09-25T16:15:19.849297)
+2026-10-29 15:50:43,465 [raptor.exits] INFO: AGENT [advisory] HOLD KDP — insufficient history: 0 days (conf=0.90, from 2026-06-18T09:52:09.166655)
+2026-10-29 15:50:43,465 [raptor.exits] INFO: AGENT [advisory] HOLD OWL — insufficient history: 0 days (conf=0.90, from 2026-05-17T15:50:38.416296)
+2026-10-29 15:50:43,465 [raptor.exits] INFO: AGENT [advisory] HOLD KRE — insufficient history: 0 days (conf=0.90, from 2026-08-06T16:15:30.296480)
+2026-10-29 15:50:43,465 [raptor.exits] INFO: AGENT [advisory] HOLD PLTD — insufficient history: 0 days (conf=0.90, from 2026-05-28T15:50:34.277463)
+2026-10-29 15:50:43,465 [raptor.exits] INFO: AGENT [advisory] HOLD STM — insufficient history: 0 days (conf=0.90, from 2026-07-01T16:15:15.781190)
+2026-10-29 15:50:43,465 [raptor.exits] INFO: AGENT [advisory] HOLD SMCI — insufficient history: 0 days (conf=0.90, from 2026-10-14T16:25:30.509170)
+2026-10-29 15:50:43,465 [raptor.exits] INFO: AGENT [advisory] HOLD TSLA — insufficient history: 0 days (conf=0.90, from 2026-09-24T16:15:21.446245)
+2026-10-29 15:50:43,465 [raptor.exits] INFO: AGENT [advisory] HOLD TSLL — insufficient history: 0 days (conf=0.90, from 2026-05-19T16:30:29.205168)
+2026-10-29 15:50:43,465 [raptor.exits] INFO: AGENT [advisory] HOLD TTD — insufficient history: 0 days (conf=0.90, from 2026-05-19T16:30:29.205175)
+2026-10-29 15:50:43,465 [raptor.exits] INFO: AGENT [advisory] HOLD DKNG — insufficient history: 0 days (conf=0.90, from 2026-05-29T09:52:09.312915)
+2026-10-29 15:50:43,465 [raptor.exits] INFO: AGENT [advisory] HOLD HPQ — insufficient history: 0 days (conf=0.90, from 2026-09-21T12:30:18.247695)
+2026-10-29 15:50:43,465 [raptor.exits] INFO: AGENT [advisory] HOLD MRVL — insufficient history: 0 days (conf=0.90, from 2026-06-24T17:10:55.492840)
+2026-10-29 15:50:43,465 [raptor.exits] INFO: AGENT [advisory] HOLD WFC — insufficient history: 0 days (conf=0.90, from 2026-06-19T15:50:16.055987)
+2026-10-29 15:50:43,465 [raptor.exits] INFO: AGENT [advisory] HOLD SQQQ — insufficient history: 0 days (conf=0.90, from 2026-06-15T09:52:08.207369)
+2026-10-29 15:50:43,465 [raptor.exits] INFO: AGENT [advisory] HOLD XLE — insufficient history: 0 days (conf=0.90, from 2026-07-23T16:15:24.377216)
+2026-10-29 15:50:43,465 [raptor.exits] INFO: AGENT [advisory] HOLD BAC — insufficient history: 0 days (conf=0.90, from 2026-06-30T16:15:15.720631)
+2026-10-29 15:50:43,465 [raptor.exits] INFO: AGENT [advisory] HOLD PFE — insufficient history: 0 days (conf=0.90, from 2026-10-01T16:15:16.743849)
+2026-10-29 15:50:43,466 [raptor.exits] INFO: AGENT [advisory] HOLD WULF — insufficient history: 0 days (conf=0.90, from 2026-06-24T17:10:55.492845)
+2026-10-29 15:50:43,466 [raptor.exits] INFO: AGENT [advisory] HOLD AAL — insufficient history: 0 days (conf=0.90, from 2026-07-06T15:50:10.870762)
+2026-10-29 15:50:43,466 [raptor.exits] INFO: AGENT [advisory] HOLD UBER — insufficient history: 0 days (conf=0.90, from 2026-08-26T16:15:20.398354)
+2026-10-29 15:50:43,466 [raptor.exits] INFO: AGENT [advisory] HOLD CPNG — insufficient history: 0 days (conf=0.90, from 2026-06-30T16:15:15.720636)
+2026-10-29 15:50:43,466 [raptor.exits] INFO: AGENT [advisory] HOLD CRWV — insufficient history: 0 days (conf=0.90, from 2026-06-24T17:10:55.492832)
+2026-10-29 15:50:43,466 [raptor.exits] INFO: AGENT [advisory] HOLD GOOGL — insufficient history: 0 days (conf=0.90, from 2026-08-07T16:15:31.056545)
+2026-10-29 15:50:43,466 [raptor.exits] INFO: AGENT [advisory] HOLD HOOD — insufficient history: 0 days (conf=0.90, from 2026-07-16T12:30:12.081848)
+2026-10-29 15:50:43,466 [raptor.exits] INFO: AGENT [advisory] HOLD XLU — insufficient history: 0 days (conf=0.90, from 2026-10-29T15:50:26.528918)
+2026-10-29 15:50:43,466 [raptor.exits] INFO: AGENT [advisory] HOLD EWZ — insufficient history: 0 days (conf=0.90, from 2026-09-03T16:15:18.569820)
+2026-10-29 15:50:43,466 [raptor.exits] INFO: AGENT [advisory] HOLD NEE — insufficient history: 0 days (conf=0.90, from 2026-07-10T12:30:14.239212)
+2026-10-29 15:50:43,466 [raptor.exits] INFO: AGENT [advisory] HOLD QXO — insufficient history: 0 days (conf=0.90, from 2026-07-01T16:15:15.781187)
+2026-10-29 15:50:43,466 [raptor.exits] INFO: AGENT [advisory] HOLD IGV — insufficient history: 0 days (conf=0.90, from 2026-07-10T16:15:17.130178)
+2026-10-29 15:50:43,466 [raptor.exits] INFO: AGENT [advisory] HOLD NOW — insufficient history: 0 days (conf=0.90, from 2026-08-25T16:15:16.732277)
+2026-10-29 15:50:43,466 [raptor.exits] INFO: AGENT [advisory] HOLD EFA — insufficient history: 0 days (conf=0.90, from 2026-07-16T16:15:22.740757)
+2026-10-29 15:50:43,466 [raptor.exits] INFO: AGENT [advisory] HOLD KWEB — insufficient history: 0 days (conf=0.90, from 2026-07-21T16:15:35.623320)
+2026-10-29 15:50:43,466 [raptor.exits] INFO: AGENT [advisory] HOLD XLV — insufficient history: 0 days (conf=0.90, from 2026-07-13T12:30:11.579981)
+2026-10-29 15:50:43,466 [raptor.exits] INFO: AGENT [advisory] HOLD BSX — insufficient history: 0 days (conf=0.90, from 2026-08-20T12:30:30.222322)
+2026-10-29 15:50:43,467 [raptor.exits] INFO: AGENT [advisory] HOLD XLP — insufficient history: 0 days (conf=0.90, from 2026-08-28T16:15:16.357687)
+2026-10-29 15:50:43,467 [raptor.exits] INFO: AGENT [advisory] HOLD WBD — insufficient history: 0 days (conf=0.90, from 2026-10-02T16:15:20.003061)
+2026-10-29 15:50:43,467 [raptor.exits] INFO: AGENT [advisory] HOLD AMZN — insufficient history: 0 days (conf=0.90, from 2026-07-22T16:15:23.439125)
+2026-10-29 15:50:43,467 [raptor.exits] INFO: AGENT [advisory] HOLD MSFT — insufficient history: 0 days (conf=0.90, from 2026-08-11T12:30:27.560357)
+2026-10-29 15:50:43,467 [raptor.exits] INFO: AGENT [advisory] HOLD PLTR — insufficient history: 0 days (conf=0.90, from 2026-09-01T16:15:19.452015)
+2026-10-29 15:50:43,467 [raptor.exits] INFO: AGENT [advisory] HOLD DVN — insufficient history: 0 days (conf=0.90, from 2026-07-23T16:15:24.377204)
+2026-10-29 15:50:43,467 [raptor.exits] INFO: AGENT [advisory] HOLD T — insufficient history: 0 days (conf=0.90, from 2026-08-04T16:15:20.508442)
+2026-10-29 15:50:43,467 [raptor.exits] INFO: AGENT [advisory] HOLD CMCSA — insufficient history: 0 days (conf=0.90, from 2026-10-29T07:03:03.338522)
+2026-10-29 15:50:43,467 [raptor.exits] INFO: AGENT [advisory] HOLD FCX — insufficient history: 0 days (conf=0.90, from 2026-08-11T16:15:34.178543)
+2026-10-29 15:50:43,467 [raptor.exits] INFO: AGENT [advisory] HOLD IREN — insufficient history: 0 days (conf=0.90, from 2026-09-24T16:15:21.446237)
+2026-10-29 15:50:43,467 [raptor.exits] INFO: AGENT [advisory] HOLD CMG — insufficient history: 0 days (conf=0.90, from 2026-09-03T16:15:18.569811)
+2026-10-29 15:50:43,467 [raptor.exits] INFO: AGENT [advisory] HOLD F — insufficient history: 0 days (conf=0.90, from 2026-08-26T12:30:11.798071)
+2026-10-29 15:50:43,467 [raptor.exits] INFO: AGENT [advisory] HOLD BMNR — insufficient history: 0 days (conf=0.90, from 2026-09-29T16:15:18.425815)
+2026-10-29 15:50:43,467 [raptor.exits] INFO: AGENT [advisory] HOLD DRAM — insufficient history: 0 days (conf=0.90, from 2026-09-25T16:15:19.849292)
+2026-10-29 15:50:43,467 [raptor.exits] INFO: AGENT [advisory] HOLD FIG — insufficient history: 0 days (conf=0.90, from 2026-08-31T16:15:16.285961)
+2026-10-29 15:50:43,467 [raptor.exits] INFO: AGENT [advisory] HOLD NVO — insufficient history: 0 days (conf=0.90, from 2026-09-09T08:14:45.245821)
+2026-10-29 15:50:43,467 [raptor.exits] INFO: AGENT [advisory] HOLD NOK — insufficient history: 0 days (conf=0.90, from 2026-09-25T16:15:19.849299)
+2026-10-29 15:50:43,467 [raptor.exits] INFO: AGENT [advisory] HOLD XLB — insufficient history: 0 days (conf=0.90, from 2026-09-09T08:14:45.245834)
+2026-10-29 15:50:43,468 [raptor.exits] INFO: AGENT [advisory] HOLD AAPL — insufficient history: 0 days (conf=0.90, from 2026-09-22T16:15:29.408462)
+2026-10-29 15:50:43,468 [raptor.exits] INFO: AGENT [advisory] HOLD SPY — insufficient history: 0 days (conf=0.90, from 2026-09-09T08:14:45.245829)
+2026-10-29 15:50:43,468 [raptor.exits] INFO: AGENT [advisory] HOLD PBR — insufficient history: 0 days (conf=0.90, from 2026-10-21T16:15:34.175959)
+2026-10-29 15:50:43,468 [raptor.exits] INFO: AGENT [advisory] HOLD CIFR — insufficient history: 0 days (conf=0.90, from 2026-09-25T16:15:19.849287)
+2026-10-29 15:50:43,468 [raptor.exits] INFO: AGENT [advisory] HOLD EEM — insufficient history: 0 days (conf=0.90, from 2026-09-09T16:15:17.118280)
+2026-10-29 15:50:43,468 [raptor.exits] INFO: AGENT [advisory] HOLD ETHA — insufficient history: 0 days (conf=0.90, from 2026-10-29T15:50:26.528912)
+2026-10-29 15:50:43,468 [raptor.exits] INFO: AGENT [advisory] HOLD CCL — insufficient history: 0 days (conf=0.90, from 2026-10-22T16:15:23.198797)
+2026-10-29 15:50:43,468 [raptor.exits] INFO: AGENT [advisory] HOLD NU — insufficient history: 0 days (conf=0.90, from 2026-10-21T16:15:34.175954)
+2026-10-29 15:50:43,468 [raptor.exits] INFO: AGENT [advisory] HOLD ONON — insufficient history: 0 days (conf=0.90, from 2026-10-22T16:15:23.198833)
+2026-10-29 15:50:43,468 [raptor.exits] INFO: AGENT [advisory] HOLD PCG — insufficient history: 0 days (conf=0.90, from 2026-10-22T12:30:10.760430)
+2026-10-29 15:50:43,468 [raptor.exits] INFO: SELL -11.0 ETHA [trailing_stop]
+2026-10-29 15:50:43,493 [raptor.data_feeds] ERROR: Order submission failed: {"code":40010001,"message":"qty must be \u003e 0"}
+2026-10-29 15:50:43,493 [raptor.exits] ERROR:   FAILED: {"code":40010001,"message":"qty must be \u003e 0"}
+2026-10-29 15:50:43,493 [raptor.exits] INFO: SELL 121 CSX [math_trim_81%]
+2026-10-29 15:50:43,519 [raptor.data_feeds] INFO: Order submitted: SELL 121 CSX @ None
+2026-10-29 15:50:43,519 [raptor.exits] INFO:   OK: OrderStatus.PENDING_NEW
+2026-10-29 15:50:43,545 [raptor.slippage] INFO: SLIPPAGE SELL 121 CSX: decision=$52.0600 fill=PENDING (order 2f362c00)
+2026-10-29 15:50:43,624 [raptor.exits] INFO: SELL 16 XLU [math_trim_45%]
+2026-10-29 15:50:43,650 [raptor.data_feeds] INFO: Order submitted: SELL 16 XLU @ None
+2026-10-29 15:50:43,650 [raptor.exits] INFO:   OK: OrderStatus.PENDING_NEW
+2026-10-29 15:50:43,669 [raptor.slippage] INFO: SLIPPAGE SELL 16 XLU: decision=$43.1850 fill=PENDING (order d689edcf)
+2026-10-29 15:50:43,752 [raptor.exits] INFO: [TrimLog] Logged 2 trim(s) → trim_log.json
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Users\steve\AppData\Local\Programs\Python\Python313\Lib\logging\__init__.py", line 1154, in emit
+    stream.write(msg + self.terminator)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\steve\AppData\Local\Programs\Python\Python313\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2192' in position 72: character maps to <undefined>
+Call stack:
+  File "C:\Raptor\exit_monitor.py", line 1075, in <module>
+    _run_once()
+  File "C:\Raptor\exit_monitor.py", line 1038, in _run_once
+    run_exit_monitor(dry_run=args.dry_run)
+  File "C:\Raptor\exit_monitor.py", line 983, in run_exit_monitor
+    logger.info("[TrimLog] Logged %d trim(s) → trim_log.json", len(_trim_exits))
+Message: '[TrimLog] Logged %d trim(s) → trim_log.json'
+Arguments: (2,)
+[OutcomeTracker] No new trades to tag.
+2026-10-29 15:50:45,101 [raptor.slippage] INFO: SLIPPAGE BACKFILL CMCSA 39ecfb01: IS=-18.2 bps
+2026-10-29 15:50:45,433 [raptor.slippage] INFO: SLIPPAGE BACKFILL CSX 77d509b3: IS=+45.4 bps
+2026-10-29 15:50:45,778 [raptor.slippage] INFO: SLIPPAGE BACKFILL XLU d4421c24: IS=-51.9 bps
+2026-10-29 15:50:46,424 [raptor.exits] INFO: EXIT MONITOR: past 3:50 PM after cycle 1 — shutting down.
+2026-10-29 16:15:03,805 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-10-29 16:15:04,150 [raptor.data_feeds] WARNING: safe_int: account.daytrade_count was None, defaulting to 0
+2026-10-29 16:15:04,229 [raptor.universe] INFO: Building universe...
+2026-10-29 16:15:05,788 [raptor.data_feeds] INFO: Fetched 8 new bars / 8 total cached
+2026-10-29 16:15:05,811 [raptor.data_feeds] INFO: FRED regime: BULLISH (score=0.200)
+2026-10-29 16:15:12,405 [raptor.recap] WARNING: [Recap] inline macro refresh failed ('charmap' codec can't encode character '\u2192' in position 23: character maps to <undefined>) � using cached macro_context.json
+2026-10-29 16:15:12,410 [raptor.hold_monitor] INFO: ============================================================
+2026-10-29 16:15:12,410 [raptor.hold_monitor] INFO: RAPTOR HOLD MONITOR - 2026-10-29T16:15:12.410418
+2026-10-29 16:15:12,410 [raptor.hold_monitor] INFO: ============================================================
+2026-10-29 16:15:12,411 [raptor.data_feeds] INFO: DataManager initialized with all feeds
+2026-10-29 16:15:12,787 [raptor.universe] INFO: Building universe...
+2026-10-29 16:15:13,545 [raptor.hold_monitor] INFO: Fetching data for 4 symbols...
+2026-10-29 16:15:13,921 [raptor.data_feeds] INFO: Fetched 4 new bars / 4 total cached
+2026-10-29 16:15:13,937 [raptor.data_feeds] INFO: FRED regime: BULLISH (score=0.200)
+2026-10-29 16:15:14,000 [raptor.hold_monitor] INFO: Pre-entry tracker: 0 candidates monitored
+2026-10-29 16:15:14,000 [raptor.hold_monitor] WARNING: No signal for held CSX � using neutral Dummy (comp=0.0)
+2026-10-29 16:15:14,004 [raptor.hold_monitor] INFO:   [RED] CSX     health=-0.474  FAR=0/16  pnl=+7.9%  stop=0.76ATR  -> TRIM_MAJOR
+2026-10-29 16:15:14,004 [raptor.hold_monitor] INFO:     DECAY: composite_slope: slope=-0.0918/day over 5d
+2026-10-29 16:15:14,004 [raptor.hold_monitor] INFO:     TRIM:  severity=0.382 x stop_mult=1.50 x far_mult=1.30 x pnl_mult=0.80 + slope_adj=0.184 = 0.779 -> 77.9% (23 sh)
+2026-10-29 16:15:14,004 [raptor.hold_monitor] WARNING: No signal for held ETHA � using neutral Dummy (comp=0.0)
+2026-10-29 16:15:14,007 [raptor.hold_monitor] INFO:   [YLW] ETHA    health=-0.111  FAR=0/16  pnl=-185.2%  stop=0.37ATR  -> HOLD
+2026-10-29 16:15:14,007 [raptor.hold_monitor] WARNING: No signal for held XLU � using neutral Dummy (comp=0.0)
+2026-10-29 16:15:14,011 [raptor.hold_monitor] INFO:   [RED] XLU     health=-0.377  FAR=0/16  pnl=+3.9%  stop=1.43ATR  -> TRIM_MAJOR
+2026-10-29 16:15:14,011 [raptor.hold_monitor] INFO:     DECAY: factor_agreement: FAR=0/16  trend=+0.000
+2026-10-29 16:15:14,011 [raptor.hold_monitor] INFO:     TRIM:  severity=0.267 x stop_mult=1.25 x far_mult=1.30 x pnl_mult=1.00 + slope_adj=0.128 = 0.562 -> 56.2% (11 sh)
+2026-10-29 16:15:16,281 [AgentLayer] INFO: HoldAgent | Flushed 3 decisions -> hold_decisions.json
+2026-10-29 16:15:16,282 [raptor.hold_monitor] INFO: ============================================================
+2026-10-29 16:15:16,282 [raptor.hold_monitor] INFO: COMPLETE � 3 positions | STR=0  STA=1  DEC=2  INS=0
+2026-10-29 16:15:16,282 [raptor.hold_monitor] INFO: ============================================================
+2026-10-29 16:15:16,436 [raptor.data_feeds] INFO: Fetched 3 new bars / 4 total cached
+[MacroContext] Fetching macro signals...
+  Fetching VIX...
+  Fetching SPY trend...
+  Fetching sector breadth...
+  Fetching yield curve (FRED T10Y2Y)...
+  Fetching credit spread (FRED BAMLC0A4CBBB)...
+  Fetching Fed funds rate (FRED FEDFUNDS)...
+
+[MacroContext] Regime: RISK_ON  Score: +0.500
+Email failed: Connection unexpectedly closed

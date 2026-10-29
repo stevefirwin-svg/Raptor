@@ -3502,5 +3502,55 @@
     "entry_reasoning": null,
     "entry_flags": [],
     "submitted_at": "2026-10-23T12:35:19.053396"
+  },
+  "39ecfb01-5fd6-4632-a678-e9fcbe62c9fb": {
+    "symbol": "CMCSA",
+    "exit_reason": "math_exit",
+    "composite": 0.0,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-10-29T07:03:14.958302"
+  },
+  "77d509b3-0593-4383-b798-518cda2d44c8": {
+    "symbol": "CSX",
+    "exit_reason": "math_trim_44%",
+    "composite": 0.0,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-10-29T07:03:15.055131"
+  },
+  "d4421c24-7b98-4334-a6c0-ffd505d0cde8": {
+    "symbol": "XLU",
+    "exit_reason": "math_trim_52%",
+    "composite": 0.0,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-10-29T07:03:15.143949"
+  },
+  "2f362c00-2bb9-4b23-b540-f6c9b8bf9843": {
+    "symbol": "CSX",
+    "exit_reason": "math_trim_81%",
+    "composite": 0.0,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-10-29T15:50:43.578171"
+  },
+  "d689edcf-f7ee-4575-beaf-9f5c2840e611": {
+    "symbol": "XLU",
+    "exit_reason": "math_trim_45%",
+    "composite": 0.0,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-10-29T15:50:43.683792"
   }
 }

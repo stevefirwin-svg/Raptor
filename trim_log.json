@@ -3820,5 +3820,57 @@
     "agent_decision": "HOLD",
     "agent_conf": 0.9,
     "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-10-29T07:03:15.210088",
+    "symbol": "CSX",
+    "trim_qty": 115,
+    "price": 52.89,
+    "pnl_pct": 9.39,
+    "reason": "math_trim_44%",
+    "composite": 0.0,
+    "trim_detail": "severity=0.242 x stop_mult=1.00 x far_mult=1.30 x pnl_mult=0.80 + slope_adj=0.184 = 0.436 -> 43.6% (115 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-10-29T07:03:15.210137",
+    "symbol": "XLU",
+    "trim_qty": 39,
+    "price": 42.92,
+    "pnl_pct": 2.73,
+    "reason": "math_trim_52%",
+    "composite": 0.0,
+    "trim_detail": "severity=0.298 x stop_mult=1.00 x far_mult=1.30 x pnl_mult=1.00 + slope_adj=0.128 = 0.515 -> 51.5% (39 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-10-29T15:50:43.743369",
+    "symbol": "CSX",
+    "trim_qty": 121,
+    "price": 52.06,
+    "pnl_pct": 7.67,
+    "reason": "math_trim_81%",
+    "composite": 0.0,
+    "trim_detail": "severity=0.402 x stop_mult=1.50 x far_mult=1.30 x pnl_mult=0.80 + slope_adj=0.184 = 0.810 -> 81.0% (121 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-10-29T15:50:43.743415",
+    "symbol": "XLU",
+    "trim_qty": 16,
+    "price": 43.185,
+    "pnl_pct": 3.36,
+    "reason": "math_trim_45%",
+    "composite": 0.0,
+    "trim_detail": "severity=0.250 x stop_mult=1.00 x far_mult=1.30 x pnl_mult=1.00 + slope_adj=0.128 = 0.453 -> 45.3% (16 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
   }
 ]
