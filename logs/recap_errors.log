@@ -511,3 +511,25 @@ Traceback (most recent call last):
     raise SMTPServerDisconnected("Connection unexpectedly closed")
 smtplib.SMTPServerDisconnected: Connection unexpectedly closed
 
+[2026-10-30T16:15:29.699317] send_email() FAILED: Connection unexpectedly closed
+Traceback (most recent call last):
+  File "C:\Raptor\daily_recap.py", line 1309, in send_email
+    s.login(EMAIL_SENDER, EMAIL_PASSWORD)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\steve\AppData\Local\Programs\Python\Python313\Lib\smtplib.py", line 753, in login
+    (code, resp) = self.auth(
+                   ~~~~~~~~~^
+        authmethod, getattr(self, method_name),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        initial_response_ok=initial_response_ok)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\steve\AppData\Local\Programs\Python\Python313\Lib\smtplib.py", line 651, in auth
+    (code, resp) = self.docmd("AUTH", mechanism + " " + response)
+                   ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\steve\AppData\Local\Programs\Python\Python313\Lib\smtplib.py", line 441, in docmd
+    return self.getreply()
+           ~~~~~~~~~~~~~^^
+  File "C:\Users\steve\AppData\Local\Programs\Python\Python313\Lib\smtplib.py", line 414, in getreply
+    raise SMTPServerDisconnected("Connection unexpectedly closed")
+smtplib.SMTPServerDisconnected: Connection unexpectedly closed
+

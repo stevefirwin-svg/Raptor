@@ -23213,5 +23213,77 @@
     "symbol": "XLU",
     "timestamp": "2026-10-29T16:15:16.263185",
     "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "CSX",
+    "timestamp": "2026-10-30T12:30:10.860280",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "ETHA",
+    "timestamp": "2026-10-30T12:30:10.860300",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "XLU",
+    "timestamp": "2026-10-30T12:30:10.860303",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "CSX",
+    "timestamp": "2026-10-30T15:50:25.714412",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "ETHA",
+    "timestamp": "2026-10-30T15:50:25.714435",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "XLU",
+    "timestamp": "2026-10-30T15:50:25.714442",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "CSX",
+    "timestamp": "2026-10-30T16:15:21.561754",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "ETHA",
+    "timestamp": "2026-10-30T16:15:21.561775",
+    "agent": "HoldAgent"
+  },
+  {
+    "decision": "HOLD",
+    "confidence": 0.9,
+    "reasoning": "insufficient history: 0 days",
+    "symbol": "XLU",
+    "timestamp": "2026-10-30T16:15:21.561782",
+    "agent": "HoldAgent"
   }
 ]

@@ -6223,5 +6223,50 @@
     "notional": 690.96,
     "status": "OrderStatus.PENDING_NEW",
     "backfilled": true
+  },
+  {
+    "ts": "2026-10-30T13:35:24.752355+00:00",
+    "symbol": "CSX",
+    "side": "SELL",
+    "qty": 23,
+    "decision_price": 51.73,
+    "fill_price": 51.6265,
+    "is_bps": 20.0,
+    "is_dollars": 2.38,
+    "order_id": "b33d6685-2646-4fdb-ae53-cc3da39feb03",
+    "exit_reason": "math_trim_78%",
+    "notional": 1189.79,
+    "status": "OrderStatus.PENDING_NEW",
+    "backfilled": true
+  },
+  {
+    "ts": "2026-10-30T13:35:24.971669+00:00",
+    "symbol": "XLU",
+    "side": "SELL",
+    "qty": 11,
+    "decision_price": 43.6201,
+    "fill_price": 43.61,
+    "is_bps": 2.32,
+    "is_dollars": 0.1111,
+    "order_id": "8291ca52-f327-4a32-ace5-30016eed120e",
+    "exit_reason": "math_trim_56%",
+    "notional": 479.82,
+    "status": "OrderStatus.PENDING_NEW",
+    "backfilled": true
+  },
+  {
+    "ts": "2026-10-30T16:35:14.097060+00:00",
+    "symbol": "CSX",
+    "side": "SELL",
+    "qty": 3,
+    "decision_price": 51.775,
+    "fill_price": 51.77,
+    "is_bps": 0.97,
+    "is_dollars": 0.015,
+    "order_id": "61551c74-e6b8-44e5-8390-16fa992e0d6a",
+    "exit_reason": "math_trim_52%",
+    "notional": 155.32,
+    "status": "OrderStatus.PENDING_NEW",
+    "backfilled": true
   }
 ]

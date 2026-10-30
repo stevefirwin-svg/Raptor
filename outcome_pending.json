@@ -3552,5 +3552,35 @@
     "entry_reasoning": null,
     "entry_flags": [],
     "submitted_at": "2026-10-29T15:50:43.683792"
+  },
+  "b33d6685-2646-4fdb-ae53-cc3da39feb03": {
+    "symbol": "CSX",
+    "exit_reason": "math_trim_78%",
+    "composite": 0.0,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-10-30T09:35:24.820396"
+  },
+  "8291ca52-f327-4a32-ace5-30016eed120e": {
+    "symbol": "XLU",
+    "exit_reason": "math_trim_56%",
+    "composite": 0.0,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-10-30T09:35:25.014045"
+  },
+  "61551c74-e6b8-44e5-8390-16fa992e0d6a": {
+    "symbol": "CSX",
+    "exit_reason": "math_trim_52%",
+    "composite": 0.0,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-10-30T12:35:14.113589"
   }
 }

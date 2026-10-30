@@ -735,7 +735,7 @@
     "v5.4:CSX": {
       "model": "v5.4",
       "symbol": "CSX",
-      "shares": 29,
+      "shares": 3,
       "entry_price": 48.351283,
       "entry_date": "2026-10-15",
       "metadata": {
@@ -746,7 +746,7 @@
         "composite_score": null,
         "note": "Backfilled from Alpaca \u2014 entry_date approximate",
         "high_water": 52.89,
-        "last_trim_ts": "2026-10-29T15:50:43.610538"
+        "last_trim_ts": "2026-10-30T12:35:14.135363"
       },
       "trims": [
         {
@@ -768,24 +768,44 @@
           "pnl_abs": 448.75,
           "shares_before": 150,
           "shares_after": 29
+        },
+        {
+          "date": "2026-10-30",
+          "reason": "math_trim_78%",
+          "shares_sold": 23,
+          "trim_price": 51.73,
+          "pnl_pct": 6.9879,
+          "pnl_abs": 77.71,
+          "shares_before": 29,
+          "shares_after": 6
+        },
+        {
+          "date": "2026-10-30",
+          "reason": "math_trim_52%",
+          "shares_sold": 3,
+          "trim_price": 51.775,
+          "pnl_pct": 7.0809,
+          "pnl_abs": 10.27,
+          "shares_before": 6,
+          "shares_after": 3
         }
       ]
     },
     "v5.4:XLU": {
       "model": "v5.4",
       "symbol": "XLU",
-      "shares": 20,
+      "shares": 9,
       "entry_price": 41.78,
       "entry_date": "2026-10-15",
       "metadata": {
-        "stop": 42.2743,
+        "stop": 42.7008,
         "regime": "BACKFILL",
         "t_stat": null,
         "kelly_fraction": null,
         "composite_score": null,
         "note": "Backfilled from Alpaca \u2014 entry_date approximate",
-        "high_water": 43.185,
-        "last_trim_ts": "2026-10-29T15:50:43.712557"
+        "high_water": 43.6201,
+        "last_trim_ts": "2026-10-30T09:35:25.054778"
       },
       "trims": [
         {
@@ -847,6 +867,16 @@
           "pnl_abs": 22.48,
           "shares_before": 36,
           "shares_after": 20
+        },
+        {
+          "date": "2026-10-30",
+          "reason": "math_trim_56%",
+          "shares_sold": 11,
+          "trim_price": 43.6201,
+          "pnl_pct": 4.4043,
+          "pnl_abs": 20.24,
+          "shares_before": 20,
+          "shares_after": 9
         }
       ]
     }

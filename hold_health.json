@@ -1,20 +1,20 @@
 {
   "CSX": {
     "symbol": "CSX",
-    "timestamp": "2026-10-29T16:15:14.003986",
+    "timestamp": "2026-10-30T16:15:19.303839",
     "tier": "DECAYING",
-    "health": -0.4743,
-    "pnl_pct": 7.939,
-    "days_held": 14,
-    "days_history": 33,
+    "health": -0.4215,
+    "pnl_pct": 7.648000000000001,
+    "days_held": 15,
+    "days_history": 34,
     "pre_entry_days": 0,
     "composite": 0.0,
     "factors_positive": 0,
-    "stop_dist_atr": 0.76,
+    "stop_dist_atr": 0.517,
     "layers": {
       "composite_slope": {
-        "score": -0.9179,
-        "detail": "slope=-0.0918/day over 5d",
+        "score": -0.5022,
+        "detail": "slope=-0.0502/day over 5d",
         "weight": 0.25
       },
       "factor_agreement": {
@@ -23,8 +23,8 @@
         "weight": 0.2
       },
       "price_momentum": {
-        "score": -0.3399,
-        "detail": "ROC5=+1.06%  HH=0 HL=0  ClosePos=0.59  ROCtrend=-1.00",
+        "score": -0.1712,
+        "detail": "ROC5=+2.34%  HH=0 HL=0  ClosePos=0.63  ROCtrend=-0.39",
         "weight": 0.15
       },
       "cluster_health": {
@@ -33,43 +33,43 @@
         "weight": 0.15
       },
       "volume": {
-        "score": 0.1083,
-        "detail": "OBV_slope=276511  UD_ratio=1.14  OBVtrend=-0.64",
+        "score": -0.5752,
+        "detail": "OBV_slope=-191703  UD_ratio=0.81  OBVtrend=-1.00",
         "weight": 0.1
       },
       "volatility": {
         "score": 0.2,
-        "detail": "ATR_exp=0.86  BB_width=0.078",
+        "detail": "ATR_exp=0.87  BB_width=0.081",
         "weight": 0.08
       },
       "stop_distance": {
-        "score": -0.4933,
-        "detail": "stop_dist=0.76 ATR",
+        "score": -0.6553,
+        "detail": "stop_dist=0.52 ATR",
         "weight": 0.05
       },
       "hold_duration": {
         "score": 0.2,
-        "detail": "hold_ratio=0.93  pnl=+7.9%",
+        "detail": "hold_ratio=1.00  pnl=+7.6%",
         "weight": 0.02
       }
     },
-    "decay_driver": "composite_slope: slope=-0.0918/day over 5d",
+    "decay_driver": "factor_agreement: FAR=0/16  trend=+0.000",
     "trim": {
       "action": "TRIM_MAJOR",
-      "action_label": "Major trim 78% \u2014 significant thesis decay",
-      "trim_pct": 0.7788,
-      "trim_shares": 23,
-      "reasoning": "severity=0.382 x stop_mult=1.50 x far_mult=1.30 x pnl_mult=0.80 + slope_adj=0.184 = 0.779 -> 77.9% (23 sh)",
+      "action_label": "Major trim 60% \u2014 significant thesis decay",
+      "trim_pct": 0.5987,
+      "trim_shares": 2,
+      "reasoning": "severity=0.319 x stop_mult=1.50 x far_mult=1.30 x pnl_mult=0.80 + slope_adj=0.100 = 0.599 -> 59.9% (2 sh)",
       "components": {
-        "severity": 0.3815,
+        "severity": 0.3194,
         "stop_mult": 1.5,
         "far_mult": 1.3,
         "pnl_mult": 0.8,
-        "slope_adj": 0.1836
+        "slope_adj": 0.1004
       }
     },
     "snapshot": {
-      "timestamp": "2026-10-29T16:15:14.000434",
+      "timestamp": "2026-10-30T16:15:19.300264",
       "symbol": "CSX",
       "composite": 0.0,
       "t_stat": 0.0,
@@ -85,45 +85,45 @@
         "REV": 0.0
       },
       "regime": "UNKNOWN",
-      "price": 52.24,
-      "roc_5d": 0.0106,
+      "price": 51.98,
+      "roc_5d": 0.0234,
       "higher_highs": 0,
       "higher_lows": 0,
-      "close_pos_5d": 0.5913,
-      "vol_ratio": 1.3553,
-      "obv_slope": 276511.2,
-      "ud_ratio": 1.1357,
-      "atr": 1.1025,
-      "atr_expansion": 0.863,
-      "bb_width": 0.0783,
-      "entry_price": 48.351283,
-      "current_price": 52.24,
-      "qty": 29.0,
-      "market_value": 1514.96,
-      "pnl_pct": 7.939,
+      "close_pos_5d": 0.6317,
+      "vol_ratio": 2.3249,
+      "obv_slope": -191702.9,
+      "ud_ratio": 0.8124,
+      "atr": 1.1179,
+      "atr_expansion": 0.8689,
+      "bb_width": 0.081,
+      "entry_price": 48.342759,
+      "current_price": 51.98,
+      "qty": 3.0,
+      "market_value": 155.94,
+      "pnl_pct": 7.648000000000001,
       "stop_price": 51.4023,
-      "stop_dist_atr": 0.76,
-      "days_held": 14,
+      "stop_dist_atr": 0.517,
+      "days_held": 15,
       "hold_target": 15,
-      "hold_ratio": 0.933
+      "hold_ratio": 1.0
     }
   },
   "ETHA": {
     "symbol": "ETHA",
-    "timestamp": "2026-10-29T16:15:14.007696",
-    "tier": "STABLE",
-    "health": -0.1107,
-    "pnl_pct": -185.177,
-    "days_held": 42,
-    "days_history": 18,
+    "timestamp": "2026-10-30T16:15:19.307415",
+    "tier": "DECAYING",
+    "health": -0.1958,
+    "pnl_pct": -175.139,
+    "days_held": 43,
+    "days_history": 19,
     "pre_entry_days": 0,
     "composite": 0.0,
     "factors_positive": 0,
-    "stop_dist_atr": 0.373,
+    "stop_dist_atr": -0.92,
     "layers": {
       "composite_slope": {
-        "score": 0.5548,
-        "detail": "slope=+0.0555/day over 5d",
+        "score": 0.818,
+        "detail": "slope=+0.0818/day over 5d",
         "weight": 0.25
       },
       "factor_agreement": {
@@ -132,8 +132,8 @@
         "weight": 0.2
       },
       "price_momentum": {
-        "score": 0.0286,
-        "detail": "ROC5=-2.05%  HH=1 HL=0  ClosePos=0.60  ROCtrend=+0.14",
+        "score": -0.5837,
+        "detail": "ROC5=-6.71%  HH=0 HL=0  ClosePos=0.63  ROCtrend=-1.00",
         "weight": 0.15
       },
       "cluster_health": {
@@ -142,27 +142,27 @@
         "weight": 0.15
       },
       "volume": {
-        "score": -0.1214,
-        "detail": "OBV_slope=5790  UD_ratio=1.03  OBVtrend=-0.49",
+        "score": -0.5876,
+        "detail": "OBV_slope=-173133  UD_ratio=0.39  OBVtrend=-1.00",
         "weight": 0.1
       },
       "volatility": {
         "score": 0.1,
-        "detail": "ATR_exp=1.03  BB_width=0.423",
+        "detail": "ATR_exp=1.03  BB_width=0.302",
         "weight": 0.08
       },
       "stop_distance": {
-        "score": -0.7513,
-        "detail": "stop_dist=0.37 ATR",
+        "score": -1.0,
+        "detail": "stop_dist=-0.92 ATR (at/through stop)",
         "weight": 0.05
       },
       "hold_duration": {
         "score": -0.6,
-        "detail": "hold_ratio=2.80  pnl=-185.2%",
+        "detail": "hold_ratio=2.87  pnl=-175.1%",
         "weight": 0.02
       }
     },
-    "decay_driver": "",
+    "decay_driver": "factor_agreement: FAR=0/16  trend=+0.000",
     "trim": {
       "action": "HOLD",
       "trim_pct": 0.0,
@@ -172,7 +172,7 @@
       "components": {}
     },
     "snapshot": {
-      "timestamp": "2026-10-29T16:15:14.004316",
+      "timestamp": "2026-10-30T16:15:19.304126",
       "symbol": "ETHA",
       "composite": 0.0,
       "t_stat": 0.0,
@@ -188,45 +188,45 @@
         "REV": 0.0
       },
       "regime": "UNKNOWN",
-      "price": 52.78,
-      "roc_5d": -0.0205,
-      "higher_highs": 1,
+      "price": 50.45,
+      "roc_5d": -0.0671,
+      "higher_highs": 0,
       "higher_lows": 0,
-      "close_pos_5d": 0.5984,
-      "vol_ratio": 0.9014,
-      "obv_slope": 5790.4,
-      "ud_ratio": 1.0338,
-      "atr": 1.7304,
-      "atr_expansion": 1.0306,
-      "bb_width": 0.423,
+      "close_pos_5d": 0.6265,
+      "vol_ratio": 1.3937,
+      "obv_slope": -173132.7,
+      "ud_ratio": 0.3912,
+      "atr": 1.8314,
+      "atr_expansion": 1.0303,
+      "bb_width": 0.3022,
       "entry_price": 18.35,
-      "current_price": 52.78,
+      "current_price": 50.45,
       "qty": -11.0,
-      "market_value": -580.58,
-      "pnl_pct": -185.177,
+      "market_value": -554.95,
+      "pnl_pct": -175.139,
       "stop_price": 52.1354,
-      "stop_dist_atr": 0.373,
-      "days_held": 42,
+      "stop_dist_atr": -0.92,
+      "days_held": 43,
       "hold_target": 15,
-      "hold_ratio": 2.8
+      "hold_ratio": 2.867
     }
   },
   "XLU": {
     "symbol": "XLU",
-    "timestamp": "2026-10-29T16:15:14.011104",
-    "tier": "DECAYING",
-    "health": -0.3768,
-    "pnl_pct": 3.877,
-    "days_held": 14,
-    "days_history": 9,
+    "timestamp": "2026-10-30T16:15:19.310922",
+    "tier": "STABLE",
+    "health": -0.1412,
+    "pnl_pct": 4.117,
+    "days_held": 15,
+    "days_history": 10,
     "pre_entry_days": 0,
     "composite": 0.0,
     "factors_positive": 0,
-    "stop_dist_atr": 1.434,
+    "stop_dist_atr": 1.221,
     "layers": {
       "composite_slope": {
-        "score": -0.6405,
-        "detail": "slope=-0.0641/day over 5d",
+        "score": -0.3006,
+        "detail": "slope=-0.0301/day over 5d",
         "weight": 0.25
       },
       "factor_agreement": {
@@ -235,8 +235,8 @@
         "weight": 0.2
       },
       "price_momentum": {
-        "score": -0.0474,
-        "detail": "ROC5=+0.66%  HH=1 HL=0  ClosePos=0.50  ROCtrend=-0.46",
+        "score": 0.3973,
+        "detail": "ROC5=+2.08%  HH=1 HL=1  ClosePos=0.48  ROCtrend=+0.25",
         "weight": 0.15
       },
       "cluster_health": {
@@ -245,43 +245,37 @@
         "weight": 0.15
       },
       "volume": {
-        "score": -0.2736,
-        "detail": "OBV_slope=238810  UD_ratio=0.72  OBVtrend=-0.80",
+        "score": 0.6369,
+        "detail": "OBV_slope=846431  UD_ratio=3.55  OBVtrend=-0.21",
         "weight": 0.1
       },
       "volatility": {
         "score": 0.2,
-        "detail": "ATR_exp=1.03  BB_width=0.043",
+        "detail": "ATR_exp=1.07  BB_width=0.040",
         "weight": 0.08
       },
       "stop_distance": {
-        "score": -0.044,
-        "detail": "stop_dist=1.43 ATR",
+        "score": -0.186,
+        "detail": "stop_dist=1.22 ATR",
         "weight": 0.05
       },
       "hold_duration": {
         "score": 0.2,
-        "detail": "hold_ratio=0.93  pnl=+3.9%",
+        "detail": "hold_ratio=1.00  pnl=+4.1%",
         "weight": 0.02
       }
     },
-    "decay_driver": "factor_agreement: FAR=0/16  trend=+0.000",
+    "decay_driver": "",
     "trim": {
-      "action": "TRIM_MAJOR",
-      "action_label": "Major trim 56% \u2014 significant thesis decay",
-      "trim_pct": 0.5617,
-      "trim_shares": 11,
-      "reasoning": "severity=0.267 x stop_mult=1.25 x far_mult=1.30 x pnl_mult=1.00 + slope_adj=0.128 = 0.562 -> 56.2% (11 sh)",
-      "components": {
-        "severity": 0.2668,
-        "stop_mult": 1.25,
-        "far_mult": 1.3,
-        "pnl_mult": 1.0,
-        "slope_adj": 0.1281
-      }
+      "action": "HOLD",
+      "trim_pct": 0.0,
+      "trim_shares": 0,
+      "action_label": "",
+      "reasoning": "",
+      "components": {}
     },
     "snapshot": {
-      "timestamp": "2026-10-29T16:15:14.007912",
+      "timestamp": "2026-10-30T16:15:19.307685",
       "symbol": "XLU",
       "composite": 0.0,
       "t_stat": 0.0,
@@ -297,27 +291,27 @@
         "REV": 0.0
       },
       "regime": "UNKNOWN",
-      "price": 43.145,
-      "roc_5d": 0.0066,
+      "price": 43.45,
+      "roc_5d": 0.0208,
       "higher_highs": 1,
-      "higher_lows": 0,
-      "close_pos_5d": 0.4978,
-      "vol_ratio": 0.913,
-      "obv_slope": 238809.6,
-      "ud_ratio": 0.7163,
-      "atr": 0.6071,
-      "atr_expansion": 1.0326,
-      "bb_width": 0.0425,
+      "higher_lows": 1,
+      "close_pos_5d": 0.4838,
+      "vol_ratio": 1.4266,
+      "obv_slope": 846431.2,
+      "ud_ratio": 3.5469,
+      "atr": 0.6136,
+      "atr_expansion": 1.0746,
+      "bb_width": 0.04,
       "entry_price": 41.78,
-      "current_price": 43.145,
-      "qty": 20.0,
-      "market_value": 862.9000000000001,
-      "pnl_pct": 3.877,
-      "stop_price": 42.2743,
-      "stop_dist_atr": 1.434,
-      "days_held": 14,
+      "current_price": 43.45,
+      "qty": 9.0,
+      "market_value": 391.05,
+      "pnl_pct": 4.117,
+      "stop_price": 42.7008,
+      "stop_dist_atr": 1.221,
+      "days_held": 15,
       "hold_target": 15,
-      "hold_ratio": 0.933
+      "hold_ratio": 1.0
     }
   }
 }
