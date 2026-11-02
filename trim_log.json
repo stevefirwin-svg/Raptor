@@ -3911,5 +3911,18 @@
     "agent_decision": "HOLD",
     "agent_conf": 0.9,
     "agent_reasoning": "insufficient history: 0 days"
+  },
+  {
+    "timestamp": "2026-11-02T09:35:18.500387",
+    "symbol": "CSX",
+    "trim_qty": 2,
+    "price": 52.24,
+    "pnl_pct": 8.05,
+    "reason": "math_trim_60%",
+    "composite": 0.0,
+    "trim_detail": "severity=0.319 x stop_mult=1.50 x far_mult=1.30 x pnl_mult=0.80 + slope_adj=0.100 = 0.599 -> 59.9% (2 sh)",
+    "agent_decision": "HOLD",
+    "agent_conf": 0.9,
+    "agent_reasoning": "insufficient history: 0 days"
   }
 ]

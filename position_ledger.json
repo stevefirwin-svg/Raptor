@@ -735,7 +735,7 @@
     "v5.4:CSX": {
       "model": "v5.4",
       "symbol": "CSX",
-      "shares": 3,
+      "shares": 1,
       "entry_price": 48.351283,
       "entry_date": "2026-10-15",
       "metadata": {
@@ -746,7 +746,7 @@
         "composite_score": null,
         "note": "Backfilled from Alpaca \u2014 entry_date approximate",
         "high_water": 52.89,
-        "last_trim_ts": "2026-10-30T12:35:14.135363"
+        "last_trim_ts": "2026-11-02T09:35:18.469358"
       },
       "trims": [
         {
@@ -788,6 +788,16 @@
           "pnl_abs": 10.27,
           "shares_before": 6,
           "shares_after": 3
+        },
+        {
+          "date": "2026-11-02",
+          "reason": "math_trim_60%",
+          "shares_sold": 2,
+          "trim_price": 52.24,
+          "pnl_pct": 8.0426,
+          "pnl_abs": 7.78,
+          "shares_before": 3,
+          "shares_after": 1
         }
       ]
     },
@@ -798,13 +808,13 @@
       "entry_price": 41.78,
       "entry_date": "2026-10-15",
       "metadata": {
-        "stop": 42.7008,
+        "stop": 42.8534,
         "regime": "BACKFILL",
         "t_stat": null,
         "kelly_fraction": null,
         "composite_score": null,
         "note": "Backfilled from Alpaca \u2014 entry_date approximate",
-        "high_water": 43.6201,
+        "high_water": 43.74,
         "last_trim_ts": "2026-10-30T09:35:25.054778"
       },
       "trims": [

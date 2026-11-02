@@ -2,8 +2,8 @@
   "decision": "SCAN",
   "risk_scalar": 1.0,
   "confidence": 1.0,
-  "reasoning": "Macro RISK_ON \u2014 full scan, normal sizing.",
+  "reasoning": "Macro NEUTRAL \u2014 full scan, normal sizing.",
   "source": "rule_deterministic",
-  "macro_regime": "RISK_ON",
-  "timestamp": "2026-10-30T13:28:07.462322+00:00"
+  "macro_regime": "NEUTRAL",
+  "timestamp": "2026-11-02T14:28:05.723896+00:00"
 }

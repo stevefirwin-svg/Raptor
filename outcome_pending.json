@@ -3582,5 +3582,15 @@
     "entry_reasoning": null,
     "entry_flags": [],
     "submitted_at": "2026-10-30T12:35:14.113589"
+  },
+  "8efc2296-5997-48af-b918-b0778c13d998": {
+    "symbol": "CSX",
+    "exit_reason": "math_trim_60%",
+    "composite": 0.0,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-11-02T09:35:18.440022"
   }
 }

@@ -6268,5 +6268,20 @@
     "notional": 155.32,
     "status": "OrderStatus.PENDING_NEW",
     "backfilled": true
+  },
+  {
+    "ts": "2026-11-02T14:35:18.383942+00:00",
+    "symbol": "CSX",
+    "side": "SELL",
+    "qty": 2,
+    "decision_price": 52.24,
+    "fill_price": 52.06,
+    "is_bps": 34.46,
+    "is_dollars": 0.36,
+    "order_id": "8efc2296-5997-48af-b918-b0778c13d998",
+    "exit_reason": "math_trim_60%",
+    "notional": 104.48,
+    "status": "OrderStatus.PENDING_NEW",
+    "backfilled": true
   }
 ]
