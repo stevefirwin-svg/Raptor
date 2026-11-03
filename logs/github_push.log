@@ -1092,3 +1092,21 @@ To https://github.com/stevefirwin-svg/Raptor
    0a796e2..8219647  main -> main
 [Mon 11/02/2026 17:00:06.51] RESULT: SUCCESS — push verified. 
 [Tue 11/03/2026 17:00:01.66] Starting daily GitHub push... 
+warning: in the working copy of 'cooldown_log.json', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'hold_decisions.json', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'hold_health.json', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'hold_history.json', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'logs/github_push.log', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'logs/raptor_auto_start.log', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'logs/raptor_run.log', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'logs/recap_errors.log', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'macro_context.json', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'market_decision.json', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'outcome_pending.json', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'position_ledger.json', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'slippage_log.json', CRLF will be replaced by LF the next time Git touches it
+[main 0a6f5f8] Daily update 2026-11-03
+ 13 files changed, 462 insertions(+), 262 deletions(-)
+To https://github.com/stevefirwin-svg/Raptor
+   1785ee4..0a6f5f8  main -> main
+[Tue 11/03/2026 17:00:07.38] RESULT: SUCCESS — push verified. 
