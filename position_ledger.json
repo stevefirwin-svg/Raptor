@@ -732,75 +732,6 @@
         "note": "Backfilled from Alpaca \u2014 entry_date approximate"
       }
     },
-    "v5.4:CSX": {
-      "model": "v5.4",
-      "symbol": "CSX",
-      "shares": 1,
-      "entry_price": 48.351283,
-      "entry_date": "2026-10-15",
-      "metadata": {
-        "stop": 51.4023,
-        "regime": "BACKFILL",
-        "t_stat": null,
-        "kelly_fraction": null,
-        "composite_score": null,
-        "note": "Backfilled from Alpaca \u2014 entry_date approximate",
-        "high_water": 52.89,
-        "last_trim_ts": "2026-11-02T09:35:18.469358"
-      },
-      "trims": [
-        {
-          "date": "2026-10-29",
-          "reason": "math_trim_44%",
-          "shares_sold": 115,
-          "trim_price": 52.89,
-          "pnl_pct": 9.387,
-          "pnl_abs": 521.95,
-          "shares_before": 265,
-          "shares_after": 150
-        },
-        {
-          "date": "2026-10-29",
-          "reason": "math_trim_81%",
-          "shares_sold": 121,
-          "trim_price": 52.06,
-          "pnl_pct": 7.6704,
-          "pnl_abs": 448.75,
-          "shares_before": 150,
-          "shares_after": 29
-        },
-        {
-          "date": "2026-10-30",
-          "reason": "math_trim_78%",
-          "shares_sold": 23,
-          "trim_price": 51.73,
-          "pnl_pct": 6.9879,
-          "pnl_abs": 77.71,
-          "shares_before": 29,
-          "shares_after": 6
-        },
-        {
-          "date": "2026-10-30",
-          "reason": "math_trim_52%",
-          "shares_sold": 3,
-          "trim_price": 51.775,
-          "pnl_pct": 7.0809,
-          "pnl_abs": 10.27,
-          "shares_before": 6,
-          "shares_after": 3
-        },
-        {
-          "date": "2026-11-02",
-          "reason": "math_trim_60%",
-          "shares_sold": 2,
-          "trim_price": 52.24,
-          "pnl_pct": 8.0426,
-          "pnl_abs": 7.78,
-          "shares_before": 3,
-          "shares_after": 1
-        }
-      ]
-    },
     "v5.4:XLU": {
       "model": "v5.4",
       "symbol": "XLU",
@@ -808,7 +739,7 @@
       "entry_price": 41.78,
       "entry_date": "2026-10-15",
       "metadata": {
-        "stop": 42.8534,
+        "stop": 42.8775,
         "regime": "BACKFILL",
         "t_stat": null,
         "kelly_fraction": null,
@@ -5643,6 +5574,88 @@
       "pnl": 152.3,
       "pnl_pct": 1.3265,
       "hold_days": 8,
+      "entry_regime": null
+    },
+    {
+      "model": "v5.4",
+      "symbol": "CSX",
+      "shares": 1,
+      "entry_price": 48.351283,
+      "entry_date": "2026-10-15",
+      "metadata": {
+        "stop": 51.4023,
+        "regime": "BACKFILL",
+        "t_stat": null,
+        "kelly_fraction": null,
+        "composite_score": null,
+        "note": "Backfilled from Alpaca \u2014 entry_date approximate",
+        "high_water": 52.89,
+        "last_trim_ts": "2026-11-02T09:35:18.469358",
+        "pending_exit": true,
+        "pending_exit_ts": "2026-11-03T09:35:18.953079"
+      },
+      "trims": [
+        {
+          "date": "2026-10-29",
+          "reason": "math_trim_44%",
+          "shares_sold": 115,
+          "trim_price": 52.89,
+          "pnl_pct": 9.387,
+          "pnl_abs": 521.95,
+          "shares_before": 265,
+          "shares_after": 150
+        },
+        {
+          "date": "2026-10-29",
+          "reason": "math_trim_81%",
+          "shares_sold": 121,
+          "trim_price": 52.06,
+          "pnl_pct": 7.6704,
+          "pnl_abs": 448.75,
+          "shares_before": 150,
+          "shares_after": 29
+        },
+        {
+          "date": "2026-10-30",
+          "reason": "math_trim_78%",
+          "shares_sold": 23,
+          "trim_price": 51.73,
+          "pnl_pct": 6.9879,
+          "pnl_abs": 77.71,
+          "shares_before": 29,
+          "shares_after": 6
+        },
+        {
+          "date": "2026-10-30",
+          "reason": "math_trim_52%",
+          "shares_sold": 3,
+          "trim_price": 51.775,
+          "pnl_pct": 7.0809,
+          "pnl_abs": 10.27,
+          "shares_before": 6,
+          "shares_after": 3
+        },
+        {
+          "date": "2026-11-02",
+          "reason": "math_trim_60%",
+          "shares_sold": 2,
+          "trim_price": 52.24,
+          "pnl_pct": 8.0426,
+          "pnl_abs": 7.78,
+          "shares_before": 3,
+          "shares_after": 1
+        }
+      ],
+      "exit_price": 51.27,
+      "exit_date": "2026-11-03",
+      "exit_reason": "hard_stop",
+      "exit_path": "hard_stop",
+      "final_leg_pnl": 2.92,
+      "final_leg_pnl_pct": 6.0365,
+      "entry_value": 12813.09,
+      "pnl": 1069.38,
+      "pnl_pct": 8.346,
+      "hold_days": 19,
       "entry_regime": null
     }
   ]
