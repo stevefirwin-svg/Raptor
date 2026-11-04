@@ -6298,5 +6298,20 @@
     "notional": 51.27,
     "status": "OrderStatus.PENDING_NEW",
     "backfilled": true
+  },
+  {
+    "ts": "2026-11-04T14:35:26.276290+00:00",
+    "symbol": "XLU",
+    "side": "SELL",
+    "qty": 1,
+    "decision_price": 43.1598,
+    "fill_price": 43.26,
+    "is_bps": -23.22,
+    "is_dollars": -0.1002,
+    "order_id": "3e6bbe9a-ad75-4d1a-923e-a4d0024cf452",
+    "exit_reason": "math_trim_6%",
+    "notional": 43.16,
+    "status": "OrderStatus.PENDING_NEW",
+    "backfilled": true
   }
 ]
