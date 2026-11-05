@@ -3612,5 +3612,15 @@
     "entry_reasoning": null,
     "entry_flags": [],
     "submitted_at": "2026-11-04T09:35:26.329591"
+  },
+  "6fd7d944-dfd9-4850-a8ac-b849f57f9db5": {
+    "symbol": "XLU",
+    "exit_reason": "hard_stop",
+    "composite": 0.0,
+    "entry_decision": "PASS",
+    "entry_confidence": 1.0,
+    "entry_reasoning": null,
+    "entry_flags": [],
+    "submitted_at": "2026-11-05T11:35:15.007480"
   }
 }
