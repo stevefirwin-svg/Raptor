@@ -1150,3 +1150,18 @@ To https://github.com/stevefirwin-svg/Raptor
    94fa3ee..ed7af6a  main -> main
 [Thu 11/05/2026 17:00:06.99] RESULT: SUCCESS — push verified. 
 [Fri 11/06/2026 17:00:01.84] Starting daily GitHub push... 
+warning: in the working copy of 'cooldown_log.json', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'hold_decisions.json', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'hold_health.json', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'hold_history.json', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'logs/github_push.log', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'logs/raptor_auto_start.log', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'logs/raptor_run.log', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'logs/recap_errors.log', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'macro_context.json', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'market_decision.json', CRLF will be replaced by LF the next time Git touches it
+[main 05552c8] Daily update 2026-11-06
+ 10 files changed, 235 insertions(+), 42 deletions(-)
+To https://github.com/stevefirwin-svg/Raptor
+   833ab3b..05552c8  main -> main
+[Fri 11/06/2026 17:00:07.55] RESULT: SUCCESS — push verified. 
