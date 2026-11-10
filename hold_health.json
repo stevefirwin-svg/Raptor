@@ -1,16 +1,16 @@
 {
   "ETHA": {
     "symbol": "ETHA",
-    "timestamp": "2026-11-09T16:15:18.205273",
+    "timestamp": "2026-11-10T16:15:18.292889",
     "tier": "DECAYING",
-    "health": -0.4102,
-    "pnl_pct": -161.648,
-    "days_held": 53,
-    "days_history": 25,
+    "health": -0.4563,
+    "pnl_pct": -153.569,
+    "days_held": 54,
+    "days_history": 26,
     "pre_entry_days": 0,
     "composite": 0.0,
     "factors_positive": 0,
-    "stop_dist_atr": -3.31,
+    "stop_dist_atr": -3.965,
     "layers": {
       "composite_slope": {
         "score": 0.0,
@@ -23,8 +23,8 @@
         "weight": 0.2
       },
       "price_momentum": {
-        "score": -0.5708,
-        "detail": "ROC5=-5.22%  HH=0 HL=0  ClosePos=0.44  ROCtrend=-0.29",
+        "score": -0.8228,
+        "detail": "ROC5=-10.14%  HH=0 HL=0  ClosePos=0.47  ROCtrend=-1.00",
         "weight": 0.15
       },
       "cluster_health": {
@@ -33,23 +33,23 @@
         "weight": 0.15
       },
       "volume": {
-        "score": -0.786,
-        "detail": "OBV_slope=-508763  UD_ratio=0.32  OBVtrend=-1.00",
+        "score": -0.8685,
+        "detail": "OBV_slope=-744375  UD_ratio=0.13  OBVtrend=-0.72",
         "weight": 0.1
       },
       "volatility": {
         "score": 0.2,
-        "detail": "ATR_exp=1.00  BB_width=0.085",
+        "detail": "ATR_exp=0.95  BB_width=0.097",
         "weight": 0.08
       },
       "stop_distance": {
         "score": -1.0,
-        "detail": "stop_dist=-3.31 ATR (at/through stop)",
+        "detail": "stop_dist=-3.96 ATR (at/through stop)",
         "weight": 0.05
       },
       "hold_duration": {
         "score": -0.6,
-        "detail": "hold_ratio=3.53  pnl=-161.6%",
+        "detail": "hold_ratio=3.60  pnl=-153.6%",
         "weight": 0.02
       }
     },
@@ -63,7 +63,7 @@
       "components": {}
     },
     "snapshot": {
-      "timestamp": "2026-11-09T16:15:18.201038",
+      "timestamp": "2026-11-10T16:15:18.288652",
       "symbol": "ETHA",
       "composite": 0.0,
       "t_stat": 0.0,
@@ -79,27 +79,27 @@
         "REV": 0.0
       },
       "regime": "UNKNOWN",
-      "price": 48.07,
-      "roc_5d": -0.0522,
+      "price": 46.51,
+      "roc_5d": -0.1014,
       "higher_highs": 0,
       "higher_lows": 0,
-      "close_pos_5d": 0.4443,
-      "vol_ratio": 1.3194,
-      "obv_slope": -508763.4,
-      "ud_ratio": 0.32,
-      "atr": 2.0661,
-      "atr_expansion": 1.0025,
-      "bb_width": 0.0851,
+      "close_pos_5d": 0.4715,
+      "vol_ratio": 1.5154,
+      "obv_slope": -744374.7,
+      "ud_ratio": 0.1324,
+      "atr": 2.1186,
+      "atr_expansion": 0.9454,
+      "bb_width": 0.0971,
       "entry_price": 18.35,
-      "current_price": 48.07,
+      "current_price": 46.51,
       "qty": -11.0,
-      "market_value": -528.77,
-      "pnl_pct": -161.648,
+      "market_value": -511.60999999999996,
+      "pnl_pct": -153.569,
       "stop_price": 54.9096,
-      "stop_dist_atr": -3.31,
-      "days_held": 53,
+      "stop_dist_atr": -3.965,
+      "days_held": 54,
       "hold_target": 15,
-      "hold_ratio": 3.533
+      "hold_ratio": 3.6
     }
   }
 }
